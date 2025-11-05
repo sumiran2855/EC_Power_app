@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -9,48 +9,30 @@ import {
     View,
 } from 'react-native';
 import { styles } from './ContactScreen.styles';
+import useContact from '../../hooks/useContact';
 
 interface ContactScreenProps {
     navigation: any;
 }
 
 const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
-    const [selectedSubject, setSelectedSubject] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+    const {
+        formData,
+        dropdownOpen,
+        subjects,
+        handleInputChange,
+        handleSubmit,
+        toggleDropdown,
+        handleBack,
+        setDropdownOpen
+    } = useContact(navigation);
 
-    const subjects = [
-        'Technical Support',
-        'Account Issues',
-        'Feature Request',
-        'Billing Inquiry',
-        'General Question',
-        'Other',
-    ];
-
-    const handleSubmit = () => {
-        if (selectedSubject && description) {
-            // Handle form submission
-            console.log('Subject:', selectedSubject);
-            console.log('Description:', description);
-
-            // Reset form
-            setSelectedSubject('');
-            setDescription('');
-            alert('Your message has been sent successfully!');
-        } else {
-            alert('Please fill in all fields');
-        }
-    };
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    };
+    const { selectedSubject, description } = formData;
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
+                <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
                 </TouchableOpacity>
                 <View style={styles.headerSpacer} />
@@ -96,7 +78,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                         </Text>
                         <TouchableOpacity
                             style={styles.selectInput}
-                            onPress={() => setDropdownOpen(!dropdownOpen)}
+                            onPress={toggleDropdown}
                         >
                             <Text style={selectedSubject ? styles.selectedText : styles.placeholderText}>
                                 {selectedSubject || 'Select a subject'}
@@ -117,7 +99,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                                             selectedSubject === subject && styles.dropdownItemSelected,
                                         ]}
                                         onPress={() => {
-                                            setSelectedSubject(subject);
+                                            handleInputChange('selectedSubject', subject);
                                             setDropdownOpen(false);
                                         }}
                                     >
@@ -150,7 +132,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                             multiline
                             numberOfLines={6}
                             value={description}
-                            onChangeText={setDescription}
+                            onChangeText={(text) => handleInputChange('description', text)}
                             textAlignVertical="top"
                         />
                         <Text style={styles.charCount}>{description.length} / 500</Text>

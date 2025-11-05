@@ -1,49 +1,27 @@
 import { View, TouchableOpacity, Text, TextInput, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import styles from './ProfileScreen.styles';
-import React, { useState } from "react";
+import React from "react";
+import useProfile from '../../hooks/useProfile';
 
 interface ProfileScreenProps {
     navigation: any;
 }
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-    // Business Information State
-    const [businessName, setBusinessName] = useState('Gautam Adani');
-    const [vatNo, setVatNo] = useState('45200200');
-    const [address, setAddress] = useState('102R, Auxerre street');
-    const [postalCode, setPostalCode] = useState('4520');
-    const [city, setCity] = useState('London');
-
-    // Contact Person State
-    const [firstName, setFirstName] = useState('Gautam');
-    const [lastName, setLastName] = useState('Adani');
-    const [email, setEmail] = useState('sumiran@b.com');
-    const [countryCode, setCountryCode] = useState('+44');
-    const [mobile, setMobile] = useState('12000012');
-    const [showCountryPicker, setShowCountryPicker] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState({
-        code: '+44',
-        flag: '🇬🇧',
-        name: 'United Kingdom'
-    });
-
-    // Country list
-    const countries = [
-        { code: '+1', flag: '🇺🇸', name: 'United States' },
-        { code: '+44', flag: '🇬🇧', name: 'United Kingdom' },
-        { code: '+91', flag: '🇮🇳', name: 'India' },
-        { code: '+86', flag: '🇨🇳', name: 'China' },
-        { code: '+81', flag: '🇯🇵', name: 'Japan' },
-        { code: '+49', flag: '🇩🇪', name: 'Germany' },
-    ];
+    const {
+        profileData,
+        showCountryPicker,
+        selectedCountry,
+        countries,
+        handleInputChange,
+        handleCountrySelect,
+        handleSaveChanges,
+        setShowCountryPicker,
+    } = useProfile();
 
     const handleBackButton = () => {
         navigation.goBack();
-    };
-
-    const handleSaveChanges = () => {
-        console.log('Saving changes...');
     };
 
     const handleChangePassword = () => {
@@ -85,8 +63,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>Business Name</Text>
                             <TextInput
                                 style={styles.input}
-                                value={businessName}
-                                onChangeText={setBusinessName}
+                                value={profileData.businessName}
+                                onChangeText={(value) => handleInputChange('businessName', value)}
                                 placeholder="Enter business name"
                                 placeholderTextColor="#94A3B8"
                             />
@@ -96,8 +74,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>VAT Number</Text>
                             <TextInput
                                 style={styles.input}
-                                value={vatNo}
-                                onChangeText={setVatNo}
+                                value={profileData.vatNo}
+                                onChangeText={(value) => handleInputChange('vatNo', value)}
                                 placeholder="Enter VAT number"
                                 placeholderTextColor="#94A3B8"
                                 keyboardType="numeric"
@@ -108,8 +86,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>Address</Text>
                             <TextInput
                                 style={styles.input}
-                                value={address}
-                                onChangeText={setAddress}
+                                value={profileData.address}
+                                onChangeText={(value) => handleInputChange('address', value)}
                                 placeholder="Enter address"
                                 placeholderTextColor="#94A3B8"
                             />
@@ -120,8 +98,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>Postal Code</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={postalCode}
-                                    onChangeText={setPostalCode}
+                                    value={profileData.postalCode}
+                                    onChangeText={(value) => handleInputChange('postalCode', value)}
                                     placeholder="Enter code"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="numeric"
@@ -132,8 +110,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>City</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={city}
-                                    onChangeText={setCity}
+                                    value={profileData.city}
+                                    onChangeText={(value) => handleInputChange('city', value)}
                                     placeholder="Enter city"
                                     placeholderTextColor="#94A3B8"
                                 />
@@ -157,8 +135,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>First Name</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={firstName}
-                                    onChangeText={setFirstName}
+                                    value={profileData.firstName}
+                                    onChangeText={(value) => handleInputChange('firstName', value)}
                                     placeholder="First name"
                                     placeholderTextColor="#94A3B8"
                                 />
@@ -168,8 +146,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>Last Name</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={lastName}
-                                    onChangeText={setLastName}
+                                    value={profileData.lastName}
+                                    onChangeText={(value) => handleInputChange('lastName', value)}
                                     placeholder="Last name"
                                     placeholderTextColor="#94A3B8"
                                 />
@@ -182,8 +160,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Ionicons name="mail-outline" size={20} color="#64748B" style={styles.inputIcon} />
                                 <TextInput
                                     style={styles.inputWithIconField}
-                                    value={email}
-                                    onChangeText={setEmail}
+                                    value={profileData.email}
+                                    onChangeText={(value) => handleInputChange('email', value)}
                                     placeholder="Enter email address"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="email-address"
@@ -204,8 +182,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TextInput
                                     style={styles.phoneInput}
-                                    value={mobile}
-                                    onChangeText={setMobile}
+                                    value={profileData.mobile}
+                                    onChangeText={(value) => handleInputChange('mobile', value)}
                                     placeholder="Enter mobile number"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="phone-pad"
@@ -223,11 +201,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                             <TouchableOpacity
                                                 key={index}
                                                 style={styles.countryItem}
-                                                onPress={() => {
-                                                    setSelectedCountry(country);
-                                                    setCountryCode(country.code);
-                                                    setShowCountryPicker(false);
-                                                }}
+                                                onPress={() => handleCountrySelect(country)}
                                             >
                                                 <Text style={styles.countryFlag}>{country.flag}</Text>
                                                 <Text style={styles.countryName}>{country.name}</Text>

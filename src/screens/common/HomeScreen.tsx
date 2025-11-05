@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation/AppNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/AppNavigator';
 import {
     View,
     Text,
@@ -15,164 +15,29 @@ import {
 } from 'react-native';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { styles } from './HomeScreen.styles';
-
-interface MenuItem {
-    id: string;
-    title: string;
-    icon: keyof typeof Icon.glyphMap;
-    color: string;
-    subtitle: string;
-}
-
-interface Section {
-    id: string;
-    title: string;
-    items: MenuItem[];
-}
-
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+import useHome, { MenuItem, Section } from '../../hooks/useHome';
 
 const HomeScreen: React.FC = () => {
-    const navigation = useNavigation<HomeScreenNavigationProp>();
-    const [searchVisible, setSearchVisible] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [showProfileMenu, setShowProfileMenu] = useState(false);
-    const dropdownAnimation = React.useRef(new Animated.Value(0)).current;
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-    const toggleProfileMenu = () => {
-        const toValue = showProfileMenu ? 0 : 1;
+    const {
+        // State
+        searchVisible,
+        searchQuery,
+        showProfileMenu,
+        dropdownAnimation,
+        filteredSections,
 
-        if (!showProfileMenu && searchVisible) {
-            setSearchVisible(false);
-        }
-
-        setShowProfileMenu(!showProfileMenu);
-
-        Animated.spring(dropdownAnimation, {
-            toValue,
-            useNativeDriver: true,
-            tension: 100,
-            friction: 10,
-        }).start();
-    };
-
-    const handleLogout = () => {
-        navigation.navigate('Login', { portalType: 'PRODUCT' });
-        setShowProfileMenu(false);
-    };
-
-    const handleProfile = () => {
-        navigation.navigate('Profile');
-        setShowProfileMenu(false);
-    };
-
-    const allSections: Section[] = [
-        {
-            id: '1',
-            title: 'Product Portal',
-            items: [
-                {
-                    id: '1-1',
-                    title: 'XRGI® Systems',
-                    icon: 'devices',
-                    color: '#1E88E5',
-                    subtitle: 'Manage your systems'
-                },
-                {
-                    id: '1-2',
-                    title: 'Service Contracts',
-                    icon: 'assignment',
-                    color: '#43A047',
-                    subtitle: 'View all contracts'
-                },
-            ],
-        },
-        {
-            id: '2',
-            title: 'Service Portal',
-            items: [
-                {
-                    id: '2-1',
-                    title: 'System Status',
-                    icon: 'monitor',
-                    color: '#8E24AA',
-                    subtitle: 'View system status'
-                },
-                {
-                    id: '2-2',
-                    title: 'Statistics',
-                    icon: 'bar-chart',
-                    color: '#8E24AA',
-                    subtitle: 'View analytics'
-                },
-                {
-                    id: '2-3',
-                    title: 'System Configuration',
-                    icon: 'settings',
-                    color: '#3949AB',
-                    subtitle: 'Configure settings'
-                },
-                {
-                    id: '2-4',
-                    title: 'Service Reports',
-                    icon: 'description',
-                    color: '#F4511E',
-                    subtitle: 'Access reports'
-                },
-                {
-                    id: '2-5',
-                    title: 'Call Details',
-                    icon: 'list',
-                    color: '#F4511E',
-                    subtitle: 'View call details'
-                },
-            ],
-        },
-        {
-            id: '3',
-            title: 'Functional Portal',
-            items: [
-                {
-                    id: '3-1',
-                    title: 'Unit List',
-                    icon: 'contacts',
-                    color: '#00897B',
-                    subtitle: 'XRGI® units'
-                },
-            ],
-        },
-    ];
-
-    // Filter sections based on search query
-    const filteredSections = allSections.filter(section => {
-        if (!searchQuery.trim()) return true;
-        return section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            section.items.some(item =>
-                item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                item.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-    });
-
-    const handleMenuPress = (item: MenuItem) => {
-        console.log(`Pressed: ${item.title}`);
-        if (item.id === '1-1') {
-            navigation.navigate('ProductDashboard');
-        } else if (item.id === '1-2') {
-            navigation.navigate('ServiceContract');
-        } else if (item.id === '2-1') {
-            navigation.navigate('SystemStatus');
-        } else if (item.id === '2-2') {
-            navigation.navigate('Statistics');
-        } else if (item.id === '2-4') {
-            navigation.navigate('ServiceReport');
-        } else if (item.id === '2-3') {
-            navigation.navigate('SystemConfiguration');
-        } else if (item.id === '2-5') {
-            navigation.navigate('CallDetails');
-        } else if (item.id === '3-1') {
-            navigation.navigate('UnitList');
-        }
-    };
+        // Handlers
+        setSearchQuery,
+        toggleProfileMenu,
+        handleLogout,
+        handleProfile,
+        handleMenuPress,
+        handleSearchToggle,
+        handleSearchClose,
+        setShowProfileMenu,
+    } = useHome();
 
     const renderMenuItem = (item: MenuItem) => (
         <TouchableOpacity
@@ -231,12 +96,7 @@ const HomeScreen: React.FC = () => {
                     <View style={styles.headerRight}>
                         <TouchableOpacity
                             style={styles.iconButton}
-                            onPress={() => {
-                                if (showProfileMenu) {
-                                    toggleProfileMenu();
-                                }
-                                setSearchVisible(!searchVisible);
-                            }}
+                            onPress={handleSearchToggle}
                             activeOpacity={0.7}
                         >
                             <Icon name="search" size={22} color="#546E7A" />
@@ -351,11 +211,11 @@ const HomeScreen: React.FC = () => {
                             autoCorrect={false}
                             clearButtonMode="while-editing"
                             returnKeyType="search"
-                            onSubmitEditing={() => setSearchVisible(false)}
+                            onSubmitEditing={handleSearchClose}
                         />
                         {searchQuery.length > 0 && (
                             <TouchableOpacity
-                                onPress={() => setSearchQuery('')}
+                                onPress={handleSearchClose}
                                 style={styles.clearButton}
                             >
                                 <Icon name="close" size={20} color="#90A4AE" />
@@ -391,7 +251,11 @@ const HomeScreen: React.FC = () => {
                             <Text style={styles.helpDescription}>
                                 Our support team is here to help you 24/7
                             </Text>
-                            <TouchableOpacity style={styles.helpButton} activeOpacity={0.8} onPress={() => navigation.navigate('Contact')}>
+                            <TouchableOpacity
+                                style={styles.helpButton}
+                                activeOpacity={0.8}
+                                onPress={() => navigation.navigate('Contact')}
+                            >
                                 <Text style={styles.helpButtonText}>Contact Support</Text>
                             </TouchableOpacity>
                         </View>

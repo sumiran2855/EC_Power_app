@@ -49,20 +49,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible, onClose, onMenuItemPress }
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        {/* Backdrop */}
         <TouchableOpacity 
           style={styles.backdrop} 
           activeOpacity={1} 
           onPress={onClose}
         />
         
-        {/* Sidebar */}
         <View style={styles.sidebar}>
 
           {/* User Info Section */}
           <View style={styles.userSection}>
             <View style={styles.userAvatar}>
-              {/* <Icon name="person" size={32} color="#1a5490" /> */}
               <Image source={require('../../../assets/profile.jpeg')} style={styles.profileImage} />
             </View>
             <View style={styles.userInfo}>
@@ -70,11 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible, onClose, onMenuItemPress }
               <Text style={styles.userEmail}>martin.smith@company.com</Text>
             </View>
           </View>
-
-          {/* Divider */}
           <View style={styles.divider} />
-
-          {/* Menu Items */}
           <ScrollView 
             style={styles.menuSection}
             showsVerticalScrollIndicator={false}

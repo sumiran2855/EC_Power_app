@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useDashboard from '../../hooks/useDashboard';
+import useDashboard from '../../hooks/Product-portal/useDashboard';
 import Sidebar from '../common/Sidebar';
 import Card from '../../components/Card/Card';
 import styles from './XRGI-System.styles';

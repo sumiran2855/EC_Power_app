@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Animated from 'react-native-reanimated';
 import styles from './System-StatusScreen.styles';
+import useSystemStatus from '../../hooks/Service-portal/useSystemStatus';
+import useCardAnimations from '../../hooks/Service-portal/useCardAnimations';
 
 interface StatusCardProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -14,55 +17,23 @@ interface StatusCardProps {
   onPress?: () => void;
 }
 
-const StatusCard: React.FC<StatusCardProps> = ({ 
-  icon, 
-  count, 
-  label, 
-  color, 
-  bgColor, 
+const StatusCard: React.FC<StatusCardProps> = ({
+  icon,
+  count,
+  label,
+  color,
+  bgColor,
   percentage = 0,
   trend = 'neutral',
-  onPress 
+  onPress
 }) => {
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
-
-  const handlePressIn = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 0.96,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 1,
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const getTrendColor = () => {
-    switch (trend) {
-      case 'up':
-        return '#10B981';
-      case 'down':
-        return '#EF4444';
-      default:
-        return '#64748B';
-    }
-  };
-
-  const getTrendIcon = () => {
-    switch (trend) {
-      case 'up':
-        return 'trending-up';
-      case 'down':
-        return 'trending-down';
-      default:
-        return 'remove';
-    }
-  };
+  const {
+    scaleAnim,
+    handlePressIn,
+    handlePressOut,
+    getTrendColor,
+    getTrendIcon,
+  } = useCardAnimations();
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -77,19 +48,19 @@ const StatusCard: React.FC<StatusCardProps> = ({
           <View style={[styles.iconContainer, { backgroundColor: bgColor }]}>
             <Ionicons name={icon} size={22} color={color} />
           </View>
-          <View style={[styles.trendBadge, { backgroundColor: `${getTrendColor()}15` }]}>
-            <Ionicons name={getTrendIcon() as any} size={12} color={getTrendColor()} />
+          <View style={[styles.trendBadge, { backgroundColor: `${getTrendColor(trend)}15` }]}>
+            <Ionicons name={getTrendIcon(trend) as any} size={12} color={getTrendColor(trend)} />
           </View>
         </View>
         <View style={styles.cardContent}>
           <Text style={styles.count}>{count.toLocaleString()}</Text>
           <Text style={styles.label} numberOfLines={2}>{label}</Text>
           <View style={styles.progressBar}>
-            <View 
+            <View
               style={[
-                styles.progressFill, 
+                styles.progressFill,
                 { width: `${percentage}%`, backgroundColor: color }
-              ]} 
+              ]}
             />
           </View>
         </View>
@@ -103,102 +74,14 @@ interface SystemStatusScreenProps {
 }
 
 const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) => {
-  const statusData = [
-    { 
-      icon: 'checkmark-circle' as const, 
-      count: 1202, 
-      label: 'Operating Normal', 
-      color: '#3B82F6', 
-      bgColor: '#EFF6FF',
-      percentage: 65,
-      trend: 'up' as const
-    },
-    { 
-      icon: 'stop-circle' as const, 
-      count: 6601, 
-      label: 'Full Stop', 
-      color: '#EF4444', 
-      bgColor: '#FEF2F2',
-      percentage: 85,
-      trend: 'down' as const
-    },
-    { 
-      icon: 'alert-circle' as const, 
-      count: 1202, 
-      label: 'Alarm Stop', 
-      color: '#F59E0B', 
-      bgColor: '#FFFBEB',
-      percentage: 45,
-      trend: 'up' as const
-    },
-    { 
-      icon: 'call-outline' as const, 
-      count: 6601, 
-      label: 'Stopped Calling', 
-      color: '#8B5CF6', 
-      bgColor: '#F5F3FF',
-      percentage: 72,
-      trend: 'neutral' as const
-    },
-    { 
-      icon: 'pause-circle' as const, 
-      count: 1202, 
-      label: 'Standby Mode', 
-      color: '#EC4899', 
-      bgColor: '#FDF2F8',
-      percentage: 38,
-      trend: 'down' as const
-    },
-    { 
-      icon: 'flask' as const, 
-      count: 6601, 
-      label: 'Test System', 
-      color: '#14B8A6', 
-      bgColor: '#F0FDFA',
-      percentage: 90,
-      trend: 'up' as const
-    },
-    { 
-      icon: 'construct' as const, 
-      count: 1202, 
-      label: 'Under Installation', 
-      color: '#06B6D4', 
-      bgColor: '#ECFEFF',
-      percentage: 55,
-      trend: 'neutral' as const
-    },
-    { 
-      icon: 'time' as const, 
-      count: 6601, 
-      label: 'Waiting Position', 
-      color: '#6366F1', 
-      bgColor: '#EEF2FF',
-      percentage: 68,
-      trend: 'up' as const
-    },
-  ];
-
-  const totalUnits = statusData.reduce((sum, item) => sum + item.count, 0);
+  const {
+    totalUnits,
+    getStatsBarData,
+    getCardRows,
+  } = useSystemStatus();
 
   const handleBackButton = () => {
     navigation.goBack();
-  };
-
-  // Calculate percentages for the stats bar
-  const getStatsBarData = () => {
-    return statusData.map(item => ({
-      color: item.color,
-      percentage: (item.count / totalUnits) * 100,
-    }));
-  };
-
-  // Split data into rows of 2 cards each
-  const getCardRows = () => {
-    const rows = [];
-    for (let i = 0; i < statusData.length; i += 2) {
-      rows.push(statusData.slice(i, i + 2));
-    }
-    return rows;
   };
 
   return (
@@ -208,7 +91,6 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
         <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
           <Ionicons name="arrow-back" size={22} color="#0F172A" />
         </TouchableOpacity>
-        {/* <Text style={styles.headerTitle}>System Monitor</Text> */}
       </View>
 
       <ScrollView
@@ -233,7 +115,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
               <Text style={styles.liveBadgeText}>Live</Text>
             </View>
           </View>
-          
+
           <View style={styles.totalContainer}>
             <Text style={styles.totalNumber}>{totalUnits.toLocaleString()}</Text>
             <Text style={styles.totalLabel}>units</Text>

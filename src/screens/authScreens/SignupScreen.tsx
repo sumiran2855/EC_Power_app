@@ -41,7 +41,6 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
     handleSignup,
     handleVerifyCode,
     handleBackToLogin,
-    handleBackToSignup,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
     handleCountryCodeSelect,

@@ -1,47 +1,26 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons, Feather } from '@expo/vector-icons';
 import styles from './SettingScreen.styles';
-import React, { useState } from "react";
+import React from "react";
+import useSettings from '../../hooks/useSettings';
 
 interface SettingScreenProps {
     navigation: any;
 }
 
-interface Language {
-    code: string;
-    name: string;
-    nativeName: string;
-    flag: string;
-}
-
 const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
-    const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
-
-    const languages: Language[] = [
-        { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
-        { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-        { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-        { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹' },
-        { code: 'pl', name: 'Polish', nativeName: 'Polski', flag: '🇵🇱' },
-        { code: 'da', name: 'Danish', nativeName: 'Dansk', flag: '🇩🇰' },
-    ];
+    const { selectedLanguage, languages, handleLanguageSelect } = useSettings();
 
     const handleBackButton = () => {
         navigation.goBack();
-    };
-
-    const handleLanguageSelect = (code: string) => {
-        setSelectedLanguage(code);
-        // Add your language change logic here
-        // e.g., i18n.changeLanguage(code);
     };
 
     return (
         <View style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
-                <TouchableOpacity 
-                    style={styles.backButton} 
+                <TouchableOpacity
+                    style={styles.backButton}
                     onPress={handleBackButton}
                     activeOpacity={0.6}
                 >
@@ -51,8 +30,8 @@ const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
                 <View style={styles.headerSpacer} />
             </View>
 
-            <ScrollView 
-                style={styles.content} 
+            <ScrollView
+                style={styles.content}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >

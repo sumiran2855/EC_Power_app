@@ -1,76 +1,23 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { MaterialIcons, Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import styles from './unit-listScreen.styles';
 import React from "react";
+import useUnitList from '../../hooks/Unit-list/useUnitList';
 
 interface UnitListScreenProps {
     navigation: any;
 }
 
-interface SystemData {
-    id: string;
-    systemName: string;
-    xrgiId: string;
-    recentCalls: string;
-    country: string;
-    status: 'active' | 'inactive' | 'maintenance';
-}
-
 const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    };
-
-    const handleSystemPress = (system: SystemData) => {
-        navigation.navigate('UnitDetail');
-        console.log('Navigate to system:', system.id);
-    };
-
-    // Sample data - replace with your actual data
-    const systems: SystemData[] = [
-        {
-            id: '1',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167385',
-            recentCalls: '5',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '2',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167392',
-            recentCalls: '12',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '3',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167401',
-            recentCalls: '-',
-            country: 'US',
-            status: 'maintenance'
-        }
-    ];
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'active':
-                return '#10b981';
-            case 'inactive':
-                return '#ef4444';
-            case 'maintenance':
-                return '#f59e0b';
-            default:
-                return '#64748b';
-        }
-    };
-
-    const getStatusText = (status: string) => {
-        return status.charAt(0).toUpperCase() + status.slice(1);
-    };
+    const {
+        systems,
+        handleBackButton,
+        handleSystemPress,
+        getStatusColor,
+        getStatusText,
+        totalSystems,
+        activeSystems
+    } = useUnitList(navigation);
 
     return (
         <View style={styles.container}>
@@ -98,13 +45,13 @@ const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
                 {/* Systems Count */}
                 <View style={styles.statsBar}>
                     <View style={styles.statItem}>
-                        <Text style={styles.statValue}>{systems.length}</Text>
+                        <Text style={styles.statValue}>{totalSystems}</Text>
                         <Text style={styles.statLabel}>Total Systems</Text>
                     </View>
                     <View style={styles.statDivider} />
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>
-                            {systems.filter(s => s.status === 'active').length}
+                            {activeSystems}
                         </Text>
                         <Text style={styles.statLabel}>Active</Text>
                     </View>

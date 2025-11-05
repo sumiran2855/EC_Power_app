@@ -2,74 +2,28 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import styles from './StatisticsScreen.styles';
 import React from "react";
+import useStatistics from '../../hooks/Service-portal/useStatistics';
 
 interface StatisticsScreenProps {
     navigation: any;
 }
 
-interface SystemData {
-    id: string;
-    systemName: string;
-    xrgiId: string;
-    recentCalls: string;
-    country: string;
-    status: 'active' | 'inactive' | 'maintenance';
-}
-
 const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
+    const {
+        systems,
+        getStatusColor,
+        getStatusText,
+        activeSystemsCount,
+        totalSystemsCount
+    } = useStatistics();
 
     const handleBackButton = () => {
         navigation.goBack();
     };
 
-    const handleSystemPress = (system: SystemData) => {
+    const handleSystemPress = (system: any) => {
         navigation.navigate('Get_Statistics');
         console.log('Navigate to system:', system.id);
-    };
-
-    // Sample data - replace with your actual data
-    const systems: SystemData[] = [
-        {
-            id: '1',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167385',
-            recentCalls: '5',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '2',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167392',
-            recentCalls: '12',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '3',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167401',
-            recentCalls: '-',
-            country: 'US',
-            status: 'maintenance'
-        }
-    ];
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'active':
-                return '#10b981';
-            case 'inactive':
-                return '#ef4444';
-            case 'maintenance':
-                return '#f59e0b';
-            default:
-                return '#64748b';
-        }
-    };
-
-    const getStatusText = (status: string) => {
-        return status.charAt(0).toUpperCase() + status.slice(1);
     };
 
     return (
@@ -98,13 +52,13 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
                 {/* Systems Count */}
                 <View style={styles.statsBar}>
                     <View style={styles.statItem}>
-                        <Text style={styles.statValue}>{systems.length}</Text>
+                        <Text style={styles.statValue}>{totalSystemsCount}</Text>
                         <Text style={styles.statLabel}>Total Systems</Text>
                     </View>
                     <View style={styles.statDivider} />
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>
-                            {systems.filter(s => s.status === 'active').length}
+                            {activeSystemsCount}
                         </Text>
                         <Text style={styles.statLabel}>Active</Text>
                     </View>
