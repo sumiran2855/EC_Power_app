@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 16,
   },
@@ -282,7 +282,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   backToLoginText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#1e3a8a',
     fontWeight: '600',
     textDecorationLine: 'underline',

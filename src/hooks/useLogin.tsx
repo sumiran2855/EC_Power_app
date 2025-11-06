@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { loginSchema, LoginFormData, loginDefaultValues } from '../validations/LoginValidation';
+import AuthHelper from '../services/AuthHelper';
+import { StorageService } from '../services/StorageService';
+import { AuthController } from '../controllers/AuthController';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -37,14 +40,17 @@ export const useLoginLogic = () => {
     setIsSubmitting(true);
 
     try {
-      await new Promise((resolve: any) => setTimeout(resolve, 1000));
-      (navigation as any).navigate('Home');
+      const result = await AuthController.login(data);
+      if (result.success) {
+        (navigation as any).navigate('Home');
+      }
     } catch (error) {
       console.error('Login error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   const handleForgotPassword = (): void => {
     (navigation as any).navigate('ForgotPassword', { portalType });
@@ -78,14 +84,14 @@ export const useLoginLogic = () => {
     isSubmitting,
     portalType,
     rememberMe,
-    
+
     // Form
     control,
     handleSubmit,
     errors,
     isValid,
     isDirty,
-    
+
     // Handlers
     handleLogin,
     handleForgotPassword,
