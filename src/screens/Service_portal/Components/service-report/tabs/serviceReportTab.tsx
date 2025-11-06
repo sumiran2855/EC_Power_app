@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tabCommonStyles from './tabsComman.styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Resource {
     id: string;
@@ -170,7 +171,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
     };
 
     return (
-        <View style={tabCommonStyles.tabContainer}>
+        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView 
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -347,7 +348,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                     </View>
                 )}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

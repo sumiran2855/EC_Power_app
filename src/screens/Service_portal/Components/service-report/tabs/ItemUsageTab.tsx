@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tabCommonStyles from './tabsComman.styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ItemUsage {
     id: string;
@@ -68,7 +69,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData }) => {
     };
 
     return (
-        <View style={tabCommonStyles.tabContainer}>
+        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView 
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -152,7 +153,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData }) => {
                     </TouchableOpacity>
                 ))}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

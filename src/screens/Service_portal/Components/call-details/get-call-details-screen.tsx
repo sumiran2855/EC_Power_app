@@ -1,97 +1,48 @@
 import { View, Text, TouchableOpacity, ScrollView, Platform } from "react-native";
-import React, { useState } from "react";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useCallback } from "react";
 import styles from "../Statistics/get-statisticsScreen.styles";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import useCallDetailsScreen from '../../../../hooks/Service-portal/call-details/useGetCallDetails';
 
 interface get_call_detailsScreenProps {
     navigation: any;
 }
 
 const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigation }) => {
-    const [fromDate, setFromDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); // Sept 19, 2025
-    const [toDate, setToDate] = useState<Date>(new Date(2026, 8, 19, 0, 0)); // Sept 19, 2026
-    const [showFromDatePicker, setShowFromDatePicker] = useState(false);
-    const [showFromTimePicker, setShowFromTimePicker] = useState(false);
-    const [showToDatePicker, setShowToDatePicker] = useState(false);
-    const [showToTimePicker, setShowToTimePicker] = useState(false);
+    const {
+        fromDate,
+        toDate,
+        showFromDatePicker,
+        showFromTimePicker,
+        showToDatePicker,
+        showToTimePicker,
+        setShowFromDatePicker,
+        setShowFromTimePicker,
+        setShowToDatePicker,
+        setShowToTimePicker,
+        formatDate,
+        formatTime,
+        onFromDateChange,
+        onFromTimeChange,
+        onToDateChange,
+        onToTimeChange,
+        handleGetData,
+        handleNavigate
+    } = useCallDetailsScreen({ navigation });
 
-    const handleBackButton = () => {
+    const handleBackButton = useCallback(() => {
         navigation.goBack();
-    };
+    }, [navigation]);
 
-    const handleGetData = () => {
-        // Format dates for display
-        const formattedFromDate = formatDateTime(fromDate);
-        const formattedToDate = formatDateTime(toDate);
-
-        console.log("From Date:", formattedFromDate);
-        console.log("To Date:", formattedToDate);
-
-        // Navigate to StatisticsResultScreen with the date parameters
-        navigation.navigate('CallDetailsResult', {
-            fromDate: formattedFromDate,
-            toDate: formattedToDate,
-            fromDateObject: fromDate,
-            toDateObject: toDate
-        });
-    };
-
-    const formatDateTime = (date: Date): string => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        return `${day}-${month}-${year} ${hours}:${minutes}`;
-    };
-
-    const formatDate = (date: Date): string => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-
-        return `${day}-${month}-${year}`;
-    };
-
-    const formatTime = (date: Date): string => {
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        return `${hours}:${minutes}`;
-    };
-
-    const onFromDateChange = (event: any, selectedDate?: Date) => {
-        setShowFromDatePicker(Platform.OS === 'ios');
-        if (selectedDate) {
-            setFromDate(selectedDate);
-        }
-    };
-
-    const onFromTimeChange = (event: any, selectedDate?: Date) => {
-        setShowFromTimePicker(Platform.OS === 'ios');
-        if (selectedDate) {
-            setFromDate(selectedDate);
-        }
-    };
-
-    const onToDateChange = (event: any, selectedDate?: Date) => {
-        setShowToDatePicker(Platform.OS === 'ios');
-        if (selectedDate) {
-            setToDate(selectedDate);
-        }
-    };
-
-    const onToTimeChange = (event: any, selectedDate?: Date) => {
-        setShowToTimePicker(Platform.OS === 'ios');
-        if (selectedDate) {
-            setToDate(selectedDate);
-        }
-    };
+    const handleGetDataPress = useCallback(() => {
+        const formattedDates = handleGetData();
+        handleNavigate(formattedDates);
+    }, [handleGetData, handleNavigate]);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
@@ -197,7 +148,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.button, styles.getDataButton]}
-                            onPress={handleGetData}
+                            onPress={handleGetDataPress}
                         >
                             <Text style={[styles.buttonText, styles.getDataButtonText]}>Get Data</Text>
                         </TouchableOpacity>
@@ -238,7 +189,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                     onChange={onToTimeChange}
                 />
             )}
-        </View>
+        </SafeAreaView>
     );
 }
 

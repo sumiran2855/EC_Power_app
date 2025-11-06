@@ -4,6 +4,7 @@ import React from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { country, countryCodes, industries, models } from '../../../authScreens/types';
 import styles from './RegisterScreen.styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const RegisterScreen: React.FC = () => {
@@ -40,7 +41,7 @@ const RegisterScreen: React.FC = () => {
   } = useRegisterForm();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Update header with centered title */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -924,7 +925,7 @@ const RegisterScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import tabCommonStyles from './tabsComman.styles';
 
@@ -92,7 +93,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
     };
 
     return (
-        <View style={tabCommonStyles.tabContainer}>
+        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView 
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -204,7 +205,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                     </View>
                 )}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

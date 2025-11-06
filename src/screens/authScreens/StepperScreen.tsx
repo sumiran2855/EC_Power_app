@@ -23,7 +23,6 @@ const StepperScreen: React.FC = () => {
         updateFormData,
         nextStep,
         prevStep,
-        goToStep,
         showCountryCodePicker,
         setShowCountryCodePicker,
         showContactCountryCodePicker,

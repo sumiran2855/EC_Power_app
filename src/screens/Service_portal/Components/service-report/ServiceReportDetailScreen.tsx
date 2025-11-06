@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './ServiceReportDetailScreen.styles';
 import ServiceReportsTab from './tabs/serviceReportTab';
@@ -49,7 +50,7 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Modern Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -106,7 +107,7 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
             <View style={styles.contentContainer}>
                 {renderTabContent()}
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

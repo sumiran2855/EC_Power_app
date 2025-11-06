@@ -1,180 +1,49 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './unit-detailScreen.styles';
 import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import useUnitDetail from '../../hooks/Unit-list/useUnitDetail';
 
 interface UnitDetailScreenProps {
     navigation: any;
 }
 
-interface MenuItem {
-    id: string;
-    title: string;
-    icon: string;
-    hasData?: boolean;
-}
-
 const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
-    const [isStarting, setIsStarting] = useState(false);
-    const [isStopping, setIsStopping] = useState(false);
-    const [systemStatus, setSystemStatus] = useState<'idle' | 'running' | 'stopped'>('idle');
-    const [expandedSection, setExpandedSection] = useState<string | null>(null);
+    const {
+        // State
+        isStarting,
+        isStopping,
+        systemStatus,
+        expandedSection,
 
-    const menuItems: MenuItem[] = [
-        { id: 'general', title: 'General', icon: 'information-circle-outline', hasData: true },
-        { id: 'lastCall', title: 'Last Call', icon: 'call-outline', hasData: false },
-        { id: 'customerLogin', title: 'Customer Login', icon: 'person-outline', hasData: false },
-        { id: 'status2025', title: 'Status 2025', icon: 'stats-chart-outline', hasData: false },
-        { id: 'existingConfig', title: 'Existing Configuration', icon: 'settings-outline', hasData: false },
-    ];
+        // Data
+        menuItems,
+        generalData,
+        lastCallData,
+        customerLoginData,
+        status2025Data,
+        existingConfigData,
 
-    const generalData = {
-        systemName: {
-            name: 'Manish 01',
-            address: '102R, Barlin station',
-            city: 'Berlin',
-            postalCode: '8552',
-            country: 'Germany',
-            cellPhone: '+4598562110'
-        },
-        dealer: {
-            name: '-',
-            address: '-',
-            city: '-',
-            postalCode: '-',
-            country: '-',
-            cellPhone: '-'
-        },
-        technician: {
-            name: '-',
-            address: '-',
-            city: '-',
-            postalCode: '-',
-            country: '-',
-            cellPhone: '-'
-        }
-    };
-
-    const lastCallData = {
-        calls: '1979599994',
-        timeOfCall: '02-11-24 15:14',
-        operationStatus: {
-            status: 'Stopped',
-            noise: '0 minutes',
-            oilPressure: 'NO',
-            gasAlarm: 'NO'
-        },
-        controlPanelTemperature: '50%',
-        controlPanelAntennaSignal: '90%'
-    };
-
-    const customerLoginData = {
-        lastLogin: '25-09-2025'
-    };
-
-    const status2025Data = {
-        latestUpdate: '02-11-25 15:14',
-        operatingHours: 'out of possible hours',
-        lastService: '30-08-25 13:46',
-        operationalHoursToNextService: '362h / Latest 30-08-26 13:46',
-        elecProduction: 'kWh',
-        heatProduction: 'kWh',
-        fuelConsumption: 'kWh',
-        firstCall: '23-06-20 M, 15:08',
-        siteElecConsumption: '0',
-        coveredByXRGISystem: '0',
-        coveredByPowerPurchase: '0',
-        soldElectricity: '0'
-    };
-
-    const existingConfigData = {
-        configurationChanged: '18-09-24 13:55',
-        heatPump1Efficiency: '0',
-        highLoadWeekdays: '00:00-23:59',
-        loadWeekdays: '00:00-23:59',
-        electricitySales: 'No',
-        senderCountry: 'England',
-        serialNo: '460E92CEE4',
-        operator: 'ETHERNET',
-        systemXRGIType: 'Toyota 4Y 25.0 - Natural gas',
-        heatPump2Efficiency: '0',
-        highLoadSaturday: '00:00-23:59',
-        loadSaturday: '00:00-23:59',
-        saleWeekdays: '00:00-23:59',
-        stopInLowLoad: 'No',
-        versionNumber: '1.15.16',
-        generation: '2',
-        heatBackUp: 'No',
-        highLoadSunday: '00:00-23:59',
-        loadSunday: '00:00-23:59',
-        saleSaturday: '00:00-23:59',
-        consumptionInHighLoad: '24.0 kW',
-        simCardNo: '5410:EC:9A:AF:9F',
-        communicationType: 'Ethernet / Unknown',
-        meterType: 'Unknown',
-        saleSunday: '00:00-23:59',
-        consumptionInLowLoad: '24.0 kW',
-        terminalSerialNo: 'TMS60024Z3B3'
-    };
+        // Methods
+        toggleSection,
+        handleStartSystem,
+        handleStopSystem,
+    } = useUnitDetail();
 
     const handleBackButton = () => {
         navigation.goBack();
     };
 
-    const toggleSection = (itemId: string) => {
-        setExpandedSection(expandedSection === itemId ? null : itemId);
-    };
-
-    const handleStartSystem = () => {
+    const onSystemActionSuccess = (action: 'start' | 'stop') => {
         Alert.alert(
-            'Start System',
-            'Are you sure you want to start the XRGI system?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                },
-                {
-                    text: 'Start',
-                    onPress: () => {
-                        setIsStarting(true);
-                        setTimeout(() => {
-                            setIsStarting(false);
-                            setSystemStatus('running');
-                            Alert.alert('Success', 'XRGI system started successfully');
-                        }, 2000);
-                    }
-                }
-            ]
+            'Success',
+            `XRGI system ${action === 'start' ? 'started' : 'stopped'} successfully`
         );
     };
 
-    const handleStopSystem = () => {
-        Alert.alert(
-            'Stop System',
-            'Are you sure you want to stop the XRGI system?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                },
-                {
-                    text: 'Stop',
-                    onPress: () => {
-                        setIsStopping(true);
-                        setTimeout(() => {
-                            setIsStopping(false);
-                            setSystemStatus('stopped');
-                            Alert.alert('Success', 'XRGI system stopped successfully');
-                        }, 2000);
-                    },
-                    style: 'destructive'
-                }
-            ]
-        );
-    };
-
+    // Move render functions after state and handlers
     const renderInfoRow = (label: string, value: string) => (
         <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>{label}</Text>
@@ -427,13 +296,13 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={24} color="#0F172A" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Unit Control</Text>
+                <Text style={styles.headerTitle}>XRGI Unit</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
@@ -505,7 +374,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
                                 styles.startButton,
                                 (isStarting || systemStatus === 'running') && styles.buttonDisabled
                             ]}
-                            onPress={handleStartSystem}
+                            onPress={() => handleStartSystem(() => onSystemActionSuccess('start'))}
                             disabled={isStarting || systemStatus === 'running'}
                             activeOpacity={0.8}
                         >
@@ -526,7 +395,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
                                 styles.stopButton,
                                 (isStopping || systemStatus === 'stopped') && styles.stopButtonDisabled
                             ]}
-                            onPress={handleStopSystem}
+                            onPress={() => handleStopSystem(() => onSystemActionSuccess('stop'))}
                             disabled={isStopping || systemStatus === 'stopped'}
                             activeOpacity={0.8}
                         >
@@ -547,7 +416,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
                 {/* Bottom Spacing */}
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

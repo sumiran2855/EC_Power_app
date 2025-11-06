@@ -1,7 +1,5 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import {
     ScrollView,
     StatusBar,
@@ -11,97 +9,27 @@ import {
     View,
 } from 'react-native';
 import Card from '../../components/Card/Card';
+import useServiceContract from '../../hooks/Product-portal/useServiceContract';
 import styles from './ServiceContractScreen.styles';
-
-interface XRGISystem {
-    id: string;
-    name: string;
-    systemId: string;
-    status: 'pending' | 'active' | 'inactive' | 'data-missing';
-    image?: string;
-}
-
-type RootStackParamList = {
-    XRGI_System: undefined;
-    XRGI_Details: { item: any };
-};
-type XRGISystemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'XRGI_System'>;
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ServiceContractScreen: React.FC = () => {
-    const navigation = useNavigation<XRGISystemScreenNavigationProp>();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState<string>('All');
-    const [showFilterModal, setShowFilterModal] = useState(false);
+    const {
+        searchQuery,
+        selectedFilter,
+        showFilterModal,
+        filterOptions,
+        pendingSystems,
+        activeSystems,
+        setSearchQuery,
+        setShowFilterModal,
+        handleBackButton,
+        handleCardPress,
+        handleDelete,
+        handleFilterSelect,
+    } = useServiceContract();
 
-    // Mock data - updated with matching statuses
-    const systems: XRGISystem[] = [
-        { id: '1', name: 'Sumiran S01', systemId: '2100770084', status: 'pending' },
-        { id: '2', name: 'Sumiran S02', systemId: '2100770084', status: 'pending' },
-        { id: '3', name: 'Sumiran S03', systemId: '2100770084', status: 'pending' },
-        { id: '4', name: 'Sumiran S04', systemId: '2100770084', status: 'pending' },
-        { id: '5', name: 'Martin S01', systemId: '2100770085', status: 'active' },
-        { id: '6', name: 'Martin S02', systemId: '2100770086', status: 'active' },
-        { id: '7', name: 'Wilson S01', systemId: '2100770087', status: 'active' },
-    ];
-
-    const filterOptions = [
-        { label: 'All', value: 'All' },
-        { label: 'Active', value: 'Active' },
-        { label: 'Pending', value: 'Pending' },
-    ];
-
-    const handleFilterSelect = (filterValue: string) => {
-        setSelectedFilter(filterValue);
-        setShowFilterModal(false);
-    };
-
-    // Filter and search logic - FIXED
-    const filteredSystems = useMemo(() => {
-        let filtered = systems;
-
-        // Apply filter
-        if (selectedFilter !== 'All') {
-            const statusMap: Record<string, XRGISystem['status'] | null> = {
-                'All': null,
-                'Active': 'active',
-                'Pending': 'pending',
-            };
-            const mappedStatus = statusMap[selectedFilter];
-            if (mappedStatus) {
-                filtered = filtered.filter(system => system.status === mappedStatus);
-            }
-        }
-
-        // Apply search
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(
-                system =>
-                    system.name.toLowerCase().includes(query) ||
-                    system.systemId.includes(query)
-            );
-        }
-
-        return filtered;
-    }, [searchQuery, selectedFilter]);
-
-    // Separate systems by status
-    const pendingSystems = filteredSystems.filter(s => s.status === 'pending');
-    const activeSystems = filteredSystems.filter(s => s.status === 'active');
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    };
-
-    const handleCardPress = (item: any) => {
-        navigation.navigate('XRGI_Details', { item });
-    };
-
-    const handleDelete = (id: string) => {
-        console.log('Delete system:', id);
-    };
-
-    const renderSystemCard = (system: XRGISystem) => (
+    const renderSystemCard = (system: any) => (
         <Card
             key={system.id}
             item={{
@@ -115,7 +43,7 @@ const ServiceContractScreen: React.FC = () => {
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
             {/* Header */}
@@ -221,7 +149,7 @@ const ServiceContractScreen: React.FC = () => {
                 )}
 
                 {/* Empty State */}
-                {filteredSystems.length === 0 && (
+                {pendingSystems.length === 0 && activeSystems.length === 0 && (
                     <View style={styles.emptyState}>
                         <MaterialIcons name="search-off" size={64} color="#cbd5e1" />
                         <Text style={styles.emptyStateTitle}>No systems found</Text>
@@ -233,7 +161,7 @@ const ServiceContractScreen: React.FC = () => {
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

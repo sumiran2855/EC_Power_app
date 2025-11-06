@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tabCommonStyles from './tabsComman.styles';
@@ -133,7 +134,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
     };
 
     return (
-        <View style={tabCommonStyles.tabContainer}>
+        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -379,7 +380,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
                     </View>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

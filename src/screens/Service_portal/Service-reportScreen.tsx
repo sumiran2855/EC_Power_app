@@ -1,80 +1,25 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './StatisticsScreen.styles';
 import React from "react";
+import useServiceReport from '../../hooks/Service-portal/service-report/useServiceReport';
 
 interface ServiceReportScreenProps {
     navigation: any;
 }
 
-interface SystemData {
-    id: string;
-    systemName: string;
-    xrgiId: string;
-    recentCalls: string;
-    country: string;
-    status: 'active' | 'inactive' | 'maintenance';
-}
-
 const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation }) => {
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    };
-
-    const handleSystemPress = (system: SystemData) => {
-        // Navigate to the detail screen with system data
-        navigation.navigate('ServiceReportDetail', { system });
-        console.log('Navigate to system:', system.id);
-    };
-
-    // Sample data - replace with your actual data
-    const systems: SystemData[] = [
-        {
-            id: '1',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167385',
-            recentCalls: '5',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '2',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167392',
-            recentCalls: '12',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '3',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167401',
-            recentCalls: '-',
-            country: 'US',
-            status: 'maintenance'
-        }
-    ];
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'active':
-                return '#10b981';
-            case 'inactive':
-                return '#ef4444';
-            case 'maintenance':
-                return '#f59e0b';
-            default:
-                return '#64748b';
-        }
-    };
-
-    const getStatusText = (status: string) => {
-        return status.charAt(0).toUpperCase() + status.slice(1);
-    };
+    const {
+        systems,
+        getStatusColor,
+        getStatusText,
+        handleSystemPress,
+        handleBackButton
+    } = useServiceReport(navigation);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
@@ -164,7 +109,7 @@ const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation })
                     ))}
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 

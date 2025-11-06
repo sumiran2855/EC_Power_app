@@ -1,128 +1,31 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from "./call-details-results-screen.styles";
+import useCallDetailsResult, { CallData } from "../../../../hooks/Service-portal/call-details/useCallDetailsResult";
 
 interface CallDetailResultScreenProps {
     navigation: any;
     route: any;
 }
 
-interface IncidentData {
-    dateOfIncident: string;
-    incidentType: string;
-    incidents: string;
-    statusOfIncident: string;
-}
-
-interface CallData {
-    id: string;
-    serialNumber: string;
-    systemName: string;
-    heatDistributor: string;
-    timeOfCall: string;
-    attemptedRedials: number;
-    softwareValidated: number;
-
-    // Operation Status
-    actualStatus: string;
-    statusColor: string;
-    stopped: string;
-    operationalHoursToNextService: string;
-    operatingHours: string;
-    actualElecProduced: string;
-    forcedStandby: string;
-
-    // System Status
-    loadLevel: string;
-    storageLevel: string;
-    oilPressure: string;
-    smartstarterBoardTemp: string;
-    boilerReleased: string;
-    controlPanelAntennaSignal: string;
-    controlPanelPCBTemp: string;
-    controlPanelPSUVoltage: string;
-    powerUnitUPSAccumulator: string;
-    powerUnitPCBTemp: string;
-    heatDistributorPCBTemp: string;
-    flowmasterPSUVoltage: string;
-    flowmasterPCBTemp: string;
-    surgeProtector: string;
-    smartstarterLastError: string;
-
-    // Incidents
-    incidents: IncidentData[];
+interface DataRowProps {
+    label: string;
+    value: string;
+    valueColor?: string;
 }
 
 const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigation, route }) => {
-    const [expandedIncidents, setExpandedIncidents] = useState<{ [key: string]: boolean }>({});
+    const {
+        callData,
+        expandedIncidents,
+        handleBackButton,
+        toggleIncident,
+        navigateToHeatDistribution: HandleHeatDistribution
+    } = useCallDetailsResult(navigation);
 
-    // Enhanced sample data matching the image structure
-    const callData: CallData = {
-        id: "1",
-        serialNumber: "2000799148",
-        systemName: "XRGI® 6 LOWNOX",
-        heatDistributor: "Heat Distributor",
-        timeOfCall: "02-11-24 15:14",
-        attemptedRedials: 0,
-        softwareValidated: 1,
-
-        actualStatus: "0. Full Stop",
-        statusColor: "#F59E0B",
-        stopped: "698 hours 36 minutes",
-        operationalHoursToNextService: "3629 hours",
-        operatingHours: "12373 hours",
-        actualElecProduced: "1W",
-        forcedStandby: "No",
-
-        loadLevel: "0%(VkP mode only)",
-        storageLevel: "100%",
-        oilPressure: "No",
-        smartstarterBoardTemp: "ABSENT",
-        boilerReleased: "N/A",
-        controlPanelAntennaSignal: "0 (Max: 31)",
-        controlPanelPCBTemp: "24.50 °C",
-        controlPanelPSUVoltage: "24.1V",
-        powerUnitUPSAccumulator: "Error",
-        powerUnitPCBTemp: "27.4 °C",
-        heatDistributorPCBTemp: "29.50 °C",
-        flowmasterPSUVoltage: "0.0V",
-        flowmasterPCBTemp: "Not available",
-        surgeProtector: "Ok",
-        smartstarterLastError: "000",
-
-        incidents: [
-            {
-                dateOfIncident: "25-06-16 16:37",
-                incidentType: "-",
-                incidents: "-",
-                statusOfIncident: "-"
-            },
-            {
-                dateOfIncident: "25-06-16 16:37",
-                incidentType: "-",
-                incidents: "-",
-                statusOfIncident: "-"
-            }
-        ]
-    };
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    };
-
-    const toggleIncident = (index: number) => {
-        setExpandedIncidents(prev => ({
-            ...prev,
-            [index]: !prev[index]
-        }));
-    };
-
-    const HandleHeatDistribution = () => {
-        navigation.navigate('HeatDistribution');
-    };
-
-    const DataRow = ({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) => (
+    const DataRow: React.FC<DataRowProps> = ({ label, value, valueColor }) => (
         <View style={styles.dataRow}>
             <Text style={styles.dataLabel}>{label}</Text>
             <Text style={[styles.dataValue, valueColor ? { color: valueColor } : {}]}>{value}</Text>
@@ -130,7 +33,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -250,7 +153,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

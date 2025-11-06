@@ -24,7 +24,7 @@ import SystemConfigurationDetailScreen from '../screens/Service_portal/Component
 import ServiceReportScreen from '../screens/Service_portal/Service-reportScreen';
 import ServiceReportDetailScreen from '../screens/Service_portal/Components/service-report/ServiceReportDetailScreen';
 import HeatDistributionScreen from '../screens/Service_portal/Components/call-details/heat-distributionScreen';
-import ContactScreen from '../screens/common/ContactScree';
+import ContactScreen from '../screens/common/ContactScreen';
 import UnitListScreen from '../screens/Unit_list/unit-listScreen';
 import UnitDetailScreen from '../screens/Unit_list/unit-detailScreen';
 import ProfileScreen from '../screens/common/ProfileScreen';

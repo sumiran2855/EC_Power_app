@@ -6,6 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSignupLogic } from '../../hooks/useSignup';
@@ -41,7 +42,6 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
     handleSignup,
     handleVerifyCode,
     handleBackToLogin,
-    handleBackToSignup,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
     handleCountryCodeSelect,
@@ -398,13 +398,13 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#1e3a8a" />
       <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
+        <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.backgroundTop} />
           <View style={styles.backgroundBottom} />
-          <View style={styles.form}>
-            {currentStep === 'signup' ? renderSignupStep() : renderVerificationStep()}
-          </View>
-        </View>
+            <View style={styles.form}>
+              {currentStep === 'signup' ? renderSignupStep() : renderVerificationStep()}
+            </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );
