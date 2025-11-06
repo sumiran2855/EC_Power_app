@@ -11,6 +11,7 @@ import {
 import Card from '../../components/Card/Card';
 import useServiceContract from '../../hooks/Product-portal/useServiceContract';
 import styles from './ServiceContractScreen.styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ServiceContractScreen: React.FC = () => {
     const {
@@ -42,7 +43,7 @@ const ServiceContractScreen: React.FC = () => {
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
             {/* Header */}
@@ -160,7 +161,7 @@ const ServiceContractScreen: React.FC = () => {
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

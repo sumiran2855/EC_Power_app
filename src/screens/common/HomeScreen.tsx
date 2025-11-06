@@ -7,12 +7,12 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
-    SafeAreaView,
     StatusBar,
     TextInput,
     Image,
     Animated,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { styles } from './HomeScreen.styles';
 import useHome, { MenuItem, Section } from '../../hooks/useHome';

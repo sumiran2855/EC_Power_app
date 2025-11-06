@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './StatisticsScreen.styles';
 import React from "react";
@@ -18,7 +19,7 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
     } = useSystemConfiguration(navigation);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
@@ -108,7 +109,7 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
                     ))}
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 

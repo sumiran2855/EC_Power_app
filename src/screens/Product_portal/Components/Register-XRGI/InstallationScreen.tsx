@@ -3,12 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles as stepperStyles } from '../../../authScreens/StepperScreen.styles';
 import { FormData } from '../../../authScreens/types';
 import { styles as localStyles } from './InstallationScreen.styles';

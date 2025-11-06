@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
 import styles from './System-StatusScreen.styles';
@@ -36,13 +37,13 @@ const StatusCard: React.FC<StatusCardProps> = ({
   } = useCardAnimations();
 
   return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+    <Animated.View style={[styles.card, { transform: [{ scale: scaleAnim }] }]}>
       <TouchableOpacity
-        style={styles.card}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         activeOpacity={1}
+        style={{ flex: 1 }}
       >
         <View style={styles.cardHeader}>
           <View style={[styles.iconContainer, { backgroundColor: bgColor }]}>
@@ -85,7 +86,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -160,7 +161,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

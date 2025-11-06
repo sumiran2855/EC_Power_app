@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView, Platform } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React from "react";
 import styles from "./get-statisticsScreen.styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,7 +48,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) =
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
@@ -194,7 +195,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) =
                     onChange={onToTimeChange}
                 />
             )}
-        </View>
+        </SafeAreaView>
     );
 };
 

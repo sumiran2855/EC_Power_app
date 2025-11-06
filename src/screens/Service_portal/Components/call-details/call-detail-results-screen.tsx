@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from "./call-details-results-screen.styles";
 import useCallDetailsResult, { CallData } from "../../../../hooks/Service-portal/call-details/useCallDetailsResult";
 
@@ -32,7 +33,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -152,7 +153,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

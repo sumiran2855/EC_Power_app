@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import styles from './ProfileScreen.styles';
 import React from "react";
 import useProfile from '../../hooks/useProfile';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ProfileScreenProps {
     navigation: any;
@@ -29,7 +30,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -244,7 +245,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                     <Text style={styles.saveButtonText}>Save Changes</Text>
                 </TouchableOpacity>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import styles from './DetailsScreen.styles';
 import { XRGIDetailsScreenProps, energyRecords } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) => {
     const { item } = route.params;
@@ -30,7 +31,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
             {/* Header */}
@@ -182,7 +183,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

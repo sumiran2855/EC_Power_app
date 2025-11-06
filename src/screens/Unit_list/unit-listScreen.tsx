@@ -3,6 +3,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import styles from './unit-listScreen.styles';
 import React from "react";
 import useUnitList from '../../hooks/Unit-list/useUnitList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface UnitListScreenProps {
     navigation: any;
@@ -20,7 +21,7 @@ const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
     } = useUnitList(navigation);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
@@ -110,7 +111,7 @@ const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
                     ))}
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 

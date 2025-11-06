@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Switch } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './heat-distributionScreen.styles';
 
@@ -100,7 +101,7 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -267,7 +268,7 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
                     </>
                 ))}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

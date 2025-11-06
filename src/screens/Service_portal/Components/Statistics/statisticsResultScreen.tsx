@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./statisticsResultScreen.styles";
@@ -20,7 +21,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = () => {
     } = useStatisticsResult();
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
@@ -131,7 +132,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = () => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 
