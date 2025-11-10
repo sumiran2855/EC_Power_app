@@ -7,6 +7,8 @@ import {
     TouchableOpacity,
     View,
     ScrollView,
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSignupLogic } from '../../hooks/useSignup';
@@ -163,7 +165,11 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
           </TouchableOpacity>
 
           {showCountryPicker && (
-            <View style={styles.countryDropdown}>
+            <ScrollView 
+              style={styles.countryDropdown}
+              nestedScrollEnabled={true}
+              keyboardShouldPersistTaps="handled"
+            >
               {countryCodes.map((country: { value: string; label: string }) => (
                 <TouchableOpacity
                   key={country.value}
@@ -173,7 +179,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                   <Text style={styles.countryOptionText}>{country.label}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
           )}
 
           <Controller
@@ -397,14 +403,25 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#1e3a8a" />
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.backgroundTop} />
-          <View style={styles.backgroundBottom} />
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+          >
+            <View style={styles.backgroundTop} />
+            <View style={styles.backgroundBottom} />
             <View style={styles.form}>
               {currentStep === 'signup' ? renderSignupStep() : renderVerificationStep()}
             </View>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </>
   );

@@ -401,11 +401,9 @@ export const useStepperForm = () => {
 
     const nextStep = () => {
         if (currentStep === 1 && !validateProfileStep()) {
-            Alert.alert('Validation Error', 'Please fill in all required fields correctly.');
             return;
         }
         if (currentStep === 2 && !validateSystemRegistrationStep()) {
-            Alert.alert('Validation Error', 'Please fill in all required fields correctly.');
             return;
         }
         setCurrentStep((prev: number) => prev + 1);

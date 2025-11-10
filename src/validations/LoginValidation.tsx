@@ -2,15 +2,12 @@ import { z } from 'zod';
 
 // Login validation schema
 export const loginSchema = z.object({
-    username: z
+    email: z
         .string()
-        .min(1, 'Username is required')
-        .min(3, 'Username must be at least 3 characters')
-        .max(50, 'Username must not exceed 50 characters')
-        .regex(
-            /^[a-zA-Z0-9._-]+$/,
-            'Username can only contain letters, numbers, dots, hyphens, and underscores'
-        ),
+        .min(1, 'Email is required')
+        .email('Please enter a valid email address')
+        .max(254, 'Email must not exceed 254 characters')
+        .toLowerCase(),
     password: z
         .string()
         .min(1, 'Password is required')
@@ -123,7 +120,7 @@ export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 // Default values for the forms
 export const loginDefaultValues: LoginFormData = {
-    username: '',
+    email: '',
     password: '',
     rememberMe: false,
 };

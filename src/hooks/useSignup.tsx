@@ -12,6 +12,7 @@ import {
   verificationDefaultValues,
   countryCodes,
 } from '../validations/LoginValidation';
+import { AuthController } from '../controllers/AuthController';
 
 export const useSignupLogic = () => {
   // State management
@@ -61,10 +62,18 @@ export const useSignupLogic = () => {
     setIsSubmitting(true);
 
     try {
-      console.log('Signup pressed', data);
-      // Simulate API call
-      await new Promise((resolve:any) => setTimeout(resolve, 1000));
-      setCurrentStep('verification');
+      const registrationData = {
+        email: data.email,
+        phone_number: `${countryCode}${data.phoneNumber}`,
+        name: `${data.firstName} ${data.lastName}`,
+        password: data.password,
+      };
+
+      const result = await AuthController.register(registrationData);
+
+      if (result.success) {
+        setCurrentStep('verification');
+      }
     } catch (error) {
       console.error('Signup error:', error);
     } finally {
@@ -78,15 +87,14 @@ export const useSignupLogic = () => {
     setIsSubmitting(true);
 
     try {
-      const signupData = getSignupValues();
-      console.log('Verify code pressed', {
-        email: signupData.email,
-        verificationCode: data.verificationCode,
-      });
-      // Simulate API call
-      await new Promise((resolve:any) => setTimeout(resolve, 1000));
-      // Navigate to StepperScreen after successful verification
-      navigation.navigate('Stepper' as never);
+      const verificationData = {
+        email: getSignupValues().email,
+        code: data.verificationCode,
+      };
+      const result = await AuthController.verify(verificationData);
+      if (result.success) {
+        navigation.navigate('Stepper' as never);
+      }
     } catch (error) {
       console.error('Verification error:', error);
     } finally {

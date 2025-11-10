@@ -119,3 +119,21 @@ export const country = [
     "Italy",
     "Others",
 ];
+
+export enum CustomerStatus {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export type RegisterFormData = {
+    email: string;
+    phone_number: string;
+    name: string;
+    verfication_method?: string;
+    email_verified?: boolean;
+    journeyStatus?: string;
+    status?: CustomerStatus;
+    password: string;
+    group?: string;
+    role?: string;
+}

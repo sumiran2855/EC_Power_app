@@ -140,7 +140,7 @@ const tabCommonStyles = StyleSheet.create({
         letterSpacing: 0.3,
     },
     infoGridValue: {
-        fontSize: 13,
+        fontSize: 11,
         color: '#0f172a',
         fontWeight: '700',
     },

@@ -37,7 +37,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
             id: '1',
             reportNumber: 'SR-29865972',
             dateOfDelivery: '23-09-2025',
-            creationDate: '23-09-2025 12:13',
+            creationDate: '23-09-2025',
             serviceType: 'repair',
             description: 'Test LVB 23092025',
             resources: [
@@ -70,8 +70,8 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
         {
             id: '2',
             reportNumber: 'SR-28252422',
-            dateOfDelivery: '23-09-2025',
-            creationDate: '23-09-2025 12:13',
+            dateOfDelivery: '11-09-2025',
+            creationDate: '23-09-2025',
             serviceType: 'repair',
             description: 'Emergency repair service for system malfunction',
             resources: [
@@ -97,7 +97,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
             id: '3',
             reportNumber: 'SR-83190940',
             dateOfDelivery: '08-09-2025',
-            creationDate: '23-08-2025 12:13',
+            creationDate: '23-08-2025',
             serviceType: 'maintenance',
             description: 'Scheduled quarterly maintenance check',
             resources: [
@@ -115,7 +115,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
             id: '4',
             reportNumber: 'SR-79125299',
             dateOfDelivery: '05-08-2025',
-            creationDate: '05-08-2025 10:31',
+            creationDate: '05-08-2025',
             serviceType: 'maintenance',
             description: 'Annual system inspection and maintenance',
             resources: [

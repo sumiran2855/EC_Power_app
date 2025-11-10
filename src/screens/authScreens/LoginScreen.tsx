@@ -63,22 +63,22 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               </Text>
             </View>
 
-            {/* Username Input */}
+            {/* email Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Username</Text>
               <Controller
                 control={control}
-                name="username"
+                name="email"
                 render={({ field: { onChange, onBlur, value } }: any) => (
                   <TextInput
                     style={[
                       styles.input,
-                      errors.username && styles.inputError
+                      errors.email && styles.inputError
                     ]}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    placeholder="Enter your username"
+                    placeholder="Enter your email"
                     placeholderTextColor="#9ca3af"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -86,8 +86,8 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                   />
                 )}
               />
-              {errors.username && (
-                <Text style={styles.errorText}>{getErrorMessage('username')}</Text>
+              {errors.email && (
+                <Text style={styles.errorText}>{getErrorMessage('email')}</Text>
               )}
             </View>
 
@@ -132,6 +132,22 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               )}
             </View>
 
+             {/* Footer Options */}
+            <View style={styles.footer}>
+              <TouchableOpacity
+                onPress={handleForgotPassword}
+                activeOpacity={0.7}
+                disabled={isSubmitting}
+              >
+                <Text style={[
+                  styles.forgotPasswordText,
+                  isSubmitting && styles.disabledText
+                ]}>
+                  Forgot Password?
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             {/* Login Button */}
             <TouchableOpacity
               style={[
@@ -149,34 +165,6 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                 {isSubmitting ? 'Signing In...' : 'Login'}
               </Text>
             </TouchableOpacity>
-
-            {/* Footer Options */}
-            <View style={styles.footer}>
-              <TouchableOpacity
-                style={styles.rememberMeContainer}
-                onPress={toggleRememberMe}
-                activeOpacity={0.7}
-                disabled={isSubmitting}
-              >
-                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                  {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-                </View>
-                <Text style={styles.rememberMeText}>Remember Me</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={handleForgotPassword}
-                activeOpacity={0.7}
-                disabled={isSubmitting}
-              >
-                <Text style={[
-                  styles.forgotPasswordText,
-                  isSubmitting && styles.disabledText
-                ]}>
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
-            </View>
 
             {/* Create Account */}
             <TouchableOpacity

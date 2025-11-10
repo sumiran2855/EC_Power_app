@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
     color: '#003D82',
   },
   monthColumn: {
-    flex: 2,
+    flex: 1.5,
   },
   percentageColumn: {
     flex: 1.5,
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   tableInput: {
-    height: 36,
+    height: 40,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     borderRadius: 8,
