@@ -10,6 +10,7 @@ import {
   forgotPasswordEmailDefaultValues,
   resetPasswordDefaultValues,
 } from '../validations/LoginValidation';
+import { AuthController } from '../controllers/AuthController';
 
 export const useForgotPasswordLogic = () => {
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState<boolean>(false);
@@ -56,18 +57,10 @@ export const useForgotPasswordLogic = () => {
     setIsSubmitting(true);
 
     try {
-      console.log('Send email pressed', data);
-      // Simulate API call
-      await new Promise((resolve: any) => setTimeout(resolve, 1000));
-      
-      // Reset the password form and verification code before moving to verification step
-      resetPasswordForm(resetPasswordDefaultValues);
-      clearResetErrors();
-      setVerificationCode('');
-      setVerificationError('');
-      
-      setCurrentStep('verification');
-
+      const result = await AuthController.ForgotPassword(data);
+      if (result.success) {
+        setCurrentStep('verification');
+      }
     } catch (error) {
       console.error('Send email error:', error);
     } finally {
@@ -85,18 +78,18 @@ export const useForgotPasswordLogic = () => {
     }
 
     setIsSubmitting(true);
-    setVerificationError(''); // Clear any previous errors
+    setVerificationError('');
 
     try {
-      const emailData = getEmailValues();
-      console.log('Verify and reset pressed', {
-        email: emailData.email,
-        verificationCode,
-        ...data,
-      });
-      // Simulate API call
-      await new Promise((resolve: any) => setTimeout(resolve, 1000));
-      (navigation as any).navigate('Login');
+      const data = {
+        email: getEmailValues().email,
+        code: verificationCode,
+        password: resetWatch().newPassword,
+      }
+      const result = await AuthController.ResetPassword(data);
+      if (result.success) {
+        (navigation as any).navigate('Login');
+      }
     } catch (error) {
       console.error('Reset password error:', error);
       setVerificationError('Invalid verification code. Please try again.');

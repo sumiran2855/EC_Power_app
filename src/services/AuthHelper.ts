@@ -1,4 +1,4 @@
-import { API_CONFIG } from '../config/api.config';
+import { API_CONFIG, BackendType, getApiConfig } from '../config/api.config';
 
 interface RequestOptions {
     endpoint: string;
@@ -7,6 +7,7 @@ interface RequestOptions {
     token?: string;
     IdToken?: string;
     timeoutDuration?: number;
+    backendType?: BackendType;
 }
 
 class AuthHelper {
@@ -51,21 +52,29 @@ class AuthHelper {
         token,
         IdToken,
         timeoutDuration,
-    }: RequestOptions): Promise<{ success: boolean; data?: any; message?: string }> {
+        backendType,
+    }: RequestOptions): Promise<{ success: boolean; data?: any; message?: string; details?: string }> {
+        let requestUrl = '';
         try {
+            const config = getApiConfig(backendType);
+            requestUrl = `${config.BASE_URL}/${endpoint}`;
             const isFormData = body instanceof FormData;
-            const fetchPromise = fetch(`${this.apiUrl}/${endpoint}`, {
+            const fetchPromise = fetch(requestUrl, {
                 method,
                 headers: this.getHeaders(body, token, IdToken),
                 body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
             });
+            console.log('Request URL:', requestUrl);
+            console.log('Request headers:', fetchPromise);
 
             const response = await Promise.race([
                 fetchPromise,
                 this.timeout(timeoutDuration || this.defaultTimeout),
             ]);
+            console.log('Response received:', response);
 
             const contentType = response.headers.get('content-type');
+            console.log('Content type:', contentType);
 
             // Handle Excel file downloads
             if (contentType?.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
