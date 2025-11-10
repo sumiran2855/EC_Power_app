@@ -144,6 +144,7 @@ const useHome = () => {
     }, [navigation]);
 
     const handleMenuPress = useCallback((item: MenuItem) => {
+        console.log("showProfileMenu", showProfileMenu)
         if (showProfileMenu) {
             setShowProfileMenu(false);
         }
