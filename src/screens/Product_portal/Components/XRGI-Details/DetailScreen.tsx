@@ -39,7 +39,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
                     <Ionicons name="arrow-back" size={24} color="#1a365d" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>XRGi® System Details</Text>
+                <Text style={styles.headerTitle}>XRGI® System Details</Text>
                 <View style={styles.headerSpacer} />
             </View>
 

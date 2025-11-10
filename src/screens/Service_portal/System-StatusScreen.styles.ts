@@ -1,8 +1,6 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
-const cardWidth = (width - 52) / 2; // 20px margin on sides + 12px gap between cards
-
+import { Dimensions, StyleSheet } from 'react-native';
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const cardWidth = (SCREEN_WIDTH - 52) / 2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2,
   },
   heroTitle: {
-    fontSize: 32,
+    fontSize: SCREEN_WIDTH * 0.065,
     fontWeight: '700',
     color: '#0F172A',
     marginBottom: 12,

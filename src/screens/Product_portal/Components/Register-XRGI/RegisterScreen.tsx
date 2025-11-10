@@ -1,4 +1,4 @@
-import useRegisterForm from '@/src/hooks/useRegisterForm';
+import useRegisterForm from '../../../../hooks/useRegisterForm';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -130,7 +130,7 @@ const RegisterScreen: React.FC = () => {
               {errors.selectedModel && <Text style={[styles.errorText, { marginTop: 4 }]}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.selectedModel}</Text>}
             </TouchableOpacity>
             {showModelPicker && (
-              <View style={styles.dropdownOverlay}>
+              <ScrollView style={styles.dropdownOverlay} nestedScrollEnabled>
                 {models.map((model, idx) => (
                   <TouchableOpacity
                     key={model}
@@ -149,7 +149,7 @@ const RegisterScreen: React.FC = () => {
                     )}
                   </TouchableOpacity>
                 ))}
-              </View>
+              </ScrollView>
             )}
             <Text style={styles.helperText}>
               <Icon name="info-outline" size={12} color="#999" /> The model is on the name plate on the back of the Power Unit
@@ -702,9 +702,9 @@ const RegisterScreen: React.FC = () => {
                         onChangeText={(text) => updateFormData('expectedAnnualSavings', text)}
                       />
                     </View>
-                    <Text style={styles.errorText}>
+                    {/* <Text style={styles.errorText}>
                       <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedAnnualSavings}
-                    </Text>
+                    </Text> */}
                   </View>
 
                   <View style={styles.inputGroup}>
@@ -720,9 +720,9 @@ const RegisterScreen: React.FC = () => {
                         onChangeText={(text) => updateFormData('expectedCO2Savings', text)}
                       />
                     </View>
-                    <Text style={styles.errorText}>
+                    {/* <Text style={styles.errorText}>
                       <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedCO2Savings}
-                    </Text>
+                    </Text> */}
                   </View>
 
                   <View style={styles.inputGroup}>
@@ -763,7 +763,7 @@ const RegisterScreen: React.FC = () => {
                       </View>
                     </TouchableOpacity>
                     {showIndustryPicker && (
-                      <View style={styles.dropdownOverlay}>
+                      <ScrollView style={styles.dropdownOverlay} nestedScrollEnabled>
                         {industries.map((industry, idx) => (
                           <TouchableOpacity
                             key={industry}
@@ -784,7 +784,7 @@ const RegisterScreen: React.FC = () => {
                             )}
                           </TouchableOpacity>
                         ))}
-                      </View>
+                      </ScrollView>
                     )}
                   </View>
 
@@ -804,9 +804,9 @@ const RegisterScreen: React.FC = () => {
                         onChangeText={(text) => updateFormData('recipientEmails', text)}
                       />
                     </View>
-                    <Text style={styles.errorText}>
+                    {/* <Text style={styles.errorText}>
                       <Icon name="error-outline" size={12} color="#EF4444" /> {errors.recipientEmails}
-                    </Text>
+                    </Text> */}
                   </View>
                 </>
               )}

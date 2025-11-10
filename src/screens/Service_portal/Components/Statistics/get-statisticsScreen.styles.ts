@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     iconContainer: {
-        width: 40,
-        height: 40,
+        width: 30,
+        height: 30,
         borderRadius: 10,
         backgroundColor: '#3B82F6',
         justifyContent: 'center',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     title: {
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: '700',
         color: '#0F172A',
     },

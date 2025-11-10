@@ -64,17 +64,13 @@ class AuthHelper {
                 headers: this.getHeaders(body, token, IdToken),
                 body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
             });
-            console.log('Request URL:', requestUrl);
-            console.log('Request headers:', fetchPromise);
 
             const response = await Promise.race([
                 fetchPromise,
                 this.timeout(timeoutDuration || this.defaultTimeout),
             ]);
-            console.log('Response received:', response);
 
             const contentType = response.headers.get('content-type');
-            console.log('Content type:', contentType);
 
             // Handle Excel file downloads
             if (contentType?.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {

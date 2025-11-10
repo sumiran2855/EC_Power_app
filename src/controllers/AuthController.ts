@@ -1,8 +1,8 @@
 import { BackendType } from '../config/api.config';
 import { RegisterFormData } from '../screens/authScreens/types';
 import AuthHelper from '../services/AuthHelper';
-import { StorageService } from '../services/StorageService';
 import { LoginFormData } from '../validations/LoginValidation';
+import { StorageService } from '../utils/secureStorage';
 
 export class AuthController {
   static async login(data: LoginFormData): Promise<{
@@ -23,11 +23,18 @@ export class AuthController {
       if (response.success && response.data) {
         const { token, user } = response.data;
 
-        // Store the auth tokens
-        await StorageService.setAuthTokens({
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
-          idToken: token.idToken,
+        await StorageService.auth.setTokens(token.accessToken, token.refreshToken);
+
+        if (user) {
+          await StorageService.user.setData(user);
+        }
+
+        // Verify tokens were stored properly
+        const storedTokens = await StorageService.auth.getTokens();
+        console.log('Stored tokens verification:', {
+          accessToken: !!storedTokens.authToken,
+          refreshToken: !!storedTokens.refreshToken,
+          hasUserData: !!(await StorageService.user.getData())
         });
 
         return { success: true };
@@ -61,6 +68,9 @@ export class AuthController {
       });
 
       if (response.success && response.data) {
+        if (response.data.user) {
+          await StorageService.user.setData(response.data.user);
+        }
         return { success: true };
       } else {
         return {
@@ -94,7 +104,7 @@ export class AuthController {
       } else {
         return {
           success: false,
-          error: response.message || 'Registration failed'
+          error: response.message || 'Email verification failed'
         };
       }
     } catch (error) {
@@ -165,8 +175,12 @@ export class AuthController {
   }
 
   static async logout(): Promise<void> {
-    await StorageService.clearAuthTokens();
-    await StorageService.clearUserData();
+    try {
+      await StorageService.logout();
+    } catch (error) {
+      console.error('Error during logout:', error);
+      throw error;
+    }
   }
 
   // Add other auth-related methods as needed

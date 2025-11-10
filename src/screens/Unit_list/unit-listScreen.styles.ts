@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     titleIconContainer: {
-        width: 40,
-        height: 40,
+        width: 30,
+        height: 30,
         borderRadius: 12,
         backgroundColor: '#eff6ff',
         justifyContent: 'center',
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     title: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: '700',
         color: '#0f172a',
         letterSpacing: -0.5,

@@ -5,6 +5,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { StorageService } from '../services/StorageService';
+import { AuthController } from '../controllers/AuthController';
 
 export interface MenuItem {
     id: string;
@@ -132,8 +133,7 @@ const useHome = () => {
     }, [showProfileMenu, searchVisible, dropdownAnimation]);
 
     const handleLogout = useCallback(() => {
-        StorageService.clearAuthTokens();
-        StorageService.clearUserData();
+        AuthController.logout();
         navigation.navigate('Login', { portalType: 'PRODUCT' });
         setShowProfileMenu(false);
     }, [navigation]);
@@ -144,7 +144,9 @@ const useHome = () => {
     }, [navigation]);
 
     const handleMenuPress = useCallback((item: MenuItem) => {
-        console.log(`Pressed: ${item.title}`);
+        if (showProfileMenu) {
+            setShowProfileMenu(false);
+        }
 
         // Handle navigation with proper type safety
         switch (item.id) {

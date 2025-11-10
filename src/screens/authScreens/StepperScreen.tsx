@@ -1,4 +1,4 @@
-import { useStepperForm } from '@/src/hooks/useStepperForm';
+import { useStepperForm } from '../../hooks/useStepperForm';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';

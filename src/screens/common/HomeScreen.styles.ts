@@ -33,9 +33,9 @@ export const styles = StyleSheet.create({
         flex: 1,
     },
     logoContainer: {
-        width: 44,
-        height: 44,
-        borderRadius: 12,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',

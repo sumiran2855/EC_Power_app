@@ -54,12 +54,12 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.guideButton}>
                             <Text style={styles.buttonIcon}>🌐</Text>
-                            <Text style={styles.guideButtonText}>View English Guide</Text>
+                            <Text style={styles.guideButtonText}>English Guide</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.guideButton}>
                             <Text style={styles.buttonIcon}>🌐</Text>
-                            <Text style={styles.guideButtonText}>View German Guide</Text>
+                            <Text style={styles.guideButtonText}>German Guide</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -90,7 +90,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
 
                         {/* Dropdown Options */}
                         {dropdownOpen && (
-                            <ScrollView style={styles.dropdownList}>
+                            <ScrollView style={styles.dropdownList} nestedScrollEnabled>
                                 {subjects.map((subject, index) => (
                                     <TouchableOpacity
                                         key={index}

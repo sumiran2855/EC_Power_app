@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -36,9 +37,9 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     title: {
-        fontSize: 24,
+        fontSize: SCREEN_WIDTH * 0.065,
         fontWeight: '700',
-        color: '#1e3a8a',
+        color: '#1a365d',
         marginBottom: 8,
     },
     subtitle: {
