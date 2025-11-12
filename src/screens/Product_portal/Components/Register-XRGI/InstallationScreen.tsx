@@ -1,7 +1,8 @@
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useState } from 'react';
+import { RegisterController } from '../../../../controllers/RegisterController';
 import {
     ScrollView,
     Text,
@@ -16,9 +17,12 @@ import { styles as localStyles } from './InstallationScreen.styles';
 type RootStackParamList = {
     Register: undefined;
     Installation: { formData: FormData };
+    formData: FormData;
+    ProductDashboard: undefined;
+    Dashboard: undefined;
 };
 
-type InstallationScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Installation'>;
+type InstallationScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Installation' | 'ProductDashboard'>;
 
 interface InstallationScreenProps {
     route: {
@@ -40,11 +44,55 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
     const handleBack = () => {
         navigation.goBack();
     };
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleComplete = () => {
-        // Handle form completion
-        console.log('Installation completed:', formData);
-        navigation.goBack();
+    const handleComplete = async () => {
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+        try {
+
+            const energyCheckData = formData.hasEnergyCheckPlus && formData.EnergyCheck_plus
+                ? formData.EnergyCheck_plus
+                : {} as any;
+
+            const smartPriceControlData = formData.installedSmartPriceController && formData.smartPriceControl
+                ? formData.smartPriceControl
+                : undefined;
+
+            const response = await RegisterController.AddFacility({
+                ...formData,
+                isInstalled: true,
+                DaSigned: true,
+                hasServiceContract: formData.hasServiceContract,
+                needServiceContract: formData.needServiceContract,
+                hasEnergyCheckPlus: formData.hasEnergyCheckPlus,
+                EnergyCheck_plus: energyCheckData,
+                smartPriceControl: smartPriceControlData,
+                smartPriceControlAdded: formData.smartPriceControlAdded ?? false,
+                installedSmartPriceController: formData.installedSmartPriceController ?? false,
+            });
+
+            if (response) {
+                navigation.navigate('ProductDashboard');
+            }
+        } catch (error) {
+            console.error('Error creating facility:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+
+
+    const updateSmartPriceControl = (method: 'On_Site_Visit' | 'as_soon_as_possible') => {
+        setFormData(prev => ({
+            ...prev,
+            smartPriceControl: {
+                ...prev.smartPriceControl,
+                method: method
+            }
+        }));
     };
 
     return (
@@ -57,9 +105,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         onPress={handleBack}
                         activeOpacity={0.7}
                     >
-                        <Text>
-                            <Icon name="arrow-back" size={24} color="#1a5490" />
-                        </Text>
+                        <Icon name="arrow-back" size={24} color="#1a5490" />
                     </TouchableOpacity>
                     <Text style={localStyles.headerTitle}>Smart PriceControl</Text>
                     <View style={localStyles.backButton} /> {/* Empty view for spacing */}
@@ -74,9 +120,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
 
                 <View style={stepperStyles.infoCard}>
                     <View style={stepperStyles.infoCardIcon}>
-                        <Text>
-                            <Icon name="lightbulb" size={32} color="#FFA000" />
-                        </Text>
+                        <Icon name="lightbulb" size={32} color="#FFA000" />
                     </View>
                     <View style={stepperStyles.infoCardContent}>
                         <Text style={stepperStyles.infoCardTitle}>How it works</Text>
@@ -85,10 +129,8 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                             production when prices are zero or negative, maximizing your savings.
                         </Text>
                         <View style={stepperStyles.infoBadge}>
-                            <Text>
-                                <Icon name="star" size={14} color="#FFA000" />
-                            </Text>
-                            <Text style={stepperStyles.infoBadgeText}>Standard on all XRCP® systems from April 2025</Text>
+                            <Icon name="star" size={14} color="#FFA000" />
+                            <Text style={stepperStyles.infoBadgeText}>Standard on all XRGI® systems from April 2025</Text>
                         </View>
                     </View>
                 </View>
@@ -96,39 +138,33 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                 <View style={stepperStyles.card}>
                     <TouchableOpacity
                         style={stepperStyles.featureToggleCard}
-                        onPress={() => updateFormData('installSmartPrice', !formData.installSmartPrice)}
+                        onPress={() => updateFormData('installedSmartPriceController', !formData.installedSmartPriceController)}
                     >
                         <View style={stepperStyles.featureToggleLeft}>
-                            <View style={[stepperStyles.checkbox, formData.installSmartPrice && stepperStyles.checkboxChecked]}>
-                                {formData.installSmartPrice && (
-                                    <Text>
-                                        <Icon name="check" size={16} color="#fff" />
-                                    </Text>
+                            <View style={[stepperStyles.checkbox, formData.installedSmartPriceController && stepperStyles.checkboxChecked]}>
+                                {formData.installedSmartPriceController && (
+                                    <Icon name="check" size={16} color="#fff" />
                                 )}
                             </View>
                             <View style={stepperStyles.featureToggleContent}>
-                                <Text style={stepperStyles.featureToggleTitle}>Install SmartPriceControl</Text>
+                                <Text style={stepperStyles.featureToggleTitle}>Setup SmartPriceControl</Text>
                                 <Text style={stepperStyles.featureToggleDescription}>
                                     Enable automatic optimization
                                 </Text>
                             </View>
                         </View>
-                        <Text>
-                            <Icon
-                                name="electrical-services"
-                                size={28}
-                                color={formData.installSmartPrice ? "#003D82" : "#CCC"}
-                            />
-                        </Text>
+                        <Icon
+                            name="electrical-services"
+                            size={28}
+                            color={formData.installedSmartPriceController ? "#003D82" : "#CCC"}
+                        />
                     </TouchableOpacity>
                 </View>
 
-                {formData.installSmartPrice && (
+                {formData.installedSmartPriceController && (
                     <View style={stepperStyles.card}>
                         <View style={stepperStyles.cardHeader}>
-                            <Text>
-                                <Icon name="build" size={24} color="#003D82" />
-                            </Text>
+                            <Icon name="build" size={24} color="#003D82" />
                             <View style={stepperStyles.cardHeaderText}>
                                 <Text style={stepperStyles.cardTitle}>Installation Timing</Text>
                                 <Text style={stepperStyles.cardSubtitle}>Choose when to install the software</Text>
@@ -136,9 +172,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         </View>
 
                         <View style={stepperStyles.alertBox}>
-                            <Text>
-                                <Icon name="info" size={20} color="#1976D2" />
-                            </Text>
+                            <Icon name="info" size={20} color="#1976D2" />
                             <Text style={stepperStyles.alertText}>
                                 Physical installation on your XRGI® system is required by your service partner
                             </Text>
@@ -147,12 +181,12 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         <TouchableOpacity
                             style={[
                                 stepperStyles.radioCard,
-                                formData.installationTiming === 'next-visit' && stepperStyles.radioCardActive
+                                formData.smartPriceControl?.method === 'On_Site_Visit' && stepperStyles.radioCardActive
                             ]}
-                            onPress={() => updateFormData('installationTiming', 'next-visit')}
+                            onPress={() => updateSmartPriceControl('On_Site_Visit')}
                         >
                             <View style={stepperStyles.radioButton}>
-                                {formData.installationTiming === 'next-visit' && (
+                                {formData.smartPriceControl?.method === 'On_Site_Visit' && (
                                     <View style={stepperStyles.radioButtonInner} />
                                 )}
                             </View>
@@ -162,20 +196,18 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                                     Install during scheduled maintenance
                                 </Text>
                             </View>
-                            <Text>
-                                <Icon name="event" size={24} color="#003D82" />
-                            </Text>
+                            <Icon name="event" size={24} color="#003D82" />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[
                                 stepperStyles.radioCard,
-                                formData.installationTiming === 'asap' && stepperStyles.radioCardActive
+                                formData.smartPriceControl?.method === 'as_soon_as_possible' && stepperStyles.radioCardActive
                             ]}
-                            onPress={() => updateFormData('installationTiming', 'asap')}
+                            onPress={() => updateSmartPriceControl('as_soon_as_possible')}
                         >
                             <View style={stepperStyles.radioButton}>
-                                {formData.installationTiming === 'asap' && (
+                                {formData.smartPriceControl?.method === 'as_soon_as_possible' && (
                                     <View style={stepperStyles.radioButtonInner} />
                                 )}
                             </View>
@@ -185,18 +217,14 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                                     Schedule a dedicated installation visit
                                 </Text>
                             </View>
-                            <Text>
-                                <Icon name="flash-on" size={24} color="#003D82" />
-                            </Text>
+                            <Icon name="flash-on" size={24} color="#003D82" />
                         </TouchableOpacity>
                     </View>
                 )}
 
                 <View style={stepperStyles.successCard}>
                     <View style={stepperStyles.successIconWrapper}>
-                        <Text>
-                            <Icon name="check-circle" size={48} color="#00B050" />
-                        </Text>
+                        <Icon name="check-circle" size={48} color="#00B050" />
                     </View>
                     <Text style={stepperStyles.successTitle}>Almost Done!</Text>
                     <Text style={stepperStyles.successText}>
@@ -206,16 +234,16 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
 
                 <View style={stepperStyles.buttonContainer}>
                     <TouchableOpacity style={stepperStyles.buttonSecondary} onPress={handleBack}>
-                        <Text>
-                            <Icon name="arrow-back" size={20} color="#003D82" />
-                        </Text>
                         <Text style={stepperStyles.buttonSecondaryText}>Back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={stepperStyles.buttonPrimary} onPress={handleComplete}>
-                        <Text>
-                            <Icon name="check" size={20} color="#fff" />
+                    <TouchableOpacity
+                        style={[stepperStyles.buttonPrimary, isSubmitting && { opacity: 0.7 }]}
+                        onPress={handleComplete}
+                        disabled={isSubmitting}
+                    >
+                        <Text style={stepperStyles.buttonPrimaryText}>
+                            {isSubmitting ? 'Creating...' : 'Add Facility'}
                         </Text>
-                        <Text style={stepperStyles.buttonPrimaryText}>Complete Setup</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

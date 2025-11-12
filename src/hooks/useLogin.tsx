@@ -4,8 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { loginSchema, LoginFormData, loginDefaultValues } from '../validations/LoginValidation';
-import AuthHelper from '../services/AuthHelper';
-import { StorageService } from '../services/StorageService';
 import { AuthController } from '../controllers/AuthController';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;

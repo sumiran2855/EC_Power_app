@@ -1,14 +1,19 @@
-import useRegisterForm from '../../../../hooks/useRegisterForm';
 import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TermsAndConditionsModal from '../../../../components/Modals/TermsAndConditionsModal';
+import { FACILITY_TERMS_DATA } from '../../../../constants/facilityTermsConstants';
+import useRegisterForm from '../../../../hooks/useRegisterForm';
 import { country, countryCodes, industries, models } from '../../../authScreens/types';
 import styles from './RegisterScreen.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const RegisterScreen: React.FC = () => {
   const Icon = MaterialIcons;
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState(false);
+
   const {
     // Form state
     formData,
@@ -25,6 +30,7 @@ const RegisterScreen: React.FC = () => {
     setShowSalesCountryCodePicker,
     showIndustryPicker,
     setShowIndustryPicker,
+    distributeEvenly,
 
     // Validation
     monthlyErrors,
@@ -33,12 +39,32 @@ const RegisterScreen: React.FC = () => {
 
     // Methods
     handleSubmit,
-    distributeHoursEvenly,
-    updateMonthlyPercentage,
     calculateTotalHours,
     calculateTotalPercentage,
     handleBackPress,
+    handleDistributeEvenlyChange,
+    handleMonthlyPercentageChange,
+    inputValues,
+    hasServiceContractChoice,
+    needServiceContractChoice,
   } = useRegisterForm();
+
+  const handleAddFacilityClick = () => {
+    setIsTermsModalOpen(true);
+    setPendingSubmit(true);
+  };
+
+  const handleTermsAccept = () => {
+    setIsTermsModalOpen(false);
+    setPendingSubmit(false);
+
+    updateFormData('DaSigned', true);
+
+    setTimeout(() => {
+      handleSubmit(formData.isInstalled === true);
+    }, 100);
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,8 +106,8 @@ const RegisterScreen: React.FC = () => {
                 style={styles.input}
                 placeholder='Enter the system name'
                 placeholderTextColor="#999"
-                value={formData.systemName}
-                onChangeText={(text) => updateFormData('systemName', text)}
+                value={formData.name}
+                onChangeText={(text) => updateFormData('name', text)}
               />
               {errors.systemName && <Text style={styles.errorText}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.systemName}</Text>}
             </View>
@@ -100,8 +126,8 @@ const RegisterScreen: React.FC = () => {
                 placeholderTextColor="#999"
                 keyboardType="number-pad"
                 maxLength={10}
-                value={formData.xrgiIdNumber}
-                onChangeText={(text) => updateFormData('xrgiIdNumber', text)}
+                value={formData.xrgiID}
+                onChangeText={(text) => updateFormData('xrgiID', text)}
               />
               {errors.xrgiIdNumber && <Text style={styles.errorText}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.xrgiIdNumber}</Text>}
             </View>
@@ -118,8 +144,8 @@ const RegisterScreen: React.FC = () => {
             >
               <View style={styles.pickerButton}>
                 <Icon name="devices" size={18} color="#999" style={styles.inputIcon} />
-                <Text style={formData.selectedModel ? styles.pickerText : styles.pickerPlaceholder}>
-                  {formData.selectedModel || 'Choose your XRGI model'}
+                <Text style={formData.modelNumber ? styles.pickerText : styles.pickerPlaceholder}>
+                  {formData.modelNumber || 'Choose your XRGI model'}
                 </Text>
                 <Icon
                   name={showModelPicker ? "expand-less" : "expand-more"}
@@ -139,12 +165,12 @@ const RegisterScreen: React.FC = () => {
                       idx === models.length - 1 && styles.pickerOptionLast
                     ]}
                     onPress={() => {
-                      updateFormData('selectedModel', model);
+                      updateFormData('modelNumber', model);
                       setShowModelPicker(false);
                     }}
                   >
                     <Text style={styles.pickerOptionText}>{model}</Text>
-                    {formData.selectedModel === model && (
+                    {formData.modelNumber === model && (
                       <Icon name="check" size={20} color="#00B050" />
                     )}
                   </TouchableOpacity>
@@ -173,8 +199,8 @@ const RegisterScreen: React.FC = () => {
                 style={styles.input}
                 placeholder="XRGI® Site Address"
                 placeholderTextColor="#999"
-                value={formData.systemAddress}
-                onChangeText={(text) => updateFormData('systemAddress', text)}
+                value={formData.location.address}
+                onChangeText={(text) => updateFormData('location.address', text)}
               />
               {errors.systemAddress && <Text style={styles.errorText}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.systemAddress}</Text>}
             </View>
@@ -187,8 +213,8 @@ const RegisterScreen: React.FC = () => {
                 style={styles.input}
                 placeholder="Postcode"
                 placeholderTextColor="#999"
-                value={formData.systemPostcode}
-                onChangeText={(text) => updateFormData('systemPostcode', text)}
+                value={formData.location.postalCode}
+                onChangeText={(text) => updateFormData('location.postalCode', text)}
               />
               {errors.systemPostcode && <Text style={styles.errorText}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.systemPostcode}</Text>}
             </View>
@@ -199,8 +225,8 @@ const RegisterScreen: React.FC = () => {
                 style={styles.input}
                 placeholder="City"
                 placeholderTextColor="#999"
-                value={formData.systemCity}
-                onChangeText={(text) => updateFormData('systemCity', text)}
+                value={formData.location.city}
+                onChangeText={(text) => updateFormData('location.city', text)}
               />
               {errors.systemCity && <Text style={styles.errorText}><Icon name="error-outline" size={12} color="#EF4444" /> {errors.systemCity}</Text>}
             </View>
@@ -213,8 +239,8 @@ const RegisterScreen: React.FC = () => {
               onPress={() => setShowCountryPicker(!showCountryPicker)}
             >
               <Icon name="public" size={18} color="#999" style={styles.pickerIcon} />
-              <Text style={formData.systemCountry ? styles.pickerText : styles.pickerPlaceholder}>
-                {formData.systemCountry || 'Select country'}
+              <Text style={formData.location.country ? styles.pickerText : styles.pickerPlaceholder}>
+                {formData.location.country || 'Select country'}
               </Text>
               <Icon
                 name={showCountryPicker ? "expand-less" : "expand-more"}
@@ -231,7 +257,7 @@ const RegisterScreen: React.FC = () => {
                       key={countryItem}
                       style={styles.pickerOption}
                       onPress={() => {
-                        updateFormData('systemCountry', countryItem);
+                        updateFormData('location.country', countryItem);
                         setShowCountryPicker(false);
                       }}
                     >
@@ -243,7 +269,6 @@ const RegisterScreen: React.FC = () => {
             )}
           </View>
         </View>
-
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Icon name="handshake" size={24} color="#003D82" />
@@ -253,7 +278,7 @@ const RegisterScreen: React.FC = () => {
           </View>
 
           <Text style={styles.questionText}>
-            Do you have a service contract for your XRGI® system ?
+            Do you have a service contract for your XRGI® system?
           </Text>
           <Text style={styles.cardSubtitle}>
             The information is required to grant your service partner access to our EC POWER Service Database.
@@ -264,19 +289,19 @@ const RegisterScreen: React.FC = () => {
               style={[
                 styles.toggleButton,
                 styles.toggleButtonLeft,
-                formData.hasServiceContract === true && styles.toggleButtonActive,
+                hasServiceContractChoice === true && styles.toggleButtonActive,
               ]}
               onPress={() => updateFormData('hasServiceContract', true)}
             >
               <Icon
                 name="check-circle"
                 size={20}
-                color={formData.hasServiceContract === true ? '#fff' : '#999'}
+                color={hasServiceContractChoice === true ? '#fff' : '#999'}
               />
               <Text
                 style={[
                   styles.toggleButtonText,
-                  formData.hasServiceContract === true && styles.toggleButtonTextActive,
+                  hasServiceContractChoice === true && styles.toggleButtonTextActive,
                 ]}
               >
                 Yes
@@ -286,19 +311,19 @@ const RegisterScreen: React.FC = () => {
               style={[
                 styles.toggleButton,
                 styles.toggleButtonRight,
-                formData.hasServiceContract === false && styles.toggleButtonActive,
+                hasServiceContractChoice === false && styles.toggleButtonActive,
               ]}
               onPress={() => updateFormData('hasServiceContract', false)}
             >
               <Icon
                 name="cancel"
                 size={20}
-                color={formData.hasServiceContract === false ? '#fff' : '#999'}
+                color={hasServiceContractChoice === false ? '#fff' : '#999'}
               />
               <Text
                 style={[
                   styles.toggleButtonText,
-                  formData.hasServiceContract === false && styles.toggleButtonTextActive,
+                  hasServiceContractChoice === false && styles.toggleButtonTextActive,
                 ]}
               >
                 No
@@ -306,8 +331,8 @@ const RegisterScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Show "Interested in Service Contract" question when user selects NO */}
-          {formData.hasServiceContract === false && (
+          {/* Show "Interested in Service Contract" question ONLY AFTER user answers the first question */}
+          {hasServiceContractChoice === false && (
             <>
               <View style={styles.divider} />
               <Text style={styles.questionText}>
@@ -319,19 +344,19 @@ const RegisterScreen: React.FC = () => {
                   style={[
                     styles.toggleButton,
                     styles.toggleButtonLeft,
-                    formData.interestedInServiceContract === true && styles.toggleButtonActive,
+                    needServiceContractChoice === true && styles.toggleButtonActive,
                   ]}
-                  onPress={() => updateFormData('interestedInServiceContract', true)}
+                  onPress={() => updateFormData('needServiceContract', true)}
                 >
                   <Icon
                     name="check-circle"
                     size={20}
-                    color={formData.interestedInServiceContract === true ? '#fff' : '#999'}
+                    color={needServiceContractChoice === true ? '#fff' : '#999'}
                   />
                   <Text
                     style={[
                       styles.toggleButtonText,
-                      formData.interestedInServiceContract === true && styles.toggleButtonTextActive,
+                      needServiceContractChoice === true && styles.toggleButtonTextActive,
                     ]}
                   >
                     Yes
@@ -341,19 +366,19 @@ const RegisterScreen: React.FC = () => {
                   style={[
                     styles.toggleButton,
                     styles.toggleButtonRight,
-                    formData.interestedInServiceContract === false && styles.toggleButtonActive,
+                    needServiceContractChoice === false && styles.toggleButtonActive,
                   ]}
-                  onPress={() => updateFormData('interestedInServiceContract', false)}
+                  onPress={() => updateFormData('needServiceContract', false)}
                 >
                   <Icon
                     name="cancel"
                     size={20}
-                    color={formData.interestedInServiceContract === false ? '#fff' : '#999'}
+                    color={needServiceContractChoice === false ? '#fff' : '#999'}
                   />
                   <Text
                     style={[
                       styles.toggleButtonText,
-                      formData.interestedInServiceContract === false && styles.toggleButtonTextActive,
+                      needServiceContractChoice === false && styles.toggleButtonTextActive,
                     ]}
                   >
                     No
@@ -362,6 +387,7 @@ const RegisterScreen: React.FC = () => {
               </View>
             </>
           )}
+
 
           {/* Show service provider details when hasServiceContract is YES */}
           {formData.hasServiceContract === true && (
@@ -375,15 +401,15 @@ const RegisterScreen: React.FC = () => {
                     style={styles.input}
                     placeholder="Enter service provider name"
                     placeholderTextColor="#999"
-                    value={formData.serviceProviderName}
-                    onChangeText={(text) => updateFormData('serviceProviderName', text)}
+                    value={formData.serviceProvider?.name}
+                    onChangeText={(text) => updateFormData('serviceProvider.name', text)}
                   />
                 </View>
-                {/* {errors.serviceProviderName && (
+                {errors.serviceProviderName && (
                   <Text style={styles.errorText}>
                     <Icon name="error-outline" size={12} color="#EF4444" /> {errors.serviceProviderName}
                   </Text>
-                )} */}
+                )}
               </View>
 
               <View style={styles.inputGroup}>
@@ -396,15 +422,15 @@ const RegisterScreen: React.FC = () => {
                     placeholderTextColor="#999"
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    value={formData.serviceProviderEmail}
-                    onChangeText={(text) => updateFormData('serviceProviderEmail', text)}
+                    value={formData.serviceProvider?.mailAddress}
+                    onChangeText={(text) => updateFormData('serviceProvider.mailAddress', text)}
                   />
                 </View>
-                {/* {errors.serviceProviderEmail && (
+                {errors.serviceProviderEmail && (
                   <Text style={styles.errorText}>
                     <Icon name="error-outline" size={12} color="#EF4444" /> {errors.serviceProviderEmail}
                   </Text>
-                )} */}
+                )}
               </View>
 
               <View style={showServiceCountryCodePicker ? styles.inputGroupActive : styles.inputGroup}>
@@ -415,7 +441,7 @@ const RegisterScreen: React.FC = () => {
                     onPress={() => setShowServiceCountryCodePicker(!showServiceCountryCodePicker)}
                   >
                     <Text style={styles.countryCodeText}>
-                      {countryCodes.find(c => c.code === formData.serviceCountryCode)?.flag} {formData.serviceCountryCode}
+                      {countryCodes.find(c => c.code === formData.serviceProvider?.countryCode)?.flag} {formData.serviceProvider?.countryCode}
                     </Text>
                     <Icon
                       name={showServiceCountryCodePicker ? "expand-less" : "expand-more"}
@@ -431,19 +457,19 @@ const RegisterScreen: React.FC = () => {
                       placeholderTextColor="#999"
                       keyboardType="phone-pad"
                       maxLength={15}
-                      value={formData.serviceProviderPhone}
+                      value={formData.serviceProvider?.phone}
                       onChangeText={(text) => {
                         const cleaned = text.replace(/[^0-9]/g, '');
-                        updateFormData('serviceProviderPhone', cleaned);
+                        updateFormData('serviceProvider.phone', cleaned);
                       }}
                     />
                   </View>
                 </View>
-                {/* {errors.serviceProviderPhone && (
+                {errors.serviceProviderPhone && (
                   <Text style={styles.errorText}>
                     <Icon name="error-outline" size={12} color="#EF4444" /> {errors.serviceProviderPhone}
                   </Text>
-                )} */}
+                )}
 
                 {showServiceCountryCodePicker && (
                   <View style={styles.dropdownOverlay}>
@@ -453,14 +479,14 @@ const RegisterScreen: React.FC = () => {
                           key={country.code}
                           style={styles.countryCodeOption}
                           onPress={() => {
-                            updateFormData('serviceCountryCode', country.code);
+                            updateFormData('serviceProvider.countryCode', country.code);
                             setShowServiceCountryCodePicker(false);
                           }}
                         >
                           <Text style={styles.countryCodeOptionText}>
                             {country.flag} {country.code} ({country.country})
                           </Text>
-                          {formData.serviceCountryCode === country.code && (
+                          {formData.serviceProvider?.countryCode === country.code && (
                             <Icon name="check" size={20} color="#00B050" />
                           )}
                         </TouchableOpacity>
@@ -473,7 +499,7 @@ const RegisterScreen: React.FC = () => {
           )}
 
           {/* Show "Is sales partner same" question when hasServiceContract is YES OR interestedInServiceContract is YES */}
-          {(formData.hasServiceContract === true || formData.interestedInServiceContract === true) && (
+          {(formData.hasServiceContract === true || formData.needServiceContract === true) && (
             <>
               <View style={styles.divider} />
               <Text style={styles.questionText}>
@@ -539,15 +565,15 @@ const RegisterScreen: React.FC = () => {
                         style={styles.input}
                         placeholder="Enter sales partner name"
                         placeholderTextColor="#999"
-                        value={formData.salesPartnerName}
-                        onChangeText={(text) => updateFormData('salesPartnerName', text)}
+                        value={formData.salesPartner?.name}
+                        onChangeText={(text) => updateFormData('salesPartner.name', text)}
                       />
                     </View>
-                    {/* {errors.salesPartnerName && (
+                    {errors.salesPartnerName && (
                       <Text style={styles.errorText}>
                         <Icon name="error-outline" size={12} color="#EF4444" /> {errors.salesPartnerName}
                       </Text>
-                    )} */}
+                    )}
                   </View>
 
                   <View style={styles.inputGroup}>
@@ -560,15 +586,15 @@ const RegisterScreen: React.FC = () => {
                         placeholderTextColor="#999"
                         keyboardType="email-address"
                         autoCapitalize="none"
-                        value={formData.salesPartnerEmail}
-                        onChangeText={(text) => updateFormData('salesPartnerEmail', text)}
+                        value={formData.salesPartner?.mailAddress}
+                        onChangeText={(text) => updateFormData('salesPartner.mailAddress', text)}
                       />
                     </View>
-                    {/* {errors.salesPartnerEmail && (
+                    {errors.salesPartnerEmail && (
                       <Text style={styles.errorText}>
                         <Icon name="error-outline" size={12} color="#EF4444" /> {errors.salesPartnerEmail}
                       </Text>
-                    )} */}
+                    )}
                   </View>
 
                   <View style={showSalesCountryCodePicker ? styles.inputGroupActive : styles.inputGroup}>
@@ -579,7 +605,7 @@ const RegisterScreen: React.FC = () => {
                         onPress={() => setShowSalesCountryCodePicker(!showSalesCountryCodePicker)}
                       >
                         <Text style={styles.countryCodeText}>
-                          {countryCodes.find(c => c.code === formData.salesCountryCode)?.flag} {formData.salesCountryCode}
+                          {countryCodes.find(c => c.code === formData.salesPartner?.countryCode)?.flag} {formData.salesPartner?.countryCode}
                         </Text>
                         <Icon
                           name={showSalesCountryCodePicker ? "expand-less" : "expand-more"}
@@ -595,19 +621,19 @@ const RegisterScreen: React.FC = () => {
                           placeholderTextColor="#999"
                           keyboardType="phone-pad"
                           maxLength={15}
-                          value={formData.salesPartnerPhone}
+                          value={formData.salesPartner?.phone}
                           onChangeText={(text) => {
                             const cleaned = text.replace(/[^0-9]/g, '');
-                            updateFormData('salesPartnerPhone', cleaned);
+                            updateFormData('salesPartner.phone', cleaned);
                           }}
                         />
                       </View>
                     </View>
-                    {/* {errors.salesPartnerPhone && (
+                    {errors.salesPartnerPhone && (
                       <Text style={styles.errorText}>
                         <Icon name="error-outline" size={12} color="#EF4444" /> {errors.salesPartnerPhone}
                       </Text>
-                    )} */}
+                    )}
 
                     {showSalesCountryCodePicker && (
                       <View style={styles.dropdownOverlay}>
@@ -617,14 +643,14 @@ const RegisterScreen: React.FC = () => {
                               key={country.code}
                               style={styles.countryCodeOption}
                               onPress={() => {
-                                updateFormData('salesCountryCode', country.code);
+                                updateFormData('salesPartner.countryCode', country.code);
                                 setShowSalesCountryCodePicker(false);
                               }}
                             >
                               <Text style={styles.countryCodeOptionText}>
                                 {country.flag} {country.code} ({country.country})
                               </Text>
-                              {formData.salesCountryCode === country.code && (
+                              {formData.salesPartner?.countryCode === country.code && (
                                 <Icon name="check" size={20} color="#00B050" />
                               )}
                             </TouchableOpacity>
@@ -642,10 +668,10 @@ const RegisterScreen: React.FC = () => {
         <View style={styles.card}>
           <TouchableOpacity
             style={styles.checkboxCard}
-            onPress={() => updateFormData('isSystemInstalled', !formData.isSystemInstalled)}
+            onPress={() => updateFormData('isInstalled', !formData.isInstalled)}
           >
-            <View style={[styles.checkbox, formData.isSystemInstalled && styles.checkboxChecked]}>
-              {formData.isSystemInstalled && <Icon name="check" size={16} color="#fff" />}
+            <View style={[styles.checkbox, formData.isInstalled && styles.checkboxChecked]}>
+              {formData.isInstalled && <Icon name="check" size={16} color="#fff" />}
             </View>
             <View style={styles.checkboxContent}>
               <Text style={styles.checkboxLabel}>Is your system installed ?</Text>
@@ -654,7 +680,7 @@ const RegisterScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        {formData.isSystemInstalled && (
+        {formData.isInstalled && (
           <>
             <View style={styles.card}>
               <View style={styles.cardHeader}>
@@ -669,17 +695,17 @@ const RegisterScreen: React.FC = () => {
 
               <TouchableOpacity
                 style={styles.featureCard}
-                onPress={() => updateFormData('energyCheckPlus', !formData.energyCheckPlus)}
+                onPress={() => updateFormData('EnergyCheck_plus', !formData.EnergyCheck_plus)}
               >
-                <View style={[styles.checkbox, formData.energyCheckPlus && styles.checkboxChecked]}>
-                  {formData.energyCheckPlus && <Icon name="check" size={16} color="#fff" />}
+                <View style={[styles.checkbox, formData.EnergyCheck_plus && styles.checkboxChecked]}>
+                  {formData.EnergyCheck_plus && <Icon name="check" size={16} color="#fff" />}
                 </View>
                 <View style={styles.checkboxContent}>
                   <Text style={styles.checkboxLabel}>Enable EnergyCheck Plus</Text>
                 </View>
               </TouchableOpacity>
 
-              {formData.energyCheckPlus && (
+              {formData.EnergyCheck_plus && (
                 <>
                   <Text style={styles.checkboxDescription}>
                     We will compare the actual running hours of your XRGI® system to the expected running hours
@@ -698,13 +724,15 @@ const RegisterScreen: React.FC = () => {
                         placeholder="Amount in Euro per year"
                         placeholderTextColor="#999"
                         keyboardType="numeric"
-                        value={formData.expectedAnnualSavings}
-                        onChangeText={(text) => updateFormData('expectedAnnualSavings', text)}
+                        value={formData.EnergyCheck_plus?.annualSavings}
+                        onChangeText={(text) => updateFormData('EnergyCheck_plus.annualSavings', text)}
                       />
                     </View>
-                    {/* <Text style={styles.errorText}>
-                      <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedAnnualSavings}
-                    </Text> */}
+                    {errors.expectedAnnualSavings && (
+                      <Text style={styles.errorText}>
+                        <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedAnnualSavings}
+                      </Text>
+                    )}
                   </View>
 
                   <View style={styles.inputGroup}>
@@ -716,13 +744,15 @@ const RegisterScreen: React.FC = () => {
                         placeholder="Total per year"
                         placeholderTextColor="#999"
                         keyboardType="numeric"
-                        value={formData.expectedCO2Savings}
-                        onChangeText={(text) => updateFormData('expectedCO2Savings', text)}
+                        value={formData.EnergyCheck_plus?.co2Savings}
+                        onChangeText={(text) => updateFormData('EnergyCheck_plus.co2Savings', text)}
                       />
                     </View>
-                    {/* <Text style={styles.errorText}>
-                      <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedCO2Savings}
-                    </Text> */}
+                    {errors.expectedCO2Savings && (
+                      <Text style={styles.errorText}>
+                        <Icon name="error-outline" size={12} color="#EF4444" /> {errors.expectedCO2Savings}
+                      </Text>
+                    )}
                   </View>
 
                   <View style={styles.inputGroup}>
@@ -735,8 +765,8 @@ const RegisterScreen: React.FC = () => {
                         placeholderTextColor="#999"
                         keyboardType="numeric"
                         maxLength={4}
-                        value={formData.expectedOperatingHours}
-                        onChangeText={(text) => updateFormData('expectedOperatingHours', text)}
+                        value={formData.EnergyCheck_plus?.operatingHours}
+                        onChangeText={(text) => updateFormData('EnergyCheck_plus.operatingHours', text)}
                       />
                     </View>
                     <Text style={styles.helperText}>
@@ -752,8 +782,8 @@ const RegisterScreen: React.FC = () => {
                     >
                       <View style={styles.pickerButton}>
                         <Icon name="business-center" size={18} color="#999" style={styles.inputIcon} />
-                        <Text style={formData.industry ? styles.pickerText : styles.pickerPlaceholder}>
-                          {formData.industry || 'Select your industry'}
+                        <Text style={formData.EnergyCheck_plus?.industry ? styles.pickerText : styles.pickerPlaceholder}>
+                          {formData.EnergyCheck_plus?.industry || 'Select your industry'}
                         </Text>
                         <Icon
                           name={showIndustryPicker ? "expand-less" : "expand-more"}
@@ -772,12 +802,12 @@ const RegisterScreen: React.FC = () => {
                               idx === industries.length - 1 && styles.pickerOptionLast
                             ]}
                             onPress={() => {
-                              updateFormData('industry', industry);
+                              updateFormData('EnergyCheck_plus.industry', industry);
                               setShowIndustryPicker(false);
                             }}
                           >
                             <Text style={styles.pickerOptionText}>{industry}</Text>
-                            {formData.industry === industry && (
+                            {formData.EnergyCheck_plus?.industry === industry && (
                               <Text>
                                 <Icon name="check" size={20} color="#00B050" />
                               </Text>
@@ -800,19 +830,21 @@ const RegisterScreen: React.FC = () => {
                         multiline
                         numberOfLines={3}
                         textAlignVertical="top"
-                        value={formData.recipientEmails}
-                        onChangeText={(text) => updateFormData('recipientEmails', text)}
+                        value={formData.EnergyCheck_plus?.email}
+                        onChangeText={(text) => updateFormData('EnergyCheck_plus.email', text)}
                       />
                     </View>
-                    {/* <Text style={styles.errorText}>
-                      <Icon name="error-outline" size={12} color="#EF4444" /> {errors.recipientEmails}
-                    </Text> */}
+                    {errors.recipientEmails && (
+                      <Text style={styles.errorText}>
+                        <Icon name="error-outline" size={12} color="#EF4444" /> {errors.recipientEmails}
+                      </Text>
+                    )}
                   </View>
                 </>
               )}
             </View>
 
-            {formData.energyCheckPlus && (
+            {formData.EnergyCheck_plus && (
               <View style={styles.card}>
                 <View style={styles.cardHeader}>
                   <Icon name="calendar-today" size={24} color="#003D82" />
@@ -824,15 +856,12 @@ const RegisterScreen: React.FC = () => {
                 <TouchableOpacity
                   style={styles.checkboxCard}
                   onPress={() => {
-                    const newValue = !formData.distributeHoursEvenly;
-                    updateFormData('distributeHoursEvenly', newValue);
-                    if (newValue) {
-                      distributeHoursEvenly();
-                    }
+                    const newValue = !distributeEvenly;
+                    handleDistributeEvenlyChange(newValue);
                   }}
                 >
-                  <View style={[styles.checkbox, formData.distributeHoursEvenly && styles.checkboxChecked]}>
-                    {formData.distributeHoursEvenly && (
+                  <View style={[styles.checkbox, distributeEvenly && styles.checkboxChecked]}>
+                    {distributeEvenly && (
                       <Text>
                         <Icon name="check" size={16} color="#fff" />
                       </Text>
@@ -852,7 +881,7 @@ const RegisterScreen: React.FC = () => {
                   </View>
 
                   <ScrollView style={styles.tableBody} nestedScrollEnabled>
-                    {formData.monthlyDistribution.map((item, index) => (
+                    {formData.EnergyCheck_plus?.monthlyDistribution?.map((item: any, index: any) => (
                       <View key={item.month}>
                         <View
                           style={[
@@ -861,13 +890,13 @@ const RegisterScreen: React.FC = () => {
                           ]}
                         >
                           <Text style={[styles.tableCellText, styles.monthColumn]}>{item.month}</Text>
-                          {formData.distributeHoursEvenly ? (
+                          {distributeEvenly ? (
                             <>
                               <Text style={[styles.tableCellText, styles.percentageColumn]}>
-                                <Text>{item.percentage}%</Text>
+                                {item.percentage.toFixed(2)}%
                               </Text>
                               <Text style={[styles.tableCellText, styles.hoursColumn]}>
-                                <Text>{parseFloat(item.hours).toFixed(0)}h</Text>
+                                {parseFloat(item.hours).toFixed(0)}h
                               </Text>
                             </>
                           ) : (
@@ -875,20 +904,23 @@ const RegisterScreen: React.FC = () => {
                               <View style={styles.percentageColumn}>
                                 <TextInput
                                   style={styles.tableInput}
-                                  keyboardType="numeric"
-                                  value={item.percentage}
-                                  onChangeText={(text) => updateMonthlyPercentage(index, text)}
-                                  placeholder="0"
+                                  keyboardType="decimal-pad"
+                                  value={inputValues[item.month] !== undefined ? inputValues[item.month] : ''}
+                                  onChangeText={(text) => handleMonthlyPercentageChange(item.month, text)}
+                                  placeholder="0.00"
+                                  placeholderTextColor="#999"
                                 />
                               </View>
                               <Text style={[styles.tableCellText, styles.hoursColumn]}>
-                                <Text>{parseFloat(item.hours).toFixed(0)}h</Text>
+                                {parseFloat(item.hours).toFixed(0)}h
                               </Text>
                             </>
                           )}
                         </View>
-                        {monthlyErrors[index] && (
-                          <Text style={styles.tableErrorText}>{monthlyErrors[index]}</Text>
+                        {monthlyErrors[item.month] && (
+                          <Text style={styles.errorText}>
+                            <Icon name="error-outline" size={12} color="#EF4444" /> {monthlyErrors[item.month]}
+                          </Text>
                         )}
                       </View>
                     ))}
@@ -918,12 +950,23 @@ const RegisterScreen: React.FC = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.buttonPrimary}
-            onPress={handleSubmit}
+            onPress={handleAddFacilityClick}
           >
             <Text style={styles.buttonPrimaryText}>Add Facility</Text>
             <Icon name="add-circle-outline" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
+
+        {/* Terms and Conditions Modal */}
+        <TermsAndConditionsModal
+          isOpen={isTermsModalOpen}
+          onClose={() => {
+            setIsTermsModalOpen(false);
+            setPendingSubmit(false);
+          }}
+          onAccept={handleTermsAccept}
+          termsData={FACILITY_TERMS_DATA}
+        />
       </ScrollView>
     </SafeAreaView>
   );

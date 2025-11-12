@@ -1,51 +1,76 @@
 export interface FormData {
-    companyName: string;
-    vatNo: string;
-    address: string;
-    postcode: string;
-    city: string;
-    email: string;
+    id: string;
+    name: string;
+    location: LocationInfo;
+    status: string;
+    xrgiID?: string;
+    modelNumber: string;
+    userID: string;
+    DaSigned: boolean;
+    hasServiceContract: boolean;
+    needServiceContract: boolean;
+    serviceProvider?: ServiceProviderInfo;
+    salesPartner?: SalesPartnerInfo;
+    isSalesPartnerSame?: boolean;
+    EnergyCheck_plus?: EnergyCheckPlusInfo;
+    hasEnergyCheckPlus: boolean;
+    smartPriceControl?: SmartPriceControlInfo;
+    smartPriceControlAdded?: boolean;
+    installedSmartPriceController?: boolean;
+    isInstalled: boolean;
+    distributeHoursEvenly?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface LocationInfo {
+    address?: string;
+    postalCode?: string;
+    city?: string;
+    country?: string;
+}
+
+export interface ServiceProviderInfo {
+    name: string;
+    mailAddress: string;
     phone: string;
-    firstName: string;
-    lastName: string;
-    contactEmail: string;
-    contactPhone: string;
     countryCode: string;
-    contactCountryCode: string;
-    installSmartPrice: boolean;
-    installationTiming: 'next-visit' | 'asap';
-    systemName: string;
-    xrgiIdNumber: string;
-    selectedModel: string;
-    systemAddress: string;
-    systemPostcode: string;
-    systemCity: string;
-    systemCountry: string;
-    hasServiceContract: boolean | null;
-    interestedInServiceContract: boolean | null;
-    serviceProviderName: string;
-    serviceProviderEmail: string;
-    serviceProviderPhone: string;
-    serviceCountryCode: string;
-    isSalesPartnerSame: boolean | null;
-    salesPartnerName: string;
-    salesPartnerEmail: string;
-    salesPartnerPhone: string;
-    salesCountryCode: string;
-    isSystemInstalled: boolean;
-    energyCheckPlus: boolean;
-    expectedAnnualSavings: string;
-    expectedCO2Savings: string;
-    expectedOperatingHours: string;
-    industry: string;
-    recipientEmails: string;
-    distributeHoursEvenly: boolean;
-    monthlyDistribution: {
-        month: string;
-        percentage: string;
-        hours: string;
-        editable: boolean;
-    }[];
+}
+
+export interface SalesPartnerInfo {
+    name: string;
+    mailAddress: string;
+    phone: string;
+    countryCode: string;
+    isSameAsServiceProvider?: boolean;
+}
+
+export interface EnergyCheckPlusInfo {
+    annualSavings?: string;
+    co2Savings?: string;
+    operatingHours?: string;
+    industry?: string;
+    email?: string;
+    monthlyDistribution?: MonthlyDistribution;
+}
+
+export interface MonthlyDistribution {
+    january: string;
+    february: string;
+    march: string;
+    april: string;
+    may: string;
+    june: string;
+    july: string;
+    august: string;
+    september: string;
+    october: string;
+    november: string;
+    december: string;
+}
+
+export type SmartPriceControlInfo = {
+    method?: 'On_Site_Visit' | 'as_soon_as_possible' | '';
 }
 
 export type StepperFormProps = {
@@ -121,8 +146,8 @@ export const country = [
 ];
 
 export enum CustomerStatus {
-  ACTIVE = 'Active',
-  INACTIVE = 'Inactive'
+    ACTIVE = 'Active',
+    INACTIVE = 'Inactive'
 }
 
 export type RegisterFormData = {

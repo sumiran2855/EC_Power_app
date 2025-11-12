@@ -18,24 +18,16 @@ export class AuthController {
           password: data.password,
         },
         backendType: BackendType.SERVICE_DATABASE,
-      });
+      })
 
       if (response.success && response.data) {
         const { token, user } = response.data;
 
-        await StorageService.auth.setTokens(token.accessToken, token.refreshToken);
+        await StorageService.auth.setTokens(token.accessToken, token.idToken);
 
         if (user) {
           await StorageService.user.setData(user);
         }
-
-        // Verify tokens were stored properly
-        const storedTokens = await StorageService.auth.getTokens();
-        console.log('Stored tokens verification:', {
-          accessToken: !!storedTokens.authToken,
-          refreshToken: !!storedTokens.refreshToken,
-          hasUserData: !!(await StorageService.user.getData())
-        });
 
         return { success: true };
       } else {
