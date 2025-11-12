@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
-import { StorageService } from '../services/StorageService';
 import { AuthController } from '../controllers/AuthController';
 
 export interface MenuItem {

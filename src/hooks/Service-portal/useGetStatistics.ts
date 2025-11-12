@@ -59,9 +59,6 @@ const useStatisticsScreen = (): UseStatisticsScreenReturn => {
         const formattedFromDate = formatDateTime(fromDate);
         const formattedToDate = formatDateTime(toDate);
 
-        console.log("From Date:", formattedFromDate);
-        console.log("To Date:", formattedToDate);
-
         return {
             fromDate: formattedFromDate,
             toDate: formattedToDate,

@@ -67,7 +67,6 @@ const useProfile = () => {
   }, []);
 
   const handleSaveChanges = useCallback(() => {
-    console.log('Saving profile changes:', profileData);
   }, [profileData]);
 
   return {

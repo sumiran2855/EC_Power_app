@@ -33,8 +33,6 @@ const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'C
 
     const handleSubmit = useCallback(() => {
         if (formData.selectedSubject && formData.description) {
-            console.log('Form submitted:', formData);
-
             // Reset form
             setFormData({
                 selectedSubject: '',
