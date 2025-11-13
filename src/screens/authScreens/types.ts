@@ -104,8 +104,11 @@ export type StepperFormProps = {
 };
 
 export type StepProps = Omit<StepperFormProps, 'formData' | 'updateFormData'> & {
-    formData: FormData;
-    updateFormData: (field: keyof FormData, value: any) => void;
+    formData: ICustomer;
+    updateFormData: <K extends keyof ICustomer | string>(
+        field: K,
+        value: K extends keyof ICustomer ? ICustomer[K] : any
+    ) => void;
 };
 
 export const countryCodes = [
@@ -164,29 +167,63 @@ export type RegisterFormData = {
 }
 
 export interface UserData {
-  id: string;
-  email: string;
-  role: string;
-  group: string;
-  status: string;
+    id: string;
+    email: string;
+    role: string;
+    group: string;
+    status: string;
 }
 
 export interface Facility {
-  id: string;
-  name: string;
-  xrgiID: string;
-  status: 'Active' | 'Inactive' | 'Data Missing';
-  modelNumber?: string;
-  location?: LocationInfo;
-  hasEnergyCheckPlus?: boolean;
-  isInstalled?: boolean;
-  hasServiceContract?: boolean;
-  needServiceContract?: boolean;
-  salesPartner?: SalesPartnerInfo;
-  serviceProvider?: ServiceProviderInfo;
-  DaSigned?: boolean;
-  energyCheckPlus?: EnergyCheckPlusInfo;
-  smartPriceControl?: SmartPriceControlInfo;
-  installedSmartPriceController?: boolean;
-  distributeHoursEvenly?: boolean;
+    id: string;
+    name: string;
+    xrgiID: string;
+    status: 'Active' | 'Inactive' | 'Data Missing';
+    modelNumber?: string;
+    location?: LocationInfo;
+    hasEnergyCheckPlus?: boolean;
+    isInstalled?: boolean;
+    hasServiceContract?: boolean;
+    needServiceContract?: boolean;
+    salesPartner?: SalesPartnerInfo;
+    serviceProvider?: ServiceProviderInfo;
+    DaSigned?: boolean;
+    energyCheckPlus?: EnergyCheckPlusInfo;
+    smartPriceControl?: SmartPriceControlInfo;
+    installedSmartPriceController?: boolean;
+    distributeHoursEvenly?: boolean;
+}
+
+export interface ICustomer {
+    name: string;
+    email?: string;
+    phone_number: string;
+    journeyStatus: string;
+    companyInfo: companyInfo;
+    contactPerson: contactPerson;
+    status?: string;
+    group?: string;
+    type?: string;
+    role?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type companyInfo = {
+    name?: string;
+    cvrNumber: string;
+    address: string;
+    city: string;
+    postal_code: string;
+    email: string;
+    countryCode?: string;
+    phone: string;
+}
+
+export type contactPerson = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    countryCode?: string;
+    phone: string;
 }

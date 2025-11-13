@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { FormData } from '../screens/authScreens/types';
-import { Alert } from 'react-native';
+import { StepperController } from '@/controllers/StepperController';
+import { useEffect, useState } from 'react';
+import { FormData, ICustomer } from '../screens/authScreens/types';
 
 export const useStepperForm = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -13,19 +13,33 @@ export const useStepperForm = () => {
     const [showCountryPicker, setShowCountryPicker] = useState(false);
     const [monthlyErrors, setMonthlyErrors] = useState<string[]>(Array(12).fill(''));
     const [totalPercentageError, setTotalPercentageError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [formData, setFormData] = useState<FormData>({
-        companyName: '',
-        vatNo: '',
-        address: '',
-        postcode: '',
-        city: '',
+    const [formData, setFormData] = useState<any>({
+        name: '',
         email: '',
-        phone: '',
-        firstName: '',
-        lastName: '',
-        contactEmail: '',
-        contactPhone: '',
+        phone_number: '',
+        journeyStatus: 'facilityInfo',
+        companyInfo: {
+            name: '',
+            cvrNumber: '',
+            address: '',
+            city: '',
+            postal_code: '',
+            email: '',
+            phone: '',
+            countryCode: '+1'
+        },
+        contactPerson: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            countryCode: '+1'
+        },
+        status: 'active',
+        type: 'Customer',
+        role: 'Customer',
         countryCode: '+1',
         contactCountryCode: '+1',
         installSmartPrice: false,
@@ -37,13 +51,13 @@ export const useStepperForm = () => {
         systemPostcode: '',
         systemCity: '',
         systemCountry: '',
-        hasServiceContract: null,
+        hasServiceContract: false,
         interestedInServiceContract: null,
         serviceProviderName: '',
         serviceProviderEmail: '',
         serviceProviderPhone: '',
         serviceCountryCode: '+1',
-        isSalesPartnerSame: null,
+        isSalesPartnerSame: false,
         salesPartnerName: '',
         salesPartnerEmail: '',
         salesPartnerPhone: '',
@@ -74,21 +88,21 @@ export const useStepperForm = () => {
 
     // Effect to distribute hours when expected operating hours changes
     useEffect(() => {
-        if (formData.expectedOperatingHours && formData.distributeHoursEvenly) {
+        if (formData.EnergyCheck_plus?.annualSavings && formData.distributeHoursEvenly) {
             distributeHoursEvenly();
         }
-    }, [formData.expectedOperatingHours]);
+    }, [formData.EnergyCheck_plus?.annualSavings]);
 
     const updateFormData = (field: keyof FormData, value: any) => {
         setFormData((prev: FormData) => ({ ...prev, [field]: value }));
     };
 
     const distributeHoursEvenly = () => {
-        const totalHours = parseFloat(formData.expectedOperatingHours) || 0;
+        const totalHours = parseFloat(formData.EnergyCheck_plus?.annualSavings!) || 0;
         const hoursPerMonth = totalHours / 12;
         const percentagePerMonth = (100 / 12);
 
-        const newDistribution = formData.monthlyDistribution.map((month: { month: string; percentage: string; hours: string; editable: boolean }) => ({
+        const newDistribution = formData.EnergyCheck_plus?.monthlyDistribution!.map((month: { month: string; percentage: string; hours: string; editable: boolean }) => ({
             ...month,
             hours: hoursPerMonth.toFixed(2),
             percentage: percentagePerMonth.toFixed(2),
@@ -115,7 +129,7 @@ export const useStepperForm = () => {
     };
 
     const validateTotalPercentage = () => {
-        const total = formData.monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
             return sum + (parseFloat(month.percentage) || 0);
         }, 0);
 
@@ -129,11 +143,11 @@ export const useStepperForm = () => {
     };
 
     const updateMonthlyPercentage = (index: number, value: string) => {
-        const totalHours = parseFloat(formData.expectedOperatingHours) || 0;
+        const totalHours = parseFloat(formData.EnergyCheck_plus?.annualSavings!) || 0;
         const percentage = parseFloat(value) || 0;
         const hours = (totalHours * percentage) / 100;
 
-        const newDistribution = [...formData.monthlyDistribution];
+        const newDistribution = [...formData.EnergyCheck_plus?.monthlyDistribution!];
         newDistribution[index] = {
             ...newDistribution[index],
             percentage: value,
@@ -150,7 +164,7 @@ export const useStepperForm = () => {
     };
 
     const calculateTotalHours = () => {
-        const total = formData.monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
             const hours = parseFloat(month.hours) || 0;
             return sum + hours;
         }, 0);
@@ -158,7 +172,7 @@ export const useStepperForm = () => {
     };
 
     const calculateTotalPercentage = () => {
-        const total = formData.monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
             const percentage = parseFloat(month.percentage) || 0;
             return sum + percentage;
         }, 0);
@@ -188,87 +202,87 @@ export const useStepperForm = () => {
         let isValid = true;
 
         // System Details Validation
-        if (!formData.systemName?.trim()) {
+        if (!formData.name?.trim()) {
             newErrors.systemName = 'System name is required';
             isValid = false;
         }
 
-        if (!formData.xrgiIdNumber?.trim()) {
+        if (!formData.xrgiID?.trim()) {
             newErrors.xrgiIdNumber = 'XRGI ID Number is required';
             isValid = false;
-        } else if (!/^\d{10}$/.test(formData.xrgiIdNumber)) {
+        } else if (!/^\d{10}$/.test(formData.xrgiID)) {
             newErrors.xrgiIdNumber = 'XRGI ID must be 10 digits';
             isValid = false;
         }
 
-        if (!formData.selectedModel) {
+        if (!formData.modelNumber) {
             newErrors.selectedModel = 'Please select a model';
             isValid = false;
         }
 
         // XRGI Site Validation
-        if (!formData.systemAddress?.trim()) {
+        if (!formData.location.address?.trim()) {
             newErrors.systemAddress = 'Address is required';
             isValid = false;
         }
 
-        if (!formData.systemPostcode?.trim()) {
+        if (!formData.location.postalCode?.trim()) {
             newErrors.systemPostcode = 'Postcode is required';
             isValid = false;
         }
 
-        if (!formData.systemCity?.trim()) {
+        if (!formData.location.city?.trim()) {
             newErrors.systemCity = 'City is required';
             isValid = false;
         }
 
-        if (!formData.systemCountry) {
+        if (!formData.location.country) {
             newErrors.systemCountry = 'Country is required';
             isValid = false;
         }
 
         // Service Contract Validation
         if (formData.hasServiceContract === true) {
-            if (!formData.serviceProviderName?.trim()) {
+            if (!formData.serviceProvider?.name?.trim()) {
                 newErrors.serviceProviderName = 'Service provider name is required';
                 isValid = false;
             }
 
-            if (!formData.serviceProviderEmail?.trim()) {
+            if (!formData.serviceProvider?.mailAddress?.trim()) {
                 newErrors.serviceProviderEmail = 'Service provide   r email is required';
                 isValid = false;
-            } else if (!validateEmail(formData.serviceProviderEmail)) {
+            } else if (!validateEmail(formData.serviceProvider.mailAddress)) {
                 newErrors.serviceProviderEmail = 'Please enter a valid email address';
                 isValid = false;
             }
 
-            if (!formData.serviceProviderPhone?.trim()) {
+            if (!formData.serviceProvider?.phone?.trim()) {
                 newErrors.serviceProviderPhone = 'Service provider phone is required';
                 isValid = false;
-            } else if (!validatePhone(formData.serviceProviderPhone)) {
+            } else if (!validatePhone(formData.serviceProvider?.phone)) {
                 newErrors.serviceProviderPhone = 'Phone number must be at least 8 digits';
                 isValid = false;
             }
 
             // Sales Partner Validation if different from service provider
             if (formData.isSalesPartnerSame === false) {
-                if (!formData.salesPartnerName?.trim()) {
+                if (!formData.salesPartner?.name?.trim()) {
                     newErrors.salesPartnerName = 'Sales partner name is required';
                     isValid = false;
                 }
 
-                if (!formData.salesPartnerEmail?.trim()) {
+                if (!formData.salesPartner?.mailAddress?.trim()) {
                     newErrors.salesPartnerEmail = 'Sales partner email is required';
                     isValid = false;
-                } else if (!validateEmail(formData.salesPartnerEmail)) {
+                } else if (!validateEmail(formData.salesPartner?.mailAddress)) {
                     newErrors.salesPartnerEmail = 'Please enter a valid email address';
                     isValid = false;
                 }
 
-                if (!formData.salesPartnerPhone?.trim()) {
+                if (!formData.salesPartner?.phone?.trim()) {
                     newErrors.salesPartnerPhone = 'Sales partner phone is required';
                     isValid = false;
-                } else if (!validatePhone(formData.salesPartnerPhone)) {
+                } else if (!validatePhone(formData.salesPartner?.phone)) {
                     newErrors.salesPartnerPhone = 'Phone number must be at least 8 digits';
                     isValid = false;
                 }
@@ -276,29 +290,29 @@ export const useStepperForm = () => {
         }
 
         // EnergyCheck Plus Validation
-        if (formData.energyCheckPlus) {
+        if (formData.EnergyCheck_plus) {
             // Make all EnergyCheck Plus fields required
-            if (!formData.expectedOperatingHours?.trim()) {
+            if (!formData.EnergyCheck_plus?.operatingHours?.trim()) {
                 newErrors.expectedOperatingHours = 'Expected operating hours are required';
                 isValid = false;
             } else {
-                const hours = parseFloat(formData.expectedOperatingHours);
+                const hours = parseFloat(formData.EnergyCheck_plus?.operatingHours);
                 if (isNaN(hours) || hours < 0 || hours > 8760) {
                     newErrors.expectedOperatingHours = 'Operating hours must be between 0 and 8760';
                     isValid = false;
                 }
             }
 
-            if (!formData.recipientEmails?.trim()) {
+            if (!formData.EnergyCheck_plus?.email?.trim()) {
                 newErrors.recipientEmails = 'At least one recipient email is required';
                 isValid = false;
             } else {
-                const emails = formData.recipientEmails.split(',').map(email => email.trim()).filter(Boolean);
+                const emails = formData.EnergyCheck_plus?.email.split(',').map((email: any) => email.trim()).filter(Boolean);
                 if (emails.length === 0) {
                     newErrors.recipientEmails = 'At least one recipient email is required';
                     isValid = false;
                 } else {
-                    const invalidEmails = emails.filter(email => !validateEmail(email));
+                    const invalidEmails = emails.filter((email: any) => !validateEmail(email));
                     if (invalidEmails.length > 0) {
                         newErrors.recipientEmails = 'Please enter valid email addresses separated by commas';
                         isValid = false;
@@ -316,81 +330,81 @@ export const useStepperForm = () => {
         let isValid = true;
 
         // Company Information Validation
-        const companyNameError = validateRequired(formData.companyName, 'Company name');
+        const companyNameError = validateRequired(formData.companyInfo?.name, 'Company name');
         if (companyNameError) {
             newErrors.companyName = companyNameError;
             isValid = false;
         }
 
-        const vatNoError = validateRequired(formData.vatNo, 'VAT number');
+        const vatNoError = validateRequired(formData.companyInfo?.cvrNumber, 'VAT number');
         if (vatNoError) {
             newErrors.vatNo = vatNoError;
             isValid = false;
         }
 
-        const addressError = validateRequired(formData.address, 'Address');
+        const addressError = validateRequired(formData.companyInfo?.address, 'Address');
         if (addressError) {
             newErrors.address = addressError;
             isValid = false;
         }
 
-        const postcodeError = validateRequired(formData.postcode, 'Postcode');
+        const postcodeError = validateRequired(formData.companyInfo?.postal_code, 'Postcode');
         if (postcodeError) {
             newErrors.postcode = postcodeError;
             isValid = false;
         }
 
-        const cityError = validateRequired(formData.city, 'City');
+        const cityError = validateRequired(formData.companyInfo?.city, 'City');
         if (cityError) {
             newErrors.city = cityError;
             isValid = false;
         }
 
-        const emailError = validateRequired(formData.email, 'Email');
+        const emailError = validateRequired(formData.companyInfo?.email, 'Email');
         if (emailError) {
             newErrors.email = emailError;
             isValid = false;
-        } else if (!validateEmail(formData.email)) {
+        } else if (!validateEmail(formData.companyInfo?.email)) {
             newErrors.email = 'Please enter a valid email address';
             isValid = false;
         }
 
-        const phoneError = validateRequired(formData.phone, 'Phone number');
+        const phoneError = validateRequired(formData.companyInfo?.phone, 'Phone number');
         if (phoneError) {
             newErrors.phone = phoneError;
             isValid = false;
-        } else if (!validatePhone(formData.phone)) {
+        } else if (!validatePhone(formData.companyInfo?.phone)) {
             newErrors.phone = 'Phone number must be at least 8 digits';
             isValid = false;
         }
 
         // Contact Person Validation
-        const firstNameError = validateRequired(formData.firstName, 'First name');
+        const firstNameError = validateRequired(formData.contactPerson?.firstName, 'First name');
         if (firstNameError) {
             newErrors.firstName = firstNameError;
             isValid = false;
         }
 
-        const lastNameError = validateRequired(formData.lastName, 'Last name');
+        const lastNameError = validateRequired(formData.contactPerson?.lastName, 'Last name');
         if (lastNameError) {
             newErrors.lastName = lastNameError;
             isValid = false;
         }
 
-        const contactEmailError = validateRequired(formData.contactEmail, 'Contact email');
+        const contactEmailError = validateRequired(formData.contactPerson?.email, 'Contact email');
         if (contactEmailError) {
             newErrors.contactEmail = contactEmailError;
             isValid = false;
-        } else if (!validateEmail(formData.contactEmail)) {
+        } else if (!validateEmail(formData.contactPerson?.email)) {
             newErrors.contactEmail = 'Please enter a valid email address';
             isValid = false;
         }
 
-        const contactPhoneError = validateRequired(formData.contactPhone, 'Contact phone number');
+        const contactPhoneError = validateRequired(formData.contactPerson?.phone, 'Contact phone number');
         if (contactPhoneError) {
             newErrors.contactPhone = contactPhoneError;
             isValid = false;
-        } else if (!validatePhone(formData.contactPhone)) {
+        } else if (!validatePhone(formData.contactPerson?.phone)) {
             newErrors.contactPhone = 'Phone number must be at least 8 digits';
             isValid = false;
         }
@@ -398,15 +412,73 @@ export const useStepperForm = () => {
         setErrors(newErrors);
         return isValid;
     };
-
-    const nextStep = () => {
+    const nextStep = async () => {
         if (currentStep === 1 && !validateProfileStep()) {
             return;
         }
-        if (currentStep === 2 && !validateSystemRegistrationStep()) {
+
+        if (currentStep === 1) {
+            setIsSubmitting(true);
+            try {
+                const profileData: ICustomer = {
+                    name: formData.companyInfo?.name || formData.name,
+                    phone_number: formData.countryCode + formData.companyInfo?.phone,
+                    journeyStatus: formData.journeyStatus || 'facilityInfo',
+                    companyInfo: {
+                        name: formData.companyInfo?.name,
+                        cvrNumber: formData.companyInfo?.cvrNumber || '',
+                        address: formData.companyInfo?.address || '',
+                        city: formData.companyInfo?.city || '',
+                        postal_code: formData.companyInfo?.postal_code || '',
+                        email: formData.companyInfo?.email || '',
+                        phone: formData.countryCode + formData.companyInfo?.phone
+                    },
+                    contactPerson: {
+                        firstName: formData.contactPerson?.firstName,
+                        lastName: formData.contactPerson?.lastName,
+                        email: formData.contactPerson?.email,
+                        phone: formData.countryCode + formData.contactPerson?.phone
+                    },
+                };
+
+                let result;
+                if (formData.id) {
+                    result = await StepperController.UpdateProfile(profileData);
+                } else {
+                    result = await StepperController.CreateProfile(profileData);
+                }
+
+                if (!result.success) {
+                    console.error('Profile creation failed:', result.error);
+                    setErrors({ ...errors, apiError: result.error || 'Failed to create profile' });
+                    setIsSubmitting(false);
+                    return;
+                }
+
+                console.log(`Profile ${formData.id ? 'updated' : 'created'} successfully`);
+
+                setFormData((prev: any) => ({
+                    ...prev,
+                    ...profileData,
+                    companyInfo: profileData.companyInfo,
+                    contactPerson: profileData.contactPerson
+                }));
+
+                setIsSubmitting(false);
+                setCurrentStep((prev: number) => prev + 1);
+            } catch (error) {
+                console.error('Error creating profile:', error);
+                setErrors({ ...errors, apiError: 'An unexpected error occurred' });
+                setIsSubmitting(false);
+                return;
+            }
+        } else if (currentStep === 2 && !validateSystemRegistrationStep()) {
+            // Validate System Registration Step
             return;
+        } else {
+            // For other steps, just proceed
+            setCurrentStep((prev: number) => prev + 1);
         }
-        setCurrentStep((prev: number) => prev + 1);
     };
     const prevStep = () => setCurrentStep((prev: number) => Math.max(1, prev - 1));
     const goToStep = (step: number) => setCurrentStep(step);
@@ -418,6 +490,7 @@ export const useStepperForm = () => {
         nextStep,
         prevStep,
         goToStep,
+        isSubmitting,
         showCountryCodePicker,
         setShowCountryCodePicker,
         showContactCountryCodePicker,

@@ -43,8 +43,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             style={styles.input}
                             placeholder="Enter company name"
                             placeholderTextColor="#999"
-                            value={formData.companyName}
-                            onChangeText={(text) => updateFormData('companyName', text)}
+                            value={formData.companyInfo?.name || ''}
+                            onChangeText={(text) => {
+                                updateFormData('companyInfo', {
+                                    ...formData.companyInfo,
+                                    name: text
+                                });
+                            }}
                         />
                     </View>
                     {errors.companyName && (
@@ -62,8 +67,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             style={styles.input}
                             placeholder="Enter VAT number"
                             placeholderTextColor="#999"
-                            value={formData.vatNo}
-                            onChangeText={(text) => updateFormData('vatNo', text)}
+                            value={formData.companyInfo?.cvrNumber || ''}
+                            onChangeText={(text) => {
+                                updateFormData('companyInfo', {
+                                    ...formData.companyInfo,
+                                    cvrNumber: text
+                                });
+                            }}
                         />
                     </View>
                     {errors.vatNo && (
@@ -81,8 +91,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             style={styles.input}
                             placeholder="Enter Address"
                             placeholderTextColor="#999"
-                            value={formData.address}
-                            onChangeText={(text) => updateFormData('address', text)}
+                            value={formData.companyInfo?.address || ''}
+                            onChangeText={(text) => {
+                                updateFormData('companyInfo', {
+                                    ...formData.companyInfo,
+                                    address: text
+                                });
+                            }}
                         />
                     </View>
                     {errors.address && (
@@ -108,8 +123,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[styles.input]}
                                 placeholder="Postcode"
                                 placeholderTextColor="#999"
-                                value={formData.postcode}
-                                onChangeText={(text) => updateFormData('postcode', text)}
+                                value={formData.companyInfo?.postal_code || ''}
+                                onChangeText={(text) => {
+                                    updateFormData('companyInfo', {
+                                        ...formData.companyInfo,
+                                        postal_code: text
+                                    });
+                                }}
                             />
                         </View>
                         {errors.postcode && (
@@ -134,8 +154,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[styles.input]}
                                 placeholder="City"
                                 placeholderTextColor="#999"
-                                value={formData.city}
-                                onChangeText={(text) => updateFormData('city', text)}
+                                value={formData.companyInfo?.city || ''}
+                                onChangeText={(text) => {
+                                    updateFormData('companyInfo', {
+                                        ...formData.companyInfo,
+                                        city: text
+                                    });
+                                }}
                             />
                         </View>
                         {errors.city && (
@@ -156,8 +181,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             placeholderTextColor="#999"
                             keyboardType="email-address"
                             autoCapitalize="none"
-                            value={formData.email}
-                            onChangeText={(text) => updateFormData('email', text)}
+                            value={formData.companyInfo?.email || ''}
+                            onChangeText={(text) => {
+                                updateFormData('companyInfo', {
+                                    ...formData.companyInfo,
+                                    email: text
+                                });
+                            }}
                         />
                     </View>
                     {errors.email && (
@@ -183,7 +213,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             <Text style={[
                                 styles.countryCodeText,
                             ]}>
-                                {countryCodes.find(c => c.code === formData.countryCode)?.flag} {formData.countryCode}
+                                {countryCodes.find(c => c.code === formData.companyInfo?.countryCode)?.flag} {formData.companyInfo?.countryCode}
                             </Text>
                             <Icon
                                 name={showCountryCodePicker ? "expand-less" : "expand-more"}
@@ -203,10 +233,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 placeholderTextColor="#999"
                                 keyboardType="phone-pad"
                                 maxLength={15}
-                                value={formData.phone}
+                                value={formData.companyInfo?.phone || ''}
                                 onChangeText={(text) => {
                                     const cleaned = text.replace(/[^0-9]/g, '');
-                                    updateFormData('phone', cleaned);
+                                    updateFormData('companyInfo', {
+                                        ...formData.companyInfo,
+                                        phone: cleaned
+                                    });
                                 }}
                             />
                         </View>
@@ -220,14 +253,17 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                         key={country.code}
                                         style={styles.countryCodeOption}
                                         onPress={() => {
-                                            updateFormData('countryCode', country.code);
+                                            updateFormData('companyInfo', {
+                                                ...formData.companyInfo,
+                                                countryCode: country.code
+                                            });
                                             setShowCountryCodePicker(false);
                                         }}
                                     >
                                         <Text style={styles.countryCodeOptionText}>
                                             {country.flag} {country.code} ({country.country})
                                         </Text>
-                                        {formData.countryCode === country.code && (
+                                        {formData.companyInfo.countryCode === country.code && (
                                             <Icon name="check" size={20} color="#00B050" />
                                         )}
                                     </TouchableOpacity>
@@ -240,7 +276,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                         <Text style={styles.errorText}>
                             <Icon name="error-outline" size={12} color="#EF4444" /> {errors.phone}
                         </Text>
-                    ) : formData.phone && formData.phone.length >= 8 ? (
+                    ) : formData.companyInfo.phone && formData.companyInfo.phone.length >= 8 ? (
                         <Text style={styles.successText}>
                             <Icon name="check-circle" size={12} color="#00B050" /> Valid phone number
                         </Text>
@@ -267,8 +303,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[styles.input, { paddingLeft: 10 }]}
                                 placeholder="First name"
                                 placeholderTextColor="#999"
-                                value={formData.firstName}
-                                onChangeText={(text) => updateFormData('firstName', text)}
+                                value={formData.contactPerson?.firstName || ''}
+                                onChangeText={(text) => {
+                                    updateFormData('contactPerson', {
+                                        ...formData.contactPerson,
+                                        firstName: text
+                                    });
+                                }}
                             />
                         </View>
                         {errors.firstName && (
@@ -287,8 +328,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[styles.input, { paddingLeft: 10 }]}
                                 placeholder="Last name"
                                 placeholderTextColor="#999"
-                                value={formData.lastName}
-                                onChangeText={(text) => updateFormData('lastName', text)}
+                                value={formData.contactPerson?.lastName || ''}
+                                onChangeText={(text) => {
+                                    updateFormData('contactPerson', {
+                                        ...formData.contactPerson,
+                                        lastName: text
+                                    });
+                                }}
                             />
                         </View>
                         {errors.lastName && (
@@ -309,8 +355,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             placeholderTextColor="#999"
                             keyboardType="email-address"
                             autoCapitalize="none"
-                            value={formData.contactEmail}
-                            onChangeText={(text) => updateFormData('contactEmail', text)}
+                            value={formData.contactPerson?.email || ''}
+                            onChangeText={(text) => {
+                                updateFormData('contactPerson', {
+                                    ...formData.contactPerson,
+                                    email: text
+                                });
+                            }}
                         />
                     </View>
                     {errors.contactEmail && (
@@ -336,7 +387,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             <Text style={[
                                 styles.countryCodeText,
                             ]}>
-                                {countryCodes.find(c => c.code === formData.contactCountryCode)?.flag} {formData.contactCountryCode}
+                                {countryCodes.find(c => c.code === formData.contactPerson?.countryCode)?.flag} {formData.contactPerson?.countryCode}
                             </Text>
                             <Icon
                                 name={showContactCountryCodePicker ? "expand-less" : "expand-more"}
@@ -356,10 +407,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 placeholderTextColor="#999"
                                 keyboardType="phone-pad"
                                 maxLength={15}
-                                value={formData.contactPhone}
+                                value={formData.contactPerson?.phone || ''}
                                 onChangeText={(text) => {
                                     const cleaned = text.replace(/[^0-9]/g, '');
-                                    updateFormData('contactPhone', cleaned);
+                                    updateFormData('contactPerson', {
+                                        ...formData.contactPerson,
+                                        phone: cleaned
+                                    });
                                 }}
                             />
                         </View>
@@ -373,14 +427,17 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                         key={country.code}
                                         style={styles.countryCodeOption}
                                         onPress={() => {
-                                            updateFormData('contactCountryCode', country.code);
+                                            updateFormData('contactPerson', {
+                                                ...formData.contactPerson,
+                                                countryCode: country.code
+                                            });
                                             setShowContactCountryCodePicker(false);
                                         }}
                                     >
                                         <Text style={styles.countryCodeOptionText}>
                                             {country.flag} {country.code} ({country.country})
                                         </Text>
-                                        {formData.contactCountryCode === country.code && (
+                                        {formData.contactPerson.countryCode === country.code && (
                                             <Icon name="check" size={20} color="#00B050" />
                                         )}
                                     </TouchableOpacity>
@@ -393,7 +450,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                         <Text style={styles.errorText}>
                             <Icon name="error-outline" size={12} color="#EF4444" /> {errors.contactPhone}
                         </Text>
-                    ) : formData.contactPhone && formData.contactPhone.length >= 8 ? (
+                    ) : formData.contactPerson.phone && formData.contactPerson.phone.length >= 8 ? (
                         <Text style={styles.successText}>
                             <Icon name="check-circle" size={12} color="#00B050" /> Valid phone number
                         </Text>

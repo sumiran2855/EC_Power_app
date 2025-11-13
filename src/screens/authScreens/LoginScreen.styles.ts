@@ -253,12 +253,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
-  phoneContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'relative',
-    width: '100%',
-  },
   countryCodeContainer: {
     borderWidth: 1,
     borderColor: '#e5e7eb',
@@ -305,20 +299,6 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     textDecorationLine: 'underline',
   },
-  countryCodeButton: {
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 8,
-    backgroundColor: '#f9fafb',
-    marginRight: wp(3),
-    width: wp(18),
-    height: isSmallScreen ? 42 : 48,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: wp(3),
-    flexShrink: 0,
-  },
   countryCodeText: {
     fontSize: isSmallScreen ? 13 : 16,
     color: '#1f2937',
@@ -329,38 +309,6 @@ export const styles = StyleSheet.create({
     color: '#6b7280',
     marginLeft: wp(1),
   },
-  countryDropdown: {
-    position: 'absolute',
-    top: isSmallScreen ? 47 : 53,
-    left: 0,
-    width: wp(88),
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-    zIndex: 1000,
-    maxHeight: hp(25),
-  },
-  countryOption: {
-    paddingVertical: hp(1.2),
-    paddingHorizontal: wp(4),
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-  },
-  countryOptionText: {
-    fontSize: isSmallScreen ? 12 : 14,
-    color: '#1f2937',
-    fontWeight: '500',
-  },
-
   // Error styles
   inputError: {
     borderColor: '#ef4444',
@@ -387,5 +335,67 @@ export const styles = StyleSheet.create({
 
   disabledText: {
     opacity: 0.5,
+  },
+  phoneContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    zIndex: 1, // Add this
+  },
+
+  countryCodeButton: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 8,
+    backgroundColor: '#f9fafb',
+    marginRight: wp(3),
+    width: wp(20), // Increased from wp(18)
+    height: isSmallScreen ? 42 : 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp(2.5),
+    flexShrink: 0,
+    zIndex: 2, // Add this
+  },
+
+  // Add this new wrapper style
+  countryDropdownWrapper: {
+    position: 'relative',
+    width: '100%',
+    marginTop: hp(0.5),
+    zIndex: 9999,
+  },
+
+  countryDropdown: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 10,
+    maxHeight: hp(30),
+    width: '100%',
+  },
+
+  countryOption: {
+    paddingVertical: hp(1.5),
+    paddingHorizontal: wp(4),
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+    backgroundColor: '#ffffff',
+  },
+
+  countryOptionText: {
+    fontSize: isSmallScreen ? 13 : 14,
+    color: '#1f2937',
+    fontWeight: '500',
   },
 });
