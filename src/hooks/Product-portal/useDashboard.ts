@@ -1,45 +1,8 @@
-import { useState } from 'react';
+import { RegisterController } from '@/controllers/RegisterController';
+import { Facility, UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
 import { useNavigation } from '@react-navigation/native';
-
-// Sample data for cards
-const activeCards = [
-  {
-    id: 1,
-    name: 'Martin S01',
-    serialNumber: '2100770084',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    name: 'Martin S02',
-    serialNumber: '2100770085',
-    status: 'Active',
-  },
-];
-
-const inactiveCards = [
-  {
-    id: 3,
-    name: 'Martin S03',
-    serialNumber: '2100770086',
-    status: 'Inactive',
-  },
-  {
-    id: 4,
-    name: 'Martin S04',
-    serialNumber: '2100770087',
-    status: 'Inactive',
-  },
-];
-
-const dataMissingCards = [
-  {
-    id: 5,
-    name: 'Martin S05',
-    serialNumber: '2100770088',
-    status: 'Data Missing',
-  },
-];
+import { useEffect, useState } from 'react';
 
 const filterOptions = [
   { label: 'All', value: 'All' },
@@ -54,30 +17,35 @@ const useDashboard = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarVisible, setSidebarVisible] = useState(false);
-
-  const allCards = [...activeCards, ...inactiveCards, ...dataMissingCards];
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Function to filter cards based on search query
-  const filterCardsBySearch = (cards: any[]) => {
+  const filterCardsBySearch = (cards: Facility[]) => {
     if (!searchQuery.trim()) {
       return cards;
     }
-    
+
     const query = searchQuery.toLowerCase().trim();
-    return cards.filter(card => 
-      card.name.toLowerCase().includes(query) || 
-      card.serialNumber.toLowerCase().includes(query)
+    return cards.filter(card =>
+      card.name.toLowerCase().includes(query) ||
+      card.xrgiID.toLowerCase().includes(query)
     );
   };
 
   const getFilteredCards = () => {
+    // Categorize facilities by status
+    const activeCards = facilities.filter(f => f.status === 'Active');
+    const inactiveCards = facilities.filter(f => f.status === 'Inactive');
+    const dataMissingCards = facilities.filter(f => f.status === 'Data Missing');
+
     let filteredByStatus = {
       active: activeCards,
       inactive: inactiveCards,
       dataMissing: dataMissingCards,
     };
 
-    // First filter by status
+    // Filter by selected status
     if (selectedFilter === 'Active') {
       filteredByStatus = {
         active: activeCards,
@@ -98,7 +66,7 @@ const useDashboard = () => {
       };
     }
 
-    // Then apply search filter to each category
+    // Apply search filter to each category
     return {
       active: filterCardsBySearch(filteredByStatus.active),
       inactive: filterCardsBySearch(filteredByStatus.inactive),
@@ -116,14 +84,66 @@ const useDashboard = () => {
   };
 
   const handleSidebarMenuPress = (menuItem: string) => {
-        console.log(`Navigating to: ${menuItem}`);
-        // Add your navigation logic here
-    // For example: navigation.navigate(menuItem);
+    console.log(`Navigating to: ${menuItem}`);
   };
 
   const handleRegisterXRGI = (): void => {
     (navigation as any).navigate('Register');
-  }
+  };
+
+  const HandleGetFacilityList = async () => {
+    const userData = await StorageService.user.getData<UserData>();
+
+    if (!userData?.id) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await RegisterController.GetFacilityList(userData.id);
+      const rawData = response?.success ? response.data : response;
+      const transformedData = transformFacilities(rawData);
+
+      setFacilities(transformedData);
+    } catch (error) {
+      console.log("Error getting facility list", error);
+      setFacilities([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Helper function extracted to follow DRY principle
+  const transformFacilities = (data: any): Facility[] => {
+    if (!Array.isArray(data)) return [];
+
+    return data.map((facility: any) => ({
+      id: facility.id,
+      name: facility.name,
+      xrgiID: facility.xrgiID,
+      status: facility.status || 'Data Missing',
+      modelNumber: facility.modelNumber,
+      location: facility.location,
+      hasEnergyCheckPlus: facility.hasEnergyCheckPlus,
+      isInstalled: facility.isInstalled,
+      hasServiceContract: facility.hasServiceContract,
+      needServiceContract: facility.needServiceContract,
+      salesPartner: facility.salesPartner,
+      serviceProvider: facility.serviceProvider,
+      DaSigned: facility.DaSigned,
+      EnergyCheck_plus: facility.EnergyCheck_plus,
+      smartPriceControl: facility.smartPriceControl,
+      installedSmartPriceController: facility.installedSmartPriceController,
+      smartPriceControlAdded: facility.smartPriceControlAdded,
+    }));
+  };
+
+
+  useEffect(() => {
+    HandleGetFacilityList();
+  }, []);
 
   return {
     // State
@@ -131,11 +151,12 @@ const useDashboard = () => {
     dropdownVisible,
     searchQuery,
     sidebarVisible,
-    
+    loading,
+
     // Data
     filterOptions,
     filteredCards: getFilteredCards(),
-    
+
     // Actions
     setDropdownVisible,
     setSidebarVisible,
@@ -143,6 +164,7 @@ const useDashboard = () => {
     handleSearchChange,
     handleSidebarMenuPress,
     handleRegisterXRGI,
+    HandleGetFacilityList,
   };
 };
 

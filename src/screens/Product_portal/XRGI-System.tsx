@@ -2,12 +2,13 @@ import { MaterialIcons as Icon, Ionicons, MaterialIcons } from "@expo/vector-ico
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Card from '../../components/Card/Card';
 import useDashboard from '../../hooks/Product-portal/useDashboard';
 import Sidebar from '../common/Sidebar';
-import Card from '../../components/Card/Card';
 import styles from './XRGI-System.styles';
+import { Facility } from "../authScreens/types";
 
 type RootStackParamList = {
   XRGI_System: undefined;
@@ -26,6 +27,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
     dropdownVisible,
     searchQuery,
     sidebarVisible,
+    loading,
 
     // Data
     filterOptions,
@@ -44,8 +46,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
     navigation.goBack();
   };
 
-
-  const handleCardPress = (item: any) => {
+  const handleCardPress = (item: Facility) => {
     navigation.navigate('XRGI_Details', { item });
   };
 
@@ -53,7 +54,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
     console.log('Delete item with id:', id);
   };
 
-  const renderCard = (item: any) => (
+  const renderCard = (item: Facility) => (
     <Card
       key={item.id}
       item={item}
@@ -148,44 +149,52 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
         />
       )}
 
-      {/* Scrollable Content */}
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Active Section */}
-        {filteredCards.active.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Active</Text>
-            {filteredCards.active.map(renderCard)}
-          </View>
-        )}
-
-        {/* Inactive Section */}
-        {filteredCards.inactive.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitleInactive}>Inactive</Text>
-            {filteredCards.inactive.map(renderCard)}
-          </View>
-        )}
-
-        {/* Data Missing Section */}
-        {filteredCards.dataMissing.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitleDataMissing}>Data Missing</Text>
-            {filteredCards.dataMissing.map(renderCard)}
-          </View>
-        )}
-
-        {/* No Results Message */}
-        {filteredCards.active.length === 0 &&
-          filteredCards.inactive.length === 0 &&
-          filteredCards.dataMissing.length === 0 &&
-          searchQuery.trim() !== '' && (
-            <View style={styles.noResultsContainer}>
-              <Text style={styles.noResultsText}>
-                No XRGI® systems found matching "{searchQuery}"
-              </Text>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#1a5490" />
+          <Text style={styles.loadingText}>Loading facilities...</Text>
+        </View>
+      ) : (
+        <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+          {/* Active Section */}
+          {filteredCards.active.length > 0 && (
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Active</Text>
+              {filteredCards.active.map(renderCard)}
             </View>
           )}
-      </ScrollView>
+
+          {/* Inactive Section */}
+          {filteredCards.inactive.length > 0 && (
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitleInactive}>Inactive</Text>
+              {filteredCards.inactive.map(renderCard)}
+            </View>
+          )}
+
+          {/* Data Missing Section */}
+          {filteredCards.dataMissing.length > 0 && (
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitleDataMissing}>Data Missing</Text>
+              {filteredCards.dataMissing.map(renderCard)}
+            </View>
+          )}
+
+          {/* No Results Message */}
+          {filteredCards.active.length === 0 &&
+            filteredCards.inactive.length === 0 &&
+            filteredCards.dataMissing.length === 0 &&
+            !loading && (
+              <View style={styles.noResultsContainer}>
+                <Text style={styles.noResultsText}>
+                  {searchQuery.trim() !== ''
+                    ? `No XRGI® systems found matching "${searchQuery}"`
+                    : 'No XRGI® systems found'}
+                </Text>
+              </View>
+            )}
+        </ScrollView>
+      )}
 
       <Sidebar
         isVisible={sidebarVisible}

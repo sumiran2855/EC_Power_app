@@ -162,3 +162,31 @@ export type RegisterFormData = {
     group?: string;
     role?: string;
 }
+
+export interface UserData {
+  id: string;
+  email: string;
+  role: string;
+  group: string;
+  status: string;
+}
+
+export interface Facility {
+  id: string;
+  name: string;
+  xrgiID: string;
+  status: 'Active' | 'Inactive' | 'Data Missing';
+  modelNumber?: string;
+  location?: LocationInfo;
+  hasEnergyCheckPlus?: boolean;
+  isInstalled?: boolean;
+  hasServiceContract?: boolean;
+  needServiceContract?: boolean;
+  salesPartner?: SalesPartnerInfo;
+  serviceProvider?: ServiceProviderInfo;
+  DaSigned?: boolean;
+  energyCheckPlus?: EnergyCheckPlusInfo;
+  smartPriceControl?: SmartPriceControlInfo;
+  installedSmartPriceController?: boolean;
+  distributeHoursEvenly?: boolean;
+}
