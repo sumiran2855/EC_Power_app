@@ -1,3 +1,4 @@
+import { Facility } from '@/screens/authScreens/types';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
@@ -46,10 +47,10 @@ export type RootStackParamList = {
   XRGI_Details: { item: any };
   ServiceContract: undefined;
   Statistics: undefined;
-  Get_Statistics: undefined;
+  Get_Statistics: { system: Facility };
   StatisticsResult: undefined;
   SystemConfiguration: undefined;
-  SystemConfigurationDetail: undefined;
+  SystemConfigurationDetail: { system: Facility };
   CallDetails: undefined;
   Get_CallDetails: undefined;
   CallDetailsResult: undefined;
@@ -58,7 +59,7 @@ export type RootStackParamList = {
   HeatDistribution: undefined;
   Contact: undefined;
   UnitList: undefined;
-  UnitDetail: undefined;
+  UnitDetail: { system: Facility };
   Profile: undefined;
   Setting: undefined;
 };

@@ -8,9 +8,11 @@ import useCallDetailsScreen from '../../../../hooks/Service-portal/call-details/
 
 interface get_call_detailsScreenProps {
     navigation: any;
+    route: any;
 }
 
-const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigation }) => {
+const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigation, route }) => {
+    const { system } = route.params;
     const {
         fromDate,
         toDate,
@@ -30,7 +32,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
         onToTimeChange,
         handleGetData,
         handleNavigate
-    } = useCallDetailsScreen({ navigation });
+    } = useCallDetailsScreen({ navigation, route });
 
     const handleBackButton = useCallback(() => {
         navigation.goBack();
@@ -58,7 +60,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                         </View>
                         <Text style={styles.title}>Call Details</Text>
                     </View>
-                    <Text style={styles.subtitle}>See system call details 1470167385 / XRGI* 25</Text>
+                    <Text style={styles.subtitle}>See system call details {system.xrgiID} / {system.modelNumber}</Text>
                 </View>
 
                 <View style={styles.card}>

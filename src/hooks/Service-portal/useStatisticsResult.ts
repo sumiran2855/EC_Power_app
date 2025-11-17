@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export interface CallData {
     id: string;
@@ -13,15 +13,15 @@ interface UseStatisticsResultReturn {
     callsData: CallData[];
     fromDate: string;
     toDate: string;
+    system: any;
     handleBackButton: () => void;
     getStatusColor: (status: string) => string;
     getStatusBackground: (status: string) => string;
 }
 
-const useStatisticsResult = (): UseStatisticsResultReturn => {
+const useStatisticsResult = (route: any): UseStatisticsResultReturn => {
     const navigation = useNavigation();
-    const route = useRoute();
-    const { fromDate, toDate } = route.params as { fromDate: string; toDate: string };
+    const { fromDate, toDate, system } = route.params as { fromDate: string; toDate: string; system: any };
 
     // Sample data - replace with actual API data
     const callsData: CallData[] = [
@@ -107,6 +107,7 @@ const useStatisticsResult = (): UseStatisticsResultReturn => {
         callsData,
         fromDate,
         toDate,
+        system,
         handleBackButton,
         getStatusColor,
         getStatusBackground

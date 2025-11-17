@@ -1,16 +1,18 @@
-import { View, Text, TouchableOpacity, ScrollView, Platform } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import React from "react";
-import styles from "./get-statisticsScreen.styles";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React from "react";
+import { Platform, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useStatisticsScreen from "../../../../hooks/Service-portal/useGetStatistics";
+import styles from "./get-statisticsScreen.styles";
 
 interface StatisticsScreenProps {
     navigation: any;
+    route: any;
 }
 
-const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
+const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, route }) => {
+    const { system } = route.params;
     const {
         fromDate,
         toDate,
@@ -30,6 +32,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) =
         onToDateChange,
         onToTimeChange
     } = useStatisticsScreen();
+    console.log("system", system);
 
     const handleBackButton = () => {
         navigation.goBack();
@@ -38,12 +41,11 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) =
     const handleGetDataPress = () => {
         const { fromDate: formattedFromDate, toDate: formattedToDate, fromDateObject, toDateObject } = handleGetData();
         
-        // Navigate to StatisticsResultScreen with the date parameters
+        // Navigate to StatisticsResultScreen with the date parameters and system
         navigation.navigate('StatisticsResult', {
             fromDate: formattedFromDate,
             toDate: formattedToDate,
-            fromDateObject: fromDateObject,
-            toDateObject: toDateObject
+            system: system
         });
     };
 
@@ -64,7 +66,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) =
                         </View>
                         <Text style={styles.title}>Statistics</Text>
                     </View>
-                    <Text style={styles.subtitle}>See system statistics 1470167385 / XRGI* 25</Text>
+                    <Text style={styles.subtitle}>See system statistics {system.xrgiID} / {system.modelNumber}</Text>
                 </View>
 
                 <View style={styles.card}>

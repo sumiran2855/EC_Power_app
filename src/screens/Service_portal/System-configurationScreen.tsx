@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './StatisticsScreen.styles';
@@ -15,7 +15,8 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
         handleBackButton,
         handleSystemPress,
         getStatusColor,
-        getStatusText
+        getStatusText,
+        isLoading
     } = useSystemConfiguration(navigation);
 
     return (
@@ -41,73 +42,83 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
                     Manage and monitor all your system configurations in one place. View active systems, track recent activity, and update settings as needed.
                 </Text>
 
-                {/* Systems Count */}
-                <View style={styles.statsBar}>
-                    <View style={styles.statItem}>
-                        <Text style={styles.statValue}>{systems.length}</Text>
-                        <Text style={styles.statLabel}>Total Systems</Text>
+                {isLoading ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#1a5490" />
+                        <Text style={styles.loadingText}>Loading facilities...</Text>
                     </View>
-                    <View style={styles.statDivider} />
-                    <View style={styles.statItem}>
-                        <Text style={styles.statValue}>
-                            {systems.filter(s => s.status === 'active').length}
-                        </Text>
-                        <Text style={styles.statLabel}>Active</Text>
-                    </View>
-                </View>
+                ) : (
+                    <>
 
-                {/* Systems List */}
-                <View style={styles.systemsList}>
-                    {systems.map((system) => (
-                        <TouchableOpacity
-                            key={system.id}
-                            style={styles.systemCard}
-                            onPress={() => handleSystemPress(system)}
-                            activeOpacity={0.7}
-                        >
-                            {/* Card Header */}
-                            <View style={styles.cardHeader}>
-                                <View style={styles.systemIconContainer}>
-                                    <Ionicons name="hardware-chip" size={20} color="#3b82f6" />
-                                </View>
-                                <View style={styles.statusBadge}>
-                                    <View style={[
-                                        styles.statusDot,
-                                        { backgroundColor: getStatusColor(system.status) }
-                                    ]} />
-                                    <Text style={styles.statusText}>
-                                        {getStatusText(system.status)}
-                                    </Text>
-                                </View>
+                        {/* Systems Count */}
+                        <View style={styles.statsBar}>
+                            <View style={styles.statItem}>
+                                <Text style={styles.statValue}>{systems.length}</Text>
+                                <Text style={styles.statLabel}>Total Systems</Text>
                             </View>
-
-                            {/* System Name */}
-                            <Text style={styles.systemNameText}>{system.systemName}</Text>
-
-                            {/* System Details Grid */}
-                            <View style={styles.detailsGrid}>
-                                <View style={styles.gridItem}>
-                                    <Text style={styles.gridLabel}>XRGI® ID</Text>
-                                    <Text style={styles.gridValue}>{system.xrgiId}</Text>
-                                </View>
-                                <View style={styles.gridDivider} />
-                                <View style={styles.gridItem}>
-                                    <Text style={styles.gridLabel}>Recent Calls</Text>
-                                    <Text style={styles.gridValue}>{system.recentCalls}</Text>
-                                </View>
+                            <View style={styles.statDivider} />
+                            <View style={styles.statItem}>
+                                <Text style={styles.statValue}>
+                                    {systems.filter(s => s.status === 'Active').length}
+                                </Text>
+                                <Text style={styles.statLabel}>Active</Text>
                             </View>
+                        </View>
 
-                            {/* Card Footer */}
-                            <View style={styles.cardFooter}>
-                                <View style={styles.countryInfo}>
-                                    <Text style={styles.flagEmoji}>🇺🇸</Text>
-                                    <Text style={styles.countryText}>United States</Text>
-                                </View>
-                                <Ionicons name="chevron-forward" size={18} color="#94a3b8" />
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                        {/* Systems List */}
+                        <View style={styles.systemsList}>
+                            {systems.map((system) => (
+                                <TouchableOpacity
+                                    key={system.id}
+                                    style={styles.systemCard}
+                                    onPress={() => handleSystemPress(system)}
+                                    activeOpacity={0.7}
+                                >
+                                    {/* Card Header */}
+                                    <View style={styles.cardHeader}>
+                                        <View style={styles.systemIconContainer}>
+                                            <Ionicons name="hardware-chip" size={20} color="#3b82f6" />
+                                        </View>
+                                        <View style={styles.statusBadge}>
+                                            <View style={[
+                                                styles.statusDot,
+                                                { backgroundColor: getStatusColor(system.status) }
+                                            ]} />
+                                            <Text style={styles.statusText}>
+                                                {getStatusText(system.status)}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    {/* System Name */}
+                                    <Text style={styles.systemNameText}>{system.name}</Text>
+
+                                    {/* System Details Grid */}
+                                    <View style={styles.detailsGrid}>
+                                        <View style={styles.gridItem}>
+                                            <Text style={styles.gridLabel}>XRGI® ID</Text>
+                                            <Text style={styles.gridValue}>{system.xrgiID}</Text>
+                                        </View>
+                                        <View style={styles.gridDivider} />
+                                        <View style={styles.gridItem}>
+                                            <Text style={styles.gridLabel}>Recent Calls</Text>
+                                            <Text style={styles.gridValue}>-</Text>
+                                        </View>
+                                    </View>
+
+                                    {/* Card Footer */}
+                                    <View style={styles.cardFooter}>
+                                        <View style={styles.countryInfo}>
+                                            {/* <Text style={styles.flagEmoji}>🇺🇸</Text> */}
+                                            <Text style={styles.countryText}>{system.location?.country}</Text>
+                                        </View>
+                                        <Ionicons name="chevron-forward" size={18} color="#94a3b8" />
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </>
+                )}
             </ScrollView>
         </SafeAreaView>
     );

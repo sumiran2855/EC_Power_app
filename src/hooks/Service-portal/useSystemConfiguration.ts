@@ -1,29 +1,28 @@
-import { useCallback } from 'react';
+import { RegisterController } from '@/controllers/RegisterController';
+import { Facility, UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
+import { useCallback, useEffect, useState } from 'react';
 
-export interface SystemData {
-    id: string;
-    systemName: string;
-    xrgiId: string;
-    recentCalls: string;
-    country: string;
-    status: 'active' | 'inactive' | 'maintenance';
-}
 interface UseSystemConfigurationReturn {
-    systems: SystemData[];
+    systems: Facility[];
     handleBackButton: () => void;
-    handleSystemPress: (system: SystemData) => void;
+    handleSystemPress: (system: Facility) => void;
     getStatusColor: (status: string) => string;
     getStatusText: (status: string) => string;
+    isLoading: boolean;
 }
 
 const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [systems, setSystems] = useState<Facility[]>([]);
+
     const handleBackButton = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
 
-    const handleSystemPress = useCallback((system: SystemData) => {
-        navigation.navigate('SystemConfigurationDetail');
-        console.log('Navigate to system:', system.id);
+    const handleSystemPress = useCallback((system: Facility) => {
+        navigation.navigate('SystemConfigurationDetail', { system });
     }, [navigation]);
 
     const getStatusColor = useCallback((status: string) => {
@@ -43,40 +42,46 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
         return status.charAt(0).toUpperCase() + status.slice(1);
     }, []);
 
-    // Sample data - replace with your actual data
-    const systems: SystemData[] = [
-        {
-            id: '1',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167385',
-            recentCalls: '5',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '2',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167392',
-            recentCalls: '12',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '3',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167401',
-            recentCalls: '-',
-            country: 'US',
-            status: 'maintenance'
+    const getFacilityList = useCallback(async () => {
+        setIsLoading(true);
+        setIsError(false);
+        const userData = await StorageService.user.getData<UserData>();
+        if (!userData) {
+            return null;
         }
-    ];
+        try {
+            const response = await RegisterController.GetFacilityList(userData?.id);
+            const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                name: facility.name,
+                status: facility.hasServiceContract ? 'Active' : 'Inactive',
+                xrgiID: facility.xrgiID,
+                hasServiceContract: facility.hasServiceContract,
+                modelNumber: facility.modelNumber,
+                location: {
+                    country: facility.location?.country,
+                },
+            })) : [];
+            setSystems(transformedData);
+            return null;
+        } catch (error) {
+            console.error('Error fetching facility statistics:', error);
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        getFacilityList();
+    }, []);
 
     return {
         systems,
         handleBackButton,
         handleSystemPress,
         getStatusColor,
-        getStatusText
+        getStatusText,
+        isLoading
     };
 };
 
