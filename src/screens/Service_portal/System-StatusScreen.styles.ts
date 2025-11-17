@@ -243,7 +243,19 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    borderRadius: 2,
+    borderRadius: 4,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: '#64748B',
+    fontFamily: 'Inter-Medium',
   },
 });
 

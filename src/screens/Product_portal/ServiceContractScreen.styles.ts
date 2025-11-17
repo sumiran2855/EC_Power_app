@@ -244,6 +244,17 @@ const styles = StyleSheet.create({
     bottomSpacer: {
         height: 32,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 40,
+    },
+    loadingText: {
+        marginTop: 12,
+        fontSize: 16,
+        color: '#64748b',
+    },
     // Modal Styles
     modalOverlay: {
         flex: 1,
