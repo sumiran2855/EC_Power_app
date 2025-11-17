@@ -1,12 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
-import { countryCodes, StepProps } from '../types';
+import { countryCodes, ProfileStepProps } from '../types';
 import { styles } from '../StepperScreen.styles';
-
-interface ProfileStepProps extends StepProps {
-    errors: Record<string, string>;
-}
 
 const ProfileStep: React.FC<ProfileStepProps> = ({
     formData,
@@ -382,7 +378,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             style={[
                                 styles.countryCodeButton,
                             ]}
-                            onPress={() => setShowContactCountryCodePicker(!showContactCountryCodePicker)}
+                            onPress={() => setShowContactCountryCodePicker && setShowContactCountryCodePicker(!showContactCountryCodePicker)}
                         >
                             <Text style={[
                                 styles.countryCodeText,
@@ -431,7 +427,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                                 ...formData.contactPerson,
                                                 countryCode: country.code
                                             });
-                                            setShowContactCountryCodePicker(false);
+                                            setShowContactCountryCodePicker && setShowContactCountryCodePicker(false);
                                         }}
                                     >
                                         <Text style={styles.countryCodeOptionText}>

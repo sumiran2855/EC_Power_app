@@ -82,7 +82,7 @@ export const useStepperForm = () => {
             { month: 'September', percentage: '8.33', hours: '0', editable: true },
             { month: 'October', percentage: '8.33', hours: '0', editable: true },
             { month: 'November', percentage: '8.33', hours: '0', editable: true },
-            { month: 'December', percentage: '8.33', hours: '0', editable: true },
+            { month: 'December', percentage: '8.37', hours: '0', editable: true },
         ],
     });
 

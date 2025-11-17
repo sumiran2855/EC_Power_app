@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Switch } from 'react-native';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
-import { StepProps } from '../types';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
+import { SmartPriceStepProps } from '../types';
 
-const SmartPriceStep: React.FC<StepProps> = ({
+const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
     formData,
     updateFormData,
     onBack,
@@ -40,11 +40,11 @@ const SmartPriceStep: React.FC<StepProps> = ({
             <View style={styles.card}>
                 <TouchableOpacity
                     style={styles.featureToggleCard}
-                    onPress={() => updateFormData('installSmartPrice', !formData.installSmartPrice)}
+                    onPress={() => updateFormData('smartPriceControlAdded', !formData.smartPriceControlAdded)}
                 >
                     <View style={styles.featureToggleLeft}>
-                        <View style={[styles.checkbox, formData.installSmartPrice && styles.checkboxChecked]}>
-                            {formData.installSmartPrice && <Icon name="check" size={16} color="#fff" />}
+                        <View style={[styles.checkbox, formData.smartPriceControlAdded && styles.checkboxChecked]}>
+                            {formData.smartPriceControlAdded && <Icon name="check" size={16} color="#fff" />}
                         </View>
                         <View style={styles.featureToggleContent}>
                             <Text style={styles.featureToggleTitle}>Install SmartPriceControl</Text>
@@ -56,12 +56,12 @@ const SmartPriceStep: React.FC<StepProps> = ({
                     <Icon
                         name="electrical-services"
                         size={28}
-                        color={formData.installSmartPrice ? "#003D82" : "#CCC"}
+                        color={formData.smartPriceControlAdded ? "#003D82" : "#CCC"}
                     />
                 </TouchableOpacity>
             </View>
 
-            {formData.installSmartPrice && (
+            {formData.smartPriceControlAdded && (
                 <View style={styles.card}>
                     <View style={styles.cardHeader}>
                         <Icon name="build" size={24} color="#003D82" />
@@ -81,12 +81,12 @@ const SmartPriceStep: React.FC<StepProps> = ({
                     <TouchableOpacity
                         style={[
                             styles.radioCard,
-                            formData.installationTiming === 'next-visit' && styles.radioCardActive
+                            formData.smartPriceControl?.method === 'On_Site_Visit' && styles.radioCardActive
                         ]}
-                        onPress={() => updateFormData('installationTiming', 'next-visit')}
+                        onPress={() => updateFormData('smartPriceControl', 'On_Site_Visit')}
                     >
                         <View style={styles.radioButton}>
-                            {formData.installationTiming === 'next-visit' && (
+                            {formData.smartPriceControl?.method === 'On_Site_Visit' && (
                                 <View style={styles.radioButtonInner} />
                             )}
                         </View>
@@ -102,12 +102,12 @@ const SmartPriceStep: React.FC<StepProps> = ({
                     <TouchableOpacity
                         style={[
                             styles.radioCard,
-                            formData.installationTiming === 'asap' && styles.radioCardActive
+                            formData.smartPriceControl?.method === 'as_soon_as_possible' && styles.radioCardActive
                         ]}
-                        onPress={() => updateFormData('installationTiming', 'asap')}
+                        onPress={() => updateFormData('smartPriceControl', 'as_soon_as_possible')}
                     >
                         <View style={styles.radioButton}>
-                            {formData.installationTiming === 'asap' && (
+                            {formData.smartPriceControl?.method === 'as_soon_as_possible' && (
                                 <View style={styles.radioButtonInner} />
                             )}
                         </View>

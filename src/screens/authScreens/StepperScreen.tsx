@@ -14,6 +14,7 @@ import { styles } from './StepperScreen.styles';
 import ProfileStep from './steps/ProfileStep';
 import SmartPriceStep from './steps/SmartPriceStep';
 import SystemRegistrationStep from './steps/SystemRegistrationStep';
+import { ICustomer, ProfileStepProps, SmartPriceStepProps, SystemRegisterStepProps } from './types';
 
 const StepperScreen: React.FC = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -159,14 +160,31 @@ const StepperScreen: React.FC = () => {
             validateTotalPercentage,
             errors,
         };
-
         switch (currentStep) {
             case 1:
-                return <ProfileStep {...commonProps} />;
+                return (
+                    <ProfileStep
+                        {...commonProps}
+                        formData={formData as ICustomer}
+                        updateFormData={updateFormData as ProfileStepProps['updateFormData']}
+                    />
+                );
             case 2:
-                return <SystemRegistrationStep {...commonProps} />;
+                return (
+                    <SystemRegistrationStep
+                        {...commonProps}
+                        formData={formData as any}
+                        updateFormData={updateFormData as SystemRegisterStepProps['updateFormData']}
+                    />
+                );
             case 3:
-                return <SmartPriceStep {...commonProps} />;
+                return (
+                    <SmartPriceStep
+                        {...commonProps}
+                        formData={formData as any}
+                        updateFormData={updateFormData as SmartPriceStepProps['updateFormData']}
+                    />
+                );
             default:
                 return null;
         }
