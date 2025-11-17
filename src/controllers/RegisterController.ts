@@ -20,4 +20,20 @@ export class RegisterController {
             console.log("Error adding facility", error);
         }
     }
+    
+    static async GetFacilityList(userId: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `get-user-facility?id=${userId}`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log("Error getting facility list", error);
+        }
+    }
 }

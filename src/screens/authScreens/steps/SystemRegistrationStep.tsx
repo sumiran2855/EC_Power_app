@@ -2,9 +2,9 @@ import { MaterialIcons as Icon } from "@expo/vector-icons";
 import React from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
-import { StepProps, country, countryCodes, industries, models } from '../types';
+import { SalesPartnerInfo, ServiceProviderInfo, SystemRegisterStepProps, country, countryCodes, industries, models } from '../types';
 
-interface SystemRegistrationStepProps extends StepProps {
+interface SystemRegistrationStepProps extends SystemRegisterStepProps {
     errors: Record<string, string>;
 }
 
@@ -56,8 +56,8 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             style={styles.input}
                             placeholder='Enter the system name'
                             placeholderTextColor="#999"
-                            value={formData.systemName}
-                            onChangeText={(text) => updateFormData('systemName', text)}
+                            value={formData.name}
+                            onChangeText={(text) => updateFormData('name', text)}
                         />
                     </View>
                     {errors.systemName ? (
@@ -81,8 +81,8 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             placeholderTextColor="#999"
                             keyboardType="number-pad"
                             maxLength={10}
-                            value={formData.xrgiIdNumber}
-                            onChangeText={(text) => updateFormData('xrgiIdNumber', text)}
+                            value={formData.xrgiID}
+                            onChangeText={(text) => updateFormData('xrgiID', text)}
                         />
                     </View>
                     {errors.xrgiIdNumber ? (
@@ -100,12 +100,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <Text style={styles.label}>Select a Model *</Text>
                     <TouchableOpacity
                         style={styles.pickerContainer}
-                        onPress={() => setShowModelPicker(!showModelPicker)}
+                        onPress={() => setShowModelPicker && setShowModelPicker(!showModelPicker)}
                     >
                         <View style={styles.pickerButton}>
                             <Icon name="devices" size={18} color="#999" style={styles.inputIcon} />
-                            <Text style={formData.selectedModel ? styles.pickerText : styles.pickerPlaceholder}>
-                                {formData.selectedModel || 'Choose your XRGI model'}
+                            <Text style={formData.modelNumber ? styles.pickerText : styles.pickerPlaceholder}>
+                                {formData.modelNumber || 'Choose your XRGI model'}
                             </Text>
                             <Icon
                                 name={showModelPicker ? "expand-less" : "expand-more"}
@@ -129,12 +129,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         idx === models.length - 1 && styles.pickerOptionLast
                                     ]}
                                     onPress={() => {
-                                        updateFormData('selectedModel', model);
-                                        setShowModelPicker(false);
+                                        updateFormData('modelNumber', model);
+                                        setShowModelPicker && setShowModelPicker(false);
                                     }}
                                 >
                                     <Text style={styles.pickerOptionText}>{model}</Text>
-                                    {formData.selectedModel === model && (
+                                    {formData?.modelNumber === model && (
                                         <Icon name="check" size={20} color="#00B050" />
                                     )}
                                 </TouchableOpacity>
@@ -163,8 +163,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             style={styles.input}
                             placeholder="XRGI® Site Address"
                             placeholderTextColor="#999"
-                            value={formData.systemAddress}
-                            onChangeText={(text) => updateFormData('systemAddress', text)}
+                            value={formData.location?.address}
+                            onChangeText={(text) => updateFormData('location', {
+                                ...formData.location,
+                                address: text
+                            })}
                         />
                     </View>
                     {errors.systemAddress && (
@@ -190,8 +193,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 style={styles.input}
                                 placeholder="Postcode"
                                 placeholderTextColor="#999"
-                                value={formData.systemPostcode}
-                                onChangeText={(text) => updateFormData('systemPostcode', text)}
+                                value={formData.location?.postalCode}
+                                onChangeText={(text) => updateFormData('location', {
+                                    ...formData.location,
+                                    postalCode: text
+                                })}
                             />
                         </View>
                         {errors.systemPostcode && (
@@ -216,8 +222,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 style={styles.input}
                                 placeholder="City"
                                 placeholderTextColor="#999"
-                                value={formData.systemCity}
-                                onChangeText={(text) => updateFormData('systemCity', text)}
+                                value={formData.location?.city}
+                                onChangeText={(text) => updateFormData('location', {
+                                    ...formData.location,
+                                    city: text
+                                })}
                             />
                         </View>
                         {errors.systemCity && (
@@ -232,11 +241,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <Text style={styles.label}>Country *</Text>
                     <TouchableOpacity
                         style={styles.pickerButton}
-                        onPress={() => setShowCountryPicker(!showCountryPicker)}
+                        onPress={() => setShowCountryPicker && setShowCountryPicker(!showCountryPicker)}
                     >
                         <Icon name="public" size={18} color="#999" style={styles.pickerIcon} />
-                        <Text style={formData.systemCountry ? styles.pickerText : styles.pickerPlaceholder}>
-                            {formData.systemCountry || 'Select country'}
+                        <Text style={formData.location?.country ? styles.pickerText : styles.pickerPlaceholder}>
+                            {formData.location?.country || 'Select country'}
                         </Text>
                         <Icon
                             name={showCountryPicker ? "expand-less" : "expand-more"}
@@ -258,8 +267,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         key={countryItem}
                                         style={styles.pickerOption}
                                         onPress={() => {
-                                            updateFormData('systemCountry', countryItem);
-                                            setShowCountryPicker(false);
+                                            updateFormData('location', {
+                                                ...formData.location,
+                                                country: countryItem
+                                            });
+                                            setShowCountryPicker && setShowCountryPicker(false);
                                         }}
                                     >
                                         <Text style={styles.pickerOptionText}>{countryItem}</Text>
@@ -346,19 +358,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 style={[
                                     styles.toggleButton,
                                     styles.toggleButtonLeft,
-                                    formData.interestedInServiceContract === true && styles.toggleButtonActive,
+                                    formData.needServiceContract === true && styles.toggleButtonActive,
                                 ]}
-                                onPress={() => updateFormData('interestedInServiceContract', true)}
+                                onPress={() => updateFormData('needServiceContract', true)}
                             >
                                 <Icon
                                     name="check-circle"
                                     size={20}
-                                    color={formData.interestedInServiceContract === true ? '#fff' : '#999'}
+                                    color={formData.needServiceContract === true ? '#fff' : '#999'}
                                 />
                                 <Text
                                     style={[
                                         styles.toggleButtonText,
-                                        formData.interestedInServiceContract === true && styles.toggleButtonTextActive,
+                                        formData.needServiceContract === true && styles.toggleButtonTextActive,
                                     ]}
                                 >
                                     Yes
@@ -368,19 +380,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 style={[
                                     styles.toggleButton,
                                     styles.toggleButtonRight,
-                                    formData.interestedInServiceContract === false && styles.toggleButtonActive,
+                                    formData.needServiceContract === false && styles.toggleButtonActive,
                                 ]}
-                                onPress={() => updateFormData('interestedInServiceContract', false)}
+                                onPress={() => updateFormData('needServiceContract', false)}
                             >
                                 <Icon
                                     name="cancel"
                                     size={20}
-                                    color={formData.interestedInServiceContract === false ? '#fff' : '#999'}
+                                    color={formData.needServiceContract === false ? '#fff' : '#999'}
                                 />
                                 <Text
                                     style={[
                                         styles.toggleButtonText,
-                                        formData.interestedInServiceContract === false && styles.toggleButtonTextActive,
+                                        formData.needServiceContract === false && styles.toggleButtonTextActive,
                                     ]}
                                 >
                                     No
@@ -402,8 +414,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     style={styles.input}
                                     placeholder="Enter service provider name"
                                     placeholderTextColor="#999"
-                                    value={formData.serviceProviderName}
-                                    onChangeText={(text) => updateFormData('serviceProviderName', text)}
+                                    value={formData.serviceProvider?.name}
+                                    onChangeText={(text) => updateFormData('serviceProvider', {
+                                        name: text,
+                                        mailAddress: formData.serviceProvider?.mailAddress || '',
+                                        phone: formData.serviceProvider?.phone || '',
+                                        countryCode: formData.serviceProvider?.countryCode || ''
+                                    } as ServiceProviderInfo)}
                                 />
                             </View>
                             {errors.serviceProviderName && (
@@ -423,8 +440,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     placeholderTextColor="#999"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
-                                    value={formData.serviceProviderEmail}
-                                    onChangeText={(text) => updateFormData('serviceProviderEmail', text)}
+                                    value={formData.serviceProvider?.mailAddress}
+                                    onChangeText={(text) => updateFormData('serviceProvider', {
+                                        name: formData.serviceProvider?.name || '',
+                                        mailAddress: text,
+                                        phone: formData.serviceProvider?.phone || '',
+                                        countryCode: formData.serviceProvider?.countryCode || ''
+                                    } as ServiceProviderInfo)}
                                 />
                             </View>
                             {errors.serviceProviderEmail && (
@@ -439,10 +461,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             <View style={showServiceCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow}>
                                 <TouchableOpacity
                                     style={styles.countryCodeButton}
-                                    onPress={() => setShowServiceCountryCodePicker(!showServiceCountryCodePicker)}
+                                    onPress={() => setShowServiceCountryCodePicker && setShowServiceCountryCodePicker(!showServiceCountryCodePicker)}
                                 >
                                     <Text style={styles.countryCodeText}>
-                                        {countryCodes.find(c => c.code === formData.serviceCountryCode)?.flag} {formData.serviceCountryCode}
+                                        {countryCodes.find(c => c.code === formData.serviceProvider?.countryCode)?.flag} {formData.serviceProvider?.countryCode}
                                     </Text>
                                     <Icon
                                         name={showServiceCountryCodePicker ? "expand-less" : "expand-more"}
@@ -458,10 +480,15 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         placeholderTextColor="#999"
                                         keyboardType="phone-pad"
                                         maxLength={15}
-                                        value={formData.serviceProviderPhone}
+                                        value={formData.serviceProvider?.phone}
                                         onChangeText={(text) => {
                                             const cleaned = text.replace(/[^0-9]/g, '');
-                                            updateFormData('serviceProviderPhone', cleaned);
+                                            updateFormData('serviceProvider', {
+                                                name: formData.serviceProvider?.name || '',
+                                                mailAddress: formData.serviceProvider?.mailAddress || '',
+                                                phone: cleaned,
+                                                countryCode: formData.serviceProvider?.countryCode || ''
+                                            } as ServiceProviderInfo);
                                         }}
                                     />
                                 </View>
@@ -480,14 +507,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                 key={country.code}
                                                 style={styles.countryCodeOption}
                                                 onPress={() => {
-                                                    updateFormData('serviceCountryCode', country.code);
-                                                    setShowServiceCountryCodePicker(false);
+                                                    updateFormData('serviceProvider', {
+                                                        name: formData.serviceProvider?.name || '',
+                                                        mailAddress: formData.serviceProvider?.mailAddress || '',
+                                                        phone: formData.serviceProvider?.phone || '',
+                                                        countryCode: country.code
+                                                    } as ServiceProviderInfo);
+                                                    setShowServiceCountryCodePicker && setShowServiceCountryCodePicker(false);
                                                 }}
                                             >
                                                 <Text style={styles.countryCodeOptionText}>
                                                     {country.flag} {country.code} ({country.country})
                                                 </Text>
-                                                {formData.serviceCountryCode === country.code && (
+                                                {formData.serviceProvider?.countryCode === country.code && (
                                                     <Icon name="check" size={20} color="#00B050" />
                                                 )}
                                             </TouchableOpacity>
@@ -500,7 +532,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 )}
 
                 {/* Show "Is sales partner same" question when hasServiceContract is YES OR interestedInServiceContract is YES */}
-                {(formData.hasServiceContract === true || formData.interestedInServiceContract === true) && (
+                {(formData.hasServiceContract === true || formData.needServiceContract === true) && (
                     <>
                         <View style={styles.divider} />
                         <Text style={styles.questionText}>
@@ -566,8 +598,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             style={styles.input}
                                             placeholder="Enter sales partner name"
                                             placeholderTextColor="#999"
-                                            value={formData.salesPartnerName}
-                                            onChangeText={(text) => updateFormData('salesPartnerName', text)}
+                                            value={formData.salesPartner?.name}
+                                            onChangeText={(text) => updateFormData('salesPartner', {
+                                                name: text,
+                                                mailAddress: formData.salesPartner?.mailAddress,
+                                                phone: formData.salesPartner?.phone,
+                                                countryCode: formData.salesPartner?.countryCode,
+                                            } as SalesPartnerInfo)}
                                         />
                                     </View>
                                     {errors.salesPartnerName && (
@@ -587,8 +624,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholderTextColor="#999"
                                             keyboardType="email-address"
                                             autoCapitalize="none"
-                                            value={formData.salesPartnerEmail}
-                                            onChangeText={(text) => updateFormData('salesPartnerEmail', text)}
+                                            value={formData.salesPartner?.mailAddress}
+                                            onChangeText={(text) => updateFormData('salesPartner', {
+                                                name: formData.salesPartner?.name,
+                                                mailAddress: text,
+                                                phone: formData.salesPartner?.phone,
+                                                countryCode: formData.salesPartner?.countryCode,
+                                            } as SalesPartnerInfo)}
                                         />
                                     </View>
                                     {errors.salesPartnerEmail && (
@@ -603,10 +645,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     <View style={showSalesCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow}>
                                         <TouchableOpacity
                                             style={styles.countryCodeButton}
-                                            onPress={() => setShowSalesCountryCodePicker(!showSalesCountryCodePicker)}
+                                            onPress={() => setShowSalesCountryCodePicker && setShowSalesCountryCodePicker(!showSalesCountryCodePicker)}
                                         >
                                             <Text style={styles.countryCodeText}>
-                                                {countryCodes.find(c => c.code === formData.salesCountryCode)?.flag} {formData.salesCountryCode}
+                                                {countryCodes.find(c => c.code === formData.salesPartner?.countryCode)?.flag} {formData.salesPartner?.countryCode}
                                             </Text>
                                             <Icon
                                                 name={showSalesCountryCodePicker ? "expand-less" : "expand-more"}
@@ -622,10 +664,15 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                 placeholderTextColor="#999"
                                                 keyboardType="phone-pad"
                                                 maxLength={15}
-                                                value={formData.salesPartnerPhone}
+                                                value={formData.salesPartner?.phone}
                                                 onChangeText={(text) => {
                                                     const cleaned = text.replace(/[^0-9]/g, '');
-                                                    updateFormData('salesPartnerPhone', cleaned);
+                                                    updateFormData('salesPartner', {
+                                                        name: formData.salesPartner?.name,
+                                                        mailAddress: formData.salesPartner?.mailAddress,
+                                                        phone: cleaned,
+                                                        countryCode: formData.salesPartner?.countryCode,
+                                                    } as SalesPartnerInfo);
                                                 }}
                                             />
                                         </View>
@@ -644,14 +691,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                         key={country.code}
                                                         style={styles.countryCodeOption}
                                                         onPress={() => {
-                                                            updateFormData('salesCountryCode', country.code);
-                                                            setShowSalesCountryCodePicker(false);
+                                                            updateFormData('salesPartner', {
+                                                                name: formData.salesPartner?.name,
+                                                                mailAddress: formData.salesPartner?.mailAddress,
+                                                                phone: formData.salesPartner?.phone,
+                                                                countryCode: country.code,
+                                                            } as SalesPartnerInfo);
+                                                            setShowSalesCountryCodePicker && setShowSalesCountryCodePicker(false);
                                                         }}
                                                     >
                                                         <Text style={styles.countryCodeOptionText}>
                                                             {country.flag} {country.code} ({country.country})
                                                         </Text>
-                                                        {formData.salesCountryCode === country.code && (
+                                                        {formData.salesPartner?.countryCode === country.code && (
                                                             <Icon name="check" size={20} color="#00B050" />
                                                         )}
                                                     </TouchableOpacity>
@@ -669,10 +721,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
             <View style={styles.card}>
                 <TouchableOpacity
                     style={styles.checkboxCard}
-                    onPress={() => updateFormData('isSystemInstalled', !formData.isSystemInstalled)}
+                    onPress={() => updateFormData('isInstalled', !formData.isInstalled)}
                 >
-                    <View style={[styles.checkbox, formData.isSystemInstalled && styles.checkboxChecked]}>
-                        {formData.isSystemInstalled && <Icon name="check" size={16} color="#fff" />}
+                    <View style={[styles.checkbox, formData.isInstalled && styles.checkboxChecked]}>
+                        {formData.isInstalled && <Icon name="check" size={16} color="#fff" />}
                     </View>
                     <View style={styles.checkboxContent}>
                         <Text style={styles.checkboxLabel}>Is your system installed ?</Text>
@@ -681,7 +733,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 </TouchableOpacity>
             </View>
 
-            {formData.isSystemInstalled && (
+            {formData.isInstalled && (
                 <>
                     <View style={styles.card}>
                         <View style={styles.cardHeader}>
@@ -694,17 +746,17 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
 
                         <TouchableOpacity
                             style={styles.featureCard}
-                            onPress={() => updateFormData('energyCheckPlus', !formData.energyCheckPlus)}
+                            onPress={() => updateFormData('EnergyCheck_plus', !formData.EnergyCheck_plus)}
                         >
-                            <View style={[styles.checkbox, formData.energyCheckPlus && styles.checkboxChecked]}>
-                                {formData.energyCheckPlus && <Icon name="check" size={16} color="#fff" />}
+                            <View style={[styles.checkbox, formData.EnergyCheck_plus && styles.checkboxChecked]}>
+                                {formData.EnergyCheck_plus && <Icon name="check" size={16} color="#fff" />}
                             </View>
                             <View style={styles.checkboxContent}>
                                 <Text style={styles.checkboxLabel}>Enable EnergyCheck Plus</Text>
                             </View>
                         </TouchableOpacity>
 
-                        {formData.energyCheckPlus && (
+                        {formData.EnergyCheck_plus && (
                             <>
                                 <Text style={styles.checkboxDescription}>
                                     We will compare the actual running hours of your XRGI® system to the expected running hours
@@ -723,8 +775,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholder="Amount in Euro per year"
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
-                                            value={formData.expectedAnnualSavings}
-                                            onChangeText={(text) => updateFormData('expectedAnnualSavings', text)}
+                                            value={formData.EnergyCheck_plus.annualSavings}
+                                            onChangeText={(text) => updateFormData('EnergyCheck_plus', {
+                                                ...formData.EnergyCheck_plus,
+                                                annualSavings: text
+                                            })}
                                         />
                                     </View>
                                 </View>
@@ -738,8 +793,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholder="Total per year"
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
-                                            value={formData.expectedCO2Savings}
-                                            onChangeText={(text) => updateFormData('expectedCO2Savings', text)}
+                                            value={formData.EnergyCheck_plus.co2Savings}
+                                            onChangeText={(text) => updateFormData('EnergyCheck_plus', {
+                                                ...formData.EnergyCheck_plus,
+                                                co2Savings: text
+                                            })}
                                         />
                                     </View>
                                 </View>
@@ -754,8 +812,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
                                             maxLength={4}
-                                            value={formData.expectedOperatingHours}
-                                            onChangeText={(text) => updateFormData('expectedOperatingHours', text)}
+                                            value={formData.EnergyCheck_plus.operatingHours}
+                                            onChangeText={(text) => updateFormData('EnergyCheck_plus', {
+                                                ...formData.EnergyCheck_plus,
+                                                operatingHours: text
+                                            })}
                                         />
                                     </View>
                                     {errors.expectedOperatingHours ? (
@@ -773,12 +834,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     <Text style={styles.label}>Industry</Text>
                                     <TouchableOpacity
                                         style={styles.pickerContainer}
-                                        onPress={() => setShowIndustryPicker(!showIndustryPicker)}
+                                        onPress={() => setShowIndustryPicker && setShowIndustryPicker(!showIndustryPicker)}
                                     >
                                         <View style={styles.pickerButton}>
                                             <Icon name="business-center" size={18} color="#999" style={styles.inputIcon} />
-                                            <Text style={formData.industry ? styles.pickerText : styles.pickerPlaceholder}>
-                                                {formData.industry || 'Select your industry'}
+                                            <Text style={formData.EnergyCheck_plus.industry ? styles.pickerText : styles.pickerPlaceholder}>
+                                                {formData.EnergyCheck_plus.industry || 'Select your industry'}
                                             </Text>
                                             <Icon
                                                 name={showIndustryPicker ? "expand-less" : "expand-more"}
@@ -797,12 +858,15 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                         idx === industries.length - 1 && styles.pickerOptionLast
                                                     ]}
                                                     onPress={() => {
-                                                        updateFormData('industry', industry);
-                                                        setShowIndustryPicker(false);
+                                                        updateFormData('EnergyCheck_plus', {
+                                                            ...formData.EnergyCheck_plus,
+                                                            industry
+                                                        });
+                                                        setShowIndustryPicker && setShowIndustryPicker(false);
                                                     }}
                                                 >
                                                     <Text style={styles.pickerOptionText}>{industry}</Text>
-                                                    {formData.industry === industry && (
+                                                    {formData.EnergyCheck_plus?.industry === industry && (
                                                         <Icon name="check" size={20} color="#00B050" />
                                                     )}
                                                 </TouchableOpacity>
@@ -823,8 +887,11 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             multiline
                                             numberOfLines={3}
                                             textAlignVertical="top"
-                                            value={formData.recipientEmails}
-                                            onChangeText={(text) => updateFormData('recipientEmails', text)}
+                                            value={formData.EnergyCheck_plus?.email}
+                                            onChangeText={(text) => updateFormData('EnergyCheck_plus', {
+                                                ...formData.EnergyCheck_plus,
+                                                email: text
+                                            })}
                                         />
                                     </View>
                                     {errors.recipientEmails && (
@@ -837,7 +904,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         )}
                     </View>
 
-                    {formData.energyCheckPlus && (
+                    {formData.EnergyCheck_plus && (
                         <View style={styles.card}>
                             <View style={styles.cardHeader}>
                                 <Icon name="calendar-today" size={24} color="#003D82" />
@@ -851,7 +918,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 onPress={() => {
                                     const newValue = !formData.distributeHoursEvenly;
                                     updateFormData('distributeHoursEvenly', newValue);
-                                    if (newValue) {
+                                    if (newValue && distributeHoursEvenly) {
                                         distributeHoursEvenly();
                                     }
                                 }}
@@ -873,7 +940,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <ScrollView style={styles.tableBody} nestedScrollEnabled>
-                                    {formData.monthlyDistribution.map((item, index) => (
+                                    {formData.EnergyCheck_plus?.monthlyDistribution?.map((item, index) => (
                                         <View key={item.month}>
                                             <View
                                                 style={[
@@ -894,7 +961,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                                 style={styles.tableInput}
                                                                 keyboardType="numeric"
                                                                 value={item.percentage}
-                                                                onChangeText={(text) => updateMonthlyPercentage(index, text)}
+                                                                onChangeText={(text) => updateMonthlyPercentage && updateMonthlyPercentage(index, text)}
                                                                 placeholder="0"
                                                             />
                                                         </View>
@@ -902,7 +969,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                     </>
                                                 )}
                                             </View>
-                                            {monthlyErrors[index] && (
+                                            {monthlyErrors && monthlyErrors[index] && (
                                                 <Text style={styles.tableErrorText}>{monthlyErrors[index]}</Text>
                                             )}
                                         </View>
@@ -912,10 +979,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 <View style={styles.tableTotalRow}>
                                     <Text style={[styles.tableTotalText, styles.monthColumn]}>Total</Text>
                                     <Text style={[styles.tableTotalText, styles.percentageColumn]}>
-                                        {calculateTotalPercentage()}
+                                        {calculateTotalPercentage?.() || '0%'}
                                     </Text>
                                     <Text style={[styles.tableTotalText, styles.hoursColumn]}>
-                                        {calculateTotalHours()}
+                                        {calculateTotalHours?.() || '0h'}
                                     </Text>
                                 </View>
                             </View>

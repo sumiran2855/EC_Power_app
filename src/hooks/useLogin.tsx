@@ -39,8 +39,10 @@ export const useLoginLogic = () => {
 
     try {
       const result = await AuthController.login(data);
-      if (result.success) {
+      if (result.response.journeyStatus === "completed") {
         (navigation as any).navigate('Home');
+      } else {
+        (navigation as any).navigate('Stepper');
       }
     } catch (error) {
       console.error('Login error:', error);

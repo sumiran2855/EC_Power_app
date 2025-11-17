@@ -8,6 +8,7 @@ export class AuthController {
   static async login(data: LoginFormData): Promise<{
     success: boolean;
     error?: string;
+    response?: any;
   }> {
     try {
       const response = await AuthHelper.ApiRequest({
@@ -29,7 +30,7 @@ export class AuthController {
           await StorageService.user.setData(user);
         }
 
-        return { success: true };
+        return { success: true , response: response.data.user };
       } else {
         return {
           success: false,

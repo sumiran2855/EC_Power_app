@@ -11,6 +11,7 @@ type HeatDistributionScreenNavigationProp = StackNavigationProp<RootStackParamLi
 
 interface HeatDistributionScreenProps {
     navigation: HeatDistributionScreenNavigationProp;
+    route: any;
 }
 
 interface TimeButton {
@@ -18,7 +19,8 @@ interface TimeButton {
     value: string;
 }
 
-const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigation }) => {
+const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigation, route }) => {
+    const system = route.params.system;
     const [selectedTime, setSelectedTime] = useState<string>('T-10s');
 
     const timeButtons: TimeButton[] = [
@@ -115,7 +117,7 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
                 {/* System Info */}
                 <View style={styles.systemInfoCard}>
                     <Text style={styles.systemTitle}>Heat Distribution Control System</Text>
-                    <Text style={styles.systemId}>Heat Distribution Control System: 2000790148</Text>
+                    <Text style={styles.systemId}>Heat Distribution Control System: {system.system.xrgiID}</Text>
                     <Text style={styles.systemSubtitle}>Heat Control Data Monitor</Text>
 
                     {/* Time Buttons - Horizontal Scrollable */}
@@ -135,10 +137,10 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
                                     ]}
                                     onPress={() => setSelectedTime(btn.label)}
                                 >
-                                    <Ionicons 
-                                        name="time-outline" 
-                                        size={16} 
-                                        color={selectedTime === btn.label ? '#3B82F6' : '#64748B'} 
+                                    <Ionicons
+                                        name="time-outline"
+                                        size={16}
+                                        color={selectedTime === btn.label ? '#3B82F6' : '#64748B'}
                                     />
                                     <Text style={[
                                         styles.timeButtonText,

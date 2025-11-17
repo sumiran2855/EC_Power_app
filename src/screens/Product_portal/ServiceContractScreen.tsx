@@ -1,6 +1,7 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import {
+    ActivityIndicator,
     ScrollView,
     StatusBar,
     Text,
@@ -12,6 +13,7 @@ import Card from '../../components/Card/Card';
 import useServiceContract from '../../hooks/Product-portal/useServiceContract';
 import styles from './ServiceContractScreen.styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Facility } from '../authScreens/types';
 
 const ServiceContractScreen: React.FC = () => {
     const {
@@ -21,6 +23,7 @@ const ServiceContractScreen: React.FC = () => {
         filterOptions,
         pendingSystems,
         activeSystems,
+        isLoading,
         setSearchQuery,
         setShowFilterModal,
         handleBackButton,
@@ -29,14 +32,10 @@ const ServiceContractScreen: React.FC = () => {
         handleFilterSelect,
     } = useServiceContract();
 
-    const renderSystemCard = (system: any) => (
+    const renderSystemCard = (system: Facility) => (
         <Card
             key={system.id}
-            item={{
-                ...system,
-                status: system.status as any,
-                serialNumber: system.systemId,
-            }}
+            item={system}
             onPress={handleCardPress}
             onDelete={handleDelete}
         />
@@ -59,7 +58,7 @@ const ServiceContractScreen: React.FC = () => {
                 <View style={styles.titleSection}>
                     <Text style={styles.title}>Service Contracts</Text>
                     <Text style={styles.subtitle}>
-                        View and manage all XRGi® systems that have an associated service partner
+                        View and manage all XRGI® systems that have an associated service partner
                     </Text>
                 </View>
 
@@ -128,35 +127,43 @@ const ServiceContractScreen: React.FC = () => {
                         )}
                     </View>
                 </View>
-
-                {pendingSystems.length > 0 && (
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>
-                            XRGi® systems requesting a service contract
-                        </Text>
-                        {pendingSystems.map(renderSystemCard)}
+                {isLoading ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#1a5490" />
+                        <Text style={styles.loadingText}>Loading facilities...</Text>
                     </View>
-                )}
+                ) : (
+                    <>
+                        {pendingSystems.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>
+                                    XRGI® systems requesting a service contract
+                                </Text>
+                                {pendingSystems.map(renderSystemCard)}
+                            </View>
+                        )}
 
-                {/* Active Systems Section */}
-                {activeSystems.length > 0 && (
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>
-                            XRGi® systems with active service contract
-                        </Text>
-                        {activeSystems.map(renderSystemCard)}
-                    </View>
-                )}
+                        {/* Active Systems Section */}
+                        {activeSystems.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>
+                                    XRGI® systems with active service contract
+                                </Text>
+                                {activeSystems.map(renderSystemCard)}
+                            </View>
+                        )}
 
-                {/* Empty State */}
-                {pendingSystems.length === 0 && activeSystems.length === 0 && (
-                    <View style={styles.emptyState}>
-                        <MaterialIcons name="search-off" size={64} color="#cbd5e1" />
-                        <Text style={styles.emptyStateTitle}>No systems found</Text>
-                        <Text style={styles.emptyStateText}>
-                            Try adjusting your search or filter criteria
-                        </Text>
-                    </View>
+                        {/* Empty State */}
+                        {pendingSystems.length === 0 && activeSystems.length === 0 && !isLoading && (
+                            <View style={styles.emptyState}>
+                                <MaterialIcons name="search-off" size={64} color="#cbd5e1" />
+                                <Text style={styles.emptyStateTitle}>No XRGI® systems found</Text>
+                                <Text style={styles.emptyStateText}>
+                                    Try adjusting your search or filter criteria
+                                </Text>
+                            </View>
+                        )}
+                    </>
                 )}
 
                 <View style={styles.bottomSpacer} />

@@ -51,62 +51,64 @@ export interface EnergyCheckPlusInfo {
     operatingHours?: string;
     industry?: string;
     email?: string;
-    monthlyDistribution?: MonthlyDistribution;
+    monthlyDistribution?: MonthlyDistribution[];
 }
 
 export interface MonthlyDistribution {
-    january: string;
-    february: string;
-    march: string;
-    april: string;
-    may: string;
-    june: string;
-    july: string;
-    august: string;
-    september: string;
-    october: string;
-    november: string;
-    december: string;
+    month: string;
+    percentage: string;
+    hours: string;
+    editable?: boolean;
 }
 
 export type SmartPriceControlInfo = {
     method?: 'On_Site_Visit' | 'as_soon_as_possible' | '';
 }
 
-export type StepperFormProps = {
-    formData: FormData;
-    updateFormData: (field: keyof FormData, value: any) => void;
-    showCountryCodePicker: boolean;
-    setShowCountryCodePicker: (show: boolean) => void;
-    showContactCountryCodePicker: boolean;
-    setShowContactCountryCodePicker: (show: boolean) => void;
-    showServiceCountryCodePicker: boolean;
-    setShowServiceCountryCodePicker: (show: boolean) => void;
-    showSalesCountryCodePicker: boolean;
-    setShowSalesCountryCodePicker: (show: boolean) => void;
-    showModelPicker: boolean;
-    setShowModelPicker: (show: boolean) => void;
-    showIndustryPicker: boolean;
-    setShowIndustryPicker: (show: boolean) => void;
-    showCountryPicker: boolean;
-    setShowCountryPicker: (show: boolean) => void;
-    monthlyErrors: string[];
-    totalPercentageError: string;
-    updateMonthlyPercentage: (index: number, value: string) => void;
-    distributeHoursEvenly: () => void;
-    calculateTotalHours: () => string;
-    calculateTotalPercentage: () => string;
-    validateMonthHours: (hours: number, index: number) => void;
-    validateTotalPercentage: () => void;
-    onNext: () => void;
-    onBack: () => void;
-    onSaveForLater: () => void;
+export type StepperFormSharedProps = {
+    updateFormData: (...args: any[]) => void,
+    showCountryCodePicker: boolean,
+    setShowCountryCodePicker: React.Dispatch<React.SetStateAction<boolean>>,
+    showContactCountryCodePicker?: boolean,
+    setShowContactCountryCodePicker?: React.Dispatch<React.SetStateAction<boolean>>,
+    showServiceCountryCodePicker?: boolean,
+    setShowServiceCountryCodePicker?: React.Dispatch<React.SetStateAction<boolean>>,
+    showSalesCountryCodePicker?: boolean,
+    setShowSalesCountryCodePicker?: React.Dispatch<React.SetStateAction<boolean>>,
+    showModelPicker?: boolean,
+    setShowModelPicker?: React.Dispatch<React.SetStateAction<boolean>> | undefined,
+    showIndustryPicker?: boolean,
+    setShowIndustryPicker?: React.Dispatch<React.SetStateAction<boolean>> | undefined,
+    showCountryPicker?: boolean,
+    setShowCountryPicker?: React.Dispatch<React.SetStateAction<boolean>> | undefined,
+    monthlyErrors?: string[],
+    totalPercentageError?: string,
+    updateMonthlyPercentage?: (idx: number, value: string) => void,
+    distributeHoursEvenly?: () => void,
+    calculateTotalHours?: () => string,
+    calculateTotalPercentage?: () => string,
+    validateMonthHours?: (hours: number, index: number) => void,
+    validateTotalPercentage?: () => void,
+    errors: Record<string, string>,
+    onNext: () => void,
+    onBack: () => void,
+    onSaveForLater?: () => void,
 };
 
-export type StepProps = Omit<StepperFormProps, 'formData' | 'updateFormData'> & {
+export interface ProfileStepProps extends StepperFormSharedProps {
+    formData: ICustomer;
+    updateFormData: (field: keyof ICustomer, value: ICustomer[keyof ICustomer]) => void;
+}
+
+export interface SystemRegisterStepProps extends StepperFormSharedProps {
     formData: FormData;
-    updateFormData: (field: keyof FormData, value: any) => void;
-};
+    updateFormData: (field: keyof FormData, value: FormData[keyof FormData]) => void;
+}
+
+export interface SmartPriceStepProps extends StepperFormSharedProps {
+    formData: FormData;
+    updateFormData: (field: keyof FormData, value: FormData[keyof FormData]) => void;
+}
 
 export const countryCodes = [
     { code: '+45', country: 'DK', flag: '🇩🇰' },
@@ -161,4 +163,66 @@ export type RegisterFormData = {
     password: string;
     group?: string;
     role?: string;
+}
+
+export interface UserData {
+    id: string;
+    email: string;
+    role: string;
+    group: string;
+    status: string;
+}
+
+export interface Facility {
+    id: string;
+    name: string;
+    xrgiID: string;
+    status: 'Active' | 'Inactive' | 'Data Missing';
+    modelNumber?: string;
+    location?: LocationInfo;
+    hasEnergyCheckPlus?: boolean;
+    isInstalled?: boolean;
+    hasServiceContract?: boolean;
+    needServiceContract?: boolean;
+    salesPartner?: SalesPartnerInfo;
+    serviceProvider?: ServiceProviderInfo;
+    DaSigned?: boolean;
+    energyCheckPlus?: EnergyCheckPlusInfo;
+    smartPriceControl?: SmartPriceControlInfo;
+    installedSmartPriceController?: boolean;
+    distributeHoursEvenly?: boolean;
+}
+
+export interface ICustomer {
+    name: string;
+    email?: string;
+    phone_number: string;
+    journeyStatus: string;
+    companyInfo: companyInfo;
+    contactPerson: contactPerson;
+    status?: string;
+    group?: string;
+    type?: string;
+    role?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type companyInfo = {
+    name?: string;
+    cvrNumber: string;
+    address: string;
+    city: string;
+    postal_code: string;
+    email: string;
+    countryCode?: string;
+    phone: string;
+}
+
+export type contactPerson = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    countryCode?: string;
+    phone: string;
 }

@@ -17,13 +17,14 @@ interface DataRowProps {
 }
 
 const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigation, route }) => {
+    const { system } = route.params;
     const {
         callData,
         expandedIncidents,
         handleBackButton,
         toggleIncident,
         navigateToHeatDistribution: HandleHeatDistribution
-    } = useCallDetailsResult(navigation);
+    } = useCallDetailsResult(navigation, route);
 
     const DataRow: React.FC<DataRowProps> = ({ label, value, valueColor }) => (
         <View style={styles.dataRow}>
@@ -50,7 +51,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                         <Ionicons name="list" size={20} color="#3B82F6" />
                         <Text style={styles.titleText}>Call details</Text>
                     </View>
-                    <Text style={styles.serialNumber}>{callData.serialNumber} - {callData.systemName}</Text>
+                    <Text style={styles.serialNumber}>{system.xrgiID} - {system.modelNumber}</Text>
 
                     <TouchableOpacity style={styles.distributorCard} onPress={HandleHeatDistribution}>
                         <View style={styles.distributorIcon}>

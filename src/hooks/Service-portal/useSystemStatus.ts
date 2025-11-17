@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { SystemController } from '@/controllers/SystemController';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface StatusItem {
     icon: 'checkmark-circle' | 'stop-circle' | 'alert-circle' | 'call-outline' | 'pause-circle' | 'flask' | 'construct' | 'time';
@@ -15,85 +16,105 @@ interface UseSystemStatusReturn {
     totalUnits: number;
     getStatsBarData: () => Array<{ color: string; percentage: number }>;
     getCardRows: () => StatusItem[][];
+    loading: boolean;
+    apiData: any;
 }
 
 const useSystemStatus = (): UseSystemStatusReturn => {
+    const [apiData, setApiData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
     const statusData: StatusItem[] = [
         {
             icon: 'checkmark-circle',
-            count: 1202,
+            count: apiData?.ok || 0,
             label: 'Operating Normal',
             color: '#3B82F6',
             bgColor: '#EFF6FF',
-            percentage: 65,
+            percentage: apiData ? ((apiData.ok / apiData.total) * 100) : 0,
             trend: 'up'
         },
         {
             icon: 'stop-circle',
-            count: 6601,
+            count: apiData?.fullstop || 0,
             label: 'Full Stop',
             color: '#EF4444',
             bgColor: '#FEF2F2',
-            percentage: 85,
+            percentage: apiData ? ((apiData.fullstop / apiData.total) * 100) : 0,
             trend: 'down'
         },
         {
             icon: 'alert-circle',
-            count: 1202,
+            count: apiData?.alarmstop || 0,
             label: 'Alarm Stop',
             color: '#F59E0B',
             bgColor: '#FFFBEB',
-            percentage: 45,
+            percentage: apiData ? ((apiData.alarmstop / apiData.total) * 100) : 0,
             trend: 'up'
         },
         {
             icon: 'call-outline',
-            count: 6601,
+            count: apiData?.notcalled || 0,
             label: 'Stopped Calling',
             color: '#8B5CF6',
             bgColor: '#F5F3FF',
-            percentage: 72,
+            percentage: apiData ? ((apiData.notcalled / apiData.total) * 100) : 0,
             trend: 'neutral'
         },
         {
             icon: 'pause-circle',
-            count: 1202,
+            count: apiData?.standby || 0,
             label: 'Standby Mode',
             color: '#EC4899',
             bgColor: '#FDF2F8',
-            percentage: 38,
+            percentage: apiData ? ((apiData.standby / apiData.total) * 100) : 0,
             trend: 'down'
         },
         {
             icon: 'flask',
-            count: 6601,
+            count: apiData?.testsites || 0,
             label: 'Test System',
             color: '#14B8A6',
             bgColor: '#F0FDFA',
-            percentage: 90,
+            percentage: apiData ? ((apiData.testsites / apiData.total) * 100) : 0,
             trend: 'up'
         },
         {
             icon: 'construct',
-            count: 1202,
+            count: apiData?.underinstallation || 0,
             label: 'Under Installation',
             color: '#06B6D4',
             bgColor: '#ECFEFF',
-            percentage: 55,
+            percentage: apiData ? ((apiData.underinstallation / apiData.total) * 100) : 0,
             trend: 'neutral'
         },
         {
             icon: 'time',
-            count: 6601,
+            count: apiData?.parked || 0,
             label: 'Waiting Position',
             color: '#6366F1',
             bgColor: '#EEF2FF',
-            percentage: 68,
+            percentage: apiData ? ((apiData.parked / apiData.total) * 100) : 0,
             trend: 'up'
         },
     ];
 
-    const totalUnits = statusData.reduce((sum, item) => sum + item.count, 0);
+    const totalUnits = apiData?.total || 0;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await SystemController.GetSystemStatus();
+                setApiData(data);
+            } catch (error) {
+                console.error("Error fetching system status:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const getStatsBarData = useCallback(() => {
         return statusData.map(item => ({
@@ -115,6 +136,8 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         totalUnits,
         getStatsBarData,
         getCardRows,
+        loading,
+        apiData,
     };
 };
 

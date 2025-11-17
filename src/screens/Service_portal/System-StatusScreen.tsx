@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
@@ -79,6 +79,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
     totalUnits,
     getStatsBarData,
     getCardRows,
+    loading,
   } = useSystemStatus();
 
   const handleBackButton = () => {
@@ -86,6 +87,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
   };
 
   return (
+
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
@@ -107,59 +109,68 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
           </Text>
         </View>
 
-        {/* Statistics Card */}
-        <View style={styles.statsCard}>
-          <View style={styles.statsHeader}>
-            <Text style={styles.statsTitle}>TOTAL ACTIVE UNITS</Text>
-            <View style={styles.liveBadge}>
-              <View style={styles.liveDot} />
-              <Text style={styles.liveBadgeText}>Live</Text>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#1a5490" />
+            <Text style={styles.loadingText}>Loading facilities...</Text>
+          </View>
+        ) : (
+          <>
+            {/* Statistics Card */}
+            <View style={styles.statsCard}>
+              <View style={styles.statsHeader}>
+                <Text style={styles.statsTitle}>TOTAL ACTIVE UNITS</Text>
+                <View style={styles.liveBadge}>
+                  <View style={styles.liveDot} />
+                  <Text style={styles.liveBadgeText}>Live</Text>
+                </View>
+              </View>
+
+              <View style={styles.totalContainer}>
+                <Text style={styles.totalNumber}>{totalUnits.toLocaleString()}</Text>
+                <Text style={styles.totalLabel}>units</Text>
+              </View>
+
+              <View style={styles.statsBar}>
+                {getStatsBarData().map((item, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.statsBarSegment,
+                      { width: `${item.percentage}%`, backgroundColor: item.color }
+                    ]}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
 
-          <View style={styles.totalContainer}>
-            <Text style={styles.totalNumber}>{totalUnits.toLocaleString()}</Text>
-            <Text style={styles.totalLabel}>units</Text>
-          </View>
+            {/* Section Header */}
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Status Overview</Text>
+            </View>
 
-          <View style={styles.statsBar}>
-            {getStatsBarData().map((item, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.statsBarSegment,
-                  { width: `${item.percentage}%`, backgroundColor: item.color }
-                ]}
-              />
-            ))}
-          </View>
-        </View>
-
-        {/* Section Header */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Status Overview</Text>
-        </View>
-
-        {/* Status Grid */}
-        <View style={styles.grid}>
-          {getCardRows().map((row, rowIndex) => (
-            <View key={rowIndex} style={styles.gridRow}>
-              {row.map((item, index) => (
-                <StatusCard
-                  key={`${rowIndex}-${index}`}
-                  icon={item.icon}
-                  count={item.count}
-                  label={item.label}
-                  color={item.color}
-                  bgColor={item.bgColor}
-                  percentage={item.percentage}
-                  trend={item.trend}
-                  onPress={() => console.log(`${item.label} pressed`)}
-                />
+            {/* Status Grid */}
+            <View style={styles.grid}>
+              {getCardRows().map((row, rowIndex) => (
+                <View key={rowIndex} style={styles.gridRow}>
+                  {row.map((item, index) => (
+                    <StatusCard
+                      key={`${rowIndex}-${index}`}
+                      icon={item.icon}
+                      count={item.count}
+                      label={item.label}
+                      color={item.color}
+                      bgColor={item.bgColor}
+                      percentage={item.percentage}
+                      trend={item.trend}
+                      onPress={() => console.log(`${item.label} pressed`)}
+                    />
+                  ))}
+                </View>
               ))}
             </View>
-          ))}
-        </View>
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

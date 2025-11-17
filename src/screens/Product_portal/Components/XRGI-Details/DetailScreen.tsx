@@ -56,13 +56,13 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     <View style={styles.divider} />
                     <View style={styles.infoRow}>
                         <Text style={styles.label}>Serial Number</Text>
-                        <Text style={styles.value}>{item.serialNumber || 'N/A'}</Text>
+                        <Text style={styles.value}>{item.xrgiID || 'N/A'}</Text>
                     </View>
                 </View>
 
                 {/* Model Section */}
                 <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Model XRGi® {item.model || '15 LOWNOX'}</Text>
+                    <Text style={styles.sectionTitle}>Model - {item.modelNumber || 'N/A'}</Text>
                     <View style={styles.imageContainer}>
                         <View style={styles.imagePlaceholder}>
                             <Image
@@ -86,23 +86,33 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     <View style={styles.dataGrid}>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Annual Savings</Text>
-                            <Text style={styles.dataValue}>20000</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.annualSavings || 'N/A'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Annual CO₂ savings</Text>
-                            <Text style={styles.dataValue}>1230</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.co2Savings || 'N/A'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Operating hours per year</Text>
-                            <Text style={styles.dataValue}>1200 hrs</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.operatingHours || 'N/A'} hrs</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Industry</Text>
-                            <Text style={styles.dataValue}>School</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.industry || 'N/A'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Contact</Text>
-                            <Text style={[styles.dataValue, styles.email]}>martin@yopmail.com</Text>
+                            <View style={styles.emailContainer}>
+                                {item.EnergyCheck_plus.email ? (
+                                    item.EnergyCheck_plus.email.split(',').map((email: string, index: number) => (
+                                        <Text key={index} style={[styles.dataValue, styles.email]}>
+                                            {email.trim()}
+                                        </Text>
+                                    ))
+                                ) : (
+                                    <Text style={[styles.dataValue, styles.email]}>N/A</Text>
+                                )}
+                            </View>
                         </View>
                     </View>
                 </View>

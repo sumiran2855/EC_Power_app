@@ -1,14 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-type XRGISystem = {
-    id: string;
-    name: string;
-    systemId: string;
-    status: 'pending' | 'active' | 'inactive' | 'data-missing';
-    image?: string;
-};
+import { Alert } from 'react-native';
+import StorageService from '@/utils/secureStorage';
+import { RegisterController } from '@/controllers/RegisterController';
+import { Facility, UserData } from '@/screens/authScreens/types';
 
 type RootStackParamList = {
     XRGI_System: undefined;
@@ -22,62 +18,80 @@ const useServiceContract = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedFilter, setSelectedFilter] = useState<string>('All');
     const [showFilterModal, setShowFilterModal] = useState(false);
-
-    // Mock data - updated with matching statuses
-    const systems: XRGISystem[] = [
-        { id: '1', name: 'Sumiran S01', systemId: '2100770084', status: 'pending' },
-        { id: '2', name: 'Sumiran S02', systemId: '2100770084', status: 'pending' },
-        { id: '3', name: 'Sumiran S03', systemId: '2100770084', status: 'pending' },
-        { id: '4', name: 'Sumiran S04', systemId: '2100770084', status: 'pending' },
-        { id: '5', name: 'Martin S01', systemId: '2100770085', status: 'active' },
-        { id: '6', name: 'Martin S02', systemId: '2100770086', status: 'active' },
-        { id: '7', name: 'Wilson S01', systemId: '2100770087', status: 'active' },
-    ];
+    const [systems, setSystems] = useState<Facility[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const filterOptions = [
         { label: 'All', value: 'All' },
-        { label: 'Active', value: 'Active' },
-        { label: 'Pending', value: 'Pending' },
+        { label: 'Has Service Contract', value: 'Active' },
+        { label: 'Requested', value: 'Pending' },
     ];
 
-    // Filter and search logic
+    useEffect(() => {
+        const fetchSystems = async () => {
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const userData = await StorageService.user.getData<UserData>();
+                if (!userData?.id) {
+                    setIsLoading(false);
+                    return;
+                }
+                const response = await RegisterController.GetFacilityList(userData.id);
+                const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                    name: facility.name,
+                    status: facility.hasServiceContract ? 'active' : 'pending',
+                    xrgiID: facility.xrgiID,
+                    hasServiceContract: facility.hasServiceContract,
+                })) : [];
+                setSystems(transformedData);
+            } catch (err: any) {
+                console.error('Error fetching systems:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchSystems();
+    }, []);
+
     const filteredSystems = useMemo(() => {
         let filtered = systems;
 
-        // Apply filter
         if (selectedFilter !== 'All') {
-            const statusMap: Record<string, XRGISystem['status'] | null> = {
-                'All': null,
-                'Active': 'active',
-                'Pending': 'pending',
+            const statusMap: Record<string, boolean> = {
+                'Active': true,
+                'Pending': false,
             };
-            const mappedStatus = statusMap[selectedFilter];
-            if (mappedStatus) {
-                filtered = filtered.filter(system => system.status === mappedStatus);
+
+            if (selectedFilter in statusMap) {
+                const mappedStatus = statusMap[selectedFilter];
+                filtered = filtered.filter(system => system.hasServiceContract === mappedStatus);
             }
         }
 
-        // Apply search
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase();
             filtered = filtered.filter(
                 system =>
                     system.name.toLowerCase().includes(query) ||
-                    system.systemId.includes(query)
+                    system.xrgiID.toLowerCase().includes(query)
             );
         }
 
         return filtered;
-    }, [searchQuery, selectedFilter]);
+    }, [searchQuery, selectedFilter, systems]);
+
 
     // Separate systems by status
-    const pendingSystems = useMemo(() => 
-        filteredSystems.filter(s => s.status === 'pending'), 
+    const pendingSystems = useMemo(() =>
+        filteredSystems.filter(s => s.hasServiceContract === false),
         [filteredSystems]
     );
-    
-    const activeSystems = useMemo(() => 
-        filteredSystems.filter(s => s.status === 'active'), 
+    const activeSystems = useMemo(() =>
+        filteredSystems.filter(s => s.hasServiceContract === true),
         [filteredSystems]
     );
 
@@ -90,7 +104,20 @@ const useServiceContract = () => {
     };
 
     const handleDelete = (id: string) => {
-        console.log('Delete system:', id);
+        Alert.alert(
+            'Delete System',
+            'Are you sure you want to remove this system?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                        setSystems(prev => prev.filter(s => s.xrgiID !== id));
+                    },
+                },
+            ]
+        );
     };
 
     const handleFilterSelect = (filterValue: string) => {
@@ -103,12 +130,14 @@ const useServiceContract = () => {
         searchQuery,
         selectedFilter,
         showFilterModal,
-        
+        isLoading,
+        error,
+
         // Data
         filterOptions,
         pendingSystems,
         activeSystems,
-        
+
         // Handlers
         setSearchQuery,
         setShowFilterModal,

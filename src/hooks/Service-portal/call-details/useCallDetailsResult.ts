@@ -48,7 +48,8 @@ interface UseCallDetailsResultReturn {
     navigateToHeatDistribution: () => void;
 }
 
-const useCallDetailsResult = (navigation: any): UseCallDetailsResultReturn => {
+const useCallDetailsResult = (navigation: any, route: any): UseCallDetailsResultReturn => {
+    const system = route.params;
     const [expandedIncidents, setExpandedIncidents] = useState<{ [key: string]: boolean }>({});
 
     // Sample data - replace with your actual data
@@ -110,7 +111,7 @@ const useCallDetailsResult = (navigation: any): UseCallDetailsResultReturn => {
     };
 
     const navigateToHeatDistribution = () => {
-        navigation.navigate('HeatDistribution');
+        navigation.navigate('HeatDistribution', { system });
     };
 
     return {

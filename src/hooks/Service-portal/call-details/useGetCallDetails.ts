@@ -1,8 +1,10 @@
+import { Facility } from '@/screens/authScreens/types';
 import { useState, useCallback } from 'react';
 import { Platform } from 'react-native';
 
 export interface UseCallDetailsScreenProps {
     navigation: any;
+    route: any;
 }
 
 export interface FormattedDates {
@@ -10,6 +12,7 @@ export interface FormattedDates {
     toDate: string;
     fromDateObject: Date;
     toDateObject: Date;
+    system: Facility;
 }
 
 interface UseCallDetailsScreenReturn {
@@ -33,7 +36,8 @@ interface UseCallDetailsScreenReturn {
     handleNavigate: (formattedDates: FormattedDates) => void;
 }
 
-const useCallDetailsScreen = ({ navigation }: UseCallDetailsScreenProps): UseCallDetailsScreenReturn => {
+const useCallDetailsScreen = ({ navigation, route }: UseCallDetailsScreenProps): UseCallDetailsScreenReturn => {
+    const { system } = route.params;
     const [fromDate, setFromDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); // Sept 19, 2025
     const [toDate, setToDate] = useState<Date>(new Date(2026, 8, 19, 0, 0)); // Sept 19, 2026
     const [showFromDatePicker, setShowFromDatePicker] = useState(false);
@@ -72,9 +76,10 @@ const useCallDetailsScreen = ({ navigation }: UseCallDetailsScreenProps): UseCal
             fromDate: formattedFromDate,
             toDate: formattedToDate,
             fromDateObject: fromDate,
-            toDateObject: toDate
+            toDateObject: toDate,
+            system
         };
-    }, [fromDate, toDate, formatDateTime]);
+    }, [fromDate, toDate, formatDateTime, system]);
 
     const handleNavigate = useCallback((formattedDates: FormattedDates) => {
         navigation.navigate('CallDetailsResult', formattedDates);

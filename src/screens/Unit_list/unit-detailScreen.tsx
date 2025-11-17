@@ -8,9 +8,11 @@ import useUnitDetail from '../../hooks/Unit-list/useUnitDetail';
 
 interface UnitDetailScreenProps {
     navigation: any;
+    route: any;
 }
 
-const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
+const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }) => {
+    const system = route.params?.system;
     const {
         // State
         isStarting,
@@ -314,7 +316,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation }) => {
                     </View>
                     <View style={styles.unitIdContent}>
                         <Text style={styles.unitIdLabel}>XRGI ID</Text>
-                        <Text style={styles.unitIdNumber}>1470167385 / XRGI® 25</Text>
+                        <Text style={styles.unitIdNumber}>{system?.xrgiID} / {system?.modelNumber}</Text>
                     </View>
                     {systemStatus === 'running' && (
                         <View style={styles.statusBadge}>

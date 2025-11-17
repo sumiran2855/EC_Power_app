@@ -10,15 +10,16 @@ interface StatisticsResultScreenProps {
     route: any;
 }
 
-const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = () => {
+const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }) => {
     const {
         callsData,
         fromDate,
         toDate,
+        system,
         handleBackButton,
         getStatusColor,
         getStatusBackground
-    } = useStatisticsResult();
+    } = useStatisticsResult(route);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,7 +40,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = () => {
                         </View>
                         <Text style={styles.title}>Statistics Results</Text>
                     </View>
-                    <Text style={styles.subtitle}>1470167385 - XRGI® 25</Text>
+                    <Text style={styles.subtitle}>{system?.xrgiID} - {system?.modelNumber}</Text>
                     <Text style={styles.description}>
                         Click on the system for which you want to generate an operational analysis
                     </Text>

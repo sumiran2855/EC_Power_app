@@ -36,7 +36,6 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
     handleForgotPassword,
     handleCreateAccount,
     togglePasswordVisibility,
-    toggleRememberMe,
     handleLanguageChange,
     getErrorMessage,
   } = useLoginLogic();

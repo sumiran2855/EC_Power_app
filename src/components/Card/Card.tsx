@@ -1,18 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './Card.styles';
+import { Facility } from '@/screens/authScreens/types';
 
 type Status = 'Active' | 'Inactive' | 'Data Missing' | 'pending' | 'active';
 
 interface CardProps {
-  item: {
-    id: string;
-    name: string;
-    status: Status;
-    serialNumber?: string;
-    systemId?: string;
-  };
+  item: Facility;
   onPress: (item: any) => void;
   onDelete?: (id: string) => void;
   showDeleteButton?: boolean;
@@ -27,7 +22,7 @@ const Card: React.FC<CardProps> = ({
   const getStatusStyles = () => {
     switch (item.status) {
       case 'Active':
-      case 'active':
+      case 'Active':
         return {
           container: styles.statusBadgeActive,
           text: styles.activeStatusText,
@@ -37,7 +32,7 @@ const Card: React.FC<CardProps> = ({
           container: styles.statusBadgeInactive,
           text: styles.inactiveStatusText,
         };
-      case 'pending':
+      case 'Data Missing':
         return {
           container: styles.statusBadgePending,
           text: styles.statusTextPending,
@@ -51,7 +46,7 @@ const Card: React.FC<CardProps> = ({
   };
 
   const statusStyles = getStatusStyles();
-  const displayStatus = item.status === 'pending' ? 'Pending' : item.status;
+  const displayStatus = item.status === 'Data Missing' ? 'Data Missing' : item.status;
 
   return (
     <TouchableOpacity
@@ -79,7 +74,7 @@ const Card: React.FC<CardProps> = ({
 
           <Text style={styles.cardName}>{item.name}</Text>
           <Text style={styles.cardSerial}>
-            {item.serialNumber || item.systemId || 'N/A'}
+            {item.xrgiID || 'N/A'}
           </Text>
         </View>
 

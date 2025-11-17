@@ -93,7 +93,7 @@ export const useSignupLogic = () => {
       };
       const result = await AuthController.verify(verificationData);
       if (result.success) {
-        navigation.navigate('Stepper' as never);
+        navigation.navigate('Login' as never);
       }
     } catch (error) {
       console.error('Verification error:', error);

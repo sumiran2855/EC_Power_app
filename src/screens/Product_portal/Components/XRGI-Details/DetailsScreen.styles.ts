@@ -126,6 +126,9 @@ const styles = StyleSheet.create({
     email: {
         color: '#3b82f6',
     },
+    emailContainer: {
+        flex: 1,
+    },
     energyHeader: {
         marginBottom: 24,
     },

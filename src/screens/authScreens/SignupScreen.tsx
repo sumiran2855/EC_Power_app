@@ -1,14 +1,14 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import {
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    ScrollView,
-    KeyboardAvoidingView,
-    Platform,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSignupLogic } from '../../hooks/useSignup';
@@ -164,24 +164,6 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
             <Text style={styles.dropdownArrow}>▼</Text>
           </TouchableOpacity>
 
-          {showCountryPicker && (
-            <ScrollView 
-              style={styles.countryDropdown}
-              nestedScrollEnabled={true}
-              keyboardShouldPersistTaps="handled"
-            >
-              {countryCodes.map((country: { value: string; label: string }) => (
-                <TouchableOpacity
-                  key={country.value}
-                  style={styles.countryOption}
-                  onPress={() => handleCountryCodeSelect(country.value)}
-                >
-                  <Text style={styles.countryOptionText}>{country.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          )}
-
           <Controller
             control={signupControl}
             name="phoneNumber"
@@ -203,6 +185,27 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
             )}
           />
         </View>
+
+        {showCountryPicker && (
+          <View style={styles.countryDropdownWrapper}>
+            <ScrollView
+              style={styles.countryDropdown}
+              nestedScrollEnabled={true}
+              keyboardShouldPersistTaps="handled"
+            >
+              {countryCodes.map((country: { value: string; label: string }) => (
+                <TouchableOpacity
+                  key={country.value}
+                  style={styles.countryOption}
+                  onPress={() => handleCountryCodeSelect(country.value)}
+                >
+                  <Text style={styles.countryOptionText}>{country.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
         {signupErrors.phoneNumber && (
           <Text style={styles.errorText}>{getSignupErrorMessage('phoneNumber')}</Text>
         )}

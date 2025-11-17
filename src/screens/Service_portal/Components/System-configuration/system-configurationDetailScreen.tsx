@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface SystemConfigurationDetailScreenProps {
     navigation: any;
+    route: any;
 }
 
 interface ConfigDetail {
@@ -19,7 +20,8 @@ interface ConfigItem {
     details?: ConfigDetail[];
 }
 
-const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenProps> = ({ navigation }) => {
+const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenProps> = ({ navigation, route }) => {
+    const { system } = route.params;
     const [expandedId, setExpandedId] = useState<string | null>(null);
 
     const configurations: ConfigItem[] = [
@@ -124,7 +126,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
                 </View>
                 <View style={styles.titleContent}>
                     <Text style={styles.title}>System Configuration</Text>
-                    <Text style={styles.configId}>1470167385</Text>
+                    <Text style={styles.configId}>{system.xrgiID}</Text>
                     <Text style={styles.description}>
                         The list below contains system configurations, showing the latest first.
                     </Text>
