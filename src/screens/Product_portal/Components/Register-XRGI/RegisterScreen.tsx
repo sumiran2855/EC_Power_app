@@ -1,15 +1,25 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TermsAndConditionsModal from '../../../../components/Modals/TermsAndConditionsModal';
 import { FACILITY_TERMS_DATA } from '../../../../constants/facilityTermsConstants';
 import useRegisterForm from '../../../../hooks/useRegisterForm';
+import { RootStackParamList } from '../../../../navigation/AppNavigator';
 import { country, countryCodes, industries, models } from '../../../authScreens/types';
 import styles from './RegisterScreen.styles';
 
+type RegisterScreenRouteProp = RouteProp<RootStackParamList, 'Register'>;
+type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
-const RegisterScreen: React.FC = () => {
+interface RegisterScreenProps {
+  route: RegisterScreenRouteProp;
+  navigation: RegisterScreenNavigationProp;
+}
+
+const RegisterScreen: React.FC<RegisterScreenProps> = ({ route }) => {
   const Icon = MaterialIcons;
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
@@ -47,7 +57,7 @@ const RegisterScreen: React.FC = () => {
     inputValues,
     hasServiceContractChoice,
     needServiceContractChoice,
-  } = useRegisterForm();
+  } = useRegisterForm(route);
 
   const handleAddFacilityClick = () => {
     setIsTermsModalOpen(true);
@@ -952,8 +962,9 @@ const RegisterScreen: React.FC = () => {
             style={styles.buttonPrimary}
             onPress={handleAddFacilityClick}
           >
-            <Text style={styles.buttonPrimaryText}>Add Facility</Text>
-            <Icon name="add-circle-outline" size={20} color="#fff" />
+            <Text style={styles.buttonPrimaryText}>
+              {route?.params?.editMode ? 'Save Changes' : 'Add Facility'}
+            </Text>
           </TouchableOpacity>
         </View>
 

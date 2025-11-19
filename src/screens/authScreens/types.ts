@@ -51,7 +51,7 @@ export interface EnergyCheckPlusInfo {
     operatingHours?: string;
     industry?: string;
     email?: string;
-    monthlyDistribution?: MonthlyDistribution[];
+    monthlyDistribution?: MonthlyDistribution[] | { [key: string]: string };
 }
 
 export interface MonthlyDistribution {
@@ -191,6 +191,7 @@ export interface Facility {
     smartPriceControl?: SmartPriceControlInfo;
     installedSmartPriceController?: boolean;
     distributeHoursEvenly?: boolean;
+    EnergyCheck_plus?: EnergyCheckPlusInfo;
 }
 
 export interface ICustomer {

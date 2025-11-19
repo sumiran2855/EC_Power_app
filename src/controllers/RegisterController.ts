@@ -20,7 +20,24 @@ export class RegisterController {
             console.log("Error adding facility", error);
         }
     }
-    
+
+    static async UpdateFacility(formData: FormData, facilityId: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `create-facility?id=${facilityId}`,
+                method: 'POST',
+                body: formData,
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log("Error updating facility", error);
+        }
+    }
+
     static async GetFacilityList(userId: string) {
         const { authToken, idToken } = await StorageService.auth.getTokens();
         try {

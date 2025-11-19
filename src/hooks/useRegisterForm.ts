@@ -1,12 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { FormData } from '../screens/authScreens/types';
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type RegisterScreenRouteProp = RouteProp<RootStackParamList, 'Register'>;
 
-const useRegisterForm = () => {
+const useRegisterForm = (route?: RegisterScreenRouteProp) => {
     const navigation = useNavigation<RegisterScreenNavigationProp>();
     const [formData, setFormData] = useState<FormData>({
         id: '',
@@ -39,7 +40,27 @@ const useRegisterForm = () => {
             isSameAsServiceProvider: false
         },
         isSalesPartnerSame: false,
-        EnergyCheck_plus: undefined,
+        EnergyCheck_plus: {
+            annualSavings: '',
+            co2Savings: '',
+            operatingHours: '',
+            industry: '',
+            email: '',
+            monthlyDistribution: {
+                january: '0',
+                february: '0',
+                march: '0',
+                april: '0',
+                may: '0',
+                june: '0',
+                july: '0',
+                august: '0',
+                september: '0',
+                october: '0',
+                november: '0',
+                december: '0'
+            }
+        },
         hasEnergyCheckPlus: false,
         smartPriceControl: undefined,
         installedSmartPriceController: false,
@@ -52,6 +73,102 @@ const useRegisterForm = () => {
     // Track if user has made a choice for service contract (for UI purposes)
     const [hasServiceContractChoice, setHasServiceContractChoice] = useState<boolean | null>(null);
     const [needServiceContractChoice, setNeedServiceContractChoice] = useState<boolean | null>(null);
+
+    // Handle edit mode - populate form data when facility is provided
+    useEffect(() => {
+        if (route?.params?.editMode && route?.params?.facilityData) {
+            const facility = route.params.facilityData;
+            
+            // Convert facility data to form format
+            const editFormData: FormData = {
+                id: facility.id || '',
+                name: facility.name || '',
+                location: {
+                    address: facility.location?.address || '',
+                    postalCode: facility.location?.postalCode || '',
+                    city: facility.location?.city || '',
+                    country: facility.location?.country || ''
+                },
+                status: facility.status || '',
+                xrgiID: facility.xrgiID || '',
+                modelNumber: facility.modelNumber || '',
+                userID: '',
+                DaSigned: facility.DaSigned || false,
+                hasServiceContract: facility.hasServiceContract || false,
+                needServiceContract: facility.needServiceContract || false,
+                distributeHoursEvenly: facility.distributeHoursEvenly || false,
+                serviceProvider: {
+                    name: facility.serviceProvider?.name || '',
+                    mailAddress: facility.serviceProvider?.mailAddress || '',
+                    phone: facility.serviceProvider?.phone || '',
+                    countryCode: facility.serviceProvider?.countryCode || '+45'
+                },
+                salesPartner: {
+                    name: facility.salesPartner?.name || '',
+                    mailAddress: facility.salesPartner?.mailAddress || '',
+                    phone: facility.salesPartner?.phone || '',
+                    countryCode: facility.salesPartner?.countryCode || '+45',
+                    isSameAsServiceProvider: false
+                },
+                isSalesPartnerSame: false,
+                EnergyCheck_plus: facility.EnergyCheck_plus ? {
+                    annualSavings: facility.EnergyCheck_plus.annualSavings || '',
+                    co2Savings: facility.EnergyCheck_plus.co2Savings || '',
+                    operatingHours: facility.EnergyCheck_plus.operatingHours || '',
+                    industry: facility.EnergyCheck_plus.industry || '',
+                    email: facility.EnergyCheck_plus.email || '',
+                    monthlyDistribution: facility.EnergyCheck_plus?.monthlyDistribution || {
+                        january: '0',
+                        february: '0',
+                        march: '0',
+                        april: '0',
+                        may: '0',
+                        june: '0',
+                        july: '0',
+                        august: '0',
+                        september: '0',
+                        october: '0',
+                        november: '0',
+                        december: '0'
+                    }
+                } : undefined,
+                hasEnergyCheckPlus: facility.hasEnergyCheckPlus || false,
+                smartPriceControl: facility.smartPriceControl,
+                installedSmartPriceController: facility.installedSmartPriceController || false,
+                smartPriceControlAdded: false,
+                isInstalled: facility.isInstalled || false,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            setFormData(editFormData);
+            
+            // Initialize monthlyDistribution state if facility has EnergyCheck_plus data
+            if (facility.EnergyCheck_plus?.monthlyDistribution) {
+                const dist = facility.EnergyCheck_plus.monthlyDistribution;
+                if (typeof dist === 'object' && !Array.isArray(dist)) {
+                    setMonthlyDistribution({
+                        January: parseFloat(dist.january || '0'),
+                        February: parseFloat(dist.february || '0'),
+                        March: parseFloat(dist.march || '0'),
+                        April: parseFloat(dist.april || '0'),
+                        May: parseFloat(dist.may || '0'),
+                        June: parseFloat(dist.june || '0'),
+                        July: parseFloat(dist.july || '0'),
+                        August: parseFloat(dist.august || '0'),
+                        September: parseFloat(dist.september || '0'),
+                        October: parseFloat(dist.october || '0'),
+                        November: parseFloat(dist.november || '0'),
+                        December: parseFloat(dist.december || '0')
+                    });
+                }
+            }
+            
+            // Set service contract choices based on facility data
+            setHasServiceContractChoice(facility.hasServiceContract !== undefined ? facility.hasServiceContract : null);
+            setNeedServiceContractChoice(facility.needServiceContract !== undefined ? facility.needServiceContract : null);
+        }
+    }, [route?.params?.editMode, route?.params?.facilityData]);
 
     // UI state
     const [showModelPicker, setShowModelPicker] = useState(false);

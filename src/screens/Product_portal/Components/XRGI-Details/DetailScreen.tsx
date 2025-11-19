@@ -30,6 +30,14 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
         setExpandedRecords(newExpanded);
     };
 
+    const handleEditPress = () => {
+        navigation.navigate('Register', {
+            editMode: true,
+            facilityData: item
+        });
+    };
+
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -78,7 +86,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 <View style={styles.card}>
                     <View style={styles.sectionHeader}>
                         <Text style={styles.sectionTitle}>Basic Data</Text>
-                        <TouchableOpacity style={styles.editButton}>
+                        <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
                             <MaterialIcons name="edit" size={20} color="#3b82f6" />
                         </TouchableOpacity>
                     </View>

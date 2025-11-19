@@ -40,7 +40,7 @@ export type RootStackParamList = {
   SignUp: { portalType: PortalType };
   ProductDashboard: undefined;
   SystemStatus: undefined;
-  Register: undefined;
+  Register: { editMode?: boolean; facilityData?: Facility };
   Installation: { formData: FormData };
   Stepper: undefined;
   Home: undefined;
