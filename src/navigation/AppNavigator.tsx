@@ -44,7 +44,7 @@ export type RootStackParamList = {
   Installation: { formData: FormData };
   Stepper: undefined;
   Home: undefined;
-  XRGI_Details: { item: any };
+  XRGI_Details: { item: Facility };
   ServiceContract: undefined;
   Statistics: undefined;
   Get_Statistics: { system: Facility };

@@ -52,6 +52,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
         try {
             const response = await RegisterController.GetFacilityList(userData?.id);
             const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                id: facility.id,
                 name: facility.name,
                 status: facility.hasServiceContract ? 'Active' : 'Inactive',
                 xrgiID: facility.xrgiID,

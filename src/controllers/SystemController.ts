@@ -1,5 +1,3 @@
-import { StorageService } from "@/utils/secureStorage";
-
 export class SystemController {
     static async GetSystemStatus() {
         try {
@@ -8,6 +6,7 @@ export class SystemController {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0'
                 },
             });
             console.log("response", response);
@@ -21,7 +20,6 @@ export class SystemController {
             return data;
         } catch (error) {
             console.log("Error getting system status", error);
-            throw error;
         }
     }
 }

@@ -86,25 +86,25 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     <View style={styles.dataGrid}>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Annual Savings</Text>
-                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.annualSavings || 'N/A'}</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus?.annualSavings || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Annual CO₂ savings</Text>
-                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.co2Savings || 'N/A'}</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus?.co2Savings || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Operating hours per year</Text>
-                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.operatingHours || 'N/A'} hrs</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus?.operatingHours || '-'} hrs</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Industry</Text>
-                            <Text style={styles.dataValue}>{item.EnergyCheck_plus.industry || 'N/A'}</Text>
+                            <Text style={styles.dataValue}>{item.EnergyCheck_plus?.industry || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>Contact</Text>
                             <View style={styles.emailContainer}>
-                                {item.EnergyCheck_plus.email ? (
-                                    item.EnergyCheck_plus.email.split(',').map((email: string, index: number) => (
+                                {item.EnergyCheck_plus?.email ? (
+                                    item.EnergyCheck_plus?.email.split(',').map((email: string, index: number) => (
                                         <Text key={index} style={[styles.dataValue, styles.email]}>
                                             {email.trim()}
                                         </Text>
