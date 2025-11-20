@@ -144,6 +144,28 @@ const styles = StyleSheet.create({
     bottomSpacer: {
         height: 20,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#1E293B',
+        marginTop: 16,
+    },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#1E293B',
+        marginTop: 16,
+    },
 });
 
 export default styles;
