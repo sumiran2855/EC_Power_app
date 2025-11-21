@@ -87,7 +87,7 @@ const HomeScreen: React.FC = () => {
                     <View style={styles.headerLeft}>
                         <View style={styles.logoContainer}>
                             <Image
-                                source={require('../../../assets/logo.png')}
+                                source={require('../../../assets/images/logo.png')}
                                 style={styles.logoImage}
                                 resizeMode="contain"
                             />
