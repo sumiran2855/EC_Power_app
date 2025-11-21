@@ -1,6 +1,18 @@
 import { BackendType } from "@/config/api.config";
 import AuthHelper from "@/services/AuthHelper";
 import StorageService from "@/utils/secureStorage";
+// import axios from 'axios';
+
+// const api = axios.create({
+//     baseURL: 'https://service.ecpower.dk/rest/service/v1/plant/statistics/api',
+//     timeout: 30000, // Increased timeout
+//     headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json',
+//         'User-Agent': 'ECPowerApp/1.0',
+//         'Connection': 'keep-alive'
+//     },
+// });
 
 export class SystemController {
     static async GetSystemStatus() {
