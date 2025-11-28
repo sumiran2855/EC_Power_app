@@ -1,32 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { ActivityIndicator, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as DocumentPicker from 'expo-document-picker';
 import tabCommonStyles from './tabsComman.styles';
-import { StyleSheet } from 'react-native';
 
 interface UploadTabProps {
     systemData: any;
     navigation: any;
+    loading?: boolean;
+    customerID?: string;
 }
 
-interface UploadedFile {
+export interface UploadedFile {
     name: string;
-    size: string;
+    size: number;
     type: string;
+    uri: string;
 }
 
-const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
-    const [creationDate, setCreationDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); // Sept 19, 2025
-    const [deliveryDate, setDeliveryDate] = useState<Date>(new Date(2025, 9, 6, 0, 0)); // Oct 6, 2025
+const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }) => {
+    const [creationDate, setCreationDate] = useState<Date>(new Date());
+    const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
     const [showCreationDatePicker, setShowCreationDatePicker] = useState(false);
     const [showCreationTimePicker, setShowCreationTimePicker] = useState(false);
     const [showDeliveryDatePicker, setShowDeliveryDatePicker] = useState(false);
     const [showDeliveryTimePicker, setShowDeliveryTimePicker] = useState(false);
     const [serviceType, setServiceType] = useState('');
+    const [serviceReportNumber, setServiceReportNumber] = useState('');
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
     const [showServiceTypeDropdown, setShowServiceTypeDropdown] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadError, setUploadError] = useState('');
 
     const serviceTypes = [
         { id: 'repair', label: 'Repair', icon: 'construct' },
@@ -35,42 +42,108 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
         { id: 'installation', label: 'Installation', icon: 'hammer' }
     ];
 
-    const handleFileSelect = () => {
-        // Simulate file picker
-        const mockFile: UploadedFile = {
-            name: 'service_document_name.pdf',
-            size: '2.4 MB',
-            type: 'application/pdf'
-        };
-        setUploadedFile(mockFile);
-        console.log('File picker opened');
-    };
-
     const handleRemoveFile = () => {
         setUploadedFile(null);
+        setUploadError('');
     };
 
-    const handleUpload = () => {
-        if (!serviceType || !uploadedFile) {
-            console.log('Please fill all required fields');
+    const handleFileSelect = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: ['application/pdf', 'image/jpeg', 'image/png'],
+                copyToCacheDirectory: true,
+            });
+
+            if (result.assets && result.assets.length > 0) {
+                const asset = result.assets[0];
+
+                const allowedTypes = [
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/png",
+                    "image/jpg",
+                ];
+                if (!allowedTypes.includes(asset.mimeType || '')) {
+                    setUploadError('Invalid file type. Only PDF, JPEG, and PNG files are allowed.');
+                    return;
+                }
+
+                if (asset.size && asset.size > 10 * 1024 * 1024) {
+                    setUploadError('File size exceeds 10MB limit.');
+                    return;
+                }
+
+                const file: UploadedFile = {
+                    name: asset.name || 'document',
+                    size: asset.size || 0,
+                    type: asset.mimeType || 'application/octet-stream',
+                    uri: asset.uri
+                };
+
+                setUploadedFile(file);
+                setUploadError('');
+            }
+        } catch (error) {
+            console.error('Error picking file:', error);
+            setUploadError('Failed to select file. Please try again.');
+        }
+    };
+
+    const handleFileUpload = async () => {
+        if (!uploadedFile) {
+            setUploadError('Please select a file to upload');
             return;
         }
-        console.log('Uploading:', {
-            creationDate,
-            deliveryDate,
-            serviceType,
-            file: uploadedFile
-        });
-    };
 
-    const formatDateTime = (date: Date): string => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+        if (!uploadedFile.size || uploadedFile.size === 0) {
+            setUploadError('Selected file is empty.');
+            return;
+        }
 
-        return `${day}-${month}-${year} ${hours}:${minutes}`;
+        if (!systemData?.xrgiID || !customerID) {
+            setUploadError('System data is missing. Please try again.');
+            return;
+        }
+
+        if (!serviceType) {
+            setUploadError('Please select a service type.');
+            return;
+        }
+
+        if (!serviceReportNumber) {
+            setUploadError('Please enter a service report number.');
+            return;
+        }
+
+        setIsUploading(true);
+        setUploadError('');
+
+        try {
+            // Prepare upload data
+            const uploadData = {
+                file: uploadedFile,
+                creationDate: creationDate.toISOString(),
+                deliveryDate: deliveryDate.toISOString(),
+                serviceType: serviceType,
+                serviceReportNumber: serviceReportNumber,
+                customerID: customerID,
+                xrgiID: systemData.xrgiID,
+            };
+
+            // Call the API
+            const response = await serviceReportController.UploadServiceReport(
+                systemData.xrgiID,
+                uploadData
+            );
+
+            handleClearAll();
+
+        } catch (error) {
+            console.error("Upload error:", error);
+            setUploadError(error instanceof Error ? error.message : 'Failed to upload file. Please try again.');
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const formatDate = (date: Date): string => {
@@ -117,9 +190,10 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
     };
 
     const handleClearAll = () => {
-        setCreationDate(new Date(2025, 8, 19, 0, 0));
-        setDeliveryDate(new Date(2025, 9, 6, 0, 0));
+        setCreationDate(new Date());
+        setDeliveryDate(new Date());
         setServiceType('');
+        setServiceReportNumber('');
         setUploadedFile(null);
     };
 
@@ -132,6 +206,15 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
         const selected = serviceTypes.find(st => st.id === serviceType);
         return selected ? selected.label : 'Select Service Type';
     };
+
+    if (isUploading) {
+        return (
+            <View style={tabCommonStyles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={tabCommonStyles.tabContainer}>
@@ -290,6 +373,21 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
                             )}
                         </View>
 
+                        {/* Service Report Number */}
+                        <View style={styles.inputGroup}>
+                            <Text style={styles.inputLabel}>Service Report Number *</Text>
+                            <View style={styles.inputContainer}>
+                                <Ionicons name="document-text" size={18} color="#64748b" />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Enter service report number"
+                                    value={serviceReportNumber}
+                                    onChangeText={setServiceReportNumber}
+                                    placeholderTextColor="#94a3b8"
+                                />
+                            </View>
+                        </View>
+
                         {/* File Upload */}
                         <View style={styles.inputGroup}>
                             <Text style={styles.inputLabel}>Upload file (PDF, JPEG, PNG only)</Text>
@@ -331,6 +429,14 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
                         </View>
                     </View>
 
+                    {/* Error Message */}
+                    {uploadError ? (
+                        <View style={styles.errorContainer}>
+                            <Ionicons name="alert-circle" size={16} color="#ef4444" />
+                            <Text style={styles.errorText}>{uploadError}</Text>
+                        </View>
+                    ) : null}
+
                     {/* Action Buttons */}
                     <View style={styles.buttonGroup}>
                         <TouchableOpacity
@@ -345,7 +451,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData }) => {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[tabCommonStyles.actionButton, { flex: 1 }]}
-                            onPress={handleUpload}
+                            onPress={handleFileUpload}
                             activeOpacity={0.8}
                         >
                             <Ionicons name="cloud-upload" size={18} color="#ffffff" />
@@ -391,7 +497,6 @@ const styles = StyleSheet.create({
     dateTimeContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 8,
     },
     dateTimeButton: {
         flex: 1,
@@ -570,6 +675,23 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#64748b',
         marginLeft: 10,
+        flex: 1,
+    },
+    errorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fef2f2',
+        borderWidth: 1,
+        borderColor: '#fecaca',
+        borderRadius: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        marginTop: 8,
+    },
+    errorText: {
+        fontSize: 13,
+        color: '#dc2626',
+        marginLeft: 8,
         flex: 1,
     },
 });

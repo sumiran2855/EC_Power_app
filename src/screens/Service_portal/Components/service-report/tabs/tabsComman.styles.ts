@@ -481,6 +481,37 @@ const tabCommonStyles = StyleSheet.create({
     removeFileButton: {
         padding: 4,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
+    },
+    emptyState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 40,
+    },
+    emptyStateText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#334155',
+        marginTop: 16,
+        textAlign: 'center',
+    },
+    emptyStateSubtext: {
+        fontSize: 14,
+        color: '#64748b',
+        marginTop: 8,
+        textAlign: 'center',
+        maxWidth: 300,
+    },
 });
 
 export default tabCommonStyles;

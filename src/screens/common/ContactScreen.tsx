@@ -38,32 +38,6 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                 <View style={styles.headerSpacer} />
             </View>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                {/* User Guide Section */}
-                <View style={styles.guideCard}>
-                    <View style={styles.guideHeader}>
-                        <View style={styles.iconContainer}>
-                            <Text style={styles.icon}>📄</Text>
-                        </View>
-                        <Text style={styles.guideTitle}>User Guide Available</Text>
-                    </View>
-
-                    <Text style={styles.guideDescription}>
-                        View our comprehensive user guide to find answers to common questions before submitting a query.
-                    </Text>
-
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.guideButton}>
-                            <Text style={styles.buttonIcon}>🌐</Text>
-                            <Text style={styles.guideButtonText}>English Guide</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.guideButton}>
-                            <Text style={styles.buttonIcon}>🌐</Text>
-                            <Text style={styles.guideButtonText}>German Guide</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
                 {/* Contact Form Section */}
                 <View style={styles.formSection}>
                     <Text style={styles.sectionTitle}>Contact Us</Text>

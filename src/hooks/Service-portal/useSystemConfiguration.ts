@@ -36,7 +36,6 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [systems, setSystems] = useState<Facility[]>([]);
-    const [systemConfigurations, setSystemConfigurations] = useState<SystemConfiguration[]>([]);
     const [hasData, setHasData] = useState(false);
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [configurations, setConfigurations] = useState<ConfigItem[]>([]);
@@ -122,11 +121,11 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
 
     const getStatusColor = useCallback((status: string) => {
         switch (status) {
-            case 'active':
+            case 'Active':
                 return '#10b981';
-            case 'inactive':
+            case 'Inactive':
                 return '#ef4444';
-            case 'maintenance':
+            case 'Data Missing':
                 return '#f59e0b';
             default:
                 return '#64748b';
@@ -149,7 +148,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
             const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
                 id: facility.id,
                 name: facility.name,
-                status: facility.hasServiceContract ? 'Active' : 'Inactive',
+                status: facility.status,
                 xrgiID: facility.xrgiID,
                 hasServiceContract: facility.hasServiceContract,
                 modelNumber: facility.modelNumber,
