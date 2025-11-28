@@ -1,6 +1,8 @@
+import Alert from '@/components/Modals/DownloadSuccessAlert';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
+    ActivityIndicator,
     ScrollView,
     Text,
     TextInput,
@@ -24,10 +26,22 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
         handleSubmit,
         toggleDropdown,
         handleBack,
+        isSubmitting,
+        alert,
+        handleAlertClose,
         setDropdownOpen
     } = useContact(navigation);
 
     const { selectedSubject, description } = formData;
+
+    if (isSubmitting) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text style={styles.loadingText}>Loading service reports...</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -125,6 +139,16 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            {/* Success Alert */}
+            <Alert
+                isVisible={alert.visible}
+                onClose={handleAlertClose}
+                type={alert.type}
+                title={alert.title}
+                message={alert.message}
+                buttonText="OK"
+            />
         </SafeAreaView>
     );
 };

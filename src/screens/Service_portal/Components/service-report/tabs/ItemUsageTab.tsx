@@ -43,22 +43,11 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
     };
 
     return (
-        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Action Button */}
-                <TouchableOpacity
-                    style={tabCommonStyles.actionButton}
-                    onPress={handleSendReport}
-                    activeOpacity={0.8}
-                >
-                    <Ionicons name="mail" size={18} color="#ffffff" />
-                    <Text style={tabCommonStyles.actionButtonText}>Send report on email</Text>
-                </TouchableOpacity>
-
                 <Text style={tabCommonStyles.sectionHeader}>Item Usage Records</Text>
 
                 {systemData.map((report: any) => (
@@ -197,7 +186,6 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                     </View>
                 ))}
             </ScrollView>
-        </SafeAreaView>
     );
 };
 

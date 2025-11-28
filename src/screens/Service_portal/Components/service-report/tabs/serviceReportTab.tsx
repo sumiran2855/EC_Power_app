@@ -67,7 +67,6 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
     };
 
     return (
-        <SafeAreaView style={tabCommonStyles.tabContainer}>
             <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -237,7 +236,6 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                         </View>
                 ))}
             </ScrollView>
-        </SafeAreaView>
     );
 };
 

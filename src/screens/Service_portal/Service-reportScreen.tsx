@@ -19,7 +19,6 @@ const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation })
         handleSystemPress,
         handleBackButton
     } = useServiceReport(navigation);
-    console.log("systems", systems);
 
     if (isLoading) {
         return (

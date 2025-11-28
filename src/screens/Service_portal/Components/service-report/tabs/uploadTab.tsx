@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Alert from '@/components/Modals/DownloadSuccessAlert';
 import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -34,12 +34,18 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
     const [showServiceTypeDropdown, setShowServiceTypeDropdown] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState('');
+    const [alert, setAlert] = useState({
+        visible: false,
+        type: 'success' as 'success' | 'error' | 'info' | 'warning',
+        title: '',
+        message: ''
+    });
 
     const serviceTypes = [
+        { id: 'RegularService', label: 'Regular Service', icon: 'people' },
         { id: 'repair', label: 'Repair', icon: 'construct' },
         { id: 'maintenance', label: 'Maintenance', icon: 'settings' },
-        { id: 'inspection', label: 'Inspection', icon: 'search' },
-        { id: 'installation', label: 'Installation', icon: 'hammer' }
+        { id: 'Commissioning', label: 'Commissioning', icon: 'hammer' }
     ];
 
     const handleRemoveFile = () => {
@@ -48,6 +54,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
     };
 
     const handleFileSelect = async () => {
+        setUploadError('');
         try {
             const result = await DocumentPicker.getDocumentAsync({
                 type: ['application/pdf', 'image/jpeg', 'image/png'],
@@ -84,7 +91,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                 setUploadError('');
             }
         } catch (error) {
-            console.error('Error picking file:', error);
+            console.log('Error picking file:', error);
             setUploadError('Failed to select file. Please try again.');
         }
     };
@@ -135,12 +142,25 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                 systemData.xrgiID,
                 uploadData
             );
+            console.log("Upload response:", response);
 
+            setAlert({
+                visible: true,
+                type: 'success',
+                title: 'Upload Successful',
+                message: 'Your service report has been uploaded successfully.'
+            });
             handleClearAll();
-
         } catch (error) {
-            console.error("Upload error:", error);
-            setUploadError(error instanceof Error ? error.message : 'Failed to upload file. Please try again.');
+            console.log("Upload error:", error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to upload file. Please try again.';
+            setUploadError(errorMessage);
+            setAlert({
+                visible: true,
+                type: 'error',
+                title: 'Upload Failed',
+                message: errorMessage
+            });
         } finally {
             setIsUploading(false);
         }
@@ -217,7 +237,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
     }
 
     return (
-        <SafeAreaView style={tabCommonStyles.tabContainer}>
+        <>
             <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -429,14 +449,6 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                         </View>
                     </View>
 
-                    {/* Error Message */}
-                    {uploadError ? (
-                        <View style={styles.errorContainer}>
-                            <Ionicons name="alert-circle" size={16} color="#ef4444" />
-                            <Text style={styles.errorText}>{uploadError}</Text>
-                        </View>
-                    ) : null}
-
                     {/* Action Buttons */}
                     <View style={styles.buttonGroup}>
                         <TouchableOpacity
@@ -486,7 +498,17 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+
+            {/* Alert Modal */}
+            <Alert
+                isVisible={alert.visible}
+                onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
+                type={alert.type}
+                title={alert.title}
+                message={alert.message}
+                buttonText="OK"
+            />
+        </>
     );
 };
 

@@ -258,4 +258,15 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF',
         letterSpacing: 0.5,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
+    },
 });

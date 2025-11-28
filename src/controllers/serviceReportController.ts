@@ -65,13 +65,21 @@ export class serviceReportController {
             const config = getApiConfig(BackendType.SERVICE_DATABASE);
             const url = `${config.BASE_URL}/service-report/upload-service`;
 
-            const fileUri = fileData.file.uri;
-            const response = await fetch(fileUri);
-            const blob = await response.blob();
-
-            // Create FormData with actual binary file
             const formData = new FormData();
-            formData.append('file', blob, fileData.file.name);
+
+            const fileUri = fileData.file.uri;
+            const filename = fileUri.split('/').pop() || 'file';
+            const match = /\.(\w+)$/.exec(filename);
+            const type = match ? `image/${match[1]}` : 'image';
+
+            const file = {
+                uri: fileUri,
+                name: fileData.file.name || filename,
+                type: fileData.file.type || type,
+            };
+
+            // Append all data to formData
+            formData.append('file', file as any);
             formData.append('creationDate', fileData.creationDate);
             formData.append('deliveryDate', fileData.deliveryDate);
             formData.append('serviceType', fileData.serviceType);
@@ -79,34 +87,25 @@ export class serviceReportController {
             formData.append('customerID', fileData.customerID);
             formData.append('xrgiID', fileData.xrgiID);
 
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-
-                xhr.open('POST', url);
-                xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
-                xhr.setRequestHeader('x-id-token', idToken);
-
-                xhr.onload = () => {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            resolve({ success: true, data: response });
-                        } catch (e) {
-                            resolve({ success: true, data: xhr.responseText });
-                        }
-                    } else {
-                        reject(new Error(`Upload failed with status ${xhr.status}`));
-                    }
-                };
-
-                xhr.onerror = () => reject(new Error('Network request failed'));
-                xhr.ontimeout = () => reject(new Error('Request timeout'));
-
-                xhr.send(formData);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'x-id-token': idToken,
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: formData,
             });
 
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Upload failed with status ${response.status}: ${errorText}`);
+            }
+
+            const responseData = await response.json();
+            return { success: true, data: responseData };
         } catch (error) {
-            console.error('Failed to upload service report:', error);
+            console.log('Failed to upload service report:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred'

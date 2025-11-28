@@ -1,24 +1,24 @@
+import Alert from '@/components/Modals/DownloadSuccessAlert';
 import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
+    ActivityIndicator,
     Dimensions,
     Modal,
+    Platform,
     ScrollView,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    View, 
-    StyleSheet, 
-    ActivityIndicator, 
-    Platform 
+    View
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import tabCommonStyles from './tabsComman.styles';
-import Pdf from 'react-native-pdf';
 import RNFS from 'react-native-fs';
+import Pdf from 'react-native-pdf';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
+import tabCommonStyles from './tabsComman.styles';
 
 interface UploadedReport {
     id: string;
@@ -50,8 +50,13 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
     const [viewModalVisible, setViewModalVisible] = useState(false);
     const [selectedReport, setSelectedReport] = useState<UploadedReport | null>(null);
     const [downloading, setDownloading] = useState(false);
+    const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
+    const [downloadPath, setDownloadPath] = useState('');
+    const [errorAlert, setErrorAlert] = useState({ visible: false, message: '' });
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchUploadedReports = async () => {
+        setIsLoading(true);
         try {
             const response = await serviceReportController.GetUploadedServiceReport(systemData.xrgiID);
 
@@ -67,6 +72,8 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
         } catch (error) {
             console.error('Failed to fetch uploaded reports:', error);
             setUploadedReports([]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -134,16 +141,17 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
             const result = await RNFS.downloadFile(downloadOptions).promise;
 
             if (result.statusCode === 200) {
-                Alert.alert(
-                    'Download Complete',
-                    `File saved to ${Platform.OS === 'ios' ? 'Documents' : 'Downloads'} folder`,
-                    [{ text: 'OK' }]
-                );
+                setDownloadPath(downloadDest);
+                setShowDownloadSuccess(true);
             } else {
                 throw new Error('Download failed');
             }
         } catch (error) {
             console.error('Download error:', error);
+            setErrorAlert({
+                visible: true,
+                message: 'Failed to download the file. Please try again later.'
+            });
         } finally {
             setDownloading(false);
         }
@@ -158,8 +166,17 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
         setViewModalVisible(true);
     };
 
+    if(isLoading) {
+        return (
+            <View style={tabCommonStyles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+            </View>
+        );
+    }
+
     return (
-        <SafeAreaView style={tabCommonStyles.tabContainer}>
+        <>
             <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
@@ -349,7 +366,10 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                     onError={(syntheticEvent) => {
                                         const { nativeEvent } = syntheticEvent;
                                         console.error('WebView error:', nativeEvent);
-                                        Alert.alert('Error', 'Failed to load document');
+                                        setErrorAlert({
+                                            visible: true,
+                                            message: 'Failed to load the document. The file might be corrupted or in an unsupported format.'
+                                        });
                                     }}
                                 />
                             )}
@@ -361,7 +381,25 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                     )}
                 </SafeAreaView>
             </Modal>
-        </SafeAreaView>
+
+            <Alert
+                isVisible={showDownloadSuccess}
+                onClose={() => setShowDownloadSuccess(false)}
+                type="success"
+                title="Download Complete!"
+                message={`File has been saved to ${Platform.OS === 'ios' ? 'Documents' : 'Downloads'} folder`}
+                buttonText="OK"
+            />
+            
+            <Alert
+                isVisible={errorAlert.visible}
+                onClose={() => setErrorAlert({ ...errorAlert, visible: false })}
+                type="error"
+                title="Error"
+                message={errorAlert.message}
+                buttonText="OK"
+            />
+            </>
     );
 };
 
