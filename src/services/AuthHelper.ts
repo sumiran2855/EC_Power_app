@@ -27,13 +27,19 @@ class AuthHelper {
         const isFormData = body instanceof FormData;
 
         const headers: HeadersInit = {
-            ...API_CONFIG.HEADERS,
             ...(token && { Authorization: `Bearer ${token}` }),
             ...(IdToken && { 'x-id-token': IdToken }),
         };
 
+        // IMPORTANT: Don't set Content-Type for FormData
+        // Let the browser/React Native set it with the boundary
         if (!isFormData) {
             headers['Content-Type'] = 'application/json';
+            (Object.keys(API_CONFIG.HEADERS) as Array<keyof typeof API_CONFIG.HEADERS>).forEach(key => {
+                if (key !== 'Content-Type') {
+                    headers[key] = API_CONFIG.HEADERS[key];
+                }
+            });
         }
 
         return headers;
@@ -59,11 +65,13 @@ class AuthHelper {
             const config = getApiConfig(backendType);
             requestUrl = `${config.BASE_URL}/${endpoint}`;
             const isFormData = body instanceof FormData;
-            const fetchPromise = fetch(requestUrl, {
+            const fetchOptions: RequestInit = {
                 method,
                 headers: this.getHeaders(body, token, IdToken),
                 body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
-            });
+            };
+
+            const fetchPromise = fetch(requestUrl, fetchOptions);
 
             const response = await Promise.race([
                 fetchPromise,
@@ -89,8 +97,13 @@ class AuthHelper {
 
             // Handle unexpected response types
             const text = await response.text();
-            console.error('Expected JSON but received:', text.slice(0, 300));
-            return { success: false, message: 'Received non-JSON response' };
+            console.error('Response text:', text.slice(0, 300));
+
+            if (!response.ok) {
+                throw new Error(`Request failed with status ${response.status}`);
+            }
+
+            return { success: false, message: 'Received non-JSON response', details: text };
 
         } catch (error: any) {
             if (error.message === 'Request timeout') {

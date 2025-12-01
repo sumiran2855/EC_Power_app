@@ -2,7 +2,6 @@ import { MaterialIcons as Icon } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { RegisterController } from '../../../../controllers/RegisterController';
 import {
     ScrollView,
     Text,
@@ -10,17 +9,11 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RegisterController } from '../../../../controllers/RegisterController';
+import { RootStackParamList } from '../../../../navigation/AppNavigator';
 import { styles as stepperStyles } from '../../../authScreens/StepperScreen.styles';
 import { FormData } from '../../../authScreens/types';
 import { styles as localStyles } from './InstallationScreen.styles';
-
-type RootStackParamList = {
-    Register: undefined;
-    Installation: { formData: FormData };
-    formData: FormData;
-    ProductDashboard: undefined;
-    Dashboard: undefined;
-};
 
 type InstallationScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Installation' | 'ProductDashboard'>;
 
@@ -50,6 +43,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
+        let response;
         try {
 
             const energyCheckData = formData.hasEnergyCheckPlus && formData.EnergyCheck_plus
@@ -60,18 +54,31 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                 ? formData.smartPriceControl
                 : undefined;
 
-            const response = await RegisterController.AddFacility({
-                ...formData,
-                isInstalled: true,
-                DaSigned: true,
-                hasServiceContract: formData.hasServiceContract,
-                needServiceContract: formData.needServiceContract,
-                hasEnergyCheckPlus: formData.hasEnergyCheckPlus,
-                EnergyCheck_plus: energyCheckData,
-                smartPriceControl: smartPriceControlData,
-                smartPriceControlAdded: formData.smartPriceControlAdded ?? false,
-                installedSmartPriceController: formData.installedSmartPriceController ?? false,
-            });
+            response = formData.id && formData.id !== ''
+                ? await RegisterController.UpdateFacility({
+                    ...formData,
+                    isInstalled: true,
+                    DaSigned: true,
+                    hasServiceContract: formData.hasServiceContract,
+                    needServiceContract: formData.needServiceContract,
+                    hasEnergyCheckPlus: formData.hasEnergyCheckPlus,
+                    EnergyCheck_plus: energyCheckData,
+                    smartPriceControl: smartPriceControlData,
+                    smartPriceControlAdded: formData.smartPriceControlAdded ?? false,
+                    installedSmartPriceController: formData.installedSmartPriceController ?? false,
+                }, formData.id)
+                : await RegisterController.AddFacility({
+                    ...formData,
+                    isInstalled: true,
+                    DaSigned: true,
+                    hasServiceContract: formData.hasServiceContract,
+                    needServiceContract: formData.needServiceContract,
+                    hasEnergyCheckPlus: formData.hasEnergyCheckPlus,
+                    EnergyCheck_plus: energyCheckData,
+                    smartPriceControl: smartPriceControlData,
+                    smartPriceControlAdded: formData.smartPriceControlAdded ?? false,
+                    installedSmartPriceController: formData.installedSmartPriceController ?? false,
+                });
 
             if (response) {
                 navigation.navigate('ProductDashboard');

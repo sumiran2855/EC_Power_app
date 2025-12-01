@@ -1,148 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tabCommonStyles from './tabsComman.styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-interface Resource {
-    id: string;
-    serviceType: string;
-    creationDate: string;
-    workType: string;
-    quantity: number;
-    unit: string;
-}
-
-interface ServiceReport {
-    id: string;
-    reportNumber: string;
-    dateOfDelivery: string;
-    creationDate: string;
-    serviceType: string;
-    description: string;
-    resources: Resource[];
-}
+import { ServiceReport } from './types';
 
 interface ServiceReportsTabProps {
-    systemData: any;
+    systemData: ServiceReport[];
     navigation: any;
+    loading?: boolean;
 }
 
-const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => {
+const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loading }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedReport, setExpandedReport] = useState<string | null>(null);
 
-    const serviceReports: ServiceReport[] = [
-        {
-            id: '1',
-            reportNumber: 'SR-29865972',
-            dateOfDelivery: '23-09-2025',
-            creationDate: '23-09-2025',
-            serviceType: 'repair',
-            description: 'Test LVB 23092025',
-            resources: [
-                {
-                    id: '1',
-                    serviceType: 'Luna Vendelbo',
-                    creationDate: '23-09-2025',
-                    workType: 'Working time',
-                    quantity: 0.25,
-                    unit: 'hrs'
-                },
-                {
-                    id: '2',
-                    serviceType: 'Luna Vendelbo',
-                    creationDate: '23-09-2025',
-                    workType: 'Transport time',
-                    quantity: 3,
-                    unit: 'hrs'
-                },
-                {
-                    id: '3',
-                    serviceType: 'Luna Vendelbo',
-                    creationDate: '23-09-2025',
-                    workType: 'Driven Distance',
-                    quantity: 200,
-                    unit: 'km'
-                }
-            ]
-        },
-        {
-            id: '2',
-            reportNumber: 'SR-28252422',
-            dateOfDelivery: '11-09-2025',
-            creationDate: '23-09-2025',
-            serviceType: 'repair',
-            description: 'Emergency repair service for system malfunction',
-            resources: [
-                {
-                    id: '1',
-                    serviceType: 'John Smith',
-                    creationDate: '23-09-2025',
-                    workType: 'Working time',
-                    quantity: 2.5,
-                    unit: 'hrs'
-                },
-                {
-                    id: '2',
-                    serviceType: 'John Smith',
-                    creationDate: '23-09-2025',
-                    workType: 'Transport time',
-                    quantity: 1.5,
-                    unit: 'hrs'
-                }
-            ]
-        },
-        {
-            id: '3',
-            reportNumber: 'SR-83190940',
-            dateOfDelivery: '08-09-2025',
-            creationDate: '23-08-2025',
-            serviceType: 'maintenance',
-            description: 'Scheduled quarterly maintenance check',
-            resources: [
-                {
-                    id: '1',
-                    serviceType: 'Mike Johnson',
-                    creationDate: '08-09-2025',
-                    workType: 'Working time',
-                    quantity: 4,
-                    unit: 'hrs'
-                }
-            ]
-        },
-        {
-            id: '4',
-            reportNumber: 'SR-79125299',
-            dateOfDelivery: '05-08-2025',
-            creationDate: '05-08-2025',
-            serviceType: 'maintenance',
-            description: 'Annual system inspection and maintenance',
-            resources: [
-                {
-                    id: '1',
-                    serviceType: 'Sarah Williams',
-                    creationDate: '05-08-2025',
-                    workType: 'Working time',
-                    quantity: 3.5,
-                    unit: 'hrs'
-                },
-                {
-                    id: '2',
-                    serviceType: 'Sarah Williams',
-                    creationDate: '05-08-2025',
-                    workType: 'Driven Distance',
-                    quantity: 150,
-                    unit: 'km'
-                }
-            ]
-        }
-    ];
+    const filteredReports = systemData?.filter((report) =>
+        report.Service_Report_Number.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
 
-    const filteredReports = serviceReports.filter(report =>
-        report.reportNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        report.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    if (loading) {
+        return (
+            <View style={tabCommonStyles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+            </View>
+        );
+    }
+
+    if (!systemData || systemData.length === 0) {
+        return (
+            <View style={tabCommonStyles.emptyState}>
+                <Ionicons name="document-text" size={48} color="#cbd5e1" />
+                <Text style={tabCommonStyles.emptyStateText}>No service reports available</Text>
+                <Text style={tabCommonStyles.emptyStateSubtext}>
+                    There are no service reports to display at the moment.
+                </Text>
+            </View>
+        );
+    }
 
     const getServiceTypeBadgeStyle = (type: string) => {
         switch (type) {
@@ -171,13 +67,12 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
     };
 
     return (
-        <SafeAreaView style={tabCommonStyles.tabContainer}>
-            <ScrollView 
+            <ScrollView
                 style={tabCommonStyles.tabContainer}
                 contentContainerStyle={tabCommonStyles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Enhanced Search Bar */}
+                {/* Search Bar */}
                 <View style={tabCommonStyles.searchContainer}>
                     <Ionicons name="search" size={20} color="#3b82f6" style={tabCommonStyles.searchIcon} />
                     <TextInput
@@ -195,8 +90,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                 </View>
 
                 {/* Service Reports List */}
-                {filteredReports.length > 0 ? (
-                    filteredReports.map((report) => (
+                {filteredReports.map((report) => (
                         <View
                             key={report.id}
                             style={[
@@ -215,15 +109,15 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                     </View>
                                     <View style={{ flex: 1, marginLeft: 12 }}>
                                         <Text style={tabCommonStyles.cardTitle}>
-                                            {report.reportNumber}
+                                            {report.Service_Report_Number}
                                         </Text>
                                         <Text style={tabCommonStyles.cardSubtitle}>
-                                            {systemData.xrgiId}
+                                            {report.xrgiID}
                                         </Text>
                                     </View>
-                                    <View style={getServiceTypeBadgeStyle(report.serviceType)}>
-                                        <Text style={getServiceTypeBadgeTextStyle(report.serviceType)}>
-                                            {report.serviceType.toUpperCase()}
+                                    <View style={getServiceTypeBadgeStyle(report.creatingDate.serviceType || '')}>
+                                        <Text style={getServiceTypeBadgeTextStyle(report.creatingDate.serviceType || '')}>
+                                            {report.creatingDate.serviceType?.toUpperCase() || 'N/A'}
                                         </Text>
                                     </View>
                                 </View>
@@ -231,8 +125,10 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                 {/* Description */}
                                 <View style={tabCommonStyles.descriptionContainer}>
                                     <Text style={tabCommonStyles.descriptionLabel}>Description:</Text>
-                                    <Text style={tabCommonStyles.descriptionText}>{report.description}</Text>
-                                </View>
+                                    <Text style={tabCommonStyles.descriptionText}>
+                                    {report.creatingDate.serviceDescription || 'No description available'}
+                                </Text>
+                            </View>
 
                                 {/* Info Grid */}
                                 <View style={tabCommonStyles.infoGrid}>
@@ -241,8 +137,10 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                             <Ionicons name="calendar" size={16} color="#3b82f6" />
                                         </View>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={tabCommonStyles.infoGridLabel}>Date of delivery</Text>
-                                            <Text style={tabCommonStyles.infoGridValue}>{report.dateOfDelivery}</Text>
+                                            <Text style={tabCommonStyles.infoGridLabel}>Delivery Date</Text>
+                                            <Text style={tabCommonStyles.infoGridValue}>
+                                            {report.creatingDate.deliveryDate}
+                                        </Text>
                                         </View>
                                     </View>
                                     <View style={tabCommonStyles.infoGridItem}>
@@ -250,20 +148,21 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                             <Ionicons name="time" size={16} color="#3b82f6" />
                                         </View>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={tabCommonStyles.infoGridLabel}>Creation date</Text>
-                                            <Text style={tabCommonStyles.infoGridValue}>{report.creationDate}</Text>
+                                            <Text style={tabCommonStyles.infoGridLabel}>Creation Date</Text>
+                                            <Text style={tabCommonStyles.infoGridValue}>
+                                            {report.creatingDate.creationDate}
+                                        </Text>
                                         </View>
                                     </View>
                                 </View>
-
                                 {/* Expand Indicator */}
                                 <View style={tabCommonStyles.expandIndicator}>
                                     <View style={tabCommonStyles.expandLine} />
                                     <View style={tabCommonStyles.expandButton}>
-                                        <Ionicons 
-                                            name={expandedReport === report.id ? "chevron-up" : "chevron-down"} 
-                                            size={18} 
-                                            color="#3b82f6" 
+                                        <Ionicons
+                                            name={expandedReport === report.id ? "chevron-up" : "chevron-down"}
+                                            size={18}
+                                            color="#3b82f6"
                                         />
                                         <Text style={tabCommonStyles.expandText}>
                                             {expandedReport === report.id ? 'Hide' : 'View'} Resources
@@ -281,9 +180,9 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                         <Text style={tabCommonStyles.resourcesTitle}>Resources Details</Text>
                                     </View>
 
-                                    {/* Resources Table - Horizontally Scrollable */}
-                                    <ScrollView 
-                                        horizontal 
+                                    {/* Resources Table */}
+                                    <ScrollView
+                                        horizontal
                                         showsHorizontalScrollIndicator={true}
                                         style={tabCommonStyles.tableScrollContainer}
                                         contentContainerStyle={tabCommonStyles.tableScrollContent}
@@ -291,35 +190,35 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                         <View style={tabCommonStyles.tableContainer}>
                                             {/* Table Header */}
                                             <View style={tabCommonStyles.tableHeader}>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 150 }]}>Service Type</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>Creation date</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 130 }]}>Work type</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>Quantity</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 60 }]}>Unit</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 150 }]}>Work Type</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>Date</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 130 }]}>Technician</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 100 }]}>Quantity</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>Unit</Text>
                                             </View>
 
                                             {/* Table Rows */}
                                             {report.resources.map((resource, index) => (
-                                                <View 
-                                                    key={resource.id}
+                                                <View
+                                                    key={`${report.id}-resource-${index}`}
                                                     style={[
                                                         tabCommonStyles.tableRow,
                                                         index % 2 === 0 && tabCommonStyles.tableRowEven
                                                     ]}
                                                 >
                                                     <Text style={[tabCommonStyles.tableCellText, { width: 150 }]}>
-                                                        {resource.serviceType}
-                                                    </Text>
-                                                    <Text style={[tabCommonStyles.tableCellText, { width: 120 }]}>
-                                                        {resource.creationDate}
-                                                    </Text>
-                                                    <Text style={[tabCommonStyles.tableCellText, { width: 130 }]}>
                                                         {resource.workType}
                                                     </Text>
-                                                    <Text style={[tabCommonStyles.tableCellText, { width: 80, fontWeight: '600' }]}>
-                                                        {resource.quantity}
+                                                    <Text style={[tabCommonStyles.tableCellText, { width: 120 }]}>
+                                                        {resource.deliveryCreationDate}
                                                     </Text>
-                                                    <Text style={[tabCommonStyles.tableCellText, { width: 60 }]}>
+                                                    <Text style={[tabCommonStyles.tableCellText, { width: 130 }]}>
+                                                        {resource.serviceTechnician}
+                                                    </Text>
+                                                    <Text style={[tabCommonStyles.tableCellText, { width: 100 }]}>
+                                                        {resource.resourceQuantity}
+                                                    </Text>
+                                                    <Text style={[tabCommonStyles.tableCellText, { width: 80 }]}>
                                                         {resource.unit}
                                                     </Text>
                                                 </View>
@@ -335,20 +234,8 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData }) => 
                                 </View>
                             )}
                         </View>
-                    ))
-                ) : (
-                    <View style={tabCommonStyles.emptyContainer}>
-                        <View style={tabCommonStyles.emptyIcon}>
-                            <Ionicons name="document-text-outline" size={48} color="#94a3b8" />
-                        </View>
-                        <Text style={tabCommonStyles.emptyTitle}>No Reports Found</Text>
-                        <Text style={tabCommonStyles.emptyDescription}>
-                            {searchQuery ? 'Try adjusting your search criteria' : 'There are no service reports available for this system'}
-                        </Text>
-                    </View>
-                )}
+                ))}
             </ScrollView>
-        </SafeAreaView>
     );
 };
 

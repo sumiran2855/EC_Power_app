@@ -1,14 +1,14 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Alert } from 'react-native';
-import StorageService from '@/utils/secureStorage';
 import { RegisterController } from '@/controllers/RegisterController';
 import { Facility, UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useEffect, useMemo, useState } from 'react';
+import { Alert } from 'react-native';
 
 type RootStackParamList = {
     XRGI_System: undefined;
-    XRGI_Details: { item: any };
+    XRGI_Details: { item: Facility };
 };
 
 type XRGISystemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'XRGI_System'>;
@@ -41,10 +41,24 @@ const useServiceContract = () => {
                 }
                 const response = await RegisterController.GetFacilityList(userData.id);
                 const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                    id: facility.id || facility.xrgiID,
                     name: facility.name,
-                    status: facility.hasServiceContract ? 'active' : 'pending',
                     xrgiID: facility.xrgiID,
+                    status: facility.hasServiceContract ? 'Active' : 'Inactive',
+                    modelNumber: facility.modelNumber,
+                    location: facility.location,
+                    hasEnergyCheckPlus: facility.hasEnergyCheckPlus,
+                    EnergyCheck_plus: facility.EnergyCheck_plus,
+                    isInstalled: facility.isInstalled,
                     hasServiceContract: facility.hasServiceContract,
+                    needServiceContract: facility.needServiceContract,
+                    salesPartner: facility.salesPartner,
+                    serviceProvider: facility.serviceProvider,
+                    DaSigned: facility.DaSigned,
+                    energyCheckPlus: facility.energyCheckPlus,
+                    smartPriceControl: facility.smartPriceControl,
+                    installedSmartPriceController: facility.installedSmartPriceController,
+                    distributeHoursEvenly: facility.distributeHoursEvenly,
                 })) : [];
                 setSystems(transformedData);
             } catch (err: any) {
@@ -99,7 +113,7 @@ const useServiceContract = () => {
         navigation.goBack();
     };
 
-    const handleCardPress = (item: any) => {
+    const handleCardPress = (item: Facility) => {
         navigation.navigate('XRGI_Details', { item });
     };
 

@@ -1,9 +1,9 @@
-import { View, TouchableOpacity, Text, TextInput, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import styles from './ProfileScreen.styles';
 import React from "react";
-import useProfile from '../../hooks/useProfile';
+import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useProfile from '../../hooks/useProfile';
+import styles from './ProfileScreen.styles';
 
 interface ProfileScreenProps {
     navigation: any;
@@ -19,6 +19,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         handleCountrySelect,
         handleSaveChanges,
         setShowCountryPicker,
+        loading
     } = useProfile();
 
     const handleBackButton = () => {
@@ -28,6 +29,15 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     const handleChangePassword = () => {
         console.log('Change password...');
     };
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#1a5490" />
+                <Text style={styles.loadingText}>Loading facilities...</Text>
+            </View>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -64,20 +74,20 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>Business Name</Text>
                             <TextInput
                                 style={styles.input}
-                                value={profileData.businessName}
-                                onChangeText={(value) => handleInputChange('businessName', value)}
+                                value={profileData.companyInfo.companyName}
+                                onChangeText={(value) => handleInputChange('companyName', value)}
                                 placeholder="Enter business name"
                                 placeholderTextColor="#94A3B8"
                             />
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>VAT Number</Text>
+                            <Text style={styles.label}>CVR Number</Text>
                             <TextInput
                                 style={styles.input}
-                                value={profileData.vatNo}
-                                onChangeText={(value) => handleInputChange('vatNo', value)}
-                                placeholder="Enter VAT number"
+                                value={profileData.companyInfo.cvrNumber}
+                                onChangeText={(value) => handleInputChange('cvrNumber', value)}
+                                placeholder="Enter CVR number"
                                 placeholderTextColor="#94A3B8"
                                 keyboardType="numeric"
                             />
@@ -87,7 +97,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>Address</Text>
                             <TextInput
                                 style={styles.input}
-                                value={profileData.address}
+                                value={profileData.companyInfo.address}
                                 onChangeText={(value) => handleInputChange('address', value)}
                                 placeholder="Enter address"
                                 placeholderTextColor="#94A3B8"
@@ -99,8 +109,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>Postal Code</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={profileData.postalCode}
-                                    onChangeText={(value) => handleInputChange('postalCode', value)}
+                                    value={profileData.companyInfo.postal_code}
+                                    onChangeText={(value) => handleInputChange('postal_code', value)}
                                     placeholder="Enter code"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="numeric"
@@ -111,7 +121,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>City</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={profileData.city}
+                                    value={profileData.companyInfo.city}
                                     onChangeText={(value) => handleInputChange('city', value)}
                                     placeholder="Enter city"
                                     placeholderTextColor="#94A3B8"
@@ -183,8 +193,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TextInput
                                     style={styles.phoneInput}
-                                    value={profileData.mobile}
-                                    onChangeText={(value) => handleInputChange('mobile', value)}
+                                    value={profileData.phone_number}
+                                    onChangeText={(value) => handleInputChange('phone_number', value)}
                                     placeholder="Enter mobile number"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="phone-pad"
@@ -220,7 +230,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                 </View>
 
                 {/* Account Deletion Section */}
-                <View style={styles.dangerCard}>
+                <View style={[styles.dangerCard, showCountryPicker && { marginTop: 220 }]}>
                     <View style={styles.cardHeader}>
                         <View style={styles.dangerIconContainer}>
                             <Ionicons name="alert-circle-outline" size={20} color="#EF4444" />

@@ -36,8 +36,9 @@ const useStatistics = (): UseStatisticsReturn => {
         try {
             const response = await RegisterController.GetFacilityList(userData?.id);
             const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                id: facility.id,
                 name: facility.name,
-                status: facility.hasServiceContract ? 'Active' : 'Inactive',
+                status: facility.status,
                 xrgiID: facility.xrgiID,
                 hasServiceContract: facility.hasServiceContract,
                 modelNumber: facility.modelNumber,

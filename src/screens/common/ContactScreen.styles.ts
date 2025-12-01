@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
+        marginTop: 16,
     },
     header: {
         flexDirection: 'row',
@@ -256,5 +257,16 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#FFFFFF',
         letterSpacing: 0.5,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
     },
 });

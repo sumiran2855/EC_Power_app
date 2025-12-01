@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         color: '#1E293B',
         backgroundColor: '#FFFFFF',
         fontWeight: '500',
-        maxWidth: '63%',
+        maxWidth: '55%',
     },
     dangerCard: {
         backgroundColor: '#FEF2F2',
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
         shadowRadius: 12,
         elevation: 5,
         zIndex: 1000,
-        maxHeight: 250,
+        maxHeight: 235,
     },
     countryList: {
         maxHeight: 250,
@@ -271,6 +271,17 @@ const styles = StyleSheet.create({
         color: '#64748B',
         fontWeight: '600',
         marginRight: 8,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 40,
+    },
+    loadingText: {
+        marginTop: 12,
+        fontSize: 16,
+        color: '#64748b',
     },
 });
 

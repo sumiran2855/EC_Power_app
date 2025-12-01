@@ -1,69 +1,38 @@
-import { useCallback } from 'react';
-
-export interface SystemData {
-    id: string;
-    systemName: string;
-    xrgiId: string;
-    recentCalls: string;
-    country: string;
-    status: 'active' | 'inactive' | 'maintenance';
-}
+import { RegisterController } from '@/controllers/RegisterController';
+import { Facility, UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
+import { useCallback, useEffect, useState } from 'react';
 
 interface UseServiceReportReturn {
-    systems: SystemData[];
+    systems: Facility[];
+    isLoading: boolean;
+    error: string | null;
     getStatusColor: (status: string) => string;
     getStatusText: (status: string) => string;
-    handleSystemPress: (system: SystemData) => void;
+    handleSystemPress: (system: Facility) => void;
     handleBackButton: () => void;
 }
 
 const useServiceReport = (navigation: any): UseServiceReportReturn => {
-    // Navigation handlers
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [systems, setSystems] = useState<Facility[]>([]);
+
     const handleBackButton = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
 
-    const handleSystemPress = useCallback((system: SystemData) => {
-        // Navigate to the detail screen with system data
+    const handleSystemPress = useCallback((system: Facility) => {
         navigation.navigate('ServiceReportDetail', { system });
-        console.log('Navigate to system:', system.id);
     }, [navigation]);
-
-    // Sample data - replace with your actual data
-    const systems: SystemData[] = [
-        {
-            id: '1',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167385',
-            recentCalls: '5',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '2',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167392',
-            recentCalls: '12',
-            country: 'US',
-            status: 'active'
-        },
-        {
-            id: '3',
-            systemName: 'XRGI® 25',
-            xrgiId: '1470167401',
-            recentCalls: '-',
-            country: 'US',
-            status: 'maintenance'
-        }
-    ];
 
     const getStatusColor = useCallback((status: string) => {
         switch (status) {
-            case 'active':
+            case 'Active':
                 return '#10b981';
-            case 'inactive':
+            case 'Inactive':
                 return '#ef4444';
-            case 'maintenance':
+            case 'Data Missing':
                 return '#f59e0b';
             default:
                 return '#64748b';
@@ -74,7 +43,43 @@ const useServiceReport = (navigation: any): UseServiceReportReturn => {
         return status.charAt(0).toUpperCase() + status.slice(1);
     }, []);
 
+    const GetFacilityStatistics = async () => {
+        setIsLoading(true);
+        setError(null);
+        const userData = await StorageService.user.getData<UserData>();
+        if (!userData) {
+            return null;
+        }
+        try {
+            const response = await RegisterController.GetFacilityList(userData?.id);
+            const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                id: facility.id,
+                name: facility.name,
+                status: facility.status,
+                xrgiID: facility.xrgiID,
+                hasServiceContract: facility.hasServiceContract,
+                modelNumber: facility.modelNumber,
+                location: {
+                    country: facility.location?.country,
+                },
+            })) : [];
+            setSystems(transformedData);
+            return null;
+        } catch (error) {
+            console.error('Error fetching facility statistics:', error);
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        GetFacilityStatistics();
+    }, []);
+
     return {
+        isLoading,
+        error,
         systems,
         getStatusColor,
         getStatusText,

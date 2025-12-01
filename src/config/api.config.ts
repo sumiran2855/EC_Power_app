@@ -13,15 +13,17 @@ const getBaseUrl = (localPort: number, endpoint: string = 'api') => {
 
   // Platform-specific URLs
   if (Platform.OS === 'web') {
-    return `http://localhost:${localPort}/${endpoint}`;
+    // return `http://localhost:${localPort}/${endpoint}`;
+    return `http://34.254.33.35:${localPort}/${endpoint}`;
   }
-  return `http://192.168.3.138:${localPort}/${endpoint}`;
+  // return `http://192.168.3.138:${localPort}/${endpoint}`;
+  return `http://34.254.33.35:${localPort}/${endpoint}`;
 };
 
 // Backend configurations
 const BACKEND_CONFIGS = {
   [BackendType.PRODUCT_PORTAL]: {
-    BASE_URL: getBaseUrl(3000, 'api'),
+    BASE_URL: getBaseUrl(4001, 'api1'),
     TIMEOUT: 30000,
     HEADERS: {
       'Accept': 'application/json',

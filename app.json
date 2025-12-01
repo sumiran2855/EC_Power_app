@@ -8,15 +8,17 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.ecpower"
+      "bundleIdentifier": "com.anonymous.ecpower",
+      "icon": "./assets/images/logo.png"
     },
     "android": {
+      "icon": "./assets/images/logo.png",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -24,16 +26,22 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.ecpower"
+      "package": "com.anonymous.ecpower",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE"
+      ]
     },
     "web": {
-      "output": "static"
+      "output": "static",
+      "favicon": "./assets/images/logo.png"
     },
     "plugins": [
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/logo.png",
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
           "dark": {
@@ -45,7 +53,9 @@
         "expo-build-properties",
         {
           "android": {
-            "kotlinVersion": "2.0.21"
+            "kotlinVersion": "2.0.21",
+            "usesCleartextTraffic": true,
+            "networkSecurityConfig": "allow-all"
           }
         }
       ],
@@ -59,5 +69,12 @@
       }
     },
     "owner": "sumiran.b"
+  },
+  "build": {
+    "apk": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
   }
 }

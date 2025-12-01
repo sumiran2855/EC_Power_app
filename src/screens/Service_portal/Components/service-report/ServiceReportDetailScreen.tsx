@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import ServiceReportsTab from './tabs/serviceReportTab';
 import ItemUsageTab from './tabs/ItemUsageTab';
 import UploadedServiceReportTab from './tabs/UploadedServiceReportTab';
 import UploadTab from './tabs/uploadTab';
+import { serviceReportController } from '@/controllers/serviceReportController';
 
 interface ServiceReportDetailScreenProps {
     navigation: any;
@@ -16,16 +17,30 @@ interface ServiceReportDetailScreenProps {
 type TabType = 'service_reports' | 'item_usage' | 'uploaded_reports' | 'upload';
 
 const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ navigation, route }) => {
+    const systemData = route?.params?.system;
     const [activeTab, setActiveTab] = useState<TabType>('service_reports');
-    const systemData = route?.params?.system || {
-        systemName: 'XRGI® 25',
-        xrgiId: '1470167385',
-        status: 'active'
-    };
+    const [serviceReport, setServiceReport] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleBackButton = () => {
         navigation.goBack();
     };
+
+    const getServiceReport = async () => {
+        setIsLoading(true);
+        try {
+            const response = await serviceReportController.GetServiceReport(systemData.xrgiID);
+            setServiceReport(response);
+        } catch (error) {
+            console.log("Error getting service report:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getServiceReport();
+    }, []);
 
     const tabs = [
         { id: 'service_reports', label: 'Service Reports', icon: 'document-text' },
@@ -37,15 +52,15 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
     const renderTabContent = () => {
         switch (activeTab) {
             case 'service_reports':
-                return <ServiceReportsTab systemData={systemData} navigation={navigation} />;
+                return <ServiceReportsTab systemData={serviceReport} navigation={navigation} loading={isLoading}/>;
             case 'item_usage':
-                return <ItemUsageTab systemData={systemData} navigation={navigation} />;
+                return <ItemUsageTab systemData={serviceReport} navigation={navigation} loading={isLoading} />;
             case 'uploaded_reports':
-                return <UploadedServiceReportTab systemData={systemData} navigation={navigation} />;
+                return <UploadedServiceReportTab systemData={systemData} navigation={navigation} loading={isLoading} />;
             case 'upload':
-                return <UploadTab systemData={systemData} navigation={navigation} />;
+                return <UploadTab systemData={systemData} navigation={navigation} loading={isLoading} customerID={serviceReport[0].customerID}/>;
             default:
-                return <ServiceReportsTab systemData={systemData} navigation={navigation} />;
+                return <ServiceReportsTab systemData={systemData} navigation={navigation} loading={isLoading} />;
         }
     };
 
@@ -57,18 +72,18 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
                     <Ionicons name="arrow-back" size={24} color="#1e293b" />
                 </TouchableOpacity>
                 <View style={styles.headerContent}>
-                    <Text style={styles.headerTitle}>{systemData.systemName}</Text>
+                    <Text style={styles.headerTitle}>{systemData.name}</Text>
                     <View style={styles.headerBadge}>
                         <View style={styles.statusDot} />
-                        <Text style={styles.headerSubtitle}>ID: {systemData.xrgiId}</Text>
+                        <Text style={styles.headerSubtitle}>ID: {systemData.xrgiID}</Text>
                     </View>
                 </View>
             </View>
 
             {/* Enhanced Tab Navigation */}
             <View style={styles.tabContainer}>
-                <ScrollView 
-                    horizontal 
+                <ScrollView
+                    horizontal
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.tabScrollContent}
                 >
@@ -86,10 +101,10 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
                                 styles.tabIconContainer,
                                 activeTab === tab.id && styles.activeTabIconContainer
                             ]}>
-                                <Ionicons 
-                                    name={tab.icon as any} 
-                                    size={20} 
-                                    color={activeTab === tab.id ? '#ffffff' : '#64748b'} 
+                                <Ionicons
+                                    name={tab.icon as any}
+                                    size={20}
+                                    color={activeTab === tab.id ? '#ffffff' : '#64748b'}
                                 />
                             </View>
                             <Text style={[

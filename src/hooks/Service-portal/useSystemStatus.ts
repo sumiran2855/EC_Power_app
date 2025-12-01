@@ -107,7 +107,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
                 const data = await SystemController.GetSystemStatus();
                 setApiData(data);
             } catch (error) {
-                console.error("Error fetching system status:", error);
+                console.log("Error fetching system status:", error);
             } finally {
                 setLoading(false);
             }

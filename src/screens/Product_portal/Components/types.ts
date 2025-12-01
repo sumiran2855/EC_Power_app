@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../navigation/AppNavigator";
 
 export interface RegisterFormData {
     systemName: string;
@@ -36,12 +37,8 @@ export interface RegisterFormData {
     installationTiming: 'next-visit' | 'asap';
 }
 
-export type RootStackParamList = {
-    XRGI_Details: { item: any };
-};
-
 export type XRGIDetailsScreenRouteProp = RouteProp<RootStackParamList, 'XRGI_Details'>;
-export type XRGIDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'XRGI_Details'>;
+export type XRGIDetailsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export interface XRGIDetailsScreenProps {
     route: XRGIDetailsScreenRouteProp;
