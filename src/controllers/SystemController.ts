@@ -1,18 +1,6 @@
 import { BackendType } from "@/config/api.config";
 import AuthHelper from "@/services/AuthHelper";
 import StorageService from "@/utils/secureStorage";
-// import axios from 'axios';
-
-// const api = axios.create({
-//     baseURL: 'https://service.ecpower.dk/rest/service/v1/plant/statistics/api',
-//     timeout: 30000, // Increased timeout
-//     headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//         'User-Agent': 'ECPowerApp/1.0',
-//         'Connection': 'keep-alive'
-//     },
-// });
 
 export class SystemController {
     static async GetSystemStatus() {
@@ -25,14 +13,12 @@ export class SystemController {
                     'User-Agent': 'Mozilla/5.0'
                 },
             });
-            console.log("response", response);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log("data", data);
             return data;
         } catch (error) {
             console.log("Error getting system status", error);
@@ -50,7 +36,6 @@ export class SystemController {
                 IdToken: idToken,
                 backendType: BackendType.SERVICE_DATABASE,
             });
-            console.log("System configuration response:", response);
 
             if (response.success) {
                 return response.data;

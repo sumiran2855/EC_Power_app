@@ -53,4 +53,36 @@ export class RegisterController {
             console.log("Error getting facility list", error);
         }
     }
+
+    static async GetFacilityByXrgiId(xrgiId: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `dealer/get-facilitiesByXrgi/${xrgiId}`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.SERVICE_DATABASE,
+            });
+            return response;
+        } catch (error) {
+            console.log(`Error getting facility by xrgi id ${xrgiId}`, error);
+        }
+    }
+
+    static async GetAllDealers() {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `dealer/getAll-dealer`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.SERVICE_DATABASE,
+            });
+            return response;
+        } catch (error) {
+            console.log(`Error getting all dealers`, error);
+        }
+    }
 }

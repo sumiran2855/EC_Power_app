@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './unit-detailScreen.styles';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,6 +19,10 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         isStopping,
         systemStatus,
         expandedSection,
+        isLoading,
+        isRecentCallLoading,
+        isSystemConfigurationLoading,
+        isStatusData2025Loading,
 
         // Data
         menuItems,
@@ -32,7 +36,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         toggleSection,
         handleStartSystem,
         handleStopSystem,
-    } = useUnitDetail();
+    } = useUnitDetail({ XrgiId: system?.xrgiID });
 
     const handleBackButton = () => {
         navigation.goBack();
@@ -62,6 +66,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 {renderInfoRow('City', data.city)}
                 {renderInfoRow('Postal Code', data.postalCode)}
                 {renderInfoRow('Country', data.country)}
+                {renderInfoRow('Email', data.email)}
                 {renderInfoRow('Cell Phone no', data.cellPhone)}
             </View>
         </View>
@@ -296,6 +301,16 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 );
         }
     };
+
+    // Loading state
+    if (isLoading || isRecentCallLoading || isSystemConfigurationLoading || isStatusData2025Loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text style={styles.loadingText}>Loading system data...</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.container}>

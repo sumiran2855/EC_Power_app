@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { RegisterController } from '@/controllers/RegisterController';
+import { SystemController } from '@/controllers/SystemController';
+import { UserController } from '@/controllers/UserController';
+import { Facility } from '@/screens/authScreens/types';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 interface MenuItem {
@@ -15,6 +19,7 @@ interface GeneralData {
         city: string;
         postalCode: string;
         country: string;
+        email: string;
         cellPhone: string;
     };
     dealer: {
@@ -23,6 +28,7 @@ interface GeneralData {
         city: string;
         postalCode: string;
         country: string;
+        email: string;
         cellPhone: string;
     };
     technician: {
@@ -31,6 +37,7 @@ interface GeneralData {
         city: string;
         postalCode: string;
         country: string;
+        email: string;
         cellPhone: string;
     };
 }
@@ -65,7 +72,11 @@ interface Status2025Data {
 
 type SystemStatus = 'idle' | 'running' | 'stopped';
 
-const useUnitDetail = () => {
+interface UseUnitDetailProps {
+    XrgiId?: string;
+}
+
+const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
     const [isStarting, setIsStarting] = useState(false);
     const [isStopping, setIsStopping] = useState(false);
     const [systemStatus, setSystemStatus] = useState<SystemStatus>('idle');
@@ -79,22 +90,186 @@ const useUnitDetail = () => {
         { id: 'existingConfig', title: 'Existing Configuration', icon: 'settings-outline', hasData: false },
     ];
 
+    // Fetch facility and user details
+    const [facilityData, setFacilityData] = useState<Facility>();
+    const [userData, setUserData] = useState<any>();
+    const [dealerData, setDealerData] = useState<any>(null);
+    const [recentCallData, setRecentCallData] = useState<any>(null);
+    const [statusData, setStatusData] = useState<any>(null);
+    const [systemConfiguration, setSystemConfiguration] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRecentCallLoading, setIsRecentCallLoading] = useState(false);
+    const [isSystemConfigurationLoading, setIsSystemConfigurationLoading] = useState(false);
+    const [isStatusData2025Loading, setIsStatusData2025Loading] = useState(false);
+
+    // Update the GetFacilityByXrgiId function to include dealer data fetching
+    const GetFacilityByXrgiId = async () => {
+        try {
+            setIsLoading(true);
+            const response = await RegisterController.GetFacilityByXrgiId(XrgiId!);
+
+            if (response?.data) {
+                setFacilityData(response.data);
+
+                // If there's a user ID in the response, fetch user data
+                if (response.data.userID) {
+                    try {
+                        const userResponse = await UserController.GetUserProfile(response.data.userID);
+                        if (userResponse?.data) {
+                            setUserData(userResponse.data);
+
+                            // If there's a dealerId in the user response, fetch dealer data
+                            if (userResponse.data.dealerId) {
+                                try {
+                                    const dealersResponse = await RegisterController.GetAllDealers();
+                                    if (dealersResponse?.data) {
+                                        const matchedDealer = dealersResponse.data.find(
+                                            (dealer: any) => dealer.id === userResponse.data.dealerId
+                                        );
+                                        if (matchedDealer) {
+                                            setDealerData(matchedDealer);
+                                        } else {
+                                            console.log("No dealer found with the given dealerId");
+                                            setDealerData(null);
+                                        }
+                                    }
+                                } catch (dealerError) {
+                                    console.log("Error fetching dealer data:", dealerError);
+                                    setDealerData(null);
+                                }
+                            } else {
+                                console.log("No dealerId found in user data");
+                                setDealerData(null);
+                            }
+                        }
+                    } catch (userError) {
+                        console.log("Error fetching user data:", userError);
+                        setUserData(null);
+                        setDealerData(null);
+                    }
+                }
+            }
+        } catch (error) {
+            console.log("Error getting facility by xrgi id", error);
+            setFacilityData(undefined);
+            setUserData(null);
+            setDealerData(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const getRecentCallDetail = async () => {
+        setIsRecentCallLoading(true);
+        try {
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/calls/${XrgiId}`);
+            if (response) {
+                const data = await response.json();
+                setRecentCallData(data);
+            }
+        } catch (error) {
+            console.log("Error recent call operational data:", error);
+        } finally {
+            setIsRecentCallLoading(false);
+        }
+    }
+
+    const GetstatusData2025 = async () => {
+        setIsStatusData2025Loading(true);
+        try {
+            // Get current date and time
+            const endDate = new Date();
+            // Calculate date 7 days ago
+            const startDate = new Date();
+            startDate.setDate(endDate.getDate() - 7);
+            
+            // Format dates to match the required format (YYYY-MM-DD+HH:MM:SS)
+            const formatDate = (date: Date) => {
+                return date.toISOString()
+                    .replace(/T/, '+')
+                    .replace(/\..+/, '')
+                    .replace(/:00\+/, '+00:00');
+            };
+            
+            const startDateStr = formatDate(startDate);
+            const endDateStr = formatDate(endDate);
+            
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/1184936474/${startDateStr}/${endDateStr}`);
+            if (response) {
+                const data = await response.json();
+                setStatusData(data);
+            }
+        } catch (error) {
+            console.error("Error fetching status data:", error);
+        } finally {
+            setIsStatusData2025Loading(false);
+        }
+    }
+
+    const getSystemConfiguration = async () => {
+        setIsSystemConfigurationLoading(true);
+        try {
+            const response = await SystemController.getSystemConfiguration(XrgiId!);
+            if (response?.raw?.plantConfigurationData?.[0]?.configuration) {
+                setSystemConfiguration(response.raw?.plantConfigurationData?.[0]?.configuration);
+            }
+        } catch (error) {
+            console.error("Error fetching system configuration:", error);
+        } finally {
+            setIsSystemConfigurationLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        GetFacilityByXrgiId();
+        getRecentCallDetail();
+        getSystemConfiguration();
+        GetstatusData2025();
+    }, [XrgiId]);
+
+    const secondsToHours = (seconds: number): number => {
+        return Math.round(seconds / 3600);
+    };
+
+    const formatNumber = (num: number): string => {
+        return new Intl.NumberFormat('en-US').format(Math.round(num));
+    };
+
+    const formatMinutesRatio = (operational: number, possible: number): string => {
+        if (operational <= possible) {
+            return 'out of possible hours';
+        }
+
+        const remainingMinutes = possible - operational;
+
+        // Format remaining time
+        if (remainingMinutes < 60) {
+            return `${Math.round(remainingMinutes)} min`;
+        } else {
+            const hours = Math.floor(remainingMinutes / 60);
+            const mins = Math.round(remainingMinutes % 60);
+            return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+        }
+    };
+
     const generalData: GeneralData = {
         systemName: {
-            name: 'Manish 01',
-            address: '102R, Barlin station',
-            city: 'Berlin',
-            postalCode: '8552',
-            country: 'Germany',
-            cellPhone: '+4598562110'
+            name: facilityData?.name || '-',
+            address: facilityData?.location?.address || '-',
+            city: facilityData?.location?.city || '-',
+            postalCode: facilityData?.location?.postalCode || '-',
+            country: facilityData?.location?.country || '-',
+            email: userData?.email || '-',
+            cellPhone: userData?.phone_number || '-'
         },
         dealer: {
-            name: '-',
-            address: '-',
-            city: '-',
-            postalCode: '-',
-            country: '-',
-            cellPhone: '-'
+            name: dealerData?.dealer_name || '-',
+            address: dealerData?.Address || '-',
+            city: dealerData?.city || '-',
+            postalCode: dealerData?.postCode || '-',
+            country: dealerData?.country || '-',
+            email: dealerData?.email || '-',
+            cellPhone: dealerData?.phone_number || '-'
         },
         technician: {
             name: '-',
@@ -102,15 +277,16 @@ const useUnitDetail = () => {
             city: '-',
             postalCode: '-',
             country: '-',
+            email: '-',
             cellPhone: '-'
         }
     };
 
     const lastCallData: LastCallData = {
-        calls: '1979599994',
-        timeOfCall: '02-11-24 15:14',
+        calls: recentCallData?.[0]?.[0]?.toString() || '-',
+        timeOfCall: recentCallData?.[0]?.[1] || '-',
         operationStatus: {
-            status: 'Stopped',
+            status: recentCallData?.[0]?.[2] === 1 ? 'Running' : 'Stopped',
             noise: '0 minutes',
             oilPressure: 'NO',
             gasAlarm: 'NO'
@@ -120,52 +296,78 @@ const useUnitDetail = () => {
     };
 
     const customerLoginData = {
-        lastLogin: '25-09-2025'
+        lastLogin: userData?.lastLogin
+            ? new Date(userData.lastLogin).toISOString().replace('T', ' ').split('.')[0]
+            : '-'
     };
 
     const status2025Data: Status2025Data = {
-        latestUpdate: '02-11-25 15:14',
-        operatingHours: 'out of possible hours',
-        lastService: '30-08-25 13:46',
-        operationalHoursToNextService: '362h / Latest 30-08-26 13:46',
-        elecProduction: 'kWh',
-        heatProduction: 'kWh',
-        fuelConsumption: 'kWh',
-        firstCall: '23-06-20 M, 15:08',
-        siteElecConsumption: '0',
-        coveredByXRGISystem: '0',
-        coveredByPowerPurchase: '0',
-        soldElectricity: '0'
+        latestUpdate: statusData?.LatesCallDate
+            ? statusData.LatesCallDate
+            : '-',
+        operatingHours: statusData?.PossibleMinutes > 0
+            ? formatMinutesRatio(statusData.OperationalMinutes ?? 0, statusData.PossibleMinutes)
+            : 'out of possible hours',
+        lastService: statusData?.LatesServiceDate
+            ? statusData.LatesServiceDate
+            : '-',
+        operationalHoursToNextService: statusData?.TimeNextService
+            ? `${formatNumber(secondsToHours(statusData.TimeNextService))} hours`
+            : '-',
+        elecProduction: statusData?.PowerProduction
+            ? `${formatNumber(statusData.PowerProduction / 1000)} kWh`
+            : '0 kWh',
+        heatProduction: statusData?.HeatProduction
+            ? `${formatNumber(statusData.HeatProduction)} kWh`
+            : '0 kWh',
+        fuelConsumption: statusData?.FuelConsumption
+            ? `${formatNumber(statusData.FuelConsumption)} kWh`
+            : '0 kWh',
+        firstCall: statusData?.FirstCallDate
+            ? statusData.FirstCallDate
+            : '-',
+        siteElecConsumption: statusData?.PowerConsumption
+            ? formatNumber(statusData.PowerConsumption / 1000) + ' kWh'
+            : '0 kWh',
+        coveredByXRGISystem: statusData?.PowerCoveredByXRGI
+            ? formatNumber(statusData.PowerCoveredByXRGI / 1000) + ' kWh'
+            : '0 kWh',
+        coveredByPowerPurchase: statusData?.PowerCoveredByPurchase
+            ? formatNumber(statusData.PowerCoveredByPurchase / 1000) + ' kWh'
+            : '0 kWh',
+        soldElectricity: statusData?.PowerSoldEl
+            ? formatNumber(statusData.PowerSoldEl / 1000) + ' kWh'
+            : '0 kWh'
     };
 
     const existingConfigData = {
-        configurationChanged: '18-09-24 13:55',
-        heatPump1Efficiency: '0',
-        highLoadWeekdays: '00:00-23:59',
-        loadWeekdays: '00:00-23:59',
-        electricitySales: 'No',
-        senderCountry: 'England',
-        serialNo: '460E92CEE4',
-        operator: 'ETHERNET',
-        systemXRGIType: 'Toyota 4Y 25.0 - Natural gas',
-        heatPump2Efficiency: '0',
-        highLoadSaturday: '00:00-23:59',
-        loadSaturday: '00:00-23:59',
-        saleWeekdays: '00:00-23:59',
-        stopInLowLoad: 'No',
-        versionNumber: '1.15.16',
-        generation: '2',
-        heatBackUp: 'No',
-        highLoadSunday: '00:00-23:59',
-        loadSunday: '00:00-23:59',
-        saleSaturday: '00:00-23:59',
-        consumptionInHighLoad: '24.0 kW',
-        simCardNo: '5410:EC:9A:AF:9F',
-        communicationType: 'Ethernet / Unknown',
-        meterType: 'Unknown',
-        saleSunday: '00:00-23:59',
-        consumptionInLowLoad: '24.0 kW',
-        terminalSerialNo: 'TMS60024Z3B3'
+        configurationChanged: '-',
+        heatPump1Efficiency: systemConfiguration?.numberOfHeatPumpControl || '-',
+        highLoadWeekdays: (systemConfiguration?.highLoadWeekday?.start || systemConfiguration?.highLoadWeekday?.end) ? `${systemConfiguration?.highLoadWeekday?.start} - ${systemConfiguration?.highLoadWeekday?.end}` : '-',
+        loadWeekdays: (systemConfiguration?.highTariffWeekday?.start || systemConfiguration?.highTariffWeekday?.end) ? `${systemConfiguration?.highTariffWeekday?.start} - ${systemConfiguration?.highTariffWeekday?.end}` : '-',
+        electricitySales: '-',
+        senderCountry: dealerData?.country || '-',
+        serialNo: systemConfiguration?.centralControlSerialNumber || '-',
+        operator: systemConfiguration?.gsmOperator || '-',
+        systemXRGIType: facilityData?.modelNumber || '-',
+        heatPump2Efficiency: '-',
+        highLoadSaturday: systemConfiguration?.highLoadSaturday?.start || systemConfiguration?.highLoadSaturday?.end ? `${systemConfiguration?.highLoadSaturday?.start} - ${systemConfiguration?.highLoadSaturday?.end}` : '-',
+        loadSaturday: systemConfiguration?.highTariffSunday?.start || systemConfiguration?.highTariffSunday?.end ? `${systemConfiguration?.highTariffSunday?.start} - ${systemConfiguration?.highTariffSunday?.end}` : '-',
+        saleWeekdays: systemConfiguration?.salePeriodWeekday?.start || systemConfiguration?.salePeriodWeekday?.end ? `${systemConfiguration?.salePeriodWeekday?.start} - ${systemConfiguration?.salePeriodWeekday?.end}` : '-',
+        stopInLowLoad: systemConfiguration?.hrtmEnabled ? 'Yes' : 'No',
+        versionNumber: '-',
+        generation: '-',
+        heatBackUp: systemConfiguration?.heatBackupAvailable ? 'Yes' : 'No',
+        highLoadSunday: systemConfiguration?.highLoadSunday?.start || systemConfiguration?.highLoadSunday?.end ? `${systemConfiguration?.highLoadSunday?.start} - ${systemConfiguration?.highLoadSunday?.end}` : '-',
+        loadSunday: systemConfiguration?.highTariffSunday?.start || systemConfiguration?.highTariffSunday?.end ? `${systemConfiguration?.highTariffSunday?.start} - ${systemConfiguration?.highTariffSunday?.end}` : '-',
+        saleSaturday: systemConfiguration?.salePeriodSaturday?.start || systemConfiguration?.salePeriodSaturday?.end ? `${systemConfiguration?.salePeriodSaturday?.start} - ${systemConfiguration?.salePeriodSaturday?.end}` : '-',
+        consumptionInHighLoad: systemConfiguration?.highLoadMaxPower?.power || '-',
+        simCardNo: systemConfiguration?.simCardNumber || '-',
+        communicationType: systemConfiguration?.communicationType || 'Unknown',
+        meterType: systemConfiguration?.meterType || 'Unknown',
+        saleSunday: systemConfiguration?.salePeriodSunday?.start || systemConfiguration?.salePeriodSunday?.end ? `${systemConfiguration?.salePeriodSunday?.start} - ${systemConfiguration?.salePeriodSunday?.end}` : '-',
+        consumptionInLowLoad: systemConfiguration?.lowLoadMaxPower?.power || '-',
+        terminalSerialNo: systemConfiguration?.terminalSerialNumber || '-'
     };
 
     const toggleSection = (itemId: string) => {
@@ -227,6 +429,10 @@ const useUnitDetail = () => {
         isStopping,
         systemStatus,
         expandedSection,
+        isLoading,
+        isRecentCallLoading,
+        isSystemConfigurationLoading,
+        isStatusData2025Loading,
 
         // Data
         menuItems,

@@ -1,6 +1,18 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    // Loading state styles
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
+    },
     container: {
         flex: 1,
         backgroundColor: '#F1F5F9',

@@ -25,9 +25,13 @@ const useUnitList = (navigation: NativeStackNavigationProp<RootStackParamList, '
                 name: facility.name,
                 status: facility.status,
                 xrgiID: facility.xrgiID,
+                userID: facility.userID,
                 hasServiceContract: facility.hasServiceContract,
                 modelNumber: facility.modelNumber,
                 location: {
+                    city: facility.location?.city,
+                    postalCode: facility.location?.postalCode,
+                    address: facility.location?.address,
                     country: facility.location?.country,
                 },
             })) : [];
