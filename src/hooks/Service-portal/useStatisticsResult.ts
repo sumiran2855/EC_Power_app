@@ -1,4 +1,7 @@
+import { SystemController } from '@/controllers/SystemController';
 import { useNavigation } from '@react-navigation/native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getCallReason, getOperationTypes, getServiceCodes } from './serviceCode';
 
 export interface CallData {
     id: string;
@@ -9,108 +12,197 @@ export interface CallData {
     statusOfIncident: string;
 }
 
-interface UseStatisticsResultReturn {
-    callsData: CallData[];
-    fromDate: string;
-    toDate: string;
-    system: any;
-    handleBackButton: () => void;
-    getStatusColor: (status: string) => string;
-    getStatusBackground: (status: string) => string;
+export type StatusType = 'normal' | 'warning' | 'error' | 'no-events';
+
+export interface MappedCallData extends Omit<CallData, 'cause' | 'currentStatus' | 'latestIncident' | 'statusOfIncident'> {
+    cause: {
+        code: number;
+        text: string;
+        type: StatusType;
+    };
+    currentStatus: {
+        code: number;
+        text: string;
+        type: StatusType;
+    };
+    latestIncident: {
+        code: number | null;
+        text: string;
+        type: StatusType;
+    };
+    statusOfIncident: {
+        code: number | null;
+        text: string;
+        type: StatusType;
+    };
 }
 
-const useStatisticsResult = (route: any): UseStatisticsResultReturn => {
-    const navigation = useNavigation();
-    const { fromDate, toDate, system } = route.params as { fromDate: string; toDate: string; system: any };
+interface UseStatisticsResultReturn {
+    callsData: MappedCallData[];
+    isLoading: boolean;
+    handleBackButton: () => void;
+    getStatusColor: (type: StatusType) => string;
+}
 
-    // Sample data - replace with actual API data
-    const callsData: CallData[] = [
-        {
-            id: "1",
-            timeOfCall: "19-09-2025 14:30",
-            cause: "System Error",
-            currentStatus: "Resolved",
-            latestIncident: "Database timeout",
-            statusOfIncident: "Closed"
-        },
-        {
-            id: "2",
-            timeOfCall: "20-09-2025 09:15",
-            cause: "Network Issue",
-            currentStatus: "In Progress",
-            latestIncident: "Connection lost",
-            statusOfIncident: "Open"
-        },
-        {
-            id: "3",
-            timeOfCall: "21-09-2025 16:45",
-            cause: "Hardware Failure",
-            currentStatus: "Pending",
-            latestIncident: "Disk failure",
-            statusOfIncident: "Under Review"
-        },
-        {
-            id: "4",
-            timeOfCall: "22-09-2025 11:20",
-            cause: "Software Bug",
-            currentStatus: "Resolved",
-            latestIncident: "Memory leak",
-            statusOfIncident: "Closed"
-        },
-        {
-            id: "5",
-            timeOfCall: "23-09-2025 08:00",
-            cause: "Power Outage",
-            currentStatus: "-",
-            latestIncident: "-",
-            statusOfIncident: "-"
+const useStatisticsResult = (fromDate: string, toDate: string, system: any): UseStatisticsResultReturn => {
+    const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false);
+    const [callsData, setCallsData] = useState<MappedCallData[]>([]);
+
+    // Use useMemo to get code mappings only once
+    const serviceCodes = useMemo(() => getServiceCodes(), []);
+    const operationTypes = useMemo(() => getOperationTypes(() => ''), []);
+    const callReasons = useMemo(() => getCallReason(() => ''), []);
+
+    // Helper function to find a service code by code value and format the text with code
+    const findServiceCode = useCallback((code: number | null) => {
+        if (code === null) return { code: -1, text: 'No New Events', type: 'no-events' as const };
+        const found = serviceCodes.find(sc => sc.code === code);
+        if (found) {
+            return {
+                ...found,
+                text: `${code} - ${found.text}`
+            };
         }
-    ];
+        return { code, text: `${code} - Unknown`, type: 'warning' as const };
+    }, [serviceCodes]);
+
+    // Helper function to find an operation type by code value and format the text with code
+    const findOperationType = useCallback((code: number | null) => {
+        if (code === null) return { code: -1, text: 'No New Events', type: 'no-events' as const };
+        const found = operationTypes.find(ot => ot.code === code);
+        if (found) {
+            return {
+                ...found,
+                text: `${code} - ${found.text}`
+            };
+        }
+        return { code, text: `${code} - Unknown`, type: 'warning' as const };
+    }, [operationTypes]);
+
+    // Helper function to find a call reason by causeCode and format the text with code
+    const findCallReason = useCallback((causeCode: number | null) => {
+        if (causeCode === null) return { causeCode: -1, cause: 'No New Events', type: 'no-events' as const };
+        const found = callReasons.find(cr => cr.causeCode === causeCode);
+        if (found) {
+            return {
+                ...found,
+                cause: `${causeCode} - ${found.cause}`
+            };
+        }
+        return { causeCode, cause: `${causeCode} - Unknown`, type: 'warning' as const };
+    }, [callReasons]);
+
+    const getCallsData = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const data = await SystemController.getCallStatisticsData(system.xrgiID);
+            if (data && Array.isArray(data)) {
+                // Parse the date range (input format: DD-MM-YYYY HH:mm)
+                const [fromDay, fromMonth, fromYear] = fromDate.split(' ')[0].split('-').map(Number);
+                const [fromHour, fromMinute] = fromDate.split(' ')[1].split(':').map(Number);
+                const fromDateObj = new Date(fromYear, fromMonth - 1, fromDay, fromHour, fromMinute);
+
+                const [toDay, toMonth, toYear] = toDate.split(' ')[0].split('-').map(Number);
+                const [toHour, toMinute] = toDate.split(' ')[1].split(':').map(Number);
+                const toDateObj = new Date(toYear, toMonth - 1, toDay, toHour, toMinute);
+
+                const formattedData = data
+                    .map((item: any) => {
+                        // Extract raw data
+                        const rawData = {
+                            id: String(item?.[0] || ''),
+                            timeOfCall: item?.[1] || '',
+                            causeCode: typeof item?.[2] === 'number' ? item[2] : null,
+                            currentStatusCode: typeof item?.[3] === 'number' ? item[3] : null,
+                            latestIncidentCode: typeof item?.[4] === 'number' ? item[4] : null,
+                            statusOfIncidentCode: typeof item?.[5] === 'number' ? item[5] : null,
+                        };
+
+                        // Map codes to their corresponding text and type
+                        const causeInfo = findCallReason(rawData.causeCode);
+                        const currentStatusInfo = findOperationType(rawData.currentStatusCode);
+                        const latestIncidentInfo = rawData.latestIncidentCode !== null
+                            ? findServiceCode(rawData.latestIncidentCode)
+                            : { code: null, text: 'No New Events', type: 'no-events' as const };
+                        const statusOfIncidentInfo = rawData.statusOfIncidentCode !== null
+                            ? findOperationType(rawData.statusOfIncidentCode)
+                            : { code: null, text: 'No New Events', type: 'no-events' as const };
+
+                        return {
+                            id: rawData.id,
+                            timeOfCall: rawData.timeOfCall,
+                            cause: {
+                                code: causeInfo.causeCode,
+                                text: causeInfo.cause,
+                                type: causeInfo.type
+                            },
+                            currentStatus: {
+                                code: currentStatusInfo.code,
+                                text: currentStatusInfo.text,
+                                type: currentStatusInfo.type
+                            },
+                            latestIncident: {
+                                code: latestIncidentInfo.code,
+                                text: latestIncidentInfo.text,
+                                type: latestIncidentInfo.type
+                            },
+                            statusOfIncident: {
+                                code: statusOfIncidentInfo.code,
+                                text: statusOfIncidentInfo.text,
+                                type: statusOfIncidentInfo.type
+                            }
+                        };
+                    })
+                    .filter(item => {
+                        if (!item.timeOfCall) return false;
+                        // Parse the API date string (format: 'YYYY-MM-DD HH:mm:ss')
+                        const [datePart, timePart] = item.timeOfCall.split(' ');
+                        const [year, month, day] = datePart.split('-').map(Number);
+                        const [hour, minute] = timePart.split(':').map(Number);
+                        const callDate = new Date(year, month - 1, day, hour, minute);
+
+                        return callDate >= fromDateObj && callDate <= toDateObj;
+                    });
+
+                setCallsData(formattedData);
+            }
+        } catch (error) {
+            console.error("Error in getting calls data", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [fromDate, toDate, system.xrgiID]);
+
+    useEffect(() => {
+        getCallsData();
+    }, [fromDate, toDate, system?.xrgiID]); 
 
     const handleBackButton = () => {
         navigation.goBack();
     };
 
-    const getStatusColor = (status: string): string => {
-        switch (status.toLowerCase()) {
-            case 'resolved':
-            case 'closed':
-                return '#10B981';
-            case 'in progress':
-            case 'open':
+    const getStatusColor = (type: 'normal' | 'warning' | 'error' | 'no-events'): string => {
+        switch (type) {
+            case 'normal':
+                return '#10B981'; 
+            case 'warning':
                 return '#F59E0B';
-            case 'pending':
-            case 'under review':
-                return '#3B82F6';
+            case 'error':
+                return '#EF4444';
+            case 'no-events':
+                return '#6B7280'; 
             default:
                 return '#6B7280';
         }
     };
 
-    const getStatusBackground = (status: string): string => {
-        switch (status.toLowerCase()) {
-            case 'resolved':
-            case 'closed':
-                return '#D1FAE5';
-            case 'in progress':
-            case 'open':
-                return '#FEF3C7';
-            case 'pending':
-            case 'under review':
-                return '#DBEAFE';
-            default:
-                return '#F3F4F6';
-        }
-    };
 
     return {
         callsData,
-        fromDate,
-        toDate,
-        system,
+        isLoading,
         handleBackButton,
         getStatusColor,
-        getStatusBackground
     };
 };
 

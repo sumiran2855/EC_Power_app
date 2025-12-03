@@ -53,4 +53,26 @@ export class SystemController {
             };
         }
     }
+
+    static async getCallStatisticsData(XRGID: string) {
+        try {
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/calls/${XRGID}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0'
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log("Error getting call statistics data", error);
+        }
+    }
 }

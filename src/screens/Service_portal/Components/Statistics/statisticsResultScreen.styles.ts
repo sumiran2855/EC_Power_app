@@ -216,6 +216,48 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#FFFFFF',
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
+    },
+    refreshLoadingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 12,
+        marginBottom: 16,
+        backgroundColor: '#F0F9FF',
+        borderRadius: 8,
+        gap: 8,
+    },
+    refreshLoadingText: {
+        fontSize: 14,
+        color: '#3B82F6',
+        fontWeight: '500',
+    },
+    noDataContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    noDataText:{
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#64748b',
+    },
+    noDataSubText:{
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#64748b',
+    }
 });
 
 export default styles;

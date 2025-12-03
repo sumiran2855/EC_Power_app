@@ -1,43 +1,12 @@
 import { useState } from 'react';
-import { Platform } from 'react-native';
 
-interface UseStatisticsScreenReturn {
-    fromDate: Date;
-    toDate: Date;
-    showFromDatePicker: boolean;
-    showFromTimePicker: boolean;
-    showToDatePicker: boolean;
-    showToTimePicker: boolean;
-    setShowFromDatePicker: (show: boolean) => void;
-    setShowFromTimePicker: (show: boolean) => void;
-    setShowToDatePicker: (show: boolean) => void;
-    setShowToTimePicker: (show: boolean) => void;
-    handleGetData: () => { fromDate: string; toDate: string; fromDateObject: Date; toDateObject: Date };
-    formatDate: (date: Date) => string;
-    formatTime: (date: Date) => string;
-    onFromDateChange: (event: any, selectedDate?: Date) => void;
-    onFromTimeChange: (event: any, selectedDate?: Date) => void;
-    onToDateChange: (event: any, selectedDate?: Date) => void;
-    onToTimeChange: (event: any, selectedDate?: Date) => void;
-}
-
-const useStatisticsScreen = (): UseStatisticsScreenReturn => {
-    const [fromDate, setFromDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); // Sept 19, 2025
-    const [toDate, setToDate] = useState<Date>(new Date(2026, 8, 19, 0, 0)); // Sept 19, 2026
+const useStatisticsScreen = () => {
+    const [fromDate, setFromDate] = useState(new Date());
+    const [toDate, setToDate] = useState(new Date());
     const [showFromDatePicker, setShowFromDatePicker] = useState(false);
     const [showFromTimePicker, setShowFromTimePicker] = useState(false);
     const [showToDatePicker, setShowToDatePicker] = useState(false);
     const [showToTimePicker, setShowToTimePicker] = useState(false);
-
-    const formatDateTime = (date: Date): string => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        return `${day}-${month}-${year} ${hours}:${minutes}`;
-    };
 
     const formatDate = (date: Date): string => {
         const day = String(date.getDate()).padStart(2, '0');
@@ -54,45 +23,62 @@ const useStatisticsScreen = (): UseStatisticsScreenReturn => {
         return `${hours}:${minutes}`;
     };
 
-    const handleGetData = () => {
-        // Format dates for display
-        const formattedFromDate = formatDateTime(fromDate);
-        const formattedToDate = formatDateTime(toDate);
-
-        return {
-            fromDate: formattedFromDate,
-            toDate: formattedToDate,
-            fromDateObject: fromDate,
-            toDateObject: toDate
-        };
+    const formatDateTime = (date: Date): string => {
+        return `${formatDate(date)} ${formatTime(date)}`;
     };
 
     const onFromDateChange = (event: any, selectedDate?: Date) => {
-        setShowFromDatePicker(Platform.OS === 'ios');
+        setShowFromDatePicker(false);
         if (selectedDate) {
-            setFromDate(selectedDate);
+            // Preserve the time when changing date
+            const newDate = new Date(fromDate);
+            newDate.setFullYear(selectedDate.getFullYear());
+            newDate.setMonth(selectedDate.getMonth());
+            newDate.setDate(selectedDate.getDate());
+            setFromDate(newDate);
         }
     };
 
     const onFromTimeChange = (event: any, selectedDate?: Date) => {
-        setShowFromTimePicker(Platform.OS === 'ios');
+        setShowFromTimePicker(false);
         if (selectedDate) {
-            setFromDate(selectedDate);
+            // Preserve the date when changing time
+            const newDate = new Date(fromDate);
+            newDate.setHours(selectedDate.getHours());
+            newDate.setMinutes(selectedDate.getMinutes());
+            setFromDate(newDate);
         }
     };
 
     const onToDateChange = (event: any, selectedDate?: Date) => {
-        setShowToDatePicker(Platform.OS === 'ios');
+        setShowToDatePicker(false);
         if (selectedDate) {
-            setToDate(selectedDate);
+            const newDate = new Date(toDate);
+            newDate.setFullYear(selectedDate.getFullYear());
+            newDate.setMonth(selectedDate.getMonth());
+            newDate.setDate(selectedDate.getDate());
+            setToDate(newDate);
         }
     };
 
     const onToTimeChange = (event: any, selectedDate?: Date) => {
-        setShowToTimePicker(Platform.OS === 'ios');
+        setShowToTimePicker(false);
         if (selectedDate) {
-            setToDate(selectedDate);
+            // Preserve the date when changing time
+            const newDate = new Date(toDate);
+            newDate.setHours(selectedDate.getHours());
+            newDate.setMinutes(selectedDate.getMinutes());
+            setToDate(newDate);
         }
+    };
+
+    const handleGetData = () => {
+        return {
+            fromDate: formatDateTime(fromDate),
+            toDate: formatDateTime(toDate),
+            fromDateObject: fromDate,
+            toDateObject: toDate
+        };
     };
 
     return {

@@ -32,7 +32,6 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
         onToDateChange,
         onToTimeChange
     } = useStatisticsScreen();
-    console.log("system", system);
 
     const handleBackButton = () => {
         navigation.goBack();

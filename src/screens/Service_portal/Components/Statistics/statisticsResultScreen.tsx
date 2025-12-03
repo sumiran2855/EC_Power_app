@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import useStatisticsResult, { MappedCallData } from "../../../../hooks/Service-portal/useStatisticsResult";
 import styles from "./statisticsResultScreen.styles";
-import useStatisticsResult from "../../../../hooks/Service-portal/useStatisticsResult";
 
 interface StatisticsResultScreenProps {
     navigation: any;
@@ -11,15 +11,27 @@ interface StatisticsResultScreenProps {
 }
 
 const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }) => {
+    const { fromDate, toDate, system } = route.params;
+
     const {
         callsData,
-        fromDate,
-        toDate,
-        system,
+        isLoading,
         handleBackButton,
-        getStatusColor,
-        getStatusBackground
-    } = useStatisticsResult(route);
+        getStatusColor
+    } = useStatisticsResult(fromDate, toDate, system);
+
+    const showInitialLoading = isLoading && callsData.length === 0;
+
+    if (showInitialLoading) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#3b82f6" />
+                    <Text style={styles.loadingText}>Loading system data...</Text>
+                </View>
+            </SafeAreaView>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -32,6 +44,13 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
             </View>
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+                {/* Show loading indicator when refreshing data */}
+                {isLoading && callsData.length > 0 && (
+                    <View style={styles.refreshLoadingContainer}>
+                        <ActivityIndicator size="small" color="#3b82f6" />
+                        <Text style={styles.refreshLoadingText}>Refreshing data...</Text>
+                    </View>
+                )}
                 {/* Title Section */}
                 <View style={styles.titleSection}>
                     <View style={styles.titleRow}>
@@ -42,19 +61,30 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                     </View>
                     <Text style={styles.subtitle}>{system?.xrgiID} - {system?.modelNumber}</Text>
                     <Text style={styles.description}>
-                        Click on the system for which you want to generate an operational analysis
+                        Results from {fromDate} to {toDate}
                     </Text>
                 </View>
 
                 {/* Summary Card */}
                 <View style={styles.summaryCard}>
                     <View style={styles.summaryHeader}>
-                        <Text style={styles.summaryTitle}>Total {callsData.length} calls</Text>
+                        <Text style={styles.summaryTitle}>
+                            {callsData.length > 0 ? `Total ${callsData.length} calls` : 'No calls found'}
+                        </Text>
                     </View>
                 </View>
 
+                {/* No Data Message */}
+                {callsData.length === 0 && (
+                    <View style={styles.noDataContainer}>
+                        <Ionicons name="information-circle-outline" size={48} color="#9CA3AF" />
+                        <Text style={styles.noDataText}>No calls found for the selected date range</Text>
+                        <Text style={styles.noDataSubText}>Try selecting a different date range</Text>
+                    </View>
+                )}
+
                 {/* Call Cards */}
-                {callsData.map((call, index) => (
+                {callsData.map((call: MappedCallData, index: number) => (
                     <View key={call.id} style={styles.callCard}>
                         {/* Card Header */}
                         <View style={styles.cardHeader}>
@@ -70,25 +100,19 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                             {/* Cause */}
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardLabel}>Cause</Text>
-                                <Text style={styles.cardValue}>{call.cause}</Text>
+                                <View style={styles.statusBadge}>
+                                    <Text style={[styles.statusText, { color: getStatusColor(call.cause.type) }]}>
+                                        {call.cause.text}
+                                    </Text>
+                                </View>
                             </View>
 
                             {/* Current Status */}
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardLabel}>Current Status</Text>
-                                <View
-                                    style={[
-                                        styles.statusBadge,
-                                        { backgroundColor: getStatusBackground(call.currentStatus) }
-                                    ]}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.statusText,
-                                            { color: getStatusColor(call.currentStatus) }
-                                        ]}
-                                    >
-                                        {call.currentStatus}
+                                <View style={styles.statusBadge}>
+                                    <Text style={[styles.statusText, { color: getStatusColor(call.currentStatus.type) }]}>
+                                        {call.currentStatus.text}
                                     </Text>
                                 </View>
                             </View>
@@ -96,25 +120,19 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                             {/* Latest Incident */}
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardLabel}>Latest Incident</Text>
-                                <Text style={styles.cardValue}>{call.latestIncident}</Text>
+                                <View style={styles.statusBadge}>
+                                    <Text style={[styles.statusText, { color: getStatusColor(call.latestIncident.type) }]}>
+                                        {call.latestIncident.text}
+                                    </Text>
+                                </View>
                             </View>
 
                             {/* Status of Incident */}
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardLabel}>Incident Status</Text>
-                                <View
-                                    style={[
-                                        styles.statusBadge,
-                                        { backgroundColor: getStatusBackground(call.statusOfIncident) }
-                                    ]}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.statusText,
-                                            { color: getStatusColor(call.statusOfIncident) }
-                                        ]}
-                                    >
-                                        {call.statusOfIncident}
+                                <View style={styles.statusBadge}>
+                                    <Text style={[styles.statusText, { color: getStatusColor(call.statusOfIncident.type) }]}>
+                                        {call.statusOfIncident.text}
                                     </Text>
                                 </View>
                             </View>
