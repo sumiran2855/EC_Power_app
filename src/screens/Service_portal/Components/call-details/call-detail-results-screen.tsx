@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from "./call-details-results-screen.styles";
-import useCallDetailsResult, { CallData } from "../../../../hooks/Service-portal/call-details/useCallDetailsResult";
+import useCallDetailsResult from "../../../../hooks/Service-portal/call-details/useCallDetailsResult";
 
 interface CallDetailResultScreenProps {
     navigation: any;
@@ -12,26 +12,34 @@ interface CallDetailResultScreenProps {
 
 interface DataRowProps {
     label: string;
-    value: string;
+    value: string | boolean;
     valueColor?: string;
 }
 
 const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigation, route }) => {
-    const { system } = route.params;
+    const { system, fromDate, toDate, fromDateObject, toDateObject } = route.params;
     const {
         callData,
+        callDetailsData,
+        isLoading,
         expandedIncidents,
         handleBackButton,
         toggleIncident,
         navigateToHeatDistribution: HandleHeatDistribution
     } = useCallDetailsResult(navigation, route);
 
-    const DataRow: React.FC<DataRowProps> = ({ label, value, valueColor }) => (
-        <View style={styles.dataRow}>
-            <Text style={styles.dataLabel}>{label}</Text>
-            <Text style={[styles.dataValue, valueColor ? { color: valueColor } : {}]}>{value}</Text>
-        </View>
-    );
+    const DataRow: React.FC<DataRowProps> = ({ label, value, valueColor }) => {
+        const displayValue = typeof value === 'boolean' ? (value ? 'true' : 'false') : value;
+        const booleanColor = typeof value === 'boolean' ? (value ? '#10B981' : '#EF4444') : undefined;
+        const finalColor = valueColor || booleanColor;
+        
+        return (
+            <View style={styles.dataRow}>
+                <Text style={styles.dataLabel}>{label}</Text>
+                <Text style={[styles.dataValue, finalColor ? { color: finalColor } : {}]}>{displayValue}</Text>
+            </View>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -114,33 +122,64 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
 
                 {/* Incidents Section */}
                 <View style={styles.incidentsSection}>
-                    {callData.incidents.map((incident, index) => (
-                        <View key={index} style={styles.incidentCard}>
-                            <TouchableOpacity
-                                style={styles.incidentHeader}
-                                onPress={() => toggleIncident(index)}
-                            >
-                                <Text style={styles.incidentTitle}>Date of incident</Text>
-                                <View style={styles.incidentHeaderRight}>
-                                    <Text style={styles.incidentDate}>{incident.dateOfIncident}</Text>
-                                    <Ionicons
-                                        name={expandedIncidents[index] ? "chevron-up" : "chevron-down"}
-                                        size={20}
-                                        color="#64748B"
-                                    />
-                                </View>
-                            </TouchableOpacity>
-
-                            {expandedIncidents[index] && (
-                                <View style={styles.incidentContent}>
-                                    <DataRow label="Date of incident" value={incident.dateOfIncident} />
-                                    <DataRow label="Incident type" value={incident.incidentType} />
-                                    <DataRow label="Incidents" value={incident.incidents} />
-                                    <DataRow label="Status of incident" value={incident.statusOfIncident} />
-                                </View>
-                            )}
+                    <Text style={styles.sectionTitle}>Incidents ({callDetailsData?.length || 0})</Text>
+                    
+                    {isLoading ? (
+                        <View style={styles.loadingContainer}>
+                            <Text style={styles.loadingText}>Loading incidents...</Text>
                         </View>
-                    ))}
+                    ) : !callDetailsData || callDetailsData.length === 0 ? (
+                        <View style={styles.noDataContainer}>
+                            <Ionicons name="alert-circle-outline" size={48} color="#64748B" />
+                            <Text style={styles.noDataTitle}>No incidents found</Text>
+                            <Text style={styles.noDataSubTitle}>
+                                Try adjusting the date range to include more historical data
+                            </Text>
+                            <Text style={styles.noDataSubTitle}>
+                                Current range: {fromDate} to {toDate}
+                            </Text>
+                        </View>
+                    ) : (
+                        callDetailsData.map((incident, index) => (
+                            <View key={incident.id} style={styles.incidentCard}>
+                                <TouchableOpacity
+                                    style={styles.incidentHeader}
+                                    onPress={() => toggleIncident(incident.id)}
+                                >
+                                    <View style={styles.incidentHeaderLeft}>
+                                        <Text style={styles.incidentTitle}>Incident</Text>
+                                        <Text style={styles.incidentDate}>{incident.timeOfCall}</Text>
+                                    </View>
+                                    <View style={styles.incidentHeaderRight}>
+                                        <View style={[styles.statusBadge, { backgroundColor: incident.incident.color }]}>
+                                            <Text style={styles.statusText}>{incident.incident.type.toUpperCase()}</Text>
+                                        </View>
+                                        <Ionicons
+                                            name={expandedIncidents[incident.id] ? "chevron-up" : "chevron-down"}
+                                            size={20}
+                                            color="#64748B"
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+
+                                {expandedIncidents[incident.id] && (
+                                    <View style={styles.incidentContent}>
+                                        <DataRow label="Date & Time" value={incident.timeOfCall} />
+                                        <DataRow 
+                                            label="Incident" 
+                                            value={incident.incident.text} 
+                                            valueColor={incident.incident.color}
+                                        />
+                                        <DataRow 
+                                            label="Status of Incident" 
+                                            value={incident.operation.text} 
+                                            valueColor={incident.operation.color}
+                                        />
+                                    </View>
+                                )}
+                            </View>
+                        ))
+                    )}
                 </View>
 
                 {/* Action Button */}

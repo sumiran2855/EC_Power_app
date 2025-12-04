@@ -38,8 +38,8 @@ interface UseCallDetailsScreenReturn {
 
 const useCallDetailsScreen = ({ navigation, route }: UseCallDetailsScreenProps): UseCallDetailsScreenReturn => {
     const { system } = route.params;
-    const [fromDate, setFromDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); // Sept 19, 2025
-    const [toDate, setToDate] = useState<Date>(new Date(2026, 8, 19, 0, 0)); // Sept 19, 2026
+    const [fromDate, setFromDate] = useState<Date>(new Date(2025, 8, 19, 0, 0)); 
+    const [toDate, setToDate] = useState<Date>(new Date(2026, 8, 19, 0, 0)); 
     const [showFromDatePicker, setShowFromDatePicker] = useState(false);
     const [showFromTimePicker, setShowFromTimePicker] = useState(false);
     const [showToDatePicker, setShowToDatePicker] = useState(false);

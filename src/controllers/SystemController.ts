@@ -75,4 +75,26 @@ export class SystemController {
             console.log("Error getting call statistics data", error);
         }
     }
+
+    static async getCallDetailsData(XRGID: string) {
+        try {
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/incident/1979599994`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0'
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log("Error getting call details data", error);
+        }
+    }
 }

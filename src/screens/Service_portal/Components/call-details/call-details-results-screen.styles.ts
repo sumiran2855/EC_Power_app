@@ -167,10 +167,14 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: "#FAFBFC",
     },
+    incidentHeaderLeft: {
+        flex: 1,
+    },
     incidentTitle: {
         fontSize: 14,
         fontWeight: "600",
         color: "#3B82F6",
+        marginBottom: 4,
     },
     incidentHeaderRight: {
         flexDirection: "row",
@@ -179,11 +183,56 @@ const styles = StyleSheet.create({
     incidentDate: {
         fontSize: 13,
         color: "#64748B",
+        marginBottom: 4,
+    },
+    statusBadge: {
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
         marginRight: 8,
+    },
+    statusText: {
+        fontSize: 10,
+        fontWeight: "600",
+        color: "#FFFFFF",
     },
     incidentContent: {
         padding: 16,
         paddingTop: 8,
+    },
+
+    // Loading and Empty States
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 40,
+    },
+    loadingText: {
+        fontSize: 16,
+        color: "#64748B",
+        marginTop: 8,
+    },
+    noDataContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 40,
+        paddingHorizontal: 20,
+    },
+    noDataTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#1E293B",
+        marginTop: 16,
+        marginBottom: 8,
+    },
+    noDataSubTitle: {
+        fontSize: 14,
+        color: "#64748B",
+        textAlign: "center",
+        lineHeight: 20,
+        marginBottom: 4,
     },
 
     // Action Button
