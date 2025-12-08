@@ -78,7 +78,7 @@ export class SystemController {
 
     static async getCallDetailsData(XRGID: string) {
         try {
-            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/incident/1979599994`, {
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/incident/${XRGID}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

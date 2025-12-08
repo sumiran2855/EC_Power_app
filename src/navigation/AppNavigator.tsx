@@ -30,6 +30,7 @@ import UnitListScreen from '../screens/Unit_list/unit-listScreen';
 import UnitDetailScreen from '../screens/Unit_list/unit-detailScreen';
 import ProfileScreen from '../screens/common/ProfileScreen';
 import SettingScreen from '../screens/common/SettingScreen';
+import EnergyProductionScreen from '@/screens/Service_portal/Energy_production';
 
 export type PortalType = 'PRODUCT' | 'SERVICE';
 
@@ -62,6 +63,7 @@ export type RootStackParamList = {
   UnitDetail: { system: Facility };
   Profile: undefined;
   Setting: undefined;
+  EnergyProduction: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -203,6 +205,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="Setting"
           component={SettingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EnergyProduction"
+          component={EnergyProductionScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -87,6 +87,13 @@ const useHome = () => {
                     color: '#F4511E',
                     subtitle: 'View call details'
                 },
+                {
+                    id: '2-6',
+                    title: 'Energy Production',
+                    icon: 'battery-charging-full',
+                    color: '#1E88E5',
+                    subtitle: 'View energy production'
+                },
             ],
         },
         {
@@ -170,6 +177,9 @@ const useHome = () => {
                 break;
             case '2-5':
                 navigation.navigate('CallDetails');
+                break;
+            case '2-6':
+                navigation.navigate('EnergyProduction');
                 break;
             case '3-1':
                 navigation.navigate('UnitList');

@@ -1,0 +1,222 @@
+import { Dimensions, StyleSheet } from 'react-native';
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F8FAFC',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#ffffff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e2e8f0',
+        zIndex: 10,
+    },
+    backButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 8,
+        paddingRight: 12,
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#0F172A',
+        letterSpacing: -0.3,
+    },
+    scrollView: {
+        flex: 1,
+    },
+    // Filter Dropdown Styles
+    filterDropdownContainer: {
+        paddingHorizontal: 20,
+        paddingTop: 16,
+        paddingBottom: 16,
+    },
+    filterButton: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#e2e8f0',
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
+    },
+    filterButtonText: {
+        fontSize: 15,
+        fontWeight: '500',
+        color: '#0F172A',
+    },
+    // Modal Styles
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        width: SCREEN_WIDTH - 80,
+        maxWidth: 400,
+    },
+    modalCard: {
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        overflow: 'hidden',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 8,
+    },
+    modalOption: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f1f5f9',
+    },
+    modalOptionFirst: {
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+    },
+    modalOptionLast: {
+        borderBottomWidth: 0,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+    },
+    modalOptionSelected: {
+        backgroundColor: '#eff6ff',
+    },
+    modalOptionText: {
+        fontSize: 15,
+        color: '#0F172A',
+        flex: 1,
+    },
+    modalOptionTextSelected: {
+        fontWeight: '600',
+        color: '#3b82f6',
+    },
+    infoGridCard: {
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        padding: 20,
+        marginHorizontal: 20,
+        marginBottom: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
+    },
+    infoGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    infoGridItem: {
+        width: '50%',
+        marginBottom: 20,
+        paddingRight: 8,
+    },
+    infoGridLabel: {
+        fontSize: 12,
+        color: '#64748b',
+        marginBottom: 4,
+        fontWeight: '500',
+    },
+    infoGridValue: {
+        fontSize: 13,
+        color: '#0F172A',
+        fontWeight: '600',
+    },
+    chartCard: {
+        backgroundColor: '#ffffff',
+        borderRadius: 20,
+        padding: 24,
+        marginHorizontal: 20,
+        marginBottom: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    chartTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#0F172A',
+        marginBottom: 20,
+        letterSpacing: 0.3,
+    },
+    chart: {
+        marginVertical: 12,
+        borderRadius: 16,
+    },
+    statsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 16,
+        marginTop: 24,
+        paddingTop: 20,
+        borderTopWidth: 1,
+        borderTopColor: '#e2e8f0',
+    },
+    statItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        width: '46%',
+        backgroundColor: '#f8fafc',
+        padding: 12,
+        borderRadius: 12,
+    },
+    statIndicator: {
+        width: 4,
+        height: 32,
+        borderRadius: 2,
+    },
+    statContent: {
+        flex: 1,
+    },
+    statLabel: {
+        fontSize: 11,
+        color: '#64748b',
+        fontWeight: '500',
+        marginBottom: 4,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+    },
+    statValue: {
+        fontSize: 15,
+        color: '#0F172A',
+        fontWeight: '700',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#64748b',
+    },
+
+});
+
+export default styles;

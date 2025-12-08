@@ -194,7 +194,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
             const startDateStr = formatDate(startDate);
             const endDateStr = formatDate(endDate);
             
-            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/1184936474/${startDateStr}/${endDateStr}`);
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/${XrgiId}/${startDateStr}/${endDateStr}`);
             if (response) {
                 const data = await response.json();
                 setStatusData(data);
