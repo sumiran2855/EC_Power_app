@@ -45,13 +45,14 @@ const Alert: React.FC<AlertProps> = ({
             transparent={true}
             animationType="fade"
             onRequestClose={onClose}
+            statusBarTranslucent={true}
         >
             <View style={styles.overlay}>
                 <View style={styles.container}>
                     {showIcon && (
                         <View style={styles.iconContainer}>
                             <Icon 
-                                name={iconConfig.name} 
+                                name={iconConfig.name as any}
                                 size={60} 
                                 color={iconConfig.color} 
                             />

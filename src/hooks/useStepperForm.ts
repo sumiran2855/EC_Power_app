@@ -1,8 +1,14 @@
+import { RegisterController } from '@/controllers/RegisterController';
 import { StepperController } from '@/controllers/StepperController';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormData, ICustomer } from '../screens/authScreens/types';
+import StorageService from '../utils/secureStorage';
 
 export const useStepperForm = () => {
+    const daSignedRef = useRef(false);
+    const smartPriceControlAddedRef = useRef(false);
+    const smartPriceControlMethodRef = useRef('');
+
     const [currentStep, setCurrentStep] = useState(1);
     const [showCountryCodePicker, setShowCountryCodePicker] = useState(false);
     const [showContactCountryCodePicker, setShowContactCountryCodePicker] = useState(false);
@@ -70,6 +76,27 @@ export const useStepperForm = () => {
         industry: '',
         recipientEmails: '',
         distributeHoursEvenly: true,
+        EnergyCheck_plus: {
+            annualSavings: '',
+            co2Savings: '',
+            operatingHours: '',
+            industry: '',
+            email: '',
+            monthlyDistribution: {
+                january: '0',
+                february: '0',
+                march: '0',
+                april: '0',
+                may: '0',
+                june: '0',
+                july: '0',
+                august: '0',
+                september: '0',
+                october: '0',
+                november: '0',
+                december: '0'
+            }
+        },
         monthlyDistribution: [
             { month: 'January', percentage: '8.33', hours: '0', editable: true },
             { month: 'February', percentage: '8.33', hours: '0', editable: true },
@@ -84,36 +111,152 @@ export const useStepperForm = () => {
             { month: 'November', percentage: '8.33', hours: '0', editable: true },
             { month: 'December', percentage: '8.37', hours: '0', editable: true },
         ],
+        smartPriceControlAdded: false,
+        smartPriceControl: {
+            method: ''
+        },
+        hasEnergyCheckPlus: false,
+        DaSigned: false,
     });
 
-    // Effect to distribute hours when expected operating hours changes
+    const getStepFromJourneyStatus = (status: string): number => {
+        switch (status) {
+            case 'profileInfo':
+                return 1;
+            case 'facilityInfo':
+                return 2;
+            case 'smartPriceControlInfo':
+                return 3;
+            case 'completed':
+                return 4;
+            default:
+                return 1;
+        }
+    };
+
+    const getNextJourneyStatus = (currentStep: number): string => {
+        switch (currentStep) {
+            case 1:
+                return 'facilityInfo';
+            case 2:
+                return 'smartPriceControlInfo';
+            case 3:
+                return 'completed';
+            default:
+                return 'completed';
+        }
+    };
+
     useEffect(() => {
-        if (formData.EnergyCheck_plus?.annualSavings && formData.distributeHoursEvenly) {
+        const initializeStep = async () => {
+            try {
+                const userData = await StorageService.user.getData<ICustomer>();
+                if (userData && userData.journeyStatus) {
+                    const step = getStepFromJourneyStatus(userData.journeyStatus);
+                    setCurrentStep(step);
+                    setFormData((prev: any) => ({ ...prev, journeyStatus: userData.journeyStatus }));
+                }
+            } catch (error) {
+                console.error('Error initializing step:', error);
+                setCurrentStep(1);
+            }
+        };
+
+        initializeStep();
+    }, []);
+
+    useEffect(() => {
+        if (formData.EnergyCheck_plus?.operatingHours && formData.distributeHoursEvenly) {
             distributeHoursEvenly();
         }
-    }, [formData.EnergyCheck_plus?.annualSavings]);
+    }, [formData.EnergyCheck_plus?.operatingHours, formData.distributeHoursEvenly]);
 
     const updateFormData = (field: keyof FormData, value: any) => {
+        if (field === 'DaSigned') {
+            daSignedRef.current = value;
+        }
+
+        if (field === 'smartPriceControlAdded') {
+            smartPriceControlAddedRef.current = value;
+        }
+
+        if (field === 'smartPriceControl') {
+            smartPriceControlMethodRef.current = value?.method || '';
+        }
+
+        if (field === 'EnergyCheck_plus' && (typeof value === 'boolean' || value === true)) {
+            if (value === true) {
+                setFormData((prev: FormData) => ({
+                    ...prev,
+                    EnergyCheck_plus: {
+                        annualSavings: '',
+                        co2Savings: '',
+                        operatingHours: '',
+                        industry: '',
+                        email: '',
+                        monthlyDistribution: {
+                            january: '0',
+                            february: '0',
+                            march: '0',
+                            april: '0',
+                            may: '0',
+                            june: '0',
+                            july: '0',
+                            august: '0',
+                            september: '0',
+                            october: '0',
+                            november: '0',
+                            december: '0'
+                        }
+                    }
+                }));
+            } else {
+                setFormData((prev: FormData) => ({
+                    ...prev,
+                    EnergyCheck_plus: undefined
+                }));
+            }
+            return;
+        }
+
         setFormData((prev: FormData) => ({ ...prev, [field]: value }));
     };
 
     const distributeHoursEvenly = () => {
-        const totalHours = parseFloat(formData.EnergyCheck_plus?.annualSavings!) || 0;
+        const totalHours = parseFloat(formData.EnergyCheck_plus?.operatingHours || '0') || 0;
         const hoursPerMonth = totalHours / 12;
         const percentagePerMonth = (100 / 12);
 
-        const newDistribution = formData.EnergyCheck_plus?.monthlyDistribution!.map((month: { month: string; percentage: string; hours: string; editable: boolean }) => ({
-            ...month,
-            hours: hoursPerMonth.toFixed(2),
-            percentage: percentagePerMonth.toFixed(2),
-        }));
+        const newDistribution = [
+            { month: 'January', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'February', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'March', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'April', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'May', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'June', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'July', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'August', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'September', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'October', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'November', percentage: percentagePerMonth.toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+            { month: 'December', percentage: (percentagePerMonth + 0.04).toFixed(2), hours: hoursPerMonth.toFixed(2), editable: true },
+        ];
+
+        const energyCheckDistribution: { [key: string]: string } = {};
+        newDistribution.forEach(month => {
+            const monthKey = month.month.toLowerCase();
+            energyCheckDistribution[monthKey] = month.hours;
+        });
 
         setFormData((prev: FormData) => ({
             ...prev,
             monthlyDistribution: newDistribution,
+            EnergyCheck_plus: prev.EnergyCheck_plus ? {
+                ...prev.EnergyCheck_plus,
+                monthlyDistribution: energyCheckDistribution
+            } : undefined
         }));
 
-        // Clear errors when distributing evenly
         setMonthlyErrors(Array(12).fill(''));
         setTotalPercentageError('');
     };
@@ -129,7 +272,8 @@ export const useStepperForm = () => {
     };
 
     const validateTotalPercentage = () => {
-        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const monthlyDistribution = formData.monthlyDistribution || [];
+        const total = monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
             return sum + (parseFloat(month.percentage) || 0);
         }, 0);
 
@@ -142,29 +286,45 @@ export const useStepperForm = () => {
         }
     };
 
-    const updateMonthlyPercentage = (index: number, value: string) => {
-        const totalHours = parseFloat(formData.EnergyCheck_plus?.annualSavings!) || 0;
+    const updateMonthlyPercentage = (monthName: string, value: string) => {
+        const totalHours = parseFloat(formData.EnergyCheck_plus?.operatingHours || '0') || 0;
         const percentage = parseFloat(value) || 0;
         const hours = (totalHours * percentage) / 100;
 
-        const newDistribution = [...formData.EnergyCheck_plus?.monthlyDistribution!];
-        newDistribution[index] = {
-            ...newDistribution[index],
-            percentage: value,
-            hours: hours.toFixed(2),
-        };
+        const monthlyDistribution = formData.monthlyDistribution || [];
+        const newDistribution = [...monthlyDistribution];
+        const monthIndex = newDistribution.findIndex((month: { month: string; percentage: string; hours: string }) => month.month === monthName);
 
-        setFormData((prev: FormData) => ({
-            ...prev,
-            monthlyDistribution: newDistribution,
-        }));
+        if (monthIndex !== -1) {
+            newDistribution[monthIndex] = {
+                ...newDistribution[monthIndex],
+                percentage: value,
+                hours: hours.toFixed(2),
+            };
 
-        validateMonthHours(hours, index);
-        setTimeout(validateTotalPercentage, 0);
+            const energyCheckDistribution: { [key: string]: string } = {};
+            newDistribution.forEach(month => {
+                const monthKey = month.month.toLowerCase();
+                energyCheckDistribution[monthKey] = month.hours;
+            });
+
+            setFormData((prev: FormData) => ({
+                ...prev,
+                monthlyDistribution: newDistribution,
+                EnergyCheck_plus: prev.EnergyCheck_plus ? {
+                    ...prev.EnergyCheck_plus,
+                    monthlyDistribution: energyCheckDistribution
+                } : undefined
+            }));
+
+            validateMonthHours(hours, monthIndex);
+            setTimeout(validateTotalPercentage, 0);
+        }
     };
 
     const calculateTotalHours = () => {
-        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const monthlyDistribution = formData.monthlyDistribution || [];
+        const total = monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
             const hours = parseFloat(month.hours) || 0;
             return sum + hours;
         }, 0);
@@ -172,7 +332,8 @@ export const useStepperForm = () => {
     };
 
     const calculateTotalPercentage = () => {
-        const total = formData.EnergyCheck_plus?.monthlyDistribution!.reduce((sum: number, month: { percentage: string; hours: string }) => {
+        const monthlyDistribution = formData.monthlyDistribution || [];
+        const total = monthlyDistribution.reduce((sum: number, month: { percentage: string; hours: string }) => {
             const percentage = parseFloat(month.percentage) || 0;
             return sum + percentage;
         }, 0);
@@ -201,7 +362,6 @@ export const useStepperForm = () => {
         const newErrors: Record<string, string> = {};
         let isValid = true;
 
-        // System Details Validation
         if (!formData.name?.trim()) {
             newErrors.systemName = 'System name is required';
             isValid = false;
@@ -220,7 +380,6 @@ export const useStepperForm = () => {
             isValid = false;
         }
 
-        // XRGI Site Validation
         if (!formData.location.address?.trim()) {
             newErrors.systemAddress = 'Address is required';
             isValid = false;
@@ -241,7 +400,6 @@ export const useStepperForm = () => {
             isValid = false;
         }
 
-        // Service Contract Validation
         if (formData.hasServiceContract === true) {
             if (!formData.serviceProvider?.name?.trim()) {
                 newErrors.serviceProviderName = 'Service provider name is required';
@@ -249,7 +407,7 @@ export const useStepperForm = () => {
             }
 
             if (!formData.serviceProvider?.mailAddress?.trim()) {
-                newErrors.serviceProviderEmail = 'Service provide   r email is required';
+                newErrors.serviceProviderEmail = 'Service provider email is required';
                 isValid = false;
             } else if (!validateEmail(formData.serviceProvider.mailAddress)) {
                 newErrors.serviceProviderEmail = 'Please enter a valid email address';
@@ -264,7 +422,6 @@ export const useStepperForm = () => {
                 isValid = false;
             }
 
-            // Sales Partner Validation if different from service provider
             if (formData.isSalesPartnerSame === false) {
                 if (!formData.salesPartner?.name?.trim()) {
                     newErrors.salesPartnerName = 'Sales partner name is required';
@@ -289,9 +446,7 @@ export const useStepperForm = () => {
             }
         }
 
-        // EnergyCheck Plus Validation
-        if (formData.EnergyCheck_plus) {
-            // Make all EnergyCheck Plus fields required
+        if (formData.hasEnergyCheckPlus) {
             if (!formData.EnergyCheck_plus?.operatingHours?.trim()) {
                 newErrors.expectedOperatingHours = 'Expected operating hours are required';
                 isValid = false;
@@ -329,7 +484,6 @@ export const useStepperForm = () => {
         const newErrors: Record<string, string> = {};
         let isValid = true;
 
-        // Company Information Validation
         const companyNameError = validateRequired(formData.companyInfo?.name, 'Company name');
         if (companyNameError) {
             newErrors.companyName = companyNameError;
@@ -378,7 +532,6 @@ export const useStepperForm = () => {
             isValid = false;
         }
 
-        // Contact Person Validation
         const firstNameError = validateRequired(formData.contactPerson?.firstName, 'First name');
         if (firstNameError) {
             newErrors.firstName = firstNameError;
@@ -412,74 +565,254 @@ export const useStepperForm = () => {
         setErrors(newErrors);
         return isValid;
     };
+
+    const createFacilityPayload = () => {
+        const daSignedValue = daSignedRef.current || formData.DaSigned || false;
+        const smartPriceControlAddedValue = smartPriceControlAddedRef.current;
+        const smartPriceControlMethodValue = smartPriceControlMethodRef.current;
+
+        // Prepare monthlyDistribution for EnergyCheck_plus
+        const monthlyDistributionObj: { [key: string]: string } = {};
+        if (formData.hasEnergyCheckPlus && formData.monthlyDistribution) {
+            formData.monthlyDistribution.forEach((month: any) => {
+                const monthKey = month.month.toLowerCase();
+                monthlyDistributionObj[monthKey] = month.hours;
+            });
+        }
+
+        // Build the clean payload with only required fields
+        const payload: any = {
+            id: '',
+            name: formData.name || '',
+            location: {
+                address: formData.location?.address || '',
+                postalCode: formData.location?.postalCode || '',
+                city: formData.location?.city || '',
+                country: formData.location?.country || ''
+            },
+            status: 'Active',
+            xrgiID: formData.xrgiID || '',
+            modelNumber: formData.modelNumber || '',
+            userID: 'temp-user-id',
+            DaSigned: daSignedValue,
+            hasServiceContract: formData.hasServiceContract || false,
+            needServiceContract: formData.needServiceContract || false,
+            distributeHoursEvenly: formData.distributeHoursEvenly || false,
+            isSalesPartnerSame: formData.isSalesPartnerSame || false,
+            isInstalled: formData.isInstalled || false,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+
+        // Add serviceProvider only if hasServiceContract is true
+        if (formData.hasServiceContract && formData.serviceProvider) {
+            payload.serviceProvider = {
+                name: formData.serviceProvider.name || '',
+                mailAddress: formData.serviceProvider.mailAddress || '',
+                phone: formData.serviceProvider.phone || '',
+                countryCode: formData.serviceProvider.countryCode || '+45'
+            };
+        } else {
+            payload.serviceProvider = {
+                name: '',
+                mailAddress: '',
+                phone: '',
+                countryCode: '+45'
+            };
+        }
+
+        // Add salesPartner based on isSalesPartnerSame flag
+        if (formData.isSalesPartnerSame === false && formData.salesPartner) {
+            payload.salesPartner = {
+                name: formData.salesPartner.name || '',
+                mailAddress: formData.salesPartner.mailAddress || '',
+                phone: formData.salesPartner.phone || '',
+                countryCode: formData.salesPartner.countryCode || '+45',
+                isSameAsServiceProvider: false
+            };
+        } else if (formData.isSalesPartnerSame === true && payload.serviceProvider) {
+            // When isSalesPartnerSame is true, populate salesPartner with serviceProvider details
+            payload.salesPartner = {
+                name: payload.serviceProvider.name || '',
+                mailAddress: payload.serviceProvider.mailAddress || '',
+                phone: payload.serviceProvider.phone || '',
+                countryCode: payload.serviceProvider.countryCode || '+45',
+                isSameAsServiceProvider: true
+            };
+        } else {
+            payload.salesPartner = {
+                name: '',
+                mailAddress: '',
+                phone: '',
+                countryCode: '+45',
+                isSameAsServiceProvider: formData.isSalesPartnerSame || false
+            };
+        }
+
+        // Add EnergyCheck_plus only if enabled
+        if (formData.hasEnergyCheckPlus && formData.EnergyCheck_plus) {
+            payload.hasEnergyCheckPlus = true;
+            payload.EnergyCheck_plus = {
+                annualSavings: formData.EnergyCheck_plus.annualSavings || '',
+                co2Savings: formData.EnergyCheck_plus.co2Savings || '',
+                operatingHours: formData.EnergyCheck_plus.operatingHours || '',
+                industry: formData.EnergyCheck_plus.industry || '',
+                email: formData.EnergyCheck_plus.email || '',
+                monthlyDistribution: monthlyDistributionObj
+            };
+        } else {
+            payload.hasEnergyCheckPlus = false;
+            payload.EnergyCheck_plus = {
+                annualSavings: '',
+                co2Savings: '',
+                operatingHours: '',
+                industry: '',
+                email: '',
+                monthlyDistribution: {
+                    january: '0',
+                    february: '0',
+                    march: '0',
+                    april: '0',
+                    may: '0',
+                    june: '0',
+                    july: '0',
+                    august: '0',
+                    september: '0',
+                    october: '0',
+                    november: '0',
+                    december: '0'
+                }
+            };
+        }
+
+        // Add smartPriceControl only if enabled
+        if (smartPriceControlAddedValue) {
+            payload.smartPriceControlAdded = true;
+            payload.installedSmartPriceController = true;
+            payload.smartPriceControl = {
+                method: smartPriceControlMethodValue || 'as_soon_as_possible'
+            };
+        } else {
+            payload.smartPriceControlAdded = false;
+            payload.installedSmartPriceController = false;
+            payload.smartPriceControl = undefined;
+        }
+
+        return payload;
+    };
+
     const nextStep = async () => {
-        if (currentStep === 1 && !validateProfileStep()) {
+    if (currentStep === 1) {
+        if (!validateProfileStep()) {
             return;
         }
 
-        if (currentStep === 1) {
-            setIsSubmitting(true);
-            try {
-                const profileData: ICustomer = {
-                    name: formData.companyInfo?.name || formData.name,
-                    phone_number: formData.countryCode + formData.companyInfo?.phone,
-                    journeyStatus: formData.journeyStatus || 'facilityInfo',
-                    companyInfo: {
-                        name: formData.companyInfo?.name,
-                        cvrNumber: formData.companyInfo?.cvrNumber || '',
-                        address: formData.companyInfo?.address || '',
-                        city: formData.companyInfo?.city || '',
-                        postal_code: formData.companyInfo?.postal_code || '',
-                        email: formData.companyInfo?.email || '',
-                        phone: formData.countryCode + formData.companyInfo?.phone
-                    },
-                    contactPerson: {
-                        firstName: formData.contactPerson?.firstName,
-                        lastName: formData.contactPerson?.lastName,
-                        email: formData.contactPerson?.email,
-                        phone: formData.countryCode + formData.contactPerson?.phone
-                    },
-                };
+        setIsSubmitting(true);
+        try {
+            const profileData: ICustomer = {
+                name: formData.companyInfo?.name || formData.name,
+                phone_number: formData.countryCode + formData.companyInfo?.phone,
+                journeyStatus: formData.journeyStatus || 'facilityInfo',
+                companyInfo: {
+                    name: formData.companyInfo?.name,
+                    cvrNumber: formData.companyInfo?.cvrNumber || '',
+                    address: formData.companyInfo?.address || '',
+                    city: formData.companyInfo?.city || '',
+                    postal_code: formData.companyInfo?.postal_code || '',
+                    email: formData.companyInfo?.email || '',
+                    phone: formData.countryCode + formData.companyInfo?.phone
+                },
+                contactPerson: {
+                    firstName: formData.contactPerson?.firstName,
+                    lastName: formData.contactPerson?.lastName,
+                    email: formData.contactPerson?.email,
+                    phone: formData.countryCode + formData.contactPerson?.phone
+                },
+            };
 
-                let result;
-                if (formData.id) {
-                    result = await StepperController.UpdateProfile(profileData);
-                } else {
-                    result = await StepperController.CreateProfile(profileData);
-                }
+            let result;
+            if (formData.id) {
+                result = await StepperController.UpdateProfile(profileData, formData.id);
+            } else {
+                result = await StepperController.CreateProfile(profileData);
+            }
 
-                if (!result.success) {
-                    console.error('Profile creation failed:', result.error);
-                    setErrors({ ...errors, apiError: result.error || 'Failed to create profile' });
-                    setIsSubmitting(false);
-                    return;
-                }
-
-                console.log(`Profile ${formData.id ? 'updated' : 'created'} successfully`);
-
-                setFormData((prev: any) => ({
-                    ...prev,
-                    ...profileData,
-                    companyInfo: profileData.companyInfo,
-                    contactPerson: profileData.contactPerson
-                }));
-
-                setIsSubmitting(false);
-                setCurrentStep((prev: number) => prev + 1);
-            } catch (error) {
-                console.error('Error creating profile:', error);
-                setErrors({ ...errors, apiError: 'An unexpected error occurred' });
+            if (!result.success) {
+                console.error('Profile creation failed:', result.error);
+                setErrors({ ...errors, apiError: result.error || 'Failed to create profile' });
                 setIsSubmitting(false);
                 return;
             }
-        } else if (currentStep === 2 && !validateSystemRegistrationStep()) {
-            // Validate System Registration Step
-            return;
-        } else {
-            // For other steps, just proceed
+
+            const nextStatus = getNextJourneyStatus(currentStep);
+            setFormData((prev: any) => ({
+                ...prev,
+                ...profileData,
+                companyInfo: profileData.companyInfo,
+                contactPerson: profileData.contactPerson,
+                journeyStatus: nextStatus
+            }));
             setCurrentStep((prev: number) => prev + 1);
+        } catch (error) {
+            console.error('Error creating profile:', error);
+            setErrors({ ...errors, apiError: 'An unexpected error occurred' });
+            return;
+        } finally {
+            setIsSubmitting(false);
         }
-    };
+    } else if (currentStep === 2) {
+        if (!validateSystemRegistrationStep()) {
+            return;
+        }
+        
+        const nextStatus = getNextJourneyStatus(currentStep);
+        setFormData((prev: any) => ({ ...prev, journeyStatus: nextStatus }));
+        setCurrentStep((prev: number) => prev + 1);
+    } else if (currentStep === 3) {
+        setIsSubmitting(true);
+        try {
+            const facilityPayload = createFacilityPayload();
+            const response = await RegisterController.AddFacility(facilityPayload);
+            console.log("Facility creation response:", response);
+            if (!response || !response.data?.id) {
+                console.error('Facility creation failed:', response);
+                setErrors({ ...errors, apiError: 'Failed to create facility' });
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Update formData with facility ID and completed status
+            const nextStatus = getNextJourneyStatus(currentStep);
+            setFormData((prev: any) => ({
+                ...prev,
+                id: response.data.id,
+                journeyStatus: nextStatus
+            }));
+            
+            const profileUpdateData = {
+                id: response.data.id,
+                journeyStatus: nextStatus
+            };
+            
+            const updateResult = await StepperController.UpdateProfile(profileUpdateData, response.data.userID);
+            console.log("Update profile response:", updateResult);
+            if (!updateResult.success) {
+                console.error('Failed to update profile journeyStatus:', updateResult.error);
+            }
+            
+            // Move to step 4 (completion step) instead of navigating away
+            setCurrentStep(4);
+        } catch (error) {
+            console.error('Error creating facility:', error);
+            setErrors({ ...errors, apiError: 'An unexpected error occurred while creating facility' });
+            setIsSubmitting(false);
+            return;
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+};
+
     const prevStep = () => setCurrentStep((prev: number) => Math.max(1, prev - 1));
     const goToStep = (step: number) => setCurrentStep(step);
 

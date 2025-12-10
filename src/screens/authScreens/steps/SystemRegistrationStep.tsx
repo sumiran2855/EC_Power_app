@@ -1,8 +1,10 @@
 import { MaterialIcons as Icon } from "@expo/vector-icons";
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
 import { SalesPartnerInfo, ServiceProviderInfo, SystemRegisterStepProps, country, countryCodes, industries, models } from '../types';
+import TermsAndConditionsModal from "@/components/Modals/TermsAndConditionsModal";
+import { FACILITY_TERMS_DATA } from "@/constants/facilityTermsConstants";
 
 interface SystemRegistrationStepProps extends SystemRegisterStepProps {
     errors: Record<string, string>;
@@ -31,6 +33,28 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
     onBack,
     errors = {},
 }) => {
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+    const [pendingSubmit, setPendingSubmit] = useState(false);
+
+    const handleTermsAccept = () => {
+        updateFormData('DaSigned', true);
+        setPendingSubmit(false);
+        onNext();
+    };
+
+    const handleNextClick = () => {
+        if (!formData.DaSigned) {
+            setPendingSubmit(true);
+            setIsTermsModalOpen(true);
+        } else {
+            onNext();
+        }
+    };
+
+    const handleTermsClose = () => {
+        setIsTermsModalOpen(false);
+        setPendingSubmit(false);
+    };
     return (
         <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
             <View style={styles.headerSection}>
@@ -120,7 +144,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </Text>
                     )}
                     {showModelPicker && (
-                        <View style={styles.dropdownOverlay}>
+                        <ScrollView style={styles.dropdownOverlay} nestedScrollEnabled>
                             {models.map((model, idx) => (
                                 <TouchableOpacity
                                     key={model}
@@ -139,7 +163,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     )}
                                 </TouchableOpacity>
                             ))}
-                        </View>
+                        </ScrollView>
                     )}
                     <Text style={styles.helperText}>
                         <Icon name="info-outline" size={12} color="#999" /> The model is on the name plate on the back of the Power Unit
@@ -464,7 +488,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     onPress={() => setShowServiceCountryCodePicker && setShowServiceCountryCodePicker(!showServiceCountryCodePicker)}
                                 >
                                     <Text style={styles.countryCodeText}>
-                                        {countryCodes.find(c => c.code === formData.serviceProvider?.countryCode)?.flag} {formData.serviceProvider?.countryCode}
+                                        {countryCodes.find(c => c.code === (formData.serviceProvider?.countryCode || '+45'))?.flag} {formData.serviceProvider?.countryCode || '+45'}
                                     </Text>
                                     <Icon
                                         name={showServiceCountryCodePicker ? "expand-less" : "expand-more"}
@@ -629,7 +653,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                 name: formData.salesPartner?.name,
                                                 mailAddress: text,
                                                 phone: formData.salesPartner?.phone,
-                                                countryCode: formData.salesPartner?.countryCode,
+                                                countryCode: formData.salesPartner?.countryCode || '+45',
                                             } as SalesPartnerInfo)}
                                         />
                                     </View>
@@ -648,7 +672,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             onPress={() => setShowSalesCountryCodePicker && setShowSalesCountryCodePicker(!showSalesCountryCodePicker)}
                                         >
                                             <Text style={styles.countryCodeText}>
-                                                {countryCodes.find(c => c.code === formData.salesPartner?.countryCode)?.flag} {formData.salesPartner?.countryCode}
+                                                {countryCodes.find(c => c.code === (formData.salesPartner?.countryCode || '+45'))?.flag} {formData.salesPartner?.countryCode || '+45'}
                                             </Text>
                                             <Icon
                                                 name={showSalesCountryCodePicker ? "expand-less" : "expand-more"}
@@ -671,7 +695,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                         name: formData.salesPartner?.name,
                                                         mailAddress: formData.salesPartner?.mailAddress,
                                                         phone: cleaned,
-                                                        countryCode: formData.salesPartner?.countryCode,
+                                                        countryCode: formData.salesPartner?.countryCode || '+45',
                                                     } as SalesPartnerInfo);
                                                 }}
                                             />
@@ -746,17 +770,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
 
                         <TouchableOpacity
                             style={styles.featureCard}
-                            onPress={() => updateFormData('EnergyCheck_plus', !formData.EnergyCheck_plus)}
+                            onPress={() => {
+                                updateFormData('hasEnergyCheckPlus', !formData.hasEnergyCheckPlus);
+                            }}
                         >
-                            <View style={[styles.checkbox, formData.EnergyCheck_plus && styles.checkboxChecked]}>
-                                {formData.EnergyCheck_plus && <Icon name="check" size={16} color="#fff" />}
+                            <View style={[styles.checkbox, formData.hasEnergyCheckPlus && styles.checkboxChecked]}>
+                                {formData.hasEnergyCheckPlus && <Icon name="check" size={16} color="#fff" />}
                             </View>
                             <View style={styles.checkboxContent}>
                                 <Text style={styles.checkboxLabel}>Enable EnergyCheck Plus</Text>
                             </View>
                         </TouchableOpacity>
 
-                        {formData.EnergyCheck_plus && (
+                        {formData.hasEnergyCheckPlus && (
                             <>
                                 <Text style={styles.checkboxDescription}>
                                     We will compare the actual running hours of your XRGI® system to the expected running hours
@@ -775,7 +801,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholder="Amount in Euro per year"
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
-                                            value={formData.EnergyCheck_plus.annualSavings}
+                                            value={formData?.EnergyCheck_plus?.annualSavings}
                                             onChangeText={(text) => updateFormData('EnergyCheck_plus', {
                                                 ...formData.EnergyCheck_plus,
                                                 annualSavings: text
@@ -793,7 +819,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholder="Total per year"
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
-                                            value={formData.EnergyCheck_plus.co2Savings}
+                                            value={formData?.EnergyCheck_plus?.co2Savings}
                                             onChangeText={(text) => updateFormData('EnergyCheck_plus', {
                                                 ...formData.EnergyCheck_plus,
                                                 co2Savings: text
@@ -812,11 +838,16 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
                                             maxLength={4}
-                                            value={formData.EnergyCheck_plus.operatingHours}
-                                            onChangeText={(text) => updateFormData('EnergyCheck_plus', {
-                                                ...formData.EnergyCheck_plus,
-                                                operatingHours: text
-                                            })}
+                                            value={formData?.EnergyCheck_plus?.operatingHours || ''}
+                                            onChangeText={(text) => {
+                                                updateFormData('EnergyCheck_plus', {
+                                                    ...formData.EnergyCheck_plus,
+                                                    operatingHours: text
+                                                });
+                                                if (formData.distributeHoursEvenly && text) {
+                                                    setTimeout(() => distributeHoursEvenly && distributeHoursEvenly(), 100);
+                                                }
+                                            }}
                                         />
                                     </View>
                                     {errors.expectedOperatingHours ? (
@@ -838,8 +869,8 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     >
                                         <View style={styles.pickerButton}>
                                             <Icon name="business-center" size={18} color="#999" style={styles.inputIcon} />
-                                            <Text style={formData.EnergyCheck_plus.industry ? styles.pickerText : styles.pickerPlaceholder}>
-                                                {formData.EnergyCheck_plus.industry || 'Select your industry'}
+                                            <Text style={formData?.EnergyCheck_plus?.industry ? styles.pickerText : styles.pickerPlaceholder}>
+                                                {formData?.EnergyCheck_plus?.industry || 'Select your industry'}
                                             </Text>
                                             <Icon
                                                 name={showIndustryPicker ? "expand-less" : "expand-more"}
@@ -904,7 +935,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         )}
                     </View>
 
-                    {formData.EnergyCheck_plus && (
+                    {formData.hasEnergyCheckPlus && (
                         <View style={styles.card}>
                             <View style={styles.cardHeader}>
                                 <Icon name="calendar-today" size={24} color="#003D82" />
@@ -940,7 +971,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <ScrollView style={styles.tableBody} nestedScrollEnabled>
-                                    {formData.EnergyCheck_plus?.monthlyDistribution?.map((item, index) => (
+                                    {formData.monthlyDistribution?.map((item: any, index: number) => (
                                         <View key={item.month}>
                                             <View
                                                 style={[
@@ -959,10 +990,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                         <View style={styles.percentageColumn}>
                                                             <TextInput
                                                                 style={styles.tableInput}
-                                                                keyboardType="numeric"
+                                                                keyboardType="decimal-pad"
                                                                 value={item.percentage}
-                                                                onChangeText={(text) => updateMonthlyPercentage && updateMonthlyPercentage(index, text)}
-                                                                placeholder="0"
+                                                                onChangeText={(text) => updateMonthlyPercentage && updateMonthlyPercentage(item.month, text)}
+                                                                placeholder="0.00"
                                                             />
                                                         </View>
                                                         <Text style={[styles.tableCellText, styles.hoursColumn]}>{parseFloat(item.hours).toFixed(0)}h</Text>
@@ -1002,11 +1033,19 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <Icon name="arrow-back" size={20} color="#003D82" />
                     <Text style={styles.buttonSecondaryText}>Back</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonPrimary} onPress={onNext}>
+                <TouchableOpacity style={styles.buttonPrimary} onPress={handleNextClick}>
                     <Text style={styles.buttonPrimaryText}>Continue</Text>
                     <Icon name="arrow-forward" size={20} color="#fff" />
                 </TouchableOpacity>
             </View>
+
+            {/* Terms and Conditions Modal */}
+            <TermsAndConditionsModal
+                isOpen={isTermsModalOpen}
+                onClose={handleTermsClose}
+                onAccept={handleTermsAccept}
+                termsData={FACILITY_TERMS_DATA}
+            />
         </ScrollView>
     );
 };

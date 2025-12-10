@@ -45,60 +45,40 @@ export interface XRGIDetailsScreenProps {
     navigation: XRGIDetailsScreenNavigationProp;
 }
 
-export interface EnergyRecord {
+export interface EnergyCheckPlusDetail {
+    XRGI_ID: string;
+    address: string;
+    annualSavings: string;
+    city: string;
+    createdAt: string;
+    energy_check_plus_saving: number;
+    facilityId: string;
     id: string;
-    month: string;
-    year: string;
-    xrgiId: string;
-    records: {
-        id: string;
-        date: string;
-        ecp: string;
-        annualSavings: string;
-        runtimeHours: string;
-        serviceProvider: string;
-    }[];
+    operatingHours: string;
+    postalCode: string;
+    runtimeHours: number;
+    salesPartner: {
+        name?: string;
+        email?: string;
+        phone?: string;
+    };
+    serviceProvider: {
+        name?: string;
+        email?: string;
+        phone?: string;
+    };
+    updatedAt: string;
+    url: string;
+    userId: string;
 }
 
-export const energyRecords: EnergyRecord[] = [
-    {
-        id: '1',
-        month: 'August',
-        year: '2025',
-        xrgiId: '2100770084',
-        records: [
-            {
-                id: '1-1',
-                date: 'August 5, 2025',
-                ecp: '$1244',
-                annualSavings: '$20000',
-                runtimeHours: '311 hrs',
-                serviceProvider: 'TechCorp',
-            },
-            {
-                id: '1-2',
-                date: 'August 15, 2025',
-                ecp: '$1340',
-                annualSavings: '$21000',
-                runtimeHours: '350 hrs',
-                serviceProvider: 'TechCorp',
-            }
-        ]
-    },
-    {
-        id: '2',
-        month: 'June',
-        year: '2025',
-        xrgiId: '2100770084',
-        records: [
-            {
-                id: '2-1',
-                date: 'June 5, 2025',
-                ecp: '$1244',
-                annualSavings: '$20000',
-                runtimeHours: '311 hrs',
-                serviceProvider: 'TechCorp',
-            },
-        ]
-    },
-];
+export interface EnergyCheckPlusResponse {
+    data: EnergyCheckPlusDetail[];
+    success: boolean;
+}
+
+export interface GroupedEnergyRecords {
+    month: string;
+    year: string;
+    latestRecord: EnergyCheckPlusDetail;
+}

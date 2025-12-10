@@ -259,6 +259,43 @@ const styles = StyleSheet.create({
     bottomSpacer: {
         height: 24,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f8fafc',
+        paddingVertical: 40,
+        paddingHorizontal: 20,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#374151',
+        fontWeight: '500',
+    },
+    noDataContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 40,
+        paddingHorizontal: 20,
+    },
+    noDataTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#1a365d',
+        marginTop: 16,
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    noDataMessage: {
+        fontSize: 14,
+        color: '#64748b',
+        textAlign: 'center',
+        lineHeight: 20,
+        marginBottom: 24,
+        paddingHorizontal: 20,
+    },
     recordContent: {
         padding: 16,
         paddingTop: 8,

@@ -85,4 +85,41 @@ export class RegisterController {
             console.log(`Error getting all dealers`, error);
         }
     }
+
+    static async GetEnergyCheckPlusDetails(xrgiId: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        const x_api_token = "5kuzEWcBIe3CShuqLrVA8UuhlJAzQaXeM0tMbw0EsmY=";
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `get-healthCheck/${xrgiId}`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                x_api_token: x_api_token,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log(`Error getting energy check plus details`, error);
+        }
+    }
+
+    static async CreateEnergyCheckPlus(data: any) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        const x_api_token = "5kuzEWcBIe3CShuqLrVA8UuhlJAzQaXeM0tMbw0EsmY=";
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `health-check-plus`,
+                method: 'POST',
+                body: data,
+                token: authToken,
+                IdToken: idToken,
+                x_api_token: x_api_token,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log(`Error creating energy check plus`, error);
+        }
+    }
 }

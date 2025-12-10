@@ -19,6 +19,7 @@ export interface FormData {
     installedSmartPriceController?: boolean;
     isInstalled: boolean;
     distributeHoursEvenly?: boolean;
+    monthlyDistribution?: MonthlyDistribution[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -51,7 +52,7 @@ export interface EnergyCheckPlusInfo {
     operatingHours?: string;
     industry?: string;
     email?: string;
-    monthlyDistribution?: MonthlyDistribution[] | { [key: string]: string };
+    monthlyDistribution?: { [key: string]: string };
 }
 
 export interface MonthlyDistribution {
@@ -83,14 +84,14 @@ export type StepperFormSharedProps = {
     setShowCountryPicker?: React.Dispatch<React.SetStateAction<boolean>> | undefined,
     monthlyErrors?: string[],
     totalPercentageError?: string,
-    updateMonthlyPercentage?: (idx: number, value: string) => void,
+    updateMonthlyPercentage?: (monthName: string, value: string) => void,
     distributeHoursEvenly?: () => void,
     calculateTotalHours?: () => string,
     calculateTotalPercentage?: () => string,
     validateMonthHours?: (hours: number, index: number) => void,
     validateTotalPercentage?: () => void,
     errors: Record<string, string>,
-    onNext: () => void,
+    onNext: (daSignedOverride?: boolean) => void,
     onBack: () => void,
     onSaveForLater?: () => void,
 };

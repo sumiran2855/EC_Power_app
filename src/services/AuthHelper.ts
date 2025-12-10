@@ -6,6 +6,7 @@ interface RequestOptions {
     body?: object | FormData;
     token?: string;
     IdToken?: string;
+    x_api_token?: string;
     timeoutDuration?: number;
     backendType?: BackendType;
 }
@@ -23,12 +24,13 @@ class AuthHelper {
         }
     }
 
-    private getHeaders(body?: object | FormData, token?: string, IdToken?: string): HeadersInit {
+    private getHeaders(body?: object | FormData, token?: string, IdToken?: string, x_api_token?: string): HeadersInit {
         const isFormData = body instanceof FormData;
 
         const headers: HeadersInit = {
             ...(token && { Authorization: `Bearer ${token}` }),
             ...(IdToken && { 'x-id-token': IdToken }),
+            ...(x_api_token && { 'x-api-token': x_api_token }),
         };
 
         // IMPORTANT: Don't set Content-Type for FormData
@@ -57,6 +59,7 @@ class AuthHelper {
         body,
         token,
         IdToken,
+        x_api_token,
         timeoutDuration,
         backendType,
     }: RequestOptions): Promise<{ success: boolean; data?: any; message?: string; details?: string }> {
@@ -67,7 +70,7 @@ class AuthHelper {
             const isFormData = body instanceof FormData;
             const fetchOptions: RequestInit = {
                 method,
-                headers: this.getHeaders(body, token, IdToken),
+                headers: this.getHeaders(body, token, IdToken, x_api_token),
                 body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
             };
 

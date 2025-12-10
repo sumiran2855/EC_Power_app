@@ -11,6 +11,33 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
     onNext,
 }) => {
 
+    const handleSmartPriceToggle = () => {
+        const newValue = !formData.smartPriceControlAdded;
+        updateFormData('smartPriceControlAdded', newValue);
+        
+        // If enabling, set default method
+        if (newValue && !formData.smartPriceControl?.method) {
+            setTimeout(() => {
+                updateFormData('smartPriceControl', { method: 'as_soon_as_possible' } as any);
+            }, 0);
+        }
+    };
+
+    const handleMethodSelect = (method: string) => {
+        updateFormData('smartPriceControl', { method } as any);
+    };
+
+    const handleNext = () => {
+        onNext();
+    };
+
+    // Add useEffect to log state changes
+    React.useEffect(() => {
+    }, [formData.smartPriceControlAdded]);
+
+    React.useEffect(() => {
+    }, [formData.smartPriceControl?.method]);
+
     return (
         <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
             <View style={styles.headerSection}>
@@ -40,7 +67,7 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
             <View style={styles.card}>
                 <TouchableOpacity
                     style={styles.featureToggleCard}
-                    onPress={() => updateFormData('smartPriceControlAdded', !formData.smartPriceControlAdded)}
+                    onPress={handleSmartPriceToggle}
                 >
                     <View style={styles.featureToggleLeft}>
                         <View style={[styles.checkbox, formData.smartPriceControlAdded && styles.checkboxChecked]}>
@@ -83,7 +110,7 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                             styles.radioCard,
                             formData.smartPriceControl?.method === 'On_Site_Visit' && styles.radioCardActive
                         ]}
-                        onPress={() => updateFormData('smartPriceControl', 'On_Site_Visit')}
+                        onPress={() => handleMethodSelect('On_Site_Visit')}
                     >
                         <View style={styles.radioButton}>
                             {formData.smartPriceControl?.method === 'On_Site_Visit' && (
@@ -104,7 +131,7 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                             styles.radioCard,
                             formData.smartPriceControl?.method === 'as_soon_as_possible' && styles.radioCardActive
                         ]}
-                        onPress={() => updateFormData('smartPriceControl', 'as_soon_as_possible')}
+                        onPress={() => handleMethodSelect('as_soon_as_possible')}
                     >
                         <View style={styles.radioButton}>
                             {formData.smartPriceControl?.method === 'as_soon_as_possible' && (
@@ -137,7 +164,7 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                     <Icon name="arrow-back" size={20} color="#003D82" />
                     <Text style={styles.buttonSecondaryText}>Back</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonPrimary} onPress={onNext}>
+                <TouchableOpacity style={styles.buttonPrimary} onPress={handleNext}>
                     <Icon name="check" size={20} color="#fff" />
                     <Text style={styles.buttonPrimaryText}>Complete Setup</Text>
                 </TouchableOpacity>

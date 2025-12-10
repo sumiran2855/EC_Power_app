@@ -1,12 +1,13 @@
 import { useStepperForm } from '../../hooks/useStepperForm';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -47,7 +48,17 @@ const StepperScreen: React.FC = () => {
         validateMonthHours,
         validateTotalPercentage,
         errors,
+        isSubmitting,
     } = useStepperForm();
+
+    useEffect(() => {
+        if (currentStep === 4 && formData.journeyStatus === 'completed') {
+            const timer = setTimeout(() => {
+                navigation.navigate('Home');
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [currentStep, formData.journeyStatus, navigation]);
 
     const steps = [
         { id: 1, label: 'Profile', icon: 'person', completed: currentStep > 1 },
@@ -56,12 +67,7 @@ const StepperScreen: React.FC = () => {
     ];
 
     const handleNext = () => {
-        if (currentStep < 3) {
-            nextStep();
-        } else {
-            console.log('Form completed:', formData);
-            navigation.navigate('Home');
-        }
+        nextStep();
     };
 
     const handleBack = () => {
@@ -73,7 +79,6 @@ const StepperScreen: React.FC = () => {
     };
 
     const handleSaveForLater = () => {
-        console.log('Saved for later:', formData);
         navigation.goBack();
     };
 
@@ -135,7 +140,6 @@ const StepperScreen: React.FC = () => {
             onNext: handleNext,
             onBack: handleBack,
             onSaveForLater: handleSaveForLater,
-            // Pass all required props to satisfy TypeScript
             showCountryCodePicker,
             setShowCountryCodePicker,
             showContactCountryCodePicker,
@@ -185,6 +189,33 @@ const StepperScreen: React.FC = () => {
                         updateFormData={updateFormData as SmartPriceStepProps['updateFormData']}
                     />
                 );
+            case 4:
+                return (
+                    <View style={styles.completionContainer}>
+                        <View style={styles.successIconWrapper}>
+                            <Icon name="check-circle" size={80} color="#00B050" />
+                        </View>
+
+                        <Text style={styles.completionTitle}>Registration Complete!</Text>
+
+                        <Text style={styles.completionText}>
+                            Your XRGI system has been successfully registered and saved.
+                        </Text>
+
+                        <Text style={styles.completionSubtext}>
+                            Redirecting to dashboard...
+                        </Text>
+
+                        <TouchableOpacity
+                            style={styles.buttonPrimary1}
+                            onPress={() => navigation.navigate('Home')}
+                        >
+                            <Text style={styles.buttonPrimaryText1}>Go to Dashboard Now</Text>
+                            <Icon name="arrow-forward" size={20} color="#fff" />
+                        </TouchableOpacity>
+                    </View>
+
+                );
             default:
                 return null;
         }
@@ -196,7 +227,7 @@ const StepperScreen: React.FC = () => {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.container}
             >
-                {renderStepIndicator()}
+                {currentStep < 4 && renderStepIndicator()}
                 {renderCurrentStep()}
             </KeyboardAvoidingView>
         </SafeAreaView>

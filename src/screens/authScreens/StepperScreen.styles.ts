@@ -616,9 +616,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#BBF7D0',
   },
-  successIconWrapper: {
-    marginBottom: 12,
-  },
   successTitle: {
     fontSize: 20,
     fontWeight: '700',
@@ -776,7 +773,7 @@ export const styles = StyleSheet.create({
     overflow: 'scroll',
   },
   tableInput: {
-    height: 36,
+    height: 42,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     borderRadius: 8,
@@ -812,4 +809,52 @@ export const styles = StyleSheet.create({
     minHeight: 100,
     alignItems: 'flex-start',
   },
+  completionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: '5%',
+    paddingVertical: 20,
+  },
+  successIconWrapper: {
+    marginBottom: 24,
+  },
+  completionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#1A1A1A',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  completionText: {
+    fontSize: 16,
+    color: '#4A4A4A',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 16,
+    paddingHorizontal: '5%',
+  },
+  completionSubtext: {
+    fontSize: 14,
+    color: '#7A7A7A',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  buttonPrimary1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00B050',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    minWidth: '80%',
+    gap: 8,
+  },
+  buttonPrimaryText1: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
+
 });
