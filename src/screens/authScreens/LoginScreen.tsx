@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
     Image,
     StatusBar,
@@ -14,9 +15,10 @@ import { languageStyles } from '../../components/common/LanguageSelector.styles'
 import { useLoginLogic } from '../../hooks/useLogin';
 import { styles } from './LoginScreen.styles';
 
-interface LoginScreenProps {}
+interface LoginScreenProps { }
 
 const LoginScreen: React.FC<LoginScreenProps> = () => {
+  const { t } = useTranslation();
   const {
     // State
     isPasswordVisible,
@@ -56,15 +58,15 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                 style={styles.logo}
                 resizeMode="contain"
               />
-              <Text style={styles.title}>LOGIN</Text>
+              <Text style={styles.title}>{t('login.title')}</Text>
               <Text style={styles.subtitle}>
-                Enter your username and password{'\n'}to sign in your account
+                {t('login.subtitle')}
               </Text>
             </View>
 
             {/* email Input */}
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Username</Text>
+              <Text style={styles.label}>{t('login.usernameLabel')}</Text>
               <Controller
                 control={control}
                 name="email"
@@ -77,7 +79,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    placeholder="Enter your email"
+                    placeholder={t('login.usernamePlaceholder')}
                     placeholderTextColor="#9ca3af"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -92,7 +94,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
 
             {/* Password Input */}
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>{t('login.passwordLabel')}</Text>
               <Controller
                 control={control}
                 name="password"
@@ -106,7 +108,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      placeholder="Enter your password"
+                      placeholder={t('login.passwordPlaceholder')}
                       placeholderTextColor="#9ca3af"
                       secureTextEntry={!isPasswordVisible}
                       autoCapitalize="none"
@@ -142,7 +144,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                   styles.forgotPasswordText,
                   isSubmitting && styles.disabledText
                 ]}>
-                  Forgot Password?
+                  {t('login.forgotPassword')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -161,7 +163,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                 styles.loginButtonText,
                 (!isValid || !isDirty || isSubmitting) && styles.loginButtonTextDisabled
               ]}>
-                {isSubmitting ? 'Signing In...' : 'Login'}
+                {isSubmitting ? t('login.signingIn') : t('login.loginButton')}
               </Text>
             </TouchableOpacity>
 
@@ -176,14 +178,14 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
                 styles.createAccountText,
                 isSubmitting && styles.disabledText
               ]}>
-                Don't have an account?
-                <Text 
+                {t('login.noAccount')}
+                <Text
                   style={[
                     styles.createAccountLink,
                     isSubmitting && styles.disabledText
-                  ]} 
+                  ]}
                   onPress={handleCreateAccount}
-                > Create Account</Text>
+                > {t('login.createAccount')}</Text>
               </Text>
             </TouchableOpacity>
 

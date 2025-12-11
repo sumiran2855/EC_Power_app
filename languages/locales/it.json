@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "ACCESSO",
+        "subtitle": "Inserisci il tuo nome utente e password\nper accedere al tuo account",
+        "usernameLabel": "Nome utente",
+        "usernamePlaceholder": "Inserisci la tua e-mail",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Inserisci la tua password",
+        "forgotPassword": "Password dimenticata?",
+        "loginButton": "Accedi",
+        "signingIn": "Accesso in corso...",
+        "noAccount": "Non hai un account?",
+        "createAccount": "Crea account"
+    },
+    "signup":{
+        "title": "Crea account",
+        "subtitle": "Compila i dettagli sottostanti per creare\nil tuo nuovo account",
+        "firstNameLabel": "Nome",
+        "firstNamePlaceholder": "Nome",
+        "lastNameLabel": "Cognome",
+        "lastNamePlaceholder": "Cognome",
+        "emailLabel": "Indirizzo e-mail",
+        "emailPlaceholder": "Inserisci la tua e-mail",
+        "phoneLabel": "Numero di telefono",
+        "phonePlaceholder": "Numero di telefono",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Inserisci la tua password",
+        "confirmPasswordLabel": "Conferma password",
+        "confirmPasswordPlaceholder": "Conferma la tua password",
+        "createAccountButton": "Crea account",
+        "creatingAccount": "Creazione account...",
+        "alreadyHaveAccount": "Hai già un account?",
+        "backToLogin": "Torna al login",
+        "verifyTitle": "Verifica la tua e-mail",
+        "verifySubtitle": "Inserisci il codice a 6 cifre inviato alla tua e-mail\nper verificare il tuo account.",
+        "verificationCodeLabel": "Codice di verifica",
+        "verificationCodePlaceholder": "Inserisci codice a 6 cifre",
+        "verifyButton": "Verifica",
+        "verifying": "Verifica..."
+    },
+    "validation":{
+        "username":{
+            "required": "Il nome utente è richiesto",
+            "minLength": "Il nome utente deve contenere almeno 3 caratteri",
+            "maxLength": "Il nome utente non deve superare 50 caratteri",
+            "pattern": "Il nome utente può contenere solo lettere, numeri, punti, trattini e underscore"
+        },
+        "email":{
+            "required": "L'e-mail è richiesta",
+            "invalid": "Inserisci un indirizzo e-mail valido",
+            "maxLength": "L'e-mail non deve superare 254 caratteri"
+        },
+        "password":{
+            "required": "La password è richiesta",
+            "minLength": "La password deve contenere almeno 8 caratteri",
+            "maxLength": "La password non deve superare 128 caratteri",
+            "pattern": "La password deve contenere almeno una lettera minuscola, una lettera maiuscola, un numero e un carattere speciale."
+        },
+        "firstName":{
+            "required": "Il nome è richiesto",
+            "minLength": "Il nome deve contenere almeno 2 caratteri",
+            "maxLength": "Il nome non deve superare 50 caratteri",
+            "pattern": "Il nome può contenere solo lettere, spazi, apostrofi e trattini"
+        },
+        "lastName":{
+            "required": "Il cognome è richiesto",
+            "minLength": "Il cognome deve contenere almeno 2 caratteri",
+            "maxLength": "Il cognome non deve superare 50 caratteri",
+            "pattern": "Il cognome può contenere solo lettere, spazi, apostrofi e trattini"
+        },
+        "countryCode":{
+            "required": "Il codice paese è richiesto",
+            "invalid": "Formato codice paese non valido"
+        },
+        "phoneNumber":{
+            "required": "Il numero di telefono è richiesto",
+            "minLength": "Il numero di telefono deve contenere almeno 8 cifre",
+            "maxLength": "Il numero di telefono non deve superare 15 cifre",
+            "pattern": "Il numero di telefono può contenere solo cifre"
+        },
+        "confirmPassword":{
+            "required": "Conferma la tua password",
+            "match": "Le password non corrispondono"
+        },
+        "verificationCode":{
+            "required": "Il codice di verifica è richiesto",
+            "length": "Il codice di verifica deve contenere esattamente 6 cifre",
+            "pattern": "Il codice di verifica può contenere solo cifre"
+        },
+        "newPassword":{
+            "required": "La nuova password è richiesta",
+            "minLength": "La password deve contenere almeno 8 caratteri",
+            "maxLength": "La password non deve superare 128 caratteri",
+            "pattern": "La password deve contenere almeno una lettera minuscola, una lettera maiuscola, un numero e un carattere speciale."
+        },
+        "resetConfirmPassword":{
+            "required": "Conferma la tua nuova password",
+            "match": "Le password non corrispondono"
+        }
+    },
+    "forgotPassword":{
+        "title": "Password Dimenticata",
+        "subtitle": "Inserisci il tuo indirizzo e-mail e ti invieremo\nun codice per reimpostare la tua password",
+        "emailLabel": "Indirizzo e-mail",
+        "emailPlaceholder": "Inserisci la tua e-mail",
+        "sendCodeButton": "Invia Codice di Reset",
+        "sendingCode": "Invio codice...",
+        "resetTitle": "Reimposta Password",
+        "resetSubtitle": "Inserisci il codice a 6 cifre inviato alla tua e-mail\ne crea una nuova password",
+        "verificationCodeLabel": "Codice di Verifica",
+        "verificationCodePlaceholder": "Inserisci codice a 6 cifre",
+        "newPasswordLabel": "Nuova Password",
+        "newPasswordPlaceholder": "Inserisci nuova password",
+        "confirmNewPasswordLabel": "Conferma Nuova Password",
+        "confirmNewPasswordPlaceholder": "Conferma nuova password",
+        "resetPasswordButton": "Reimposta Password",
+        "resettingPassword": "Reimpostazione...",
+        "backToLogin": "Torna al login",
+        "rememberedPassword": "Hai ricordato la tua password?"
+    },
     "settings": {
         "title": "Impostazioni",
         "languagePreference": {

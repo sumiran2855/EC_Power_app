@@ -11,8 +11,10 @@ import {
     resetPasswordDefaultValues,
     resetPasswordSchema,
 } from '../validations/LoginValidation';
+import { useTranslation } from 'react-i18next';
 
 export const useForgotPasswordLogic = () => {
+  const { t } = useTranslation();
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<'email' | 'verification'>('email');
@@ -125,12 +127,20 @@ export const useForgotPasswordLogic = () => {
 
   // Helper function to get error message for email form
   const getEmailErrorMessage = (fieldName: keyof ForgotPasswordEmailFormData): string | undefined => {
-    return emailErrors[fieldName]?.message;
+    const message = emailErrors[fieldName]?.message;
+    if (message && message.startsWith('validation.')) {
+      return t(message);
+    }
+    return message;
   };
 
   // Helper function to get error message for reset form
   const getResetErrorMessage = (fieldName: keyof ResetPasswordFormData): string | undefined => {
-    return resetErrors[fieldName]?.message;
+    const message = resetErrors[fieldName]?.message;
+    if (message && message.startsWith('validation.')) {
+      return t(message);
+    }
+    return message;
   };
 
   return {

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
-    Image,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForgotPasswordLogic } from '../../hooks/useForgetPassword';
@@ -15,6 +16,7 @@ import { styles } from './LoginScreen.styles';
 interface ForgotPasswordScreenProps {}
 
 const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
+  const { t } = useTranslation();
   const {
     // State
     isNewPasswordVisible,
@@ -57,14 +59,14 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Forgot your password?</Text>
+        <Text style={styles.title}>{t('forgotPassword.title')}</Text>
         <Text style={styles.subtitle}>
-          To reset your password, enter the email address{'\n'}you use to sign in to this website.
+          {t('forgotPassword.subtitle')}
         </Text>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{t('forgotPassword.emailLabel')}</Text>
         <Controller
           control={emailControl}
           name="email"
@@ -77,7 +79,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="Enter your email"
+              placeholder={t('forgotPassword.emailPlaceholder')}
               placeholderTextColor="#9ca3af"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -104,13 +106,13 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
           styles.loginButtonText,
           (!isEmailValid || !isEmailDirty || isSubmitting) && styles.loginButtonTextDisabled
         ]}>
-          {isSubmitting ? 'Sending...' : 'Send'}
+          {isSubmitting ? t('forgotPassword.sendingCode') : t('forgotPassword.sendCodeButton')}
         </Text>
       </TouchableOpacity>
 
       <View style={styles.ForgetPasswordfooter}>
         <TouchableOpacity>
-          <Text style={styles.createAccountText}>Remembered your Password?</Text>
+          <Text style={styles.createAccountText}>{t('forgotPassword.rememberedPassword')}</Text>
         </TouchableOpacity>
       </View>
       
@@ -124,7 +126,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
             styles.forgotPasswordText,
             isSubmitting && styles.disabledText
           ]}>
-            Back to Login
+            {t('forgotPassword.backToLogin')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -139,14 +141,14 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Verify Your Email</Text>
+        <Text style={styles.title}>{t('forgotPassword.resetTitle')}</Text>
         <Text style={styles.subtitle}>
-          Enter the 6-digit code sent to your email{'\n'}and create a new password.
+          {t('forgotPassword.resetSubtitle')}
         </Text>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Verification Code</Text>
+        <Text style={styles.label}>{t('forgotPassword.verificationCodeLabel')}</Text>
         <TextInput
           style={[
             styles.verificationInput,
@@ -154,7 +156,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
           ]}
           value={verificationCode}
           onChangeText={setVerificationCode}
-          placeholder="Enter 6-digit code"
+          placeholder={t('forgotPassword.verificationCodePlaceholder')}
           placeholderTextColor="#9ca3af"
           keyboardType="numeric"
           maxLength={6}
@@ -167,7 +169,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>New Password</Text>
+        <Text style={styles.label}>{t('forgotPassword.newPasswordLabel')}</Text>
         <Controller
           control={resetControl}
           name="newPassword"
@@ -181,7 +183,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
                 value={value || ''}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Enter new password"
+                placeholder={t('forgotPassword.newPasswordPlaceholder')}
                 placeholderTextColor="#9ca3af"
                 secureTextEntry={!isNewPasswordVisible}
                 autoCapitalize="none"
@@ -208,7 +210,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Confirm Password</Text>
+        <Text style={styles.label}>{t('forgotPassword.confirmNewPasswordLabel')}</Text>
         <Controller
           control={resetControl}
           name="confirmPassword"
@@ -222,7 +224,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
                 value={value || ''}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Confirm new password"
+                placeholder={t('forgotPassword.confirmNewPasswordPlaceholder')}
                 placeholderTextColor="#9ca3af"
                 secureTextEntry={!isConfirmPasswordVisible}
                 autoCapitalize="none"
@@ -261,7 +263,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
           styles.loginButtonText,
           (!isResetValid || !isResetDirty || isSubmitting) && styles.loginButtonTextDisabled
         ]}>
-          {isSubmitting ? 'Resetting Password...' : 'Reset Password'}
+          {isSubmitting ? t('forgotPassword.resettingPassword') : t('forgotPassword.resetPasswordButton')}
         </Text>
       </TouchableOpacity>
 
@@ -275,7 +277,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
             styles.forgotPasswordText,
             isSubmitting && styles.disabledText
           ]}>
-            Back to Login
+            {t('forgotPassword.backToLogin')}
           </Text>
         </TouchableOpacity>
       </View>

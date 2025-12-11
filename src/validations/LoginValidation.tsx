@@ -1,21 +1,135 @@
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
-// Login validation schema
+// Helper function to get translated validation messages
+export const getValidationSchemas = () => {
+  const { t } = useTranslation();
+  
+  return {
+    loginSchema: z.object({
+      email: z
+        .string()
+        .min(1, t('validation.email.required'))
+        .email(t('validation.email.invalid'))
+        .max(254, t('validation.email.maxLength'))
+        .toLowerCase(),
+      password: z
+        .string()
+        .min(1, t('validation.password.required'))
+        .min(8, t('validation.password.minLength'))
+        .max(128, t('validation.password.maxLength'))
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+          t('validation.password.pattern')
+        ),
+      rememberMe: z.boolean(),
+    }),
+    
+    signupSchema: z.object({
+      firstName: z
+        .string()
+        .min(1, t('validation.firstName.required'))
+        .min(2, t('validation.firstName.minLength'))
+        .max(50, t('validation.firstName.maxLength'))
+        .regex(
+          /^[a-zA-Z\s'-]+$/,
+          t('validation.firstName.pattern')
+        ),
+      lastName: z
+        .string()
+        .min(1, t('validation.lastName.required'))
+        .min(2, t('validation.lastName.minLength'))
+        .max(50, t('validation.lastName.maxLength'))
+        .regex(
+          /^[a-zA-Z\s'-]+$/,
+          t('validation.lastName.pattern')
+        ),
+      email: z
+        .string()
+        .min(1, t('validation.email.required'))
+        .email(t('validation.email.invalid'))
+        .max(254, t('validation.email.maxLength'))
+        .toLowerCase(),
+      countryCode: z
+        .string()
+        .min(1, t('validation.countryCode.required'))
+        .regex(/^\+\d{1,4}$/, t('validation.countryCode.invalid')),
+      phoneNumber: z
+        .string()
+        .min(1, t('validation.phoneNumber.required'))
+        .min(8, t('validation.phoneNumber.minLength'))
+        .max(15, t('validation.phoneNumber.maxLength'))
+        .regex(/^\d+$/, t('validation.phoneNumber.pattern')),
+      password: z
+        .string()
+        .min(1, t('validation.password.required'))
+        .min(8, t('validation.password.minLength'))
+        .max(128, t('validation.password.maxLength'))
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+          t('validation.password.pattern')
+        ),
+      confirmPassword: z
+        .string()
+        .min(1, t('validation.confirmPassword.required')),
+    }).refine((data) => data.password === data.confirmPassword, {
+      message: t('validation.confirmPassword.match'),
+      path: ["confirmPassword"],
+    }),
+    
+    verificationSchema: z.object({
+      verificationCode: z
+        .string()
+        .min(1, t('validation.verificationCode.required'))
+        .length(6, t('validation.verificationCode.length'))
+        .regex(/^\d{6}$/, t('validation.verificationCode.pattern')),
+    }),
+    
+    forgotPasswordEmailSchema: z.object({
+      email: z
+        .string()
+        .min(1, t('validation.email.required'))
+        .email(t('validation.email.invalid'))
+        .max(254, t('validation.email.maxLength'))
+        .toLowerCase(),
+    }),
+    
+    resetPasswordSchema: z.object({
+      newPassword: z
+        .string()
+        .min(1, t('validation.newPassword.required'))
+        .min(8, t('validation.newPassword.minLength'))
+        .max(128, t('validation.newPassword.maxLength'))
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+          t('validation.newPassword.pattern')
+        ),
+      confirmPassword: z
+        .string()
+        .min(1, t('validation.resetConfirmPassword.required')),
+    }).refine((data) => data.newPassword === data.confirmPassword, {
+      message: t('validation.resetConfirmPassword.match'),
+      path: ["confirmPassword"],
+    }),
+  };
+};
+
+// Legacy exports for backward compatibility
 export const loginSchema = z.object({
     email: z
         .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address')
-        .max(254, 'Email must not exceed 254 characters')
+        .min(1, 'validation.email.required')
+        .email('validation.email.invalid')
+        .max(254, 'validation.email.maxLength')
         .toLowerCase(),
     password: z
         .string()
-        .min(1, 'Password is required')
-        .min(8, 'Password must be at least 8 characters')
-        .max(128, 'Password must not exceed 128 characters')
+        .min(1, 'validation.password.required')
+        .min(8, 'validation.password.minLength')
+        .max(128, 'validation.password.maxLength')
         .regex(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
-            'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+            'validation.password.pattern'
         ),
     rememberMe: z.boolean(),
 });
@@ -24,52 +138,52 @@ export const loginSchema = z.object({
 export const signupSchema = z.object({
     firstName: z
         .string()
-        .min(1, 'First name is required')
-        .min(2, 'First name must be at least 2 characters')
-        .max(50, 'First name must not exceed 50 characters')
+        .min(1, 'validation.firstName.required')
+        .min(2, 'validation.firstName.minLength')
+        .max(50, 'validation.firstName.maxLength')
         .regex(
             /^[a-zA-Z\s'-]+$/,
-            'First name can only contain letters, spaces, apostrophes, and hyphens'
+            'validation.firstName.pattern'
         ),
     lastName: z
         .string()
-        .min(1, 'Last name is required')
-        .min(2, 'Last name must be at least 2 characters')
-        .max(50, 'Last name must not exceed 50 characters')
+        .min(1, 'validation.lastName.required')
+        .min(2, 'validation.lastName.minLength')
+        .max(50, 'validation.lastName.maxLength')
         .regex(
             /^[a-zA-Z\s'-]+$/,
-            'Last name can only contain letters, spaces, apostrophes, and hyphens'
+            'validation.lastName.pattern'
         ),
     email: z
         .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address')
-        .max(254, 'Email must not exceed 254 characters')
+        .min(1, 'validation.email.required')
+        .email('validation.email.invalid')
+        .max(254, 'validation.email.maxLength')
         .toLowerCase(),
     countryCode: z
         .string()
-        .min(1, 'Country code is required')
-        .regex(/^\+\d{1,4}$/, 'Invalid country code format'),
+        .min(1, 'validation.countryCode.required')
+        .regex(/^\+\d{1,4}$/, 'validation.countryCode.invalid'),
     phoneNumber: z
         .string()
-        .min(1, 'Phone number is required')
-        .min(8, 'Phone number must be at least 8 digits')
-        .max(15, 'Phone number must not exceed 15 digits')
-        .regex(/^\d+$/, 'Phone number can only contain digits'),
+        .min(1, 'validation.phoneNumber.required')
+        .min(8, 'validation.phoneNumber.minLength')
+        .max(15, 'validation.phoneNumber.maxLength')
+        .regex(/^\d+$/, 'validation.phoneNumber.pattern'),
     password: z
         .string()
-        .min(1, 'Password is required')
-        .min(8, 'Password must be at least 8 characters')
-        .max(128, 'Password must not exceed 128 characters')
+        .min(1, 'validation.password.required')
+        .min(8, 'validation.password.minLength')
+        .max(128, 'validation.password.maxLength')
         .regex(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
-            'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+            'validation.password.pattern'
         ),
     confirmPassword: z
         .string()
-        .min(1, 'Please confirm your password'),
+        .min(1, 'validation.confirmPassword.required'),
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: 'validation.confirmPassword.match',
     path: ["confirmPassword"],
 });
 
@@ -77,18 +191,18 @@ export const signupSchema = z.object({
 export const verificationSchema = z.object({
     verificationCode: z
         .string()
-        .min(1, 'Verification code is required')
-        .length(6, 'Verification code must be exactly 6 digits')
-        .regex(/^\d{6}$/, 'Verification code must contain only digits'),
+        .min(1, 'validation.verificationCode.required')
+        .length(6, 'validation.verificationCode.length')
+        .regex(/^\d{6}$/, 'validation.verificationCode.pattern'),
 });
 
 // Forgot Password Email validation schema
 export const forgotPasswordEmailSchema = z.object({
     email: z
         .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address')
-        .max(254, 'Email must not exceed 254 characters')
+        .min(1, 'validation.email.required')
+        .email('validation.email.invalid')
+        .max(254, 'validation.email.maxLength')
         .toLowerCase(),
 });
 
@@ -96,18 +210,18 @@ export const forgotPasswordEmailSchema = z.object({
 export const resetPasswordSchema = z.object({
     newPassword: z
         .string()
-        .min(1, 'New password is required')
-        .min(8, 'Password must be at least 8 characters')
-        .max(128, 'Password must not exceed 128 characters')
+        .min(1, 'validation.newPassword.required')
+        .min(8, 'validation.newPassword.minLength')
+        .max(128, 'validation.newPassword.maxLength')
         .regex(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
-            'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+            'validation.newPassword.pattern'
         ),
     confirmPassword: z
         .string()
-        .min(1, 'Please confirm your new password'),
+        .min(1, 'validation.resetConfirmPassword.required'),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: 'validation.resetConfirmPassword.match',
     path: ["confirmPassword"],
 });
 
@@ -152,63 +266,63 @@ export const resetPasswordDefaultValues: ResetPasswordFormData = {
 // Validation messages for better error handling
 export const validationMessages = {
     username: {
-        required: 'Username is required',
-        minLength: 'Username must be at least 3 characters',
-        maxLength: 'Username must not exceed 50 characters',
-        pattern: 'Username can only contain letters, numbers, dots, hyphens, and underscores',
+        required: 'validation.username.required',
+        minLength: 'validation.username.minLength',
+        maxLength: 'validation.username.maxLength',
+        pattern: 'validation.username.pattern',
     },
     password: {
-        required: 'Password is required',
-        minLength: 'Password must be at least 8 characters',
-        maxLength: 'Password must not exceed 128 characters',
-        pattern: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+        required: 'validation.password.required',
+        minLength: 'validation.password.minLength',
+        maxLength: 'validation.password.maxLength',
+        pattern: 'validation.password.pattern',
     },
     firstName: {
-        required: 'First name is required',
-        minLength: 'First name must be at least 2 characters',
-        maxLength: 'First name must not exceed 50 characters',
-        pattern: 'First name can only contain letters, spaces, apostrophes, and hyphens',
+        required: 'validation.firstName.required',
+        minLength: 'validation.firstName.minLength',
+        maxLength: 'validation.firstName.maxLength',
+        pattern: 'validation.firstName.pattern',
     },
     lastName: {
-        required: 'Last name is required',
-        minLength: 'Last name must be at least 2 characters',
-        maxLength: 'Last name must not exceed 50 characters',
-        pattern: 'Last name can only contain letters, spaces, apostrophes, and hyphens',
+        required: 'validation.lastName.required',
+        minLength: 'validation.lastName.minLength',
+        maxLength: 'validation.lastName.maxLength',
+        pattern: 'validation.lastName.pattern',
     },
     email: {
-        required: 'Email is required',
-        invalid: 'Please enter a valid email address',
-        maxLength: 'Email must not exceed 254 characters',
+        required: 'validation.email.required',
+        invalid: 'validation.email.invalid',
+        maxLength: 'validation.email.maxLength',
     },
     phoneNumber: {
-        required: 'Phone number is required',
-        minLength: 'Phone number must be at least 5 digits',
-        maxLength: 'Phone number must not exceed 15 digits',
-        pattern: 'Phone number can only contain digits',
+        required: 'validation.phoneNumber.required',
+        minLength: 'validation.phoneNumber.minLength',
+        maxLength: 'validation.phoneNumber.maxLength',
+        pattern: 'validation.phoneNumber.pattern',
     },
     confirmPassword: {
-        required: 'Please confirm your password',
-        match: "Passwords don't match",
+        required: 'validation.confirmPassword.required',
+        match: 'validation.confirmPassword.match',
     },
     verificationCode: {
-        required: 'Verification code is required',
-        length: 'Verification code must be exactly 6 digits',
-        pattern: 'Verification code must contain only digits',
+        required: 'validation.verificationCode.required',
+        length: 'validation.verificationCode.length',
+        pattern: 'validation.verificationCode.pattern',
     },
     forgotPasswordEmail: {
-        required: 'Email is required',
-        invalid: 'Please enter a valid email address',
-        maxLength: 'Email must not exceed 254 characters',
+        required: 'validation.email.required',
+        invalid: 'validation.email.invalid',
+        maxLength: 'validation.email.maxLength',
     },
     newPassword: {
-        required: 'New password is required',
-        minLength: 'Password must be at least 8 characters',
-        maxLength: 'Password must not exceed 128 characters',
-        pattern: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+        required: 'validation.newPassword.required',
+        minLength: 'validation.newPassword.minLength',
+        maxLength: 'validation.newPassword.maxLength',
+        pattern: 'validation.newPassword.pattern',
     },
     resetConfirmPassword: {
-        required: 'Please confirm your new password',
-        match: "Passwords don't match",
+        required: 'validation.resetConfirmPassword.required',
+        match: 'validation.resetConfirmPassword.match',
     },
 } as const;
 

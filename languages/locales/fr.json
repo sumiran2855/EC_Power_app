@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "CONNEXION",
+        "subtitle": "Entrez votre nom d'utilisateur et votre mot de passe\npour vous connecter à votre compte",
+        "usernameLabel": "Nom d'utilisateur",
+        "usernamePlaceholder": "Entrez votre e-mail",
+        "passwordLabel": "Mot de passe",
+        "passwordPlaceholder": "Entrez votre mot de passe",
+        "forgotPassword": "Mot de passe oublié?",
+        "loginButton": "Connexion",
+        "signingIn": "Connexion en cours...",
+        "noAccount": "Vous n'avez pas de compte?",
+        "createAccount": "Créer un compte"
+    },
+    "signup":{
+        "title": "Créer un compte",
+        "subtitle": "Remplissez les détails ci-dessous pour créer\nvotre nouveau compte",
+        "firstNameLabel": "Prénom",
+        "firstNamePlaceholder": "Prénom",
+        "lastNameLabel": "Nom de famille",
+        "lastNamePlaceholder": "Nom de famille",
+        "emailLabel": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre e-mail",
+        "phoneLabel": "Numéro de téléphone",
+        "phonePlaceholder": "Numéro de téléphone",
+        "passwordLabel": "Mot de passe",
+        "passwordPlaceholder": "Entrez votre mot de passe",
+        "confirmPasswordLabel": "Confirmer le mot de passe",
+        "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+        "createAccountButton": "Créer un compte",
+        "creatingAccount": "Création du compte...",
+        "alreadyHaveAccount": "Vous avez déjà un compte?",
+        "backToLogin": "Retour à la connexion",
+        "verifyTitle": "Vérifiez votre e-mail",
+        "verifySubtitle": "Entrez le code à 6 chiffres envoyé à votre e-mail\npour vérifier votre compte.",
+        "verificationCodeLabel": "Code de vérification",
+        "verificationCodePlaceholder": "Entrez le code à 6 chiffres",
+        "verifyButton": "Vérifier",
+        "verifying": "Vérification..."
+    },
+    "validation":{
+        "username":{
+            "required": "Le nom d'utilisateur est requis",
+            "minLength": "Le nom d'utilisateur doit contenir au moins 3 caractères",
+            "maxLength": "Le nom d'utilisateur ne doit pas dépasser 50 caractères",
+            "pattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des points, des traits d'union et des underscores"
+        },
+        "email":{
+            "required": "L'e-mail est requis",
+            "invalid": "Veuillez entrer une adresse e-mail valide",
+            "maxLength": "L'e-mail ne doit pas dépasser 254 caractères"
+        },
+        "password":{
+            "required": "Le mot de passe est requis",
+            "minLength": "Le mot de passe doit contenir au moins 8 caractères",
+            "maxLength": "Le mot de passe ne doit pas dépasser 128 caractères",
+            "pattern": "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial."
+        },
+        "firstName":{
+            "required": "Le prénom est requis",
+            "minLength": "Le prénom doit contenir au moins 2 caractères",
+            "maxLength": "Le prénom ne doit pas dépasser 50 caractères",
+            "pattern": "Le prénom ne peut contenir que des lettres, des espaces, des apostrophes et des traits d'union"
+        },
+        "lastName":{
+            "required": "Le nom de famille est requis",
+            "minLength": "Le nom de famille doit contenir au moins 2 caractères",
+            "maxLength": "Le nom de famille ne doit pas dépasser 50 caractères",
+            "pattern": "Le nom de famille ne peut contenir que des lettres, des espaces, des apostrophes et des traits d'union"
+        },
+        "countryCode":{
+            "required": "Le code pays est requis",
+            "invalid": "Format de code pays invalide"
+        },
+        "phoneNumber":{
+            "required": "Le numéro de téléphone est requis",
+            "minLength": "Le numéro de téléphone doit contenir au moins 8 chiffres",
+            "maxLength": "Le numéro de téléphone ne doit pas dépasser 15 chiffres",
+            "pattern": "Le numéro de téléphone ne peut contenir que des chiffres"
+        },
+        "confirmPassword":{
+            "required": "Veuillez confirmer votre mot de passe",
+            "match": "Les mots de passe ne correspondent pas"
+        },
+        "verificationCode":{
+            "required": "Le code de vérification est requis",
+            "length": "Le code de vérification doit contenir exactement 6 chiffres",
+            "pattern": "Le code de vérification ne peut contenir que des chiffres"
+        },
+        "newPassword":{
+            "required": "Le nouveau mot de passe est requis",
+            "minLength": "Le mot de passe doit contenir au moins 8 caractères",
+            "maxLength": "Le mot de passe ne doit pas dépasser 128 caractères",
+            "pattern": "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial."
+        },
+        "resetConfirmPassword":{
+            "required": "Veuillez confirmer votre nouveau mot de passe",
+            "match": "Les mots de passe ne correspondent pas"
+        }
+    },
+    "forgotPassword":{
+        "title": "Mot de Passe Oublié",
+        "subtitle": "Entrez votre adresse e-mail et nous vous enverrons\nun code pour réinitialiser votre mot de passe",
+        "emailLabel": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre e-mail",
+        "sendCodeButton": "Envoyer le Code de Réinitialisation",
+        "sendingCode": "Envoi du code...",
+        "resetTitle": "Réinitialiser le Mot de Passe",
+        "resetSubtitle": "Entrez le code à 6 chiffres envoyé à votre e-mail\net créez un nouveau mot de passe",
+        "verificationCodeLabel": "Code de Vérification",
+        "verificationCodePlaceholder": "Entrez le code à 6 chiffres",
+        "newPasswordLabel": "Nouveau Mot de Passe",
+        "newPasswordPlaceholder": "Entrez le nouveau mot de passe",
+        "confirmNewPasswordLabel": "Confirmer le Nouveau Mot de Passe",
+        "confirmNewPasswordPlaceholder": "Confirmez le nouveau mot de passe",
+        "resetPasswordButton": "Réinitialiser le Mot de Passe",
+        "resettingPassword": "Réinitialisation...",
+        "backToLogin": "Retour à la connexion",
+        "rememberedPassword": "Vous vous souvenez de votre mot de passe?"
+    },
     "settings": {
         "title": "Paramètres",
         "languagePreference": {

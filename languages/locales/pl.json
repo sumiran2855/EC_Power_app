@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "LOGOWANIE",
+        "subtitle": "Wprowadź swoją nazwę użytkownika i hasło\naby zalogować się do swojego konta",
+        "usernameLabel": "Nazwa użytkownika",
+        "usernamePlaceholder": "Wprowadź swój e-mail",
+        "passwordLabel": "Hasło",
+        "passwordPlaceholder": "Wprowadź swoje hasło",
+        "forgotPassword": "Zapomniałeś hasła?",
+        "loginButton": "Zaloguj się",
+        "signingIn": "Logowanie...",
+        "noAccount": "Nie masz konta?",
+        "createAccount": "Utwórz konto"
+    },
+    "signup":{
+        "title": "Utwórz konto",
+        "subtitle": "Wypełnij szczegóły poniżej, aby utworzyć\nswoje nowe konto",
+        "firstNameLabel": "Imię",
+        "firstNamePlaceholder": "Imię",
+        "lastNameLabel": "Nazwisko",
+        "lastNamePlaceholder": "Nazwisko",
+        "emailLabel": "Adres e-mail",
+        "emailPlaceholder": "Wprowadź swój e-mail",
+        "phoneLabel": "Numer telefonu",
+        "phonePlaceholder": "Numer telefonu",
+        "passwordLabel": "Hasło",
+        "passwordPlaceholder": "Wprowadź swoje hasło",
+        "confirmPasswordLabel": "Potwierdź hasło",
+        "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
+        "createAccountButton": "Utwórz konto",
+        "creatingAccount": "Tworzenie konta...",
+        "alreadyHaveAccount": "Masz już konto?",
+        "backToLogin": "Powrót do logowania",
+        "verifyTitle": "Zweryfikuj swój e-mail",
+        "verifySubtitle": "Wprowadź 6-cyfrowy kod wysłany na twój e-mail\naby zweryfikować swoje konto.",
+        "verificationCodeLabel": "Kod weryfikacyjny",
+        "verificationCodePlaceholder": "Wprowadź 6-cyfrowy kod",
+        "verifyButton": "Zweryfikuj",
+        "verifying": "Weryfikacja..."
+    },
+    "validation":{
+        "username":{
+            "required": "Nazwa użytkownika jest wymagana",
+            "minLength": "Nazwa użytkownika musi mieć co najmniej 3 znaki",
+            "maxLength": "Nazwa użytkownika nie może przekraczać 50 znaków",
+            "pattern": "Nazwa użytkownika może zawierać tylko litery, cyfry, kropki, myślniki i podkreślenia"
+        },
+        "email":{
+            "required": "E-mail jest wymagany",
+            "invalid": "Wprowadź prawidłowy adres e-mail",
+            "maxLength": "E-mail nie może przekraczać 254 znaków"
+        },
+        "password":{
+            "required": "Hasło jest wymagane",
+            "minLength": "Hasło musi mieć co najmniej 8 znaków",
+            "maxLength": "Hasło nie może przekraczać 128 znaków",
+            "pattern": "Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną cyfrę i jeden znak specjalny."
+        },
+        "firstName":{
+            "required": "Imię jest wymagane",
+            "minLength": "Imię musi mieć co najmniej 2 znaki",
+            "maxLength": "Imię nie może przekraczać 50 znaków",
+            "pattern": "Imię może zawierać tylko litery, spacje, apostrofy i myślniki"
+        },
+        "lastName":{
+            "required": "Nazwisko jest wymagane",
+            "minLength": "Nazwisko musi mieć co najmniej 2 znaki",
+            "maxLength": "Nazwisko nie może przekraczać 50 znaków",
+            "pattern": "Nazwisko może zawierać tylko litery, spacje, apostrofy i myślniki"
+        },
+        "countryCode":{
+            "required": "Kod kraju jest wymagany",
+            "invalid": "Nieprawidłowy format kodu kraju"
+        },
+        "phoneNumber":{
+            "required": "Numer telefonu jest wymagany",
+            "minLength": "Numer telefonu musi mieć co najmniej 8 cyfr",
+            "maxLength": "Numer telefonu nie może przekraczać 15 cyfr",
+            "pattern": "Numer telefonu może zawierać tylko cyfry"
+        },
+        "confirmPassword":{
+            "required": "Potwierdź swoje hasło",
+            "match": "Hasła nie pasują do siebie"
+        },
+        "verificationCode":{
+            "required": "Kod weryfikacyjny jest wymagany",
+            "length": "Kod weryfikacyjny musi mieć dokładnie 6 cyfr",
+            "pattern": "Kod weryfikacyjny może zawierać tylko cyfry"
+        },
+        "newPassword":{
+            "required": "Nowe hasło jest wymagane",
+            "minLength": "Hasło musi mieć co najmniej 8 znaków",
+            "maxLength": "Hasło nie może przekraczać 128 znaków",
+            "pattern": "Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną cyfrę i jeden znak specjalny."
+        },
+        "resetConfirmPassword":{
+            "required": "Potwierdź swoje nowe hasło",
+            "match": "Hasła nie pasują do siebie"
+        }
+    },
+    "forgotPassword":{
+        "title": "Zapomniane Hasło",
+        "subtitle": "Wprowadź swój adres e-mail, a my wyślemy Ci\nkod do zresetowania hasła",
+        "emailLabel": "Adres e-mail",
+        "emailPlaceholder": "Wprowadź swój e-mail",
+        "sendCodeButton": "Wyślij Kod Resetujący",
+        "sendingCode": "Wysyłanie kodu...",
+        "resetTitle": "Zresetuj Hasło",
+        "resetSubtitle": "Wprowadź 6-cyfrowy kod wysłany na twój e-mail\ni utwórz nowe hasło",
+        "verificationCodeLabel": "Kod Weryfikacyjny",
+        "verificationCodePlaceholder": "Wprowadź 6-cyfrowy kod",
+        "newPasswordLabel": "Nowe Hasło",
+        "newPasswordPlaceholder": "Wprowadź nowe hasło",
+        "confirmNewPasswordLabel": "Potwierdź Nowe Hasło",
+        "confirmNewPasswordPlaceholder": "Potwierdź nowe hasło",
+        "resetPasswordButton": "Zresetuj Hasło",
+        "resettingPassword": "Resetowanie...",
+        "backToLogin": "Powrót do logowania",
+        "rememberedPassword": "Pamiętasz swoje hasło?"
+    },
     "settings": {
         "title": "Ustawienia",
         "languagePreference": {

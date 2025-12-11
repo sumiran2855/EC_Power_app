@@ -13,8 +13,10 @@ import {
     verificationDefaultValues,
     verificationSchema,
 } from '../validations/LoginValidation';
+import { useTranslation } from 'react-i18next';
 
 export const useSignupLogic = () => {
+  const { t } = useTranslation(); 
   // State management
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState<boolean>(false);
@@ -129,12 +131,20 @@ export const useSignupLogic = () => {
 
   // Helper function to get error message for signup form
   const getSignupErrorMessage = (fieldName: keyof SignupFormData): string | undefined => {
-    return signupErrors[fieldName]?.message;
+    const message = signupErrors[fieldName]?.message;
+    if (message && message.startsWith('validation.')) {
+      return t(message);
+    }
+    return message;
   };
 
   // Helper function to get error message for verification form
   const getVerificationErrorMessage = (fieldName: keyof VerificationFormData): string | undefined => {
-    return verificationErrors[fieldName]?.message;
+    const message = verificationErrors[fieldName]?.message;
+    if (message && message.startsWith('validation.')) {
+      return t(message);
+    }
+    return message;
   };
 
   return {

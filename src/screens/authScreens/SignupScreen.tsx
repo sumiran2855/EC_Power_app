@@ -1,22 +1,24 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSignupLogic } from '../../hooks/useSignup';
 import { styles } from './LoginScreen.styles';
 
-interface SignupScreenProps {}
+interface SignupScreenProps { }
 
 const SignupScreen: React.FC<SignupScreenProps> = () => {
+  const { t } = useTranslation();
   const {
     // State
     isPasswordVisible,
@@ -59,16 +61,16 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
     <>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.title}>{t('signup.title')}</Text>
         <Text style={styles.subtitle}>
-          Fill in the details below to create{'\n'}your new account
+          {t('signup.subtitle')}
         </Text>
       </View>
 
       {/* Name Fields */}
       <View style={styles.nameContainer}>
         <View style={styles.nameField}>
-          <Text style={styles.label}>First Name</Text>
+          <Text style={styles.label}>{t('signup.firstNameLabel')}</Text>
           <Controller
             control={signupControl}
             name="firstName"
@@ -81,7 +83,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="First name"
+                placeholder={t('signup.firstNamePlaceholder')}
                 placeholderTextColor="#9ca3af"
                 autoCapitalize="words"
                 autoCorrect={false}
@@ -95,7 +97,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
         </View>
 
         <View style={styles.nameField}>
-          <Text style={styles.label}>Last Name</Text>
+          <Text style={styles.label}>{t('signup.lastNameLabel')}</Text>
           <Controller
             control={signupControl}
             name="lastName"
@@ -108,7 +110,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Last name"
+                placeholder={t('signup.lastNamePlaceholder')}
                 placeholderTextColor="#9ca3af"
                 autoCapitalize="words"
                 autoCorrect={false}
@@ -124,7 +126,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
       {/* Email Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email Address</Text>
+        <Text style={styles.label}>{t('signup.emailLabel')}</Text>
         <Controller
           control={signupControl}
           name="email"
@@ -137,7 +139,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="Enter your email"
+              placeholder={t('signup.emailPlaceholder')}
               placeholderTextColor="#9ca3af"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -153,7 +155,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
       {/* Phone Number Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Phone Number</Text>
+        <Text style={styles.label}>{t('signup.phoneLabel')}</Text>
         <View style={styles.phoneContainer}>
           <TouchableOpacity
             style={styles.countryCodeButton}
@@ -176,7 +178,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Phone number"
+                placeholder={t('signup.phonePlaceholder')}
                 placeholderTextColor="#9ca3af"
                 keyboardType="phone-pad"
                 autoCorrect={false}
@@ -213,7 +215,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
       {/* Password Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>{t('signup.passwordLabel')}</Text>
         <Controller
           control={signupControl}
           name="password"
@@ -227,7 +229,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Enter your password"
+                placeholder={t('signup.passwordPlaceholder')}
                 placeholderTextColor="#9ca3af"
                 secureTextEntry={!isPasswordVisible}
                 autoCapitalize="none"
@@ -254,7 +256,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
       {/* Confirm Password Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Confirm Password</Text>
+        <Text style={styles.label}>{t('signup.confirmPasswordLabel')}</Text>
         <Controller
           control={signupControl}
           name="confirmPassword"
@@ -268,7 +270,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                placeholder="Confirm your password"
+                placeholder={t('signup.confirmPasswordPlaceholder')}
                 placeholderTextColor="#9ca3af"
                 secureTextEntry={!isConfirmPasswordVisible}
                 autoCapitalize="none"
@@ -307,14 +309,14 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
           styles.loginButtonText,
           (!isSignupValid || !isSignupDirty || isSubmitting) && styles.loginButtonTextDisabled
         ]}>
-          {isSubmitting ? 'Creating Account...' : 'Create Account'}
+          {isSubmitting ? t('signup.creatingAccount') : t('signup.createAccountButton')}
         </Text>
       </TouchableOpacity>
 
       {/* Footer - Back to Login */}
       <View style={styles.signupFooter}>
         <Text style={styles.alreadyHaveAccountText}>
-          Already have an account?
+          {t('signup.alreadyHaveAccount')}
         </Text>
         <TouchableOpacity
           onPress={handleBackToLogin}
@@ -325,7 +327,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
             styles.backToLoginText,
             isSubmitting && styles.disabledText
           ]}>
-            Back to Login
+            {t('signup.backToLogin')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -335,14 +337,14 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
   const renderVerificationStep = () => (
     <>
       <View style={styles.header}>
-        <Text style={styles.title}>Verify Your Email</Text>
+        <Text style={styles.title}>{t('signup.verifyTitle')}</Text>
         <Text style={styles.subtitle}>
-          Enter the 6-digit code sent to your email{'\n'}to verify your account.
+          {t('signup.verifySubtitle')}
         </Text>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Verification Code</Text>
+        <Text style={styles.label}>{t('signup.verificationCodeLabel')}</Text>
         <Controller
           control={verificationControl}
           name="verificationCode"
@@ -355,7 +357,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder="Enter 6-digit code"
+              placeholder={t('signup.verificationCodePlaceholder')}
               placeholderTextColor="#9ca3af"
               keyboardType="numeric"
               maxLength={6}
@@ -382,7 +384,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
           styles.loginButtonText,
           (!isVerificationValid || !isVerificationDirty || isSubmitting) && styles.loginButtonTextDisabled
         ]}>
-          {isSubmitting ? 'Verifying...' : 'Verify'}
+          {isSubmitting ? t('signup.verifying') : t('signup.verifyButton')}
         </Text>
       </TouchableOpacity>
 
@@ -396,7 +398,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
             styles.backToLoginText,
             isSubmitting && styles.disabledText
           ]}>
-            Back to Login
+            {t('signup.backToLogin')}
           </Text>
         </TouchableOpacity>
       </View>

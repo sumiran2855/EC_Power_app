@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "ANMELDEN",
+        "subtitle": "Geben Sie Ihren Benutzernamen und Ihr Passwort ein\num sich in Ihrem Konto anzumelden",
+        "usernameLabel": "Benutzername",
+        "usernamePlaceholder": "E-Mail eingeben",
+        "passwordLabel": "Passwort",
+        "passwordPlaceholder": "Passwort eingeben",
+        "forgotPassword": "Passwort vergessen?",
+        "loginButton": "Anmelden",
+        "signingIn": "Anmeldung läuft...",
+        "noAccount": "Haben Sie kein Konto?",
+        "createAccount": "Konto erstellen"
+    },
+    "signup":{
+        "title": "Konto erstellen",
+        "subtitle": "Füllen Sie die Details unten aus, um\nihr neues Konto zu erstellen",
+        "firstNameLabel": "Vorname",
+        "firstNamePlaceholder": "Vorname",
+        "lastNameLabel": "Nachname",
+        "lastNamePlaceholder": "Nachname",
+        "emailLabel": "E-Mail-Adresse",
+        "emailPlaceholder": "E-Mail eingeben",
+        "phoneLabel": "Telefonnummer",
+        "phonePlaceholder": "Telefonnummer",
+        "passwordLabel": "Passwort",
+        "passwordPlaceholder": "Passwort eingeben",
+        "confirmPasswordLabel": "Passwort bestätigen",
+        "confirmPasswordPlaceholder": "Passwort bestätigen",
+        "createAccountButton": "Konto erstellen",
+        "creatingAccount": "Konto wird erstellt...",
+        "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
+        "backToLogin": "Zurück zur Anmeldung",
+        "verifyTitle": "E-Mail bestätigen",
+        "verifySubtitle": "Geben Sie den 6-stelligen Code ein, der an Ihre E-Mail gesendet wurde,\num Ihr Konto zu bestätigen.",
+        "verificationCodeLabel": "Bestätigungscode",
+        "verificationCodePlaceholder": "6-stelligen Code eingeben",
+        "verifyButton": "Bestätigen",
+        "verifying": "Bestätigung läuft..."
+    },
+    "validation":{
+        "username":{
+            "required": "Benutzername ist erforderlich",
+            "minLength": "Benutzername muss mindestens 3 Zeichen lang sein",
+            "maxLength": "Benutzername darf nicht mehr als 50 Zeichen enthalten",
+            "pattern": "Benutzername darf nur Buchstaben, Zahlen, Punkte, Bindestriche und Unterstriche enthalten"
+        },
+        "email":{
+            "required": "E-Mail ist erforderlich",
+            "invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+            "maxLength": "E-Mail darf nicht mehr als 254 Zeichen enthalten"
+        },
+        "password":{
+            "required": "Passwort ist erforderlich",
+            "minLength": "Passwort muss mindestens 8 Zeichen lang sein",
+            "maxLength": "Passwort darf nicht mehr als 128 Zeichen enthalten",
+            "pattern": "Passwort muss mindestens einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten."
+        },
+        "firstName":{
+            "required": "Vorname ist erforderlich",
+            "minLength": "Vorname muss mindestens 2 Zeichen lang sein",
+            "maxLength": "Vorname darf nicht mehr als 50 Zeichen enthalten",
+            "pattern": "Vorname darf nur Buchstaben, Leerzeichen, Apostrophe und Bindestriche enthalten"
+        },
+        "lastName":{
+            "required": "Nachname ist erforderlich",
+            "minLength": "Nachname muss mindestens 2 Zeichen lang sein",
+            "maxLength": "Nachname darf nicht mehr als 50 Zeichen enthalten",
+            "pattern": "Nachname darf nur Buchstaben, Leerzeichen, Apostrophe und Bindestriche enthalten"
+        },
+        "countryCode":{
+            "required": "Ländercode ist erforderlich",
+            "invalid": "Ungültiges Ländercode-Format"
+        },
+        "phoneNumber":{
+            "required": "Telefonnummer ist erforderlich",
+            "minLength": "Telefonnummer muss mindestens 8 Ziffern haben",
+            "maxLength": "Telefonnummer darf nicht mehr als 15 Ziffern enthalten",
+            "pattern": "Telefonnummer darf nur Ziffern enthalten"
+        },
+        "confirmPassword":{
+            "required": "Bitte bestätigen Sie Ihr Passwort",
+            "match": "Passwörter stimmen nicht überein"
+        },
+        "verificationCode":{
+            "required": "Bestätigungscode ist erforderlich",
+            "length": "Bestätigungscode muss genau 6 Ziffern haben",
+            "pattern": "Bestätigungscode darf nur Ziffern enthalten"
+        },
+        "newPassword":{
+            "required": "Neues Passwort ist erforderlich",
+            "minLength": "Passwort muss mindestens 8 Zeichen lang sein",
+            "maxLength": "Passwort darf nicht mehr als 128 Zeichen enthalten",
+            "pattern": "Passwort muss mindestens einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten."
+        },
+        "resetConfirmPassword":{
+            "required": "Bitte bestätigen Sie Ihr neues Passwort",
+            "match": "Passwörter stimmen nicht überein"
+        }
+    },
+    "forgotPassword":{
+        "title": "Passwort Vergessen",
+        "subtitle": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen\neinen Code zum Zurücksetzen Ihres Passworts",
+        "emailLabel": "E-Mail-Adresse",
+        "emailPlaceholder": "E-Mail eingeben",
+        "sendCodeButton": "Reset-Code Senden",
+        "sendingCode": "Code wird gesendet...",
+        "resetTitle": "Passwort Zurücksetzen",
+        "resetSubtitle": "Geben Sie den 6-stelligen Code ein, der an Ihre E-Mail gesendet wurde\nund erstellen Sie ein neues Passwort",
+        "verificationCodeLabel": "Bestätigungscode",
+        "verificationCodePlaceholder": "6-stelligen Code eingeben",
+        "newPasswordLabel": "Neues Passwort",
+        "newPasswordPlaceholder": "Neues Passwort eingeben",
+        "confirmNewPasswordLabel": "Neues Passwort Bestätigen",
+        "confirmNewPasswordPlaceholder": "Neues Passwort bestätigen",
+        "resetPasswordButton": "Passwort Zurücksetzen",
+        "resettingPassword": "Passwort wird zurückgesetzt...",
+        "backToLogin": "Zurück zur Anmeldung",
+        "rememberedPassword": "Passwort wiedererkannt?"
+    },
     "settings": {
         "title": "Einstellungen",
         "languagePreference": {

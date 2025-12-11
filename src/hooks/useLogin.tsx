@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import i18n from '../../languages/i18n.config';
 import { AuthController } from '../controllers/AuthController';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -11,6 +12,7 @@ import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/L
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
 export const useLoginLogic = () => {
+  const { t } = useTranslation();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -28,7 +30,7 @@ export const useLoginLogic = () => {
           await i18n.changeLanguage(savedLanguage);
         }
       } catch (error) {
-        console.error('Error loading language:', error);
+        console.log('Error loading language:', error);
       }
     };
     loadSavedLanguage();
@@ -92,13 +94,17 @@ export const useLoginLogic = () => {
       await AsyncStorage.setItem('@app_language', languageCode);
       await i18n.changeLanguage(languageCode);
     } catch (error) {
-      console.error('Error changing language:', error);
+      console.log('Error changing language:', error);
     }
   };
 
   // Helper function to get error message
   const getErrorMessage = (fieldName: keyof LoginFormData): string | undefined => {
-    return errors[fieldName]?.message;
+    const message = errors[fieldName]?.message;
+    if (message && message.startsWith('validation.')) {
+      return t(message);
+    }
+    return message;
   };
 
   return {

@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "LOGIN",
+        "subtitle": "Enter your username and password\nto sign in your account",
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "Enter your email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "forgotPassword": "Forgot Password?",
+        "loginButton": "Login",
+        "signingIn": "Signing In...",
+        "noAccount": "Don't have an account?",
+        "createAccount": "Create Account"
+    },
+    "signup":{
+        "title": "Create Account",
+        "subtitle": "Fill in the details below to create\nyour new account",
+        "firstNameLabel": "First Name",
+        "firstNamePlaceholder": "First name",
+        "lastNameLabel": "Last Name",
+        "lastNamePlaceholder": "Last name",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "Enter your email",
+        "phoneLabel": "Phone Number",
+        "phonePlaceholder": "Phone number",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "confirmPasswordLabel": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm your password",
+        "createAccountButton": "Create Account",
+        "creatingAccount": "Creating Account...",
+        "alreadyHaveAccount": "Already have an account?",
+        "backToLogin": "Back to Login",
+        "verifyTitle": "Verify Your Email",
+        "verifySubtitle": "Enter the 6-digit code sent to your email\nto verify your account.",
+        "verificationCodeLabel": "Verification Code",
+        "verificationCodePlaceholder": "Enter 6-digit code",
+        "verifyButton": "Verify",
+        "verifying": "Verifying..."
+    },
+    "validation":{
+        "username":{
+            "required": "Username is required",
+            "minLength": "Username must be at least 3 characters",
+            "maxLength": "Username must not exceed 50 characters",
+            "pattern": "Username can only contain letters, numbers, dots, hyphens, and underscores"
+        },
+        "email":{
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address",
+            "maxLength": "Email must not exceed 254 characters"
+        },
+        "password":{
+            "required": "Password is required",
+            "minLength": "Password must be at least 8 characters",
+            "maxLength": "Password must not exceed 128 characters",
+            "pattern": "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character."
+        },
+        "firstName":{
+            "required": "First name is required",
+            "minLength": "First name must be at least 2 characters",
+            "maxLength": "First name must not exceed 50 characters",
+            "pattern": "First name can only contain letters, spaces, apostrophes, and hyphens"
+        },
+        "lastName":{
+            "required": "Last name is required",
+            "minLength": "Last name must be at least 2 characters",
+            "maxLength": "Last name must not exceed 50 characters",
+            "pattern": "Last name can only contain letters, spaces, apostrophes, and hyphens"
+        },
+        "countryCode":{
+            "required": "Country code is required",
+            "invalid": "Invalid country code format"
+        },
+        "phoneNumber":{
+            "required": "Phone number is required",
+            "minLength": "Phone number must be at least 8 digits",
+            "maxLength": "Phone number must not exceed 15 digits",
+            "pattern": "Phone number can only contain digits"
+        },
+        "confirmPassword":{
+            "required": "Please confirm your password",
+            "match": "Passwords don't match"
+        },
+        "verificationCode":{
+            "required": "Verification code is required",
+            "length": "Verification code must be exactly 6 digits",
+            "pattern": "Verification code must contain only digits"
+        },
+        "newPassword":{
+            "required": "New password is required",
+            "minLength": "Password must be at least 8 characters",
+            "maxLength": "Password must not exceed 128 characters",
+            "pattern": "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character."
+        },
+        "resetConfirmPassword":{
+            "required": "Please confirm your new password",
+            "match": "Passwords don't match"
+        }
+    },
+    "forgotPassword":{
+        "title": "Forgot Password",
+        "subtitle": "Enter your email address and we'll send you\na code to reset your password",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "Enter your email",
+        "sendCodeButton": "Send Reset Code",
+        "sendingCode": "Sending Code...",
+        "resetTitle": "Reset Password",
+        "resetSubtitle": "Enter the 6-digit code sent to your email\nand create a new password",
+        "verificationCodeLabel": "Verification Code",
+        "verificationCodePlaceholder": "Enter 6-digit code",
+        "newPasswordLabel": "New Password",
+        "newPasswordPlaceholder": "Enter new password",
+        "confirmNewPasswordLabel": "Confirm New Password",
+        "confirmNewPasswordPlaceholder": "Confirm new password",
+        "resetPasswordButton": "Reset Password",
+        "resettingPassword": "Resetting Password...",
+        "backToLogin": "Back to Login",
+        "rememberedPassword": "Remembered your Password?"
+    },
     "settings": {
         "title": "Settings",
         "languagePreference": {

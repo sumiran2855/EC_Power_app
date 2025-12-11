@@ -1,4 +1,123 @@
 {
+    "login":{
+        "title": "LOGIN",
+        "subtitle": "Indtast dit brugernavn og adgangskode\nfor at logge ind på din konto",
+        "usernameLabel": "Brugernavn",
+        "usernamePlaceholder": "Indtast din e-mail",
+        "passwordLabel": "Adgangskode",
+        "passwordPlaceholder": "Indtast din adgangskode",
+        "forgotPassword": "Glemt adgangskode?",
+        "loginButton": "Login",
+        "signingIn": "Logger ind...",
+        "noAccount": "Har du ikke en konto?",
+        "createAccount": "Opret konto"
+    },
+    "signup":{
+        "title": "Opret konto",
+        "subtitle": "Udfyld detaljerne nedenfor for at oprette\ndin nye konto",
+        "firstNameLabel": "Fornavn",
+        "firstNamePlaceholder": "Fornavn",
+        "lastNameLabel": "Efternavn",
+        "lastNamePlaceholder": "Efternavn",
+        "emailLabel": "E-mailadresse",
+        "emailPlaceholder": "Indtast din e-mail",
+        "phoneLabel": "Telefonnummer",
+        "phonePlaceholder": "Telefonnummer",
+        "passwordLabel": "Adgangskode",
+        "passwordPlaceholder": "Indtast din adgangskode",
+        "confirmPasswordLabel": "Bekræft adgangskode",
+        "confirmPasswordPlaceholder": "Bekræft din adgangskode",
+        "createAccountButton": "Opret konto",
+        "creatingAccount": "Opretter konto...",
+        "alreadyHaveAccount": "Har du allerede en konto?",
+        "backToLogin": "Tilbage til login",
+        "verifyTitle": "Bekræft din e-mail",
+        "verifySubtitle": "Indtast den 6-cifrede kode sendt til din e-mail\nfor at bekræfte din konto.",
+        "verificationCodeLabel": "Verifikationskode",
+        "verificationCodePlaceholder": "Indtast 6-cifret kode",
+        "verifyButton": "Bekræft",
+        "verifying": "Bekræfter..."
+    },
+    "validation":{
+        "username":{
+            "required": "Brugernavn er påkrævet",
+            "minLength": "Brugernavn skal være mindst 3 tegn",
+            "maxLength": "Brugernavn må ikke overstige 50 tegn",
+            "pattern": "Brugernavn må kun indeholde bogstaver, tal, punkter, bindestreger og understregninger"
+        },
+        "email":{
+            "required": "E-mail er påkrævet",
+            "invalid": "Indtast venligst en gyldig e-mailadresse",
+            "maxLength": "E-mail må ikke overstige 254 tegn"
+        },
+        "password":{
+            "required": "Adgangskode er påkrævet",
+            "minLength": "Adgangskode skal være mindst 8 tegn",
+            "maxLength": "Adgangskode må ikke overstige 128 tegn",
+            "pattern": "Adgangskode skal indeholde mindst ét lille bogstav, ét stort bogstav, ét tal og ét specialtegn."
+        },
+        "firstName":{
+            "required": "Fornavn er påkrævet",
+            "minLength": "Fornavn skal være mindst 2 tegn",
+            "maxLength": "Fornavn må ikke overstige 50 tegn",
+            "pattern": "Fornavn må kun indeholde bogstaver, mellemrum, apostroffer og bindestreger"
+        },
+        "lastName":{
+            "required": "Efternavn er påkrævet",
+            "minLength": "Efternavn skal være mindst 2 tegn",
+            "maxLength": "Efternavn må ikke overstige 50 tegn",
+            "pattern": "Efternavn må kun indeholde bogstaver, mellemrum, apostroffer og bindestreger"
+        },
+        "countryCode":{
+            "required": "Landekode er påkrævet",
+            "invalid": "Ugyldigt landekode-format"
+        },
+        "phoneNumber":{
+            "required": "Telefonnummer er påkrævet",
+            "minLength": "Telefonnummer skal have mindst 8 cifre",
+            "maxLength": "Telefonnummer må ikke overstige 15 cifre",
+            "pattern": "Telefonnummer må kun indeholde cifre"
+        },
+        "confirmPassword":{
+            "required": "Bekræft venligst din adgangskode",
+            "match": "Adgangskoder matcher ikke"
+        },
+        "verificationCode":{
+            "required": "Verifikationskode er påkrævet",
+            "length": "Verifikationskode skal være præcis 6 cifre",
+            "pattern": "Verifikationskode må kun indeholde cifre"
+        },
+        "newPassword":{
+            "required": "Ny adgangskode er påkrævet",
+            "minLength": "Adgangskode skal være mindst 8 tegn",
+            "maxLength": "Adgangskode må ikke overstige 128 tegn",
+            "pattern": "Adgangskode skal indeholde mindst ét lille bogstav, ét stort bogstav, ét tal og ét specialtegn."
+        },
+        "resetConfirmPassword":{
+            "required": "Bekræft venligst din nye adgangskode",
+            "match": "Adgangskoder matcher ikke"
+        }
+    },
+    "forgotPassword":{
+        "title": "Glemt Adgangskode",
+        "subtitle": "Indtast din e-mailadresse, så sender vi dig\nen kode til at nulstille din adgangskode",
+        "emailLabel": "E-mailadresse",
+        "emailPlaceholder": "Indtast din e-mail",
+        "sendCodeButton": "Send Nulstillingskode",
+        "sendingCode": "Sender Kode...",
+        "resetTitle": "Nulstil Adgangskode",
+        "resetSubtitle": "Indtast den 6-cifrede kode sendt til din e-mail\nog opret en ny adgangskode",
+        "verificationCodeLabel": "Verifikationskode",
+        "verificationCodePlaceholder": "Indtast 6-cifret kode",
+        "newPasswordLabel": "Ny Adgangskode",
+        "newPasswordPlaceholder": "Indtast ny adgangskode",
+        "confirmNewPasswordLabel": "Bekræft Ny Adgangskode",
+        "confirmNewPasswordPlaceholder": "Bekræft ny adgangskode",
+        "resetPasswordButton": "Nulstil Adgangskode",
+        "resettingPassword": "Nulstiller Adgangskode...",
+        "backToLogin": "Tilbage til Login",
+        "rememberedPassword": "Husket din adgangskode?"
+    },
     "settings": {
         "title": "Indstillinger",
         "languagePreference": {
