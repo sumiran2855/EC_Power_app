@@ -91,7 +91,7 @@ export type StepperFormSharedProps = {
     validateMonthHours?: (hours: number, index: number) => void,
     validateTotalPercentage?: () => void,
     errors: Record<string, string>,
-    onNext: (daSignedOverride?: boolean) => void,
+    onNext: () => void,
     onBack: () => void,
     onSaveForLater?: () => void,
 };

@@ -1,15 +1,16 @@
-import { useStepperForm } from '../../hooks/useStepperForm';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
     KeyboardAvoidingView,
     Platform,
-    SafeAreaView,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useStepperForm } from '../../hooks/useStepperForm';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { styles } from './StepperScreen.styles';
 import ProfileStep from './steps/ProfileStep';
@@ -18,6 +19,7 @@ import SystemRegistrationStep from './steps/SystemRegistrationStep';
 import { ICustomer, ProfileStepProps, SmartPriceStepProps, SystemRegisterStepProps } from './types';
 
 const StepperScreen: React.FC = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const {
         currentStep,
@@ -61,9 +63,9 @@ const StepperScreen: React.FC = () => {
     }, [currentStep, formData.journeyStatus, navigation]);
 
     const steps = [
-        { id: 1, label: 'Profile', icon: 'person', completed: currentStep > 1 },
-        { id: 2, label: 'System Registration', icon: 'settings', completed: currentStep > 2 },
-        { id: 3, label: 'Smart Price Control', icon: 'electrical-services', completed: currentStep > 3 },
+        { id: 1, label: t('stepper.steps.profile'), icon: 'person', completed: currentStep > 1 },
+        { id: 2, label: t('stepper.steps.systemRegistration'), icon: 'settings', completed: currentStep > 2 },
+        { id: 3, label: t('stepper.steps.smartPriceControl'), icon: 'electrical-services', completed: currentStep > 3 },
     ];
 
     const handleNext = () => {
@@ -191,29 +193,29 @@ const StepperScreen: React.FC = () => {
                 );
             case 4:
                 return (
-                    <View style={styles.completionContainer}>
+                    <SafeAreaView style={styles.completionContainer}>
                         <View style={styles.successIconWrapper}>
                             <Icon name="check-circle" size={80} color="#00B050" />
                         </View>
 
-                        <Text style={styles.completionTitle}>Registration Complete!</Text>
+                        <Text style={styles.completionTitle}>{t('stepper.completion.title')}</Text>
 
                         <Text style={styles.completionText}>
-                            Your XRGI system has been successfully registered and saved.
+                            {t('stepper.completion.message')}
                         </Text>
 
                         <Text style={styles.completionSubtext}>
-                            Redirecting to dashboard...
+                            {t('stepper.completion.redirecting')}
                         </Text>
 
                         <TouchableOpacity
                             style={styles.buttonPrimary1}
                             onPress={() => navigation.navigate('Home')}
                         >
-                            <Text style={styles.buttonPrimaryText1}>Go to Dashboard Now</Text>
+                            <Text style={styles.buttonPrimaryText1}>{t('stepper.completion.goToDashboard')}</Text>
                             <Icon name="arrow-forward" size={20} color="#fff" />
                         </TouchableOpacity>
-                    </View>
+                    </SafeAreaView>
 
                 );
             default:

@@ -96,6 +96,149 @@
         "resetConfirmPassword":{
             "required": "Bekræft venligst din nye adgangskode",
             "match": "Adgangskoder matcher ikke"
+        },
+        "required": "{{field}} er påkrævet",
+        "invalidEmail": "Indtast venlig e-mailadresse",
+        "invalidPhone": "Telefonnummer skal være mindst 8 cifre",
+        "invalidXRGIId": "XRGI ID skal være 10 cifre",
+        "selectModel": "Vælg venligst en model",
+        "operatingHoursRange": "Driftstimer skal være mellem 0 og 8760",
+        "recipientEmailRequired": "Mindst én modtager e-mail er påkrævet",
+        "validEmailAddresses": "Indtast venligst gyldige e-mailadresser adskilt af kommaer"
+    },
+    "systemRegistrationStep":{
+        "header":{
+            "title": "Registrer Dit XRGI System",
+            "subtitle": "Hvis du ikke har systemdetaljerne, gem til senere nederst på siden"
+        },
+        "systemDetails":{
+            "title": "Systemdetaljer",
+            "systemName": "Systemnavn",
+            "systemNamePlaceholder": "Indtast systemnavnet",
+            "systemNameHelper": "Eksempel: \"System i kælder 01\"",
+            "xrgiId": "XRGI ID Nummer",
+            "xrgiIdPlaceholder": "Indtast 10-cifret XRGI ID",
+            "xrgiIdHelper": "XRGI® ID er et 10-cifret nummer placeret på siden af IQ-Control Panelet.",
+            "selectModel": "Vælg en Model",
+            "modelPlaceholder": "Vælg din XRGI model",
+            "modelHelper": "Modellen er på navneskiltet på bagsiden af Power Unit"
+        },
+        "xrgiSite":{
+            "title": "XRGI® Placering",
+            "address": "Adresse",
+            "addressPlaceholder": "XRGI® Placeringsadresse",
+            "postcode": "Postnummer",
+            "postcodePlaceholder": "Postnummer",
+            "city": "By",
+            "cityPlaceholder": "By",
+            "country": "Land",
+            "countryPlaceholder": "Vælg land"
+        },
+        "serviceContract":{
+            "title": "Servicekontrakt",
+            "question": "Har du en servicekontrakt?",
+            "yes": "Ja",
+            "no": "Nej",
+            "interestedQuestion": "Er du interesseret i en servicekontrakt?",
+            "providerName": "Serviceudbyder Navn",
+            "providerNamePlaceholder": "Indtast serviceudbyder navn",
+            "providerEmail": "Serviceudbyder E-mail",
+            "providerEmailPlaceholder": "Indtast udbyder e-mail",
+            "providerPhone": "Serviceudbyder Telefon",
+            "providerPhonePlaceholder": "Indtast udbyder telefon",
+            "salesPartnerSame": "Er din salgspartner den samme som serviceudbyder?",
+            "salesPartnerName": "Salgspartner Navn",
+            "salesPartnerNamePlaceholder": "Indtast salgspartner navn",
+            "salesPartnerEmail": "Salgspartner E-mail",
+            "salesPartnerEmailPlaceholder": "Indtast salgspartner e-mail",
+            "salesPartnerPhone": "Salgspartner Telefon",
+            "salesPartnerPhonePlaceholder": "Indtast salgspartner telefon",
+            "description": "Oplysningerne er nødvendige for at give din servicepartner adgang til vores EC POWER Servicedatabase."
+        },
+        "installation":{
+            "question": "Er dit system installeret?",
+            "description": "Tjek dette hvis dit XRGI system allerede er opsat"
+        },
+        "energyCheckPlus":{
+            "title": "EnergyCheck Plus",
+            "subtitle": "Få en månedlig oversigt over hvor meget du har sparet med dit XRGI System",
+            "enable": "Aktiver EnergyCheck Plus",
+            "description1": "Vi vil sammenligne de faktiske driftstimer for dit XRGI® system med de forventede driftstimer",
+            "description2": "Find venligst værdierne i dit oprindelige tilbud* og udfyld nedenfor",
+            "expectedSavings": "Forventede årlige besparelser",
+            "savingsPlaceholder": "Indtast forventede årlige besparelser",
+            "expectedCo2Savings": "Forventede årlige CO₂-besparelser",
+            "co2SavingsPlaceholder": "Total pr. år",
+            "operatingHours": "Forventede driftstimer",
+            "operatingHoursPlaceholder": "Indtast forventede driftstimer",
+            "operatingHoursPerYear": "Forventede driftstimer pr. år",
+            "maxHoursHelper": "Maksimum: 8760 timer pr. år (24t × 365 dage)",
+            "industry": "Industri",
+            "industryPlaceholder": "Vælg industri",
+            "recipientEmails": "Modtager E-mail Adresse(r)",
+            "recipientEmailsHelper": "Du kan indtaste flere adresser adskilt af kommaer",
+            "recipientEmailsPlaceholder": "bruger@eksempel.dk, admin@eksempel.dk",
+            "adjustHours": "Juster Timerfordeling",
+            "distributeHours": "Fordel timer jævnt",
+            "distributeHoursDescription": "Anvend lige timer på tværs af alle måneder",
+            "month": "Måned",
+            "percentage": "Procent",
+            "hours": "Timer",
+            "total": "Total"
+        },
+        "buttons":{
+            "back": "Tilbage",
+            "continue": "Fortsæt"
+        },
+        "months":{
+            "january": "Januar",
+            "february": "Februar",
+            "march": "Marts",
+            "april": "April",
+            "may": "Maj",
+            "june": "Juni",
+            "july": "Juli",
+            "august": "August",
+            "september": "September",
+            "october": "Oktober",
+            "november": "November",
+            "december": "December"
+        }
+    },
+    "smartPriceStep":{
+        "header":{
+            "title": "Smart PriceControl",
+            "subtitle": "Optimer din energiproduktion med realtid elmarkedspriser"
+        },
+        "infoCard":{
+            "title": "Sådan virker det",
+            "description": "Vores software bruger EPEX Day-ahead markedspriser til automatisk at pause energiproduktion når priserne er nul eller negative, hvilket maksimerer dine besparelser.",
+            "badge": "Standard på alle XRCP® systemer fra april 2025"
+        },
+        "featureToggle":{
+            "title": "Installer SmartPriceControl",
+            "description": "Aktiver automatisk optimering"
+        },
+        "installation":{
+            "title": "Installationstidspunkt",
+            "subtitle": "Vælg hvornår softwaren skal installeres",
+            "alert": "Fysisk installation på dit XRGI® system er påkrævet af din servicepartner",
+            "onSiteVisit": {
+                "title": "Ved næste on-site besøg",
+                "description": "Installer under planlagt vedligeholdelse"
+            },
+            "asSoonAsPossible": {
+                "title": "Hurtigst muligt",
+                "description": "Planlæg en dedikeret installationsbesøg"
+            }
+        },
+        "success":{
+            "title": "Næsten Færdig!",
+            "description": "Gennemgå dine oplysninger og gem for at fuldføre opsætningsprocessen"
+        },
+        "buttons":{
+            "back": "Tilbage",
+            "complete": "Fuldfør Opsætning"
         }
     },
     "forgotPassword":{
@@ -117,6 +260,61 @@
         "resettingPassword": "Nulstiller Adgangskode...",
         "backToLogin": "Tilbage til Login",
         "rememberedPassword": "Husket din adgangskode?"
+    },
+    "stepper":{
+        "steps":{
+            "profile": "Profil",
+            "systemRegistration": "Systemregistrering",
+            "smartPriceControl": "Smart Priskontrol"
+        },
+        "completion":{
+            "title": "Registrering Fuldført!",
+            "message": "Dit XRGI-system er blevet registreret og gemt.",
+            "redirecting": "Omdirigerer til dashboard...",
+            "goToDashboard": "Gå til Dashboard Nu"
+        }
+    },
+    "profileStep":{
+        "header":{
+            "title": "Opret Din Profil",
+            "subtitle": "Følg trinnene for at fuldføre din profilopsætning."
+        },
+        "companyInfo":{
+            "title": "Virksomhedsinformation",
+            "subtitle": "Indtast dine forretningsoplysninger",
+            "companyName": "Virksomhedsnavn",
+            "companyNamePlaceholder": "Indtast virksomhedsnavn",
+            "vatNo": "Momsnr.",
+            "vatNoPlaceholder": "Indtast momsnummer",
+            "address": "Adresse",
+            "addressPlaceholder": "Indtast adresse",
+            "postcode": "Postnummer",
+            "postcodePlaceholder": "Postnummer",
+            "city": "By",
+            "cityPlaceholder": "By",
+            "email": "E-mail",
+            "emailPlaceholder": "virksomhed@eksempel.dk",
+            "phone": "Telefon",
+            "phonePlaceholder": "Indtast telefonnummer",
+            "validPhone": "Gyldigt telefonnummer"
+        },
+        "contactPerson":{
+            "title": "Kontaktperson",
+            "subtitle": "Udfyld detaljerne",
+            "firstName": "Fornavn",
+            "firstNamePlaceholder": "Fornavn",
+            "lastName": "Efternavn",
+            "lastNamePlaceholder": "Efternavn",
+            "email": "E-mail",
+            "emailPlaceholder": "kontakt@eksempel.dk",
+            "phone": "Telefon",
+            "phonePlaceholder": "Indtast telefonnummer",
+            "validPhone": "Gyldigt telefonnummer"
+        },
+        "buttons":{
+            "saveForLater": "Gem Til Senere",
+            "continue": "Fortsæt"
+        }
     },
     "settings": {
         "title": "Indstillinger",

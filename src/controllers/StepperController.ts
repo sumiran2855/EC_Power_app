@@ -36,17 +36,21 @@ export class StepperController {
 
     static async UpdateProfile(data: any, userId: string): Promise<{ success: boolean; error?: string }> {
         const { authToken, idToken } = await StorageService.auth.getTokens();
-
+        const payload = {
+            journeyStatus: data.journeyStatus
+        };
+        
         try {
-            const response = await AuthHelper.ApiRequest({
+            const requestConfig = {
                 endpoint: `update-profile/${userId}`,
-                method: 'PUT',
-                body: data,
+                method: 'POST',
+                body: payload,
                 token: authToken,
                 IdToken: idToken,
                 backendType: BackendType.PRODUCT_PORTAL,
-            });
-            console.log("Update profile response:", response);
+            };
+            
+            const response = await AuthHelper.ApiRequest(requestConfig);
 
             if (response.success) {
                 return { success: true };

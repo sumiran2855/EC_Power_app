@@ -1,5 +1,6 @@
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
 import { SmartPriceStepProps } from '../types';
@@ -10,6 +11,7 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
     onBack,
     onNext,
 }) => {
+    const { t } = useTranslation();
 
     const handleSmartPriceToggle = () => {
         const newValue = !formData.smartPriceControlAdded;
@@ -41,9 +43,9 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
     return (
         <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
             <View style={styles.headerSection}>
-                <Text style={styles.title}>Smart PriceControl</Text>
+                <Text style={styles.title}>{t('smartPriceStep.header.title')}</Text>
                 <Text style={styles.subtitle}>
-                    Optimize your energy production with real-time electricity market prices
+                    {t('smartPriceStep.header.subtitle')}
                 </Text>
             </View>
 
@@ -52,14 +54,13 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                     <Icon name="lightbulb" size={32} color="#FFA000" />
                 </View>
                 <View style={styles.infoCardContent}>
-                    <Text style={styles.infoCardTitle}>How it works</Text>
+                    <Text style={styles.infoCardTitle}>{t('smartPriceStep.infoCard.title')}</Text>
                     <Text style={styles.infoCardText}>
-                        Our software uses EPEX Day-ahead market prices to automatically pause energy
-                        production when prices are zero or negative, maximizing your savings.
+                        {t('smartPriceStep.infoCard.description')}
                     </Text>
                     <View style={styles.infoBadge}>
                         <Icon name="star" size={14} color="#FFA000" />
-                        <Text style={styles.infoBadgeText}>Standard on all XRCP® systems from April 2025</Text>
+                        <Text style={styles.infoBadgeText}>{t('smartPriceStep.infoCard.badge')}</Text>
                     </View>
                 </View>
             </View>
@@ -74,9 +75,9 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                             {formData.smartPriceControlAdded && <Icon name="check" size={16} color="#fff" />}
                         </View>
                         <View style={styles.featureToggleContent}>
-                            <Text style={styles.featureToggleTitle}>Install SmartPriceControl</Text>
+                            <Text style={styles.featureToggleTitle}>{t('smartPriceStep.featureToggle.title')}</Text>
                             <Text style={styles.featureToggleDescription}>
-                                Enable automatic optimization
+                                {t('smartPriceStep.featureToggle.description')}
                             </Text>
                         </View>
                     </View>
@@ -93,15 +94,15 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                     <View style={styles.cardHeader}>
                         <Icon name="build" size={24} color="#003D82" />
                         <View style={styles.cardHeaderText}>
-                            <Text style={styles.cardTitle}>Installation Timing</Text>
-                            <Text style={styles.cardSubtitle}>Choose when to install the software</Text>
+                            <Text style={styles.cardTitle}>{t('smartPriceStep.installation.title')}</Text>
+                            <Text style={styles.cardSubtitle}>{t('smartPriceStep.installation.subtitle')}</Text>
                         </View>
                     </View>
 
                     <View style={styles.alertBox}>
                         <Icon name="info" size={20} color="#1976D2" />
                         <Text style={styles.alertText}>
-                            Physical installation on your XRGI® system is required by your service partner
+                            {t('smartPriceStep.installation.alert')}
                         </Text>
                     </View>
 
@@ -118,9 +119,9 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                             )}
                         </View>
                         <View style={styles.radioCardContent}>
-                            <Text style={styles.radioCardTitle}>At next on-site visit</Text>
+                            <Text style={styles.radioCardTitle}>{t('smartPriceStep.installation.onSiteVisit.title')}</Text>
                             <Text style={styles.radioCardDescription}>
-                                Install during scheduled maintenance
+                                {t('smartPriceStep.installation.onSiteVisit.description')}
                             </Text>
                         </View>
                         <Icon name="event" size={24} color="#003D82" />
@@ -139,9 +140,9 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                             )}
                         </View>
                         <View style={styles.radioCardContent}>
-                            <Text style={styles.radioCardTitle}>As soon as possible</Text>
+                            <Text style={styles.radioCardTitle}>{t('smartPriceStep.installation.asSoonAsPossible.title')}</Text>
                             <Text style={styles.radioCardDescription}>
-                                Schedule a dedicated installation visit
+                                {t('smartPriceStep.installation.asSoonAsPossible.description')}
                             </Text>
                         </View>
                         <Icon name="flash-on" size={24} color="#003D82" />
@@ -153,20 +154,20 @@ const SmartPriceStep: React.FC<SmartPriceStepProps> = ({
                 <View style={styles.successIconWrapper}>
                     <Icon name="check-circle" size={48} color="#00B050" />
                 </View>
-                <Text style={styles.successTitle}>Almost Done!</Text>
+                <Text style={styles.successTitle}>{t('smartPriceStep.success.title')}</Text>
                 <Text style={styles.successText}>
-                    Review your information and save to complete the setup process
+                    {t('smartPriceStep.success.description')}
                 </Text>
             </View>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonSecondary} onPress={onBack}>
                     <Icon name="arrow-back" size={20} color="#003D82" />
-                    <Text style={styles.buttonSecondaryText}>Back</Text>
+                    <Text style={styles.buttonSecondaryText}>{t('smartPriceStep.buttons.back')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonPrimary} onPress={handleNext}>
                     <Icon name="check" size={20} color="#fff" />
-                    <Text style={styles.buttonPrimaryText}>Complete Setup</Text>
+                    <Text style={styles.buttonPrimaryText}>{t('smartPriceStep.buttons.complete')}</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

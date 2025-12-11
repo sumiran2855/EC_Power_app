@@ -1,5 +1,6 @@
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import React, { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
 import { SalesPartnerInfo, ServiceProviderInfo, SystemRegisterStepProps, country, countryCodes, industries, models } from '../types';
@@ -33,7 +34,14 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
     onBack,
     errors = {},
 }) => {
+    const { t } = useTranslation();
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
+    // Helper function to translate month names
+    const translateMonth = (month: string) => {
+        const monthKey = month.toLowerCase();
+        return t(`systemRegistrationStep.months.${monthKey}`);
+    };
     const [pendingSubmit, setPendingSubmit] = useState(false);
 
     const handleTermsAccept = () => {
@@ -58,9 +66,9 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
     return (
         <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
             <View style={styles.headerSection}>
-                <Text style={styles.title}>Register Your XRGI System</Text>
+                <Text style={styles.title}>{t('systemRegistrationStep.header.title')}</Text>
                 <Text style={styles.subtitle}>
-                    If you do not have the system details, save for later at the bottom of the page
+                    {t('systemRegistrationStep.header.subtitle')}
                 </Text>
             </View>
 
@@ -68,17 +76,17 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 <View style={styles.cardHeader}>
                     <Icon name="settings" size={24} color="#003D82" />
                     <View style={styles.cardHeaderText}>
-                        <Text style={styles.cardTitle}>System Details</Text>
+                        <Text style={styles.cardTitle}>{t('systemRegistrationStep.systemDetails.title')}</Text>
                     </View>
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>System name *</Text>
+                    <Text style={styles.label}>{t('systemRegistrationStep.systemDetails.systemName')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="label" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder='Enter the system name'
+                            placeholder={t('systemRegistrationStep.systemDetails.systemNamePlaceholder')}
                             placeholderTextColor="#999"
                             value={formData.name}
                             onChangeText={(text) => updateFormData('name', text)}
@@ -90,18 +98,18 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </Text>
                     ) : (
                         <Text style={styles.helperText}>
-                            <Icon name="info-outline" size={12} color="#999" /> Example: "System in basement 01"
+                            <Icon name="info-outline" size={12} color="#999" /> {t('systemRegistrationStep.systemDetails.systemNameHelper')}
                         </Text>
                     )}
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>XRGI ID Number *</Text>
+                    <Text style={styles.label}>{t('systemRegistrationStep.systemDetails.xrgiId')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="fingerprint" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="Enter 10-digit XRGI ID"
+                            placeholder={t('systemRegistrationStep.systemDetails.xrgiIdPlaceholder')}
                             placeholderTextColor="#999"
                             keyboardType="number-pad"
                             maxLength={10}
@@ -115,13 +123,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </Text>
                     ) : (
                         <Text style={styles.helperText}>
-                            <Icon name="info-outline" size={12} color="#999" /> The XRGI® ID is a 10 digit number located on the side of the IQ-Control Panel.
+                            <Icon name="info-outline" size={12} color="#999" /> {t('systemRegistrationStep.systemDetails.xrgiIdHelper')}
                         </Text>
                     )}
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Select a Model *</Text>
+                    <Text style={styles.label}>{t('systemRegistrationStep.systemDetails.selectModel')} *</Text>
                     <TouchableOpacity
                         style={styles.pickerContainer}
                         onPress={() => setShowModelPicker && setShowModelPicker(!showModelPicker)}
@@ -129,7 +137,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         <View style={styles.pickerButton}>
                             <Icon name="devices" size={18} color="#999" style={styles.inputIcon} />
                             <Text style={formData.modelNumber ? styles.pickerText : styles.pickerPlaceholder}>
-                                {formData.modelNumber || 'Choose your XRGI model'}
+                                {formData.modelNumber || t('systemRegistrationStep.systemDetails.modelPlaceholder')}
                             </Text>
                             <Icon
                                 name={showModelPicker ? "expand-less" : "expand-more"}
@@ -166,7 +174,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </ScrollView>
                     )}
                     <Text style={styles.helperText}>
-                        <Icon name="info-outline" size={12} color="#999" /> The model is on the name plate on the back of the Power Unit
+                        <Icon name="info-outline" size={12} color="#999" /> {t('systemRegistrationStep.systemDetails.modelHelper')}
                     </Text>
                 </View>
             </View>
@@ -175,17 +183,17 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 <View style={styles.cardHeader}>
                     <Icon name="location-on" size={24} color="#003D82" />
                     <View style={styles.cardHeaderText}>
-                        <Text style={styles.cardTitle}>XRGI® Site</Text>
+                        <Text style={styles.cardTitle}>{t('systemRegistrationStep.xrgiSite.title')}</Text>
                     </View>
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Address *</Text>
+                    <Text style={styles.label}>{t('systemRegistrationStep.xrgiSite.address')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="home" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="XRGI® Site Address"
+                            placeholder={t('systemRegistrationStep.xrgiSite.addressPlaceholder')}
                             placeholderTextColor="#999"
                             value={formData.location?.address}
                             onChangeText={(text) => updateFormData('location', {
@@ -203,7 +211,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
 
                 <View style={styles.inputRow}>
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>Postcode *</Text>
+                        <Text style={styles.label}>{t('systemRegistrationStep.xrgiSite.postcode')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
@@ -215,7 +223,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             />
                             <TextInput
                                 style={styles.input}
-                                placeholder="Postcode"
+                                placeholder={t('systemRegistrationStep.xrgiSite.postcodePlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.location?.postalCode}
                                 onChangeText={(text) => updateFormData('location', {
@@ -232,7 +240,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     </View>
 
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>City *</Text>
+                        <Text style={styles.label}>{t('systemRegistrationStep.xrgiSite.city')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
@@ -244,7 +252,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             />
                             <TextInput
                                 style={styles.input}
-                                placeholder="City"
+                                placeholder={t('systemRegistrationStep.xrgiSite.cityPlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.location?.city}
                                 onChangeText={(text) => updateFormData('location', {
@@ -262,14 +270,14 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 </View>
 
                 <View style={showCountryPicker ? styles.inputGroupActive : styles.inputGroup}>
-                    <Text style={styles.label}>Country *</Text>
+                    <Text style={styles.label}>{t('systemRegistrationStep.xrgiSite.country')} *</Text>
                     <TouchableOpacity
                         style={styles.pickerButton}
                         onPress={() => setShowCountryPicker && setShowCountryPicker(!showCountryPicker)}
                     >
                         <Icon name="public" size={18} color="#999" style={styles.pickerIcon} />
                         <Text style={formData.location?.country ? styles.pickerText : styles.pickerPlaceholder}>
-                            {formData.location?.country || 'Select country'}
+                            {formData.location?.country || t('systemRegistrationStep.xrgiSite.countryPlaceholder')}
                         </Text>
                         <Icon
                             name={showCountryPicker ? "expand-less" : "expand-more"}
@@ -311,15 +319,15 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 <View style={styles.cardHeader}>
                     <Icon name="handshake" size={24} color="#003D82" />
                     <View style={styles.cardHeaderText}>
-                        <Text style={styles.cardTitle}>Service Contract</Text>
+                        <Text style={styles.cardTitle}>{t('systemRegistrationStep.serviceContract.title')}</Text>
                     </View>
                 </View>
 
                 <Text style={styles.questionText}>
-                    Do you have a service contract for your XRGI® system ?
+                    {t('systemRegistrationStep.serviceContract.question')}
                 </Text>
                 <Text style={styles.cardSubtitle}>
-                    The information is required to grant your service partner access to our EC POWER Service Database.
+                    {t('systemRegistrationStep.serviceContract.description')}
                 </Text>
 
                 <View style={styles.toggleContainer}>
@@ -342,7 +350,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 formData.hasServiceContract === true && styles.toggleButtonTextActive,
                             ]}
                         >
-                            Yes
+                            {t('systemRegistrationStep.serviceContract.yes')}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -364,7 +372,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 formData.hasServiceContract === false && styles.toggleButtonTextActive,
                             ]}
                         >
-                            No
+                            {t('systemRegistrationStep.serviceContract.no')}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -374,7 +382,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <>
                         <View style={styles.divider} />
                         <Text style={styles.questionText}>
-                            Are you interested in a service contract?
+                            {t('systemRegistrationStep.serviceContract.interestedQuestion')}
                         </Text>
 
                         <View style={styles.toggleContainer}>
@@ -397,7 +405,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         formData.needServiceContract === true && styles.toggleButtonTextActive,
                                     ]}
                                 >
-                                    Yes
+                                    {t('systemRegistrationStep.serviceContract.yes')}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -419,7 +427,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         formData.needServiceContract === false && styles.toggleButtonTextActive,
                                     ]}
                                 >
-                                    No
+                                    {t('systemRegistrationStep.serviceContract.no')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -431,12 +439,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <>
                         <View style={styles.divider} />
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Service Provider Name *</Text>
+                            <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.providerName')} *</Text>
                             <View style={styles.inputWrapper}>
                                 <Icon name="business" size={18} color="#999" style={styles.inputIcon} />
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Enter service provider name"
+                                    placeholder={t('systemRegistrationStep.serviceContract.providerNamePlaceholder')}
                                     placeholderTextColor="#999"
                                     value={formData.serviceProvider?.name}
                                     onChangeText={(text) => updateFormData('serviceProvider', {
@@ -455,7 +463,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Email *</Text>
+                            <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.providerEmail')} *</Text>
                             <View style={styles.inputWrapper}>
                                 <Icon name="email" size={18} color="#999" style={styles.inputIcon} />
                                 <TextInput
@@ -481,7 +489,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         </View>
 
                         <View style={showServiceCountryCodePicker ? styles.inputGroupActive : styles.inputGroup}>
-                            <Text style={styles.label}>Phone *</Text>
+                            <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.providerPhone')} *</Text>
                             <View style={showServiceCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow}>
                                 <TouchableOpacity
                                     style={styles.countryCodeButton}
@@ -500,7 +508,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 <View style={styles.phoneInputWrapper}>
                                     <TextInput
                                         style={styles.phoneInput}
-                                        placeholder="Enter phone number"
+                                        placeholder={t('systemRegistrationStep.serviceContract.providerPhonePlaceholder')}
                                         placeholderTextColor="#999"
                                         keyboardType="phone-pad"
                                         maxLength={15}
@@ -560,7 +568,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                     <>
                         <View style={styles.divider} />
                         <Text style={styles.questionText}>
-                            Is your sales partner same as service contract provider?
+                            <Text style={styles.checkboxLabel}>{t('systemRegistrationStep.serviceContract.salesPartnerSame')}</Text>
                         </Text>
 
                         <View style={styles.toggleContainer}>
@@ -583,7 +591,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         formData.isSalesPartnerSame === true && styles.toggleButtonTextActive,
                                     ]}
                                 >
-                                    Yes
+                                    {t('systemRegistrationStep.serviceContract.yes')}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -605,7 +613,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         formData.isSalesPartnerSame === false && styles.toggleButtonTextActive,
                                     ]}
                                 >
-                                    No
+                                    {t('systemRegistrationStep.serviceContract.no')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -615,12 +623,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             <>
                                 <View style={styles.divider} />
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Sales Partner Name *</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.salesPartnerName')} *</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="business" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={styles.input}
-                                            placeholder="Enter sales partner name"
+                                            placeholder={t('systemRegistrationStep.serviceContract.salesPartnerNamePlaceholder')}
                                             placeholderTextColor="#999"
                                             value={formData.salesPartner?.name}
                                             onChangeText={(text) => updateFormData('salesPartner', {
@@ -639,7 +647,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Email *</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.salesPartnerEmail')} *</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="email" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
@@ -665,7 +673,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <View style={showSalesCountryCodePicker ? styles.inputGroupActive : styles.inputGroup}>
-                                    <Text style={styles.label}>Phone *</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.serviceContract.salesPartnerPhone')} *</Text>
                                     <View style={showSalesCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow}>
                                         <TouchableOpacity
                                             style={styles.countryCodeButton}
@@ -684,7 +692,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         <View style={styles.phoneInputWrapper}>
                                             <TextInput
                                                 style={styles.phoneInput}
-                                                placeholder="Enter phone number"
+                                                placeholder={t('systemRegistrationStep.serviceContract.salesPartnerPhonePlaceholder')}
                                                 placeholderTextColor="#999"
                                                 keyboardType="phone-pad"
                                                 maxLength={15}
@@ -751,8 +759,8 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         {formData.isInstalled && <Icon name="check" size={16} color="#fff" />}
                     </View>
                     <View style={styles.checkboxContent}>
-                        <Text style={styles.checkboxLabel}>Is your system installed ?</Text>
-                        <Text style={styles.checkboxDescription}>Check this if your XRGI system is already set up</Text>
+                        <Text style={styles.checkboxLabel}>{t('systemRegistrationStep.installation.question')}</Text>
+                        <Text style={styles.checkboxDescription}>{t('systemRegistrationStep.installation.description')}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -763,10 +771,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                         <View style={styles.cardHeader}>
                             <Icon name="analytics" size={24} color="#003D82" />
                             <View style={styles.cardHeaderText}>
-                                <Text style={styles.cardTitle}>EnergyCheck Plus</Text>
+                                <Text style={styles.cardTitle}>{t('systemRegistrationStep.energyCheckPlus.title')}</Text>
                             </View>
                         </View>
-                        <Text style={styles.cardSubtitle}>Get a monthly overview of how much you have saved with your XRGI System</Text>
+                        <Text style={styles.cardSubtitle}>{t('systemRegistrationStep.energyCheckPlus.subtitle')}</Text>
 
                         <TouchableOpacity
                             style={styles.featureCard}
@@ -778,27 +786,27 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 {formData.hasEnergyCheckPlus && <Icon name="check" size={16} color="#fff" />}
                             </View>
                             <View style={styles.checkboxContent}>
-                                <Text style={styles.checkboxLabel}>Enable EnergyCheck Plus</Text>
+                                <Text style={styles.checkboxLabel}>{t('systemRegistrationStep.energyCheckPlus.enable')}</Text>
                             </View>
                         </TouchableOpacity>
 
                         {formData.hasEnergyCheckPlus && (
                             <>
                                 <Text style={styles.checkboxDescription}>
-                                    We will compare the actual running hours of your XRGI® system to the expected running hours
+                                    {t('systemRegistrationStep.energyCheckPlus.description1')}
                                 </Text>
                                 <Text style={styles.checkboxDescription}>
-                                    Please find the values in your initial quote* and fill in below
+                                    {t('systemRegistrationStep.energyCheckPlus.description2')}
                                 </Text>
                                 <View style={styles.divider} />
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Expected annual savings</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.expectedSavings')}</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="euro" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={styles.input}
-                                            placeholder="Amount in Euro per year"
+                                            placeholder={t('systemRegistrationStep.energyCheckPlus.savingsPlaceholder')}
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
                                             value={formData?.EnergyCheck_plus?.annualSavings}
@@ -811,12 +819,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Expected annual CO₂ savings</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.expectedCo2Savings')}</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="eco" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={styles.input}
-                                            placeholder="Total per year"
+                                            placeholder={t('systemRegistrationStep.energyCheckPlus.co2SavingsPlaceholder')}
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
                                             value={formData?.EnergyCheck_plus?.co2Savings}
@@ -829,12 +837,12 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Expected operating hours per year</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.operatingHoursPerYear')}</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="schedule" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={styles.input}
-                                            placeholder="0-8760 hours"
+                                            placeholder={t('systemRegistrationStep.energyCheckPlus.operatingHoursPlaceholder')}
                                             placeholderTextColor="#999"
                                             keyboardType="numeric"
                                             maxLength={4}
@@ -856,13 +864,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         </Text>
                                     ) : (
                                         <Text style={styles.helperText}>
-                                            <Icon name="info-outline" size={12} color="#999" /> Maximum: 8760 hours per year (24h × 365 days)
+                                            <Icon name="info-outline" size={12} color="#999" /> {t('systemRegistrationStep.energyCheckPlus.maxHoursHelper')}
                                         </Text>
                                     )}
                                 </View>
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Industry</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.industry')}</Text>
                                     <TouchableOpacity
                                         style={styles.pickerContainer}
                                         onPress={() => setShowIndustryPicker && setShowIndustryPicker(!showIndustryPicker)}
@@ -870,7 +878,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                         <View style={styles.pickerButton}>
                                             <Icon name="business-center" size={18} color="#999" style={styles.inputIcon} />
                                             <Text style={formData?.EnergyCheck_plus?.industry ? styles.pickerText : styles.pickerPlaceholder}>
-                                                {formData?.EnergyCheck_plus?.industry || 'Select your industry'}
+                                                {formData?.EnergyCheck_plus?.industry || t('systemRegistrationStep.energyCheckPlus.industryPlaceholder')}
                                             </Text>
                                             <Icon
                                                 name={showIndustryPicker ? "expand-less" : "expand-more"}
@@ -907,13 +915,13 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </View>
 
                                 <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>Recipient Email Address(es)</Text>
-                                    <Text style={styles.labelHelper}>You can enter multiple addresses separated by commas</Text>
+                                    <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.recipientEmails')}</Text>
+                                    <Text style={styles.labelHelper}>{t('systemRegistrationStep.energyCheckPlus.recipientEmailsHelper')}</Text>
                                     <View style={styles.inputWrapper}>
                                         <Icon name="email" size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={[styles.input, styles.textArea]}
-                                            placeholder="user@example.com, admin@example.com"
+                                            placeholder={t('systemRegistrationStep.energyCheckPlus.recipientEmailsPlaceholder')}
                                             placeholderTextColor="#999"
                                             multiline
                                             numberOfLines={3}
@@ -940,7 +948,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                             <View style={styles.cardHeader}>
                                 <Icon name="calendar-today" size={24} color="#003D82" />
                                 <View style={styles.cardHeaderText}>
-                                    <Text style={styles.cardTitle}>Adjust Hours Distribution</Text>
+                                    <Text style={styles.cardTitle}>{t('systemRegistrationStep.energyCheckPlus.adjustHours')}</Text>
                                 </View>
                             </View>
 
@@ -958,16 +966,16 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                     {formData.distributeHoursEvenly && <Icon name="check" size={16} color="#fff" />}
                                 </View>
                                 <View style={styles.checkboxContent}>
-                                    <Text style={styles.checkboxLabel}>Distribute hours evenly</Text>
-                                    <Text style={styles.checkboxDescription}>Apply equal hours across all months</Text>
+                                    <Text style={styles.checkboxLabel}>{t('systemRegistrationStep.energyCheckPlus.distributeHours')}</Text>
+                                    <Text style={styles.checkboxDescription}>{t('systemRegistrationStep.energyCheckPlus.distributeHoursDescription')}</Text>
                                 </View>
                             </TouchableOpacity>
 
                             <View style={styles.tableContainer}>
                                 <View style={styles.tableHeader}>
-                                    <Text style={[styles.tableHeaderText, styles.monthColumn]}>Month</Text>
-                                    <Text style={[styles.tableHeaderText, styles.percentageColumn]}>Percentage</Text>
-                                    <Text style={[styles.tableHeaderText, styles.hoursColumn]}>Hours</Text>
+                                    <Text style={[styles.tableHeaderText, styles.monthColumn]}>{t('systemRegistrationStep.energyCheckPlus.month')}</Text>
+                                    <Text style={[styles.tableHeaderText, styles.percentageColumn]}>{t('systemRegistrationStep.energyCheckPlus.percentage')}</Text>
+                                    <Text style={[styles.tableHeaderText, styles.hoursColumn]}>{t('systemRegistrationStep.energyCheckPlus.hours')}</Text>
                                 </View>
 
                                 <ScrollView style={styles.tableBody} nestedScrollEnabled>
@@ -979,7 +987,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                                     index % 2 === 0 && styles.tableRowEven
                                                 ]}
                                             >
-                                                <Text style={[styles.tableCellText, styles.monthColumn]}>{item.month}</Text>
+                                                <Text style={[styles.tableCellText, styles.monthColumn]}>{translateMonth(item.month)}</Text>
                                                 {formData.distributeHoursEvenly ? (
                                                     <>
                                                         <Text style={[styles.tableCellText, styles.percentageColumn]}>{item.percentage}%</Text>
@@ -1008,7 +1016,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 </ScrollView>
 
                                 <View style={styles.tableTotalRow}>
-                                    <Text style={[styles.tableTotalText, styles.monthColumn]}>Total</Text>
+                                    <Text style={[styles.tableTotalText, styles.monthColumn]}>{t('systemRegistrationStep.energyCheckPlus.total')}</Text>
                                     <Text style={[styles.tableTotalText, styles.percentageColumn]}>
                                         {calculateTotalPercentage?.() || '0%'}
                                     </Text>
@@ -1031,10 +1039,10 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonSecondary} onPress={onBack}>
                     <Icon name="arrow-back" size={20} color="#003D82" />
-                    <Text style={styles.buttonSecondaryText}>Back</Text>
+                    <Text style={styles.buttonSecondaryText}>{t('systemRegistrationStep.buttons.back')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonPrimary} onPress={handleNextClick}>
-                    <Text style={styles.buttonPrimaryText}>Continue</Text>
+                    <Text style={styles.buttonPrimaryText}>{t('systemRegistrationStep.buttons.continue')}</Text>
                     <Icon name="arrow-forward" size={20} color="#fff" />
                 </TouchableOpacity>
             </View>

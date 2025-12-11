@@ -96,6 +96,149 @@
         "resetConfirmPassword":{
             "required": "Potwierdź swoje nowe hasło",
             "match": "Hasła nie pasują do siebie"
+        },
+        "required": "{{field}} jest wymagane",
+        "invalidEmail": "Wprowadź poprawny adres e-mail",
+        "invalidPhone": "Numer telefonu musi mieć co najmniej 8 cyfr",
+        "invalidXRGIId": "ID XRGI musi mieć 10 cyfr",
+        "selectModel": "Wybierz model",
+        "operatingHoursRange": "Godziny pracy muszą być między 0 a 8760",
+        "recipientEmailRequired": "Wymagany jest co najmniej jeden adres e-mail odbiorcy",
+        "validEmailAddresses": "Wprowadź poprawne adresy e-mail oddzielone przecinkami"
+    },
+    "systemRegistrationStep":{
+        "header":{
+            "title": "Zarejestruj Swój System XRGI",
+            "subtitle": "Jeśli nie masz szczegółów systemu, zapisz na później na dole strony"
+        },
+        "systemDetails":{
+            "title": "Szczegóły Systemu",
+            "systemName": "Nazwa systemu",
+            "systemNamePlaceholder": "Wprowadź nazwę systemu",
+            "systemNameHelper": "Przykład: \"System w piwnicy 01\"",
+            "xrgiId": "Numer ID XRGI",
+            "xrgiIdPlaceholder": "Wprowadź 10-cyfrowy ID XRGI",
+            "xrgiIdHelper": "ID XRGI® to 10-cyfrowy numer umieszczony na boku Panelu Sterowania IQ.",
+            "selectModel": "Wybierz Model",
+            "modelPlaceholder": "Wybierz swój model XRGI",
+            "modelHelper": "Model znajduje się na tabliczce znamionowej z tyłu Jednostki Zasilającej"
+        },
+        "xrgiSite":{
+            "title": "Lokalizacja XRGI®",
+            "address": "Adres",
+            "addressPlaceholder": "Adres Lokalizacji XRGI®",
+            "postcode": "Kod Pocztowy",
+            "postcodePlaceholder": "Kod Pocztowy",
+            "city": "Miasto",
+            "cityPlaceholder": "Miasto",
+            "country": "Kraj",
+            "countryPlaceholder": "Wybierz kraj"
+        },
+        "serviceContract":{
+            "title": "Umowa Serwisowa",
+            "question": "Czy masz umowę serwisową?",
+            "yes": "Tak",
+            "no": "Nie",
+            "interestedQuestion": "Czy jesteś zainteresowany umową serwisową?",
+            "providerName": "Nazwa Dostawcy Usług",
+            "providerNamePlaceholder": "Wprowadź nazwę dostawcy usług",
+            "providerEmail": "E-mail Dostawcy Usług",
+            "providerEmailPlaceholder": "Wprowadź e-mail dostawcy",
+            "providerPhone": "Telefon Dostawcy Usług",
+            "providerPhonePlaceholder": "Wprowadź telefon dostawcy",
+            "salesPartnerSame": "Czy Twój partner sprzedaży jest taki sam jak dostawca usług?",
+            "salesPartnerName": "Nazwa Partnera Sprzedaży",
+            "salesPartnerNamePlaceholder": "Wprowadź nazwę partnera sprzedaży",
+            "salesPartnerEmail": "E-mail Partnera Sprzedaży",
+            "salesPartnerEmailPlaceholder": "Wprowadź e-mail partnera sprzedaży",
+            "salesPartnerPhone": "Telefon Partnera Sprzedaży",
+            "salesPartnerPhonePlaceholder": "Wprowadź telefon partnera sprzedaży",
+            "description": "Informacje są wymagane, aby udzielić Twojemu partnerowi sprzedaży dostęp do naszej bazy danych usług EC POWER."
+        },
+        "installation":{
+            "question": "Czy Twój system jest zainstalowany?",
+            "description": "Zaznacz to, jeśli Twój system XRGI jest już skonfigurowany"
+        },
+        "energyCheckPlus":{
+            "title": "EnergyCheck Plus",
+            "subtitle": "Otrzymuj miesięczny przegląd ile zaoszczędziłeś ze swoim Systemem XRGI",
+            "enable": "Włącz EnergyCheck Plus",
+            "description1": "Porównamy rzeczywiste godziny pracy Twojego systemu XRGI® z oczekiwanymi godzinami pracy",
+            "description2": "Znajdź wartości w swoim pierwotnym wariancie* i wypełnij poniżej",
+            "expectedSavings": "Oczekiwane roczne oszczędności",
+            "savingsPlaceholder": "Wprowadź oczekiwane roczne oszczędności",
+            "expectedCo2Savings": "Oczekiwane roczne oszczędności CO₂",
+            "co2SavingsPlaceholder": "Suma rocznie",
+            "operatingHours": "Oczekiwane godziny pracy",
+            "operatingHoursPlaceholder": "Wprowadź oczekiwane godziny pracy",
+            "operatingHoursPerYear": "Oczekiwane godziny pracy rocznie",
+            "maxHoursHelper": "Maksimum: 8760 godzin rocznie (24h × 365 dni)",
+            "industry": "Branża",
+            "industryPlaceholder": "Wybierz branżę",
+            "recipientEmails": "Adres(y) E-mail Odbiorcy",
+            "recipientEmailsHelper": "Możesz wprowadzić wiele adresów oddzielonych przecinkami",
+            "recipientEmailsPlaceholder": "użytkownik@przykład.pl, admin@przykład.pl",
+            "adjustHours": "Dostosuj Dystrybucję Godzin",
+            "distributeHours": "Rozdziel godziny równomiernie",
+            "distributeHoursDescription": "Zastosuj równe godziny we wszystkich miesiącach",
+            "month": "Miesiąc",
+            "percentage": "Procent",
+            "hours": "Godziny",
+            "total": "Suma"
+        },
+        "buttons":{
+            "back": "Wstecz",
+            "continue": "Kontynuować"
+        },
+        "months":{
+            "january": "Styczeń",
+            "february": "Luty",
+            "march": "Marzec",
+            "april": "Kwiecień",
+            "may": "Maj",
+            "june": "Czerwiec",
+            "july": "Lipiec",
+            "august": "Sierpień",
+            "september": "Wrzesień",
+            "october": "Październik",
+            "november": "Listopad",
+            "december": "Grudzień"
+        }
+    },
+    "smartPriceStep":{
+        "header":{
+            "title": "Smart PriceControl",
+            "subtitle": "Optymalizuj produkcję energii z cenami rynku energii w czasie rzeczywistym"
+        },
+        "infoCard":{
+            "title": "Jak to działa",
+            "description": "Nasz oprogramowanie wykorzystuje ceny rynku EPEX Day-ahead do automatycznego wstrzymywania produkcji energii, gdy ceny są zerowe lub ujemne, maksymalizując Twoje oszczędności.",
+            "badge": "Standard na wszystkich systemach XRCP® od kwietnia 2025"
+        },
+        "featureToggle":{
+            "title": "Zainstaluj SmartPriceControl",
+            "description": "Włącz automatyczną optymalizację"
+        },
+        "installation":{
+            "title": "Harmonogram Instalacji",
+            "subtitle": "Wybierz, kiedy zainstalować oprogramowanie",
+            "alert": "Fizyczna instalacja na systemie XRGI® jest wymagana przez Twojego partnera serwisowego",
+            "onSiteVisit": {
+                "title": "Podczas następnej wizyty na miejscu",
+                "description": "Zainstaluj podczas zaplanowanej konserwacji"
+            },
+            "asSoonAsPossible": {
+                "title": "Jak najszybciej",
+                "description": "Zaplanuj dedykowaną wizytę instalacyjną"
+            }
+        },
+        "success":{
+            "title": "Prawie Gotowe!",
+            "description": "Przejrzyj swoje informacje i zapisz, aby zakończyć proces konfiguracji"
+        },
+        "buttons":{
+            "back": "Wstecz",
+            "complete": "Zakończ Konfigurację"
         }
     },
     "forgotPassword":{
@@ -117,6 +260,61 @@
         "resettingPassword": "Resetowanie...",
         "backToLogin": "Powrót do logowania",
         "rememberedPassword": "Pamiętasz swoje hasło?"
+    },
+    "stepper":{
+        "steps":{
+            "profile": "Profil",
+            "systemRegistration": "Rejestracja Systemu",
+            "smartPriceControl": "Inteligentna Kontrola Cen"
+        },
+        "completion":{
+            "title": "Rejestracja Zakończona!",
+            "message": "Twój system XRGI został pomyślnie zarejestrowany i zapisany.",
+            "redirecting": "Przekierowanie do dashboardu...",
+            "goToDashboard": "Przejdź do Dashboardu"
+        }
+    },
+    "profileStep":{
+        "header":{
+            "title": "Utwórz Swój Profil",
+            "subtitle": "Postępuj zgodnie z krokami, aby ukończyć konfigurację profilu."
+        },
+        "companyInfo":{
+            "title": "Informacje o Firmie",
+            "subtitle": "Wprowadź szczegóły swojej firmy",
+            "companyName": "Nazwa firmy",
+            "companyNamePlaceholder": "Wprowadź nazwę firmy",
+            "vatNo": "NIP",
+            "vatNoPlaceholder": "Wprowadź NIP",
+            "address": "Adres",
+            "addressPlaceholder": "Wprowadź adres",
+            "postcode": "Kod pocztowy",
+            "postcodePlaceholder": "Kod pocztowy",
+            "city": "Miasto",
+            "cityPlaceholder": "Miasto",
+            "email": "E-mail",
+            "emailPlaceholder": "firma@przyklad.pl",
+            "phone": "Telefon",
+            "phonePlaceholder": "Wprowadź numer telefonu",
+            "validPhone": "Poprawny numer telefonu"
+        },
+        "contactPerson":{
+            "title": "Osoba Kontaktowa",
+            "subtitle": "Wypełnij szczegóły",
+            "firstName": "Imię",
+            "firstNamePlaceholder": "Imię",
+            "lastName": "Nazwisko",
+            "lastNamePlaceholder": "Nazwisko",
+            "email": "E-mail",
+            "emailPlaceholder": "kontakt@przyklad.pl",
+            "phone": "Telefon",
+            "phonePlaceholder": "Wprowadź numer telefonu",
+            "validPhone": "Poprawny numer telefonu"
+        },
+        "buttons":{
+            "saveForLater": "Zapisz na Później",
+            "continue": "Kontynuuj"
+        }
     },
     "settings": {
         "title": "Ustawienia",

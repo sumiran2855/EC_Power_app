@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons as Icon } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { countryCodes, ProfileStepProps } from '../types';
 import { styles } from '../StepperScreen.styles';
 
@@ -15,29 +16,30 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
     onSaveForLater,
     errors = {},
 }) => {
+    const { t } = useTranslation();
     return (
         <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
             <View style={styles.headerSection}>
-                <Text style={styles.title}>Create Your Profile</Text>
-                <Text style={styles.subtitle}>Follow the steps to complete your profile setup.</Text>
+                <Text style={styles.title}>{t('profileStep.header.title')}</Text>
+                <Text style={styles.subtitle}>{t('profileStep.header.subtitle')}</Text>
             </View>
 
             <View style={styles.card}>
                 <View style={styles.cardHeader}>
                     <Icon name="business" size={24} color="#003D82" />
                     <View style={styles.cardHeaderText}>
-                        <Text style={styles.cardTitle}>Company Information</Text>
-                        <Text style={styles.cardSubtitle}>Enter your business details</Text>
+                        <Text style={styles.cardTitle}>{t('profileStep.companyInfo.title')}</Text>
+                        <Text style={styles.cardSubtitle}>{t('profileStep.companyInfo.subtitle')}</Text>
                     </View>
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Company name *</Text>
+                    <Text style={styles.label}>{t('profileStep.companyInfo.companyName')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="business" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="Enter company name"
+                            placeholder={t('profileStep.companyInfo.companyNamePlaceholder')}
                             placeholderTextColor="#999"
                             value={formData.companyInfo?.name || ''}
                             onChangeText={(text) => {
@@ -56,12 +58,12 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>VAT no. *</Text>
+                    <Text style={styles.label}>{t('profileStep.companyInfo.vatNo')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="receipt" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="Enter VAT number"
+                            placeholder={t('profileStep.companyInfo.vatNoPlaceholder')}
                             placeholderTextColor="#999"
                             value={formData.companyInfo?.cvrNumber || ''}
                             onChangeText={(text) => {
@@ -80,12 +82,12 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Address *</Text>
+                    <Text style={styles.label}>{t('profileStep.companyInfo.address')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="location-on" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="Enter Address"
+                            placeholder={t('profileStep.companyInfo.addressPlaceholder')}
                             placeholderTextColor="#999"
                             value={formData.companyInfo?.address || ''}
                             onChangeText={(text) => {
@@ -105,7 +107,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
 
                 <View style={styles.inputRow}>
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>Postcode *</Text>
+                        <Text style={styles.label}>{t('profileStep.companyInfo.postcode')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
@@ -117,7 +119,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             />
                             <TextInput
                                 style={[styles.input]}
-                                placeholder="Postcode"
+                                placeholder={t('profileStep.companyInfo.postcodePlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.companyInfo?.postal_code || ''}
                                 onChangeText={(text) => {
@@ -136,7 +138,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                     </View>
 
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>City *</Text>
+                        <Text style={styles.label}>{t('profileStep.companyInfo.city')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
@@ -148,7 +150,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                             />
                             <TextInput
                                 style={[styles.input]}
-                                placeholder="City"
+                                placeholder={t('profileStep.companyInfo.cityPlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.companyInfo?.city || ''}
                                 onChangeText={(text) => {
@@ -168,12 +170,12 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Email *</Text>
+                    <Text style={styles.label}>{t('profileStep.companyInfo.email')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="email" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="company@example.com"
+                            placeholder={t('profileStep.companyInfo.emailPlaceholder')}
                             placeholderTextColor="#999"
                             keyboardType="email-address"
                             autoCapitalize="none"
@@ -196,7 +198,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 <View style={[
                     showCountryCodePicker ? styles.inputGroupActive : styles.inputGroup
                 ]}>
-                    <Text style={styles.label}>Phone *</Text>
+                    <Text style={styles.label}>{t('profileStep.companyInfo.phone')} *</Text>
                     <View style={[
                         showCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow,
                     ]}>
@@ -225,7 +227,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[
                                     styles.phoneInput
                                 ]}
-                                placeholder="Enter phone number"
+                                placeholder={t('profileStep.companyInfo.phonePlaceholder')}
                                 placeholderTextColor="#999"
                                 keyboardType="phone-pad"
                                 maxLength={15}
@@ -274,7 +276,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                         </Text>
                     ) : formData.companyInfo.phone && formData.companyInfo.phone.length >= 8 ? (
                         <Text style={styles.successText}>
-                            <Icon name="check-circle" size={12} color="#00B050" /> Valid phone number
+                            <Icon name="check-circle" size={12} color="#00B050" /> {t('profileStep.companyInfo.validPhone')}
                         </Text>
                     ) : null}
                 </View>
@@ -284,20 +286,20 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 <View style={styles.cardHeader}>
                     <Icon name="person" size={24} color="#003D82" />
                     <View style={styles.cardHeaderText}>
-                        <Text style={styles.cardTitle}>Contact Person</Text>
-                        <Text style={styles.cardSubtitle}>Fill in the details</Text>
+                        <Text style={styles.cardTitle}>{t('profileStep.contactPerson.title')}</Text>
+                        <Text style={styles.cardSubtitle}>{t('profileStep.contactPerson.subtitle')}</Text>
                     </View>
                 </View>
 
                 <View style={styles.inputRow}>
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>First name *</Text>
+                        <Text style={styles.label}>{t('profileStep.contactPerson.firstName')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
                             <TextInput
                                 style={[styles.input, { paddingLeft: 10 }]}
-                                placeholder="First name"
+                                placeholder={t('profileStep.contactPerson.firstNamePlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.contactPerson?.firstName || ''}
                                 onChangeText={(text) => {
@@ -316,13 +318,13 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                     </View>
 
                     <View style={[styles.inputGroup, styles.inputHalf]}>
-                        <Text style={styles.label}>Last name *</Text>
+                        <Text style={styles.label}>{t('profileStep.contactPerson.lastName')} *</Text>
                         <View style={[
                             styles.inputWrapper
                         ]}>
                             <TextInput
                                 style={[styles.input, { paddingLeft: 10 }]}
-                                placeholder="Last name"
+                                placeholder={t('profileStep.contactPerson.lastNamePlaceholder')}
                                 placeholderTextColor="#999"
                                 value={formData.contactPerson?.lastName || ''}
                                 onChangeText={(text) => {
@@ -342,12 +344,12 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 </View>
 
                 <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Email *</Text>
+                    <Text style={styles.label}>{t('profileStep.contactPerson.email')} *</Text>
                     <View style={styles.inputWrapper}>
                         <Icon name="email" size={18} color="#999" style={styles.inputIcon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="contact@example.com"
+                            placeholder={t('profileStep.contactPerson.emailPlaceholder')}
                             placeholderTextColor="#999"
                             keyboardType="email-address"
                             autoCapitalize="none"
@@ -370,7 +372,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                 <View style={[
                     showContactCountryCodePicker ? styles.inputGroupActive : styles.inputGroup
                 ]}>
-                    <Text style={styles.label}>Phone *</Text>
+                    <Text style={styles.label}>{t('profileStep.contactPerson.phone')} *</Text>
                     <View style={[
                         showContactCountryCodePicker ? styles.phoneInputRowActive : styles.phoneInputRow,
                     ]}>
@@ -399,7 +401,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                                 style={[
                                     styles.phoneInput
                                 ]}
-                                placeholder="Enter phone number"
+                                placeholder={t('profileStep.contactPerson.phonePlaceholder')}
                                 placeholderTextColor="#999"
                                 keyboardType="phone-pad"
                                 maxLength={15}
@@ -448,7 +450,7 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
                         </Text>
                     ) : formData.contactPerson.phone && formData.contactPerson.phone.length >= 8 ? (
                         <Text style={styles.successText}>
-                            <Icon name="check-circle" size={12} color="#00B050" /> Valid phone number
+                            <Icon name="check-circle" size={12} color="#00B050" /> {t('profileStep.contactPerson.validPhone')}
                         </Text>
                     ) : null}
                 </View>
@@ -457,10 +459,10 @@ const ProfileStep: React.FC<ProfileStepProps> = ({
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.buttonSecondary} onPress={onSaveForLater}>
                     <Icon name="bookmark-border" size={20} color="#003D82" />
-                    <Text style={styles.buttonSecondaryText}>Save For Later</Text>
+                    <Text style={styles.buttonSecondaryText}>{t('profileStep.buttons.saveForLater')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonPrimary} onPress={onNext}>
-                    <Text style={styles.buttonPrimaryText}>Continue</Text>
+                    <Text style={styles.buttonPrimaryText}>{t('profileStep.buttons.continue')}</Text>
                     <Icon name="arrow-forward" size={20} color="#fff" />
                 </TouchableOpacity>
             </View>

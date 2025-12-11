@@ -1,10 +1,12 @@
 import { RegisterController } from '@/controllers/RegisterController';
 import { StepperController } from '@/controllers/StepperController';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormData, ICustomer } from '../screens/authScreens/types';
 import StorageService from '../utils/secureStorage';
 
 export const useStepperForm = () => {
+    const { t } = useTranslation();
     const daSignedRef = useRef(false);
     const smartPriceControlAddedRef = useRef(false);
     const smartPriceControlMethodRef = useRef('');
@@ -353,7 +355,7 @@ export const useStepperForm = () => {
 
     const validateRequired = (value: string, fieldName: string) => {
         if (!value || value.trim() === '') {
-            return `${fieldName} is required`;
+            return t('validation.required', { field: fieldName });
         }
         return '';
     };
@@ -363,84 +365,84 @@ export const useStepperForm = () => {
         let isValid = true;
 
         if (!formData.name?.trim()) {
-            newErrors.systemName = 'System name is required';
+            newErrors.systemName = t('validation.required', { field: 'System name' });
             isValid = false;
         }
 
         if (!formData.xrgiID?.trim()) {
-            newErrors.xrgiIdNumber = 'XRGI ID Number is required';
+            newErrors.xrgiIdNumber = t('validation.required', { field: 'XRGI ID Number' });
             isValid = false;
         } else if (!/^\d{10}$/.test(formData.xrgiID)) {
-            newErrors.xrgiIdNumber = 'XRGI ID must be 10 digits';
+            newErrors.xrgiIdNumber = t('validation.invalidXRGIId');
             isValid = false;
         }
 
         if (!formData.modelNumber) {
-            newErrors.selectedModel = 'Please select a model';
+            newErrors.selectedModel = t('validation.selectModel');
             isValid = false;
         }
 
         if (!formData.location.address?.trim()) {
-            newErrors.systemAddress = 'Address is required';
+            newErrors.systemAddress = t('validation.required', { field: 'Address' });
             isValid = false;
         }
 
         if (!formData.location.postalCode?.trim()) {
-            newErrors.systemPostcode = 'Postcode is required';
+            newErrors.systemPostcode = t('validation.required', { field: 'Postcode' });
             isValid = false;
         }
 
         if (!formData.location.city?.trim()) {
-            newErrors.systemCity = 'City is required';
+            newErrors.systemCity = t('validation.required', { field: 'City' });
             isValid = false;
         }
 
         if (!formData.location.country) {
-            newErrors.systemCountry = 'Country is required';
+            newErrors.systemCountry = t('validation.required', { field: 'Country' });
             isValid = false;
         }
 
         if (formData.hasServiceContract === true) {
             if (!formData.serviceProvider?.name?.trim()) {
-                newErrors.serviceProviderName = 'Service provider name is required';
+                newErrors.serviceProviderName = t('validation.required', { field: 'Service provider name' });
                 isValid = false;
             }
 
             if (!formData.serviceProvider?.mailAddress?.trim()) {
-                newErrors.serviceProviderEmail = 'Service provider email is required';
+                newErrors.serviceProviderEmail = t('validation.required', { field: 'Service provider email' });
                 isValid = false;
             } else if (!validateEmail(formData.serviceProvider.mailAddress)) {
-                newErrors.serviceProviderEmail = 'Please enter a valid email address';
+                newErrors.serviceProviderEmail = t('validation.invalidEmail');
                 isValid = false;
             }
 
             if (!formData.serviceProvider?.phone?.trim()) {
-                newErrors.serviceProviderPhone = 'Service provider phone is required';
+                newErrors.serviceProviderPhone = t('validation.required', { field: 'Service provider phone' });
                 isValid = false;
             } else if (!validatePhone(formData.serviceProvider?.phone)) {
-                newErrors.serviceProviderPhone = 'Phone number must be at least 8 digits';
+                newErrors.serviceProviderPhone = t('validation.invalidPhone');
                 isValid = false;
             }
 
             if (formData.isSalesPartnerSame === false) {
                 if (!formData.salesPartner?.name?.trim()) {
-                    newErrors.salesPartnerName = 'Sales partner name is required';
+                    newErrors.salesPartnerName = t('validation.required', { field: 'Sales partner name' });
                     isValid = false;
                 }
 
                 if (!formData.salesPartner?.mailAddress?.trim()) {
-                    newErrors.salesPartnerEmail = 'Sales partner email is required';
+                    newErrors.salesPartnerEmail = t('validation.required', { field: 'Sales partner email' });
                     isValid = false;
                 } else if (!validateEmail(formData.salesPartner?.mailAddress)) {
-                    newErrors.salesPartnerEmail = 'Please enter a valid email address';
+                    newErrors.salesPartnerEmail = t('validation.invalidEmail');
                     isValid = false;
                 }
 
                 if (!formData.salesPartner?.phone?.trim()) {
-                    newErrors.salesPartnerPhone = 'Sales partner phone is required';
+                    newErrors.salesPartnerPhone = t('validation.required', { field: 'Sales partner phone' });
                     isValid = false;
                 } else if (!validatePhone(formData.salesPartner?.phone)) {
-                    newErrors.salesPartnerPhone = 'Phone number must be at least 8 digits';
+                    newErrors.salesPartnerPhone = t('validation.invalidPhone');
                     isValid = false;
                 }
             }
@@ -448,28 +450,28 @@ export const useStepperForm = () => {
 
         if (formData.hasEnergyCheckPlus) {
             if (!formData.EnergyCheck_plus?.operatingHours?.trim()) {
-                newErrors.expectedOperatingHours = 'Expected operating hours are required';
+                newErrors.expectedOperatingHours = t('validation.required', { field: 'Expected operating hours' });
                 isValid = false;
             } else {
                 const hours = parseFloat(formData.EnergyCheck_plus?.operatingHours);
                 if (isNaN(hours) || hours < 0 || hours > 8760) {
-                    newErrors.expectedOperatingHours = 'Operating hours must be between 0 and 8760';
+                    newErrors.expectedOperatingHours = t('validation.operatingHoursRange');
                     isValid = false;
                 }
             }
 
             if (!formData.EnergyCheck_plus?.email?.trim()) {
-                newErrors.recipientEmails = 'At least one recipient email is required';
+                newErrors.recipientEmails = t('validation.recipientEmailRequired');
                 isValid = false;
             } else {
                 const emails = formData.EnergyCheck_plus?.email.split(',').map((email: any) => email.trim()).filter(Boolean);
                 if (emails.length === 0) {
-                    newErrors.recipientEmails = 'At least one recipient email is required';
+                    newErrors.recipientEmails = t('validation.recipientEmailRequired');
                     isValid = false;
                 } else {
                     const invalidEmails = emails.filter((email: any) => !validateEmail(email));
                     if (invalidEmails.length > 0) {
-                        newErrors.recipientEmails = 'Please enter valid email addresses separated by commas';
+                        newErrors.recipientEmails = t('validation.validEmailAddresses');
                         isValid = false;
                     }
                 }
@@ -519,7 +521,7 @@ export const useStepperForm = () => {
             newErrors.email = emailError;
             isValid = false;
         } else if (!validateEmail(formData.companyInfo?.email)) {
-            newErrors.email = 'Please enter a valid email address';
+            newErrors.email = t('validation.invalidEmail');
             isValid = false;
         }
 
@@ -528,7 +530,7 @@ export const useStepperForm = () => {
             newErrors.phone = phoneError;
             isValid = false;
         } else if (!validatePhone(formData.companyInfo?.phone)) {
-            newErrors.phone = 'Phone number must be at least 8 digits';
+            newErrors.phone = t('validation.invalidPhone');
             isValid = false;
         }
 
@@ -549,7 +551,7 @@ export const useStepperForm = () => {
             newErrors.contactEmail = contactEmailError;
             isValid = false;
         } else if (!validateEmail(formData.contactPerson?.email)) {
-            newErrors.contactEmail = 'Please enter a valid email address';
+            newErrors.contactEmail = t('validation.invalidEmail');
             isValid = false;
         }
 
@@ -558,7 +560,7 @@ export const useStepperForm = () => {
             newErrors.contactPhone = contactPhoneError;
             isValid = false;
         } else if (!validatePhone(formData.contactPerson?.phone)) {
-            newErrors.contactPhone = 'Phone number must be at least 8 digits';
+            newErrors.contactPhone = t('validation.invalidPhone');
             isValid = false;
         }
 
@@ -773,9 +775,7 @@ export const useStepperForm = () => {
         try {
             const facilityPayload = createFacilityPayload();
             const response = await RegisterController.AddFacility(facilityPayload);
-            console.log("Facility creation response:", response);
             if (!response || !response.data?.id) {
-                console.log('Facility creation failed:', response);
                 setErrors({ ...errors, apiError: 'Failed to create facility' });
                 setIsSubmitting(false);
                 return;
@@ -795,7 +795,6 @@ export const useStepperForm = () => {
             };
             
             const updateResult = await StepperController.UpdateProfile(profileUpdateData, response.data.userID);
-            console.log("Update profile response:", updateResult);
             if (!updateResult.success) {
                 console.log('Failed to update profile journeyStatus:', updateResult.error);
             }

@@ -96,6 +96,149 @@
         "resetConfirmPassword":{
             "required": "Please confirm your new password",
             "match": "Passwords don't match"
+        },
+        "required": "{{field}} is required",
+        "invalidEmail": "Please enter a valid email address",
+        "invalidPhone": "Phone number must be at least 8 digits",
+        "invalidXRGIId": "XRGI ID must be 10 digits",
+        "selectModel": "Please select a model",
+        "operatingHoursRange": "Operating hours must be between 0 and 8760",
+        "recipientEmailRequired": "At least one recipient email is required",
+        "validEmailAddresses": "Please enter valid email addresses separated by commas"
+    },
+    "systemRegistrationStep":{
+        "header":{
+            "title": "Register Your XRGI System",
+            "subtitle": "If you do not have the system details, save for later at the bottom of the page"
+        },
+        "systemDetails":{
+            "title": "System Details",
+            "systemName": "System name",
+            "systemNamePlaceholder": "Enter the system name",
+            "systemNameHelper": "Example: \"System in basement 01\"",
+            "xrgiId": "XRGI ID Number",
+            "xrgiIdPlaceholder": "Enter 10-digit XRGI ID",
+            "xrgiIdHelper": "The XRGI® ID is a 10 digit number located on the side of the IQ-Control Panel.",
+            "selectModel": "Select a Model",
+            "modelPlaceholder": "Choose your XRGI model",
+            "modelHelper": "The model is on the name plate on the back of the Power Unit"
+        },
+        "xrgiSite":{
+            "title": "XRGI® Site",
+            "address": "Address",
+            "addressPlaceholder": "XRGI® Site Address",
+            "postcode": "Postcode",
+            "postcodePlaceholder": "Postcode",
+            "city": "City",
+            "cityPlaceholder": "City",
+            "country": "Country",
+            "countryPlaceholder": "Select country"
+        },
+        "serviceContract":{
+            "title": "Service Contract",
+            "question": "Do you have a service contract?",
+            "yes": "Yes",
+            "no": "No",
+            "interestedQuestion": "Are you interested in a service contract?",
+            "providerName": "Service Provider Name",
+            "providerNamePlaceholder": "Enter service provider name",
+            "providerEmail": "Service Provider Email",
+            "providerEmailPlaceholder": "Enter provider email",
+            "providerPhone": "Service Provider Phone",
+            "providerPhonePlaceholder": "Enter provider phone",
+            "salesPartnerSame": "Is your sales partner same as service contract provider?",
+            "salesPartnerName": "Sales Partner Name",
+            "salesPartnerNamePlaceholder": "Enter sales partner name",
+            "salesPartnerEmail": "Sales Partner Email",
+            "salesPartnerEmailPlaceholder": "Enter sales partner email",
+            "salesPartnerPhone": "Sales Partner Phone",
+            "salesPartnerPhonePlaceholder": "Enter sales partner phone",
+            "description": "The information is required to grant your service partner access to our EC POWER Service Database."
+        },
+        "installation":{
+            "question": "Is your system installed ?",
+            "description": "Check this if your XRGI system is already set up"
+        },
+        "energyCheckPlus":{
+            "title": "EnergyCheck Plus",
+            "subtitle": "Get a monthly overview of how much you have saved with your XRGI System",
+            "enable": "Enable EnergyCheck Plus",
+            "description1": "We will compare the actual running hours of your XRGI® system to the expected running hours",
+            "description2": "Please find the values in your initial quote* and fill in below",
+            "expectedSavings": "Expected annual savings",
+            "savingsPlaceholder": "Enter expected annual savings",
+            "expectedCo2Savings": "Expected annual CO₂ savings",
+            "co2SavingsPlaceholder": "Total per year",
+            "operatingHours": "Expected operating hours",
+            "operatingHoursPlaceholder": "Enter expected operating hours",
+            "operatingHoursPerYear": "Expected operating hours per year",
+            "maxHoursHelper": "Maximum: 8760 hours per year (24h × 365 days)",
+            "industry": "Industry",
+            "industryPlaceholder": "Select industry",
+            "recipientEmails": "Recipient Email Address(es)",
+            "recipientEmailsHelper": "You can enter multiple addresses separated by commas",
+            "recipientEmailsPlaceholder": "user@example.com, admin@example.com",
+            "adjustHours": "Adjust Hours Distribution",
+            "distributeHours": "Distribute hours evenly",
+            "distributeHoursDescription": "Apply equal hours across all months",
+            "month": "Month",
+            "percentage": "Percentage",
+            "hours": "Hours",
+            "total": "Total"
+        },
+        "buttons":{
+            "back": "Back",
+            "continue": "Continue"
+        },
+        "months":{
+            "january": "January",
+            "february": "February",
+            "march": "March",
+            "april": "April",
+            "may": "May",
+            "june": "June",
+            "july": "July",
+            "august": "August",
+            "september": "September",
+            "october": "October",
+            "november": "November",
+            "december": "December"
+        }
+    },
+    "smartPriceStep":{
+        "header":{
+            "title": "Smart PriceControl",
+            "subtitle": "Optimize your energy production with real-time electricity market prices"
+        },
+        "infoCard":{
+            "title": "How it works",
+            "description": "Our software uses EPEX Day-ahead market prices to automatically pause energy production when prices are zero or negative, maximizing your savings.",
+            "badge": "Standard on all XRCP® systems from April 2025"
+        },
+        "featureToggle":{
+            "title": "Install SmartPriceControl",
+            "description": "Enable automatic optimization"
+        },
+        "installation":{
+            "title": "Installation Timing",
+            "subtitle": "Choose when to install the software",
+            "alert": "Physical installation on your XRGI® system is required by your service partner",
+            "onSiteVisit": {
+                "title": "At next on-site visit",
+                "description": "Install during scheduled maintenance"
+            },
+            "asSoonAsPossible": {
+                "title": "As soon as possible",
+                "description": "Schedule a dedicated installation visit"
+            }
+        },
+        "success":{
+            "title": "Almost Done!",
+            "description": "Review your information and save to complete the setup process"
+        },
+        "buttons":{
+            "back": "Back",
+            "complete": "Complete Setup"
         }
     },
     "forgotPassword":{
@@ -117,6 +260,61 @@
         "resettingPassword": "Resetting Password...",
         "backToLogin": "Back to Login",
         "rememberedPassword": "Remembered your Password?"
+    },
+    "stepper":{
+        "steps":{
+            "profile": "Profile",
+            "systemRegistration": "System Registration",
+            "smartPriceControl": "Smart Price Control"
+        },
+        "completion":{
+            "title": "Registration Complete!",
+            "message": "Your XRGI system has been successfully registered and saved.",
+            "redirecting": "Redirecting to dashboard...",
+            "goToDashboard": "Go to Dashboard Now"
+        }
+    },
+    "profileStep":{
+        "header":{
+            "title": "Create Your Profile",
+            "subtitle": "Follow the steps to complete your profile setup."
+        },
+        "companyInfo":{
+            "title": "Company Information",
+            "subtitle": "Enter your business details",
+            "companyName": "Company name",
+            "companyNamePlaceholder": "Enter company name",
+            "vatNo": "VAT no.",
+            "vatNoPlaceholder": "Enter VAT number",
+            "address": "Address",
+            "addressPlaceholder": "Enter Address",
+            "postcode": "Postcode",
+            "postcodePlaceholder": "Postcode",
+            "city": "City",
+            "cityPlaceholder": "City",
+            "email": "Email",
+            "emailPlaceholder": "company@example.com",
+            "phone": "Phone",
+            "phonePlaceholder": "Enter phone number",
+            "validPhone": "Valid phone number"
+        },
+        "contactPerson":{
+            "title": "Contact Person",
+            "subtitle": "Fill in the details",
+            "firstName": "First name",
+            "firstNamePlaceholder": "First name",
+            "lastName": "Last name",
+            "lastNamePlaceholder": "Last name",
+            "email": "Email",
+            "emailPlaceholder": "contact@example.com",
+            "phone": "Phone",
+            "phonePlaceholder": "Enter phone number",
+            "validPhone": "Valid phone number"
+        },
+        "buttons":{
+            "saveForLater": "Save For Later",
+            "continue": "Continue"
+        }
     },
     "settings": {
         "title": "Settings",
