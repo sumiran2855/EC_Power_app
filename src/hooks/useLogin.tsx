@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import i18n from '../../languages/i18n.config';
 import { AuthController } from '../controllers/AuthController';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/LoginValidation';
@@ -15,6 +17,22 @@ export const useLoginLogic = () => {
   const navigation = useNavigation();
   const route = useRoute<LoginRouteProp>();
   const portalType = route.params?.portalType || 'PRODUCT';
+
+  // Load saved language on mount
+  useEffect(() => {
+    const loadSavedLanguage = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('@app_language');
+        if (savedLanguage) {
+          setSelectedLanguage(savedLanguage);
+          await i18n.changeLanguage(savedLanguage);
+        }
+      } catch (error) {
+        console.error('Error loading language:', error);
+      }
+    };
+    loadSavedLanguage();
+  }, []);
 
   // Form management
   const {
@@ -68,8 +86,14 @@ export const useLoginLogic = () => {
     setValue('rememberMe', !rememberMe, { shouldValidate: true });
   };
 
-  const handleLanguageChange = (languageCode: string): void => {
+  const handleLanguageChange = async (languageCode: string): Promise<void> => {
     setSelectedLanguage(languageCode);
+    try {
+      await AsyncStorage.setItem('@app_language', languageCode);
+      await i18n.changeLanguage(languageCode);
+    } catch (error) {
+      console.error('Error changing language:', error);
+    }
   };
 
   // Helper function to get error message

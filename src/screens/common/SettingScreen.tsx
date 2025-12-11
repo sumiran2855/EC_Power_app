@@ -1,15 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, Feather } from '@expo/vector-icons';
-import styles from './SettingScreen.styles';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useSettings from '../../hooks/useSettings';
+import styles from './SettingScreen.styles';
 
 interface SettingScreenProps {
     navigation: any;
 }
 
 const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
     const { selectedLanguage, languages, handleLanguageSelect } = useSettings();
 
     const handleBackButton = () => {
@@ -27,7 +29,7 @@ const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
                 >
                     <Ionicons name="arrow-back" size={24} color="#1E293B" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Settings</Text>
+                <Text style={styles.headerTitle}>{t('settings.title')}</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
@@ -42,9 +44,9 @@ const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
                         <Ionicons name="globe-outline" size={24} color="#3B82F6" />
                     </View>
                     <View style={styles.sectionTextContainer}>
-                        <Text style={styles.sectionTitle}>Language Preference</Text>
+                        <Text style={styles.sectionTitle}>{t('settings.languagePreference.title')}</Text>
                         <Text style={styles.sectionDescription}>
-                            Select your preferred language for the app
+                            {t('settings.languagePreference.description')}
                         </Text>
                     </View>
                 </View>
@@ -93,7 +95,7 @@ const SettingScreen: React.FC<SettingScreenProps> = ({ navigation }) => {
                         <Feather name="info" size={18} color="#3B82F6" />
                     </View>
                     <Text style={styles.infoText}>
-                        Language changes will take effect immediately. Some content may require an app restart.
+                        {t('settings.info.text')}
                     </Text>
                 </View>
             </ScrollView>

@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "title": "Ustawienia",
+        "languagePreference": {
+            "title": "Preferencje językowe",
+            "description": "Wybierz język preferowany dla aplikacji"
+        },
+        "info": {
+            "text": "Zmiany w języku będą wkraczać w życie natychmiastowo. Niektóre treści mogą wymagać ponownego uruchomienia aplikacji."
+        }
+    }
+}

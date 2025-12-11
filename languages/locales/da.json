@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "title": "Indstillinger",
+        "languagePreference": {
+            "title": "Sprogpræferance",
+            "description": "Vælg dit foretrukne sprog for appen"
+        },
+        "info": {
+            "text": "Sprogændringer træder umiddelbart i kraft. Nogle indhold kan krævere en app-genstart."
+        }
+    }
+}

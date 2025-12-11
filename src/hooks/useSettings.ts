@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCallback, useEffect, useState } from 'react';
+import i18n from '../../languages/i18n.config';
 
 export interface Language {
   code: string;
@@ -7,8 +9,25 @@ export interface Language {
   flag: string;
 }
 
+const LANGUAGE_STORAGE_KEY = '@app_language';
+
 const useSettings = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+
+  useEffect(() => {
+    const loadSavedLanguage = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
+        if (savedLanguage) {
+          setSelectedLanguage(savedLanguage);
+          await i18n.changeLanguage(savedLanguage);
+        }
+      } catch (error) {
+        console.error('Error loading language:', error);
+      }
+    };
+    loadSavedLanguage();
+  }, []);
 
   const languages: Language[] = [
     { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
@@ -19,10 +38,14 @@ const useSettings = () => {
     { code: 'da', name: 'Danish', nativeName: 'Dansk', flag: '🇩🇰' },
   ];
 
-  const handleLanguageSelect = useCallback((code: string) => {
+  const handleLanguageSelect = useCallback(async (code: string) => {
     setSelectedLanguage(code);
-    // Add your language change logic here
-    // e.g., i18n.changeLanguage(code);
+    try {
+      await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, code);
+      await i18n.changeLanguage(code);
+    } catch (error) {
+      console.error('Error saving language:', error);
+    }
   }, []);
 
   return {

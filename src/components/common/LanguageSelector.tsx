@@ -1,9 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  View,
+  ScrollView,
   Text,
   TouchableOpacity,
-  ScrollView,
+  View,
 } from 'react-native';
 
 const LANGUAGES = [
@@ -16,9 +17,11 @@ const LANGUAGES = [
 ];
 
 export const HorizontalScrollLanguageSelector = ({ selectedLanguage, onLanguageChange, styles }:any) => {
+  const { t } = useTranslation();
+  
   return (
     <View style={styles.languageContainer}>
-      <Text style={styles.languageLabel}>Language</Text>
+      <Text style={styles.languageLabel}>{t('settings.languagePreference.title')}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
