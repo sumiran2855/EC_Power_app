@@ -87,7 +87,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     console.log('Failed to create EnergyCheckPlus report:', response);
                 }
             } catch (error) {
-                console.error('Error creating EnergyCheckPlus report:', error);
+                console.log('Error creating EnergyCheckPlus report:', error);
             } finally {
                 setGeneratingReport(false);
             }
@@ -201,7 +201,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 throw new Error('Download failed');
             }
         } catch (error) {
-            console.error('Download error:', error);
+            console.log('Download error:', error);
             setShowDownloadSuccess(true);
         } finally {
             setDownloading(false);

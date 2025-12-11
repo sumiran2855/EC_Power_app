@@ -84,7 +84,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                 navigation.navigate('ProductDashboard');
             }
         } catch (error) {
-            console.error('Error creating facility:', error);
+            console.log('Error creating facility:', error);
         } finally {
             setIsSubmitting(false);
         }

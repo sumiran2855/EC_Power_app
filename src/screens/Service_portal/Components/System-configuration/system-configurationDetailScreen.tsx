@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, ScrollView, ActivityIndicator } from 'react-native';
+import useSystemConfiguration from '@/hooks/Service-portal/useSystemConfiguration';
+import { Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './system-configurationDetailScreen.styles';
-import { Ionicons } from '@expo/vector-icons';
-import useSystemConfiguration from '@/hooks/Service-portal/useSystemConfiguration';
 
 interface SystemConfigurationDetailScreenProps {
     navigation: any;
@@ -32,7 +32,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
                 try {
                     await fetchSystemConfiguration(system.xrgiID);
                 } catch (error) {
-                    console.error('Failed to load configuration:', error);
+                    console.log('Failed to load configuration:', error);
                 }
             }
             if (isMounted) {

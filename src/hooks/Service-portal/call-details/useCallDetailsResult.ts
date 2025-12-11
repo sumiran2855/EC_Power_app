@@ -204,7 +204,7 @@ const useCallDetailsResult = (navigation: any, route: any): UseCallDetailsResult
                 setCallDetailsData([]);
             }
         } catch (error) {
-            console.error("Error in getting calls data", error);
+            console.log("Error in getting calls data", error);
         } finally {
             setIsLoading(false);
         }

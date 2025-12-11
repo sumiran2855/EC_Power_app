@@ -1,9 +1,9 @@
 import { RegisterController } from '@/controllers/RegisterController';
+import { SystemController } from '@/controllers/SystemController';
 import { Facility, UserData } from '@/screens/authScreens/types';
+import { ConfigItem } from '@/screens/Service_portal/Components/types';
 import StorageService from '@/utils/secureStorage';
 import { useCallback, useEffect, useState } from 'react';
-import { ConfigDetail, ConfigItem } from '@/screens/Service_portal/Components/types';
-import { SystemController } from '@/controllers/SystemController';
 
 interface SystemConfiguration {
     id: string;
@@ -66,7 +66,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
                 }
                 return "-";
             } catch (e) {
-                console.error("Error formatting time range object:", e);
+                console.log("Error formatting time range object:", e);
                 return "-";
             }
         }
@@ -87,7 +87,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
 
                 return `${extractTime(startFull)}-${extractTime(endFull)}`;
             } catch (error) {
-                console.error("Error formatting time range string:", error);
+                console.log("Error formatting time range string:", error);
                 return "-";
             }
         }
@@ -159,7 +159,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
             setSystems(transformedData);
             return null;
         } catch (error) {
-            console.error('Error fetching facility statistics:', error);
+            console.log('Error fetching facility statistics:', error);
             return null;
         } finally {
             setIsLoading(false);
@@ -298,7 +298,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
                 setHasData(false);
             }
         } catch (error) {
-            console.error('Error fetching system configuration:', error);
+            console.log('Error fetching system configuration:', error);
             setIsError(true);
             setConfigurations([]);
             setHasData(false);

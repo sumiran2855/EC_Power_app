@@ -50,7 +50,7 @@ const useCallDetails = (navigation: any): UseCallDetailsReturn => {
             setSystems(transformedData);
             return null;
         } catch (error) {
-            console.error('Error fetching facility statistics:', error);
+            console.log('Error fetching facility statistics:', error);
             return null;
         } finally {
             setIsLoading(false);

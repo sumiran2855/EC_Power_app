@@ -46,7 +46,7 @@ export class SystemController {
                 };
             }
         } catch (error) {
-            console.error('System configuration error:', error);
+            console.log('System configuration error:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred while getting system configuration'

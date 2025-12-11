@@ -157,7 +157,7 @@ export const useStepperForm = () => {
                     setFormData((prev: any) => ({ ...prev, journeyStatus: userData.journeyStatus }));
                 }
             } catch (error) {
-                console.error('Error initializing step:', error);
+                console.log('Error initializing step:', error);
                 setCurrentStep(1);
             }
         };
@@ -738,7 +738,7 @@ export const useStepperForm = () => {
             }
 
             if (!result.success) {
-                console.error('Profile creation failed:', result.error);
+                console.log('Profile creation failed:', result.error);
                 setErrors({ ...errors, apiError: result.error || 'Failed to create profile' });
                 setIsSubmitting(false);
                 return;
@@ -754,7 +754,7 @@ export const useStepperForm = () => {
             }));
             setCurrentStep((prev: number) => prev + 1);
         } catch (error) {
-            console.error('Error creating profile:', error);
+            console.log('Error creating profile:', error);
             setErrors({ ...errors, apiError: 'An unexpected error occurred' });
             return;
         } finally {
@@ -775,7 +775,7 @@ export const useStepperForm = () => {
             const response = await RegisterController.AddFacility(facilityPayload);
             console.log("Facility creation response:", response);
             if (!response || !response.data?.id) {
-                console.error('Facility creation failed:', response);
+                console.log('Facility creation failed:', response);
                 setErrors({ ...errors, apiError: 'Failed to create facility' });
                 setIsSubmitting(false);
                 return;
@@ -797,13 +797,13 @@ export const useStepperForm = () => {
             const updateResult = await StepperController.UpdateProfile(profileUpdateData, response.data.userID);
             console.log("Update profile response:", updateResult);
             if (!updateResult.success) {
-                console.error('Failed to update profile journeyStatus:', updateResult.error);
+                console.log('Failed to update profile journeyStatus:', updateResult.error);
             }
             
             // Move to step 4 (completion step) instead of navigating away
             setCurrentStep(4);
         } catch (error) {
-            console.error('Error creating facility:', error);
+            console.log('Error creating facility:', error);
             setErrors({ ...errors, apiError: 'An unexpected error occurred while creating facility' });
             setIsSubmitting(false);
             return;

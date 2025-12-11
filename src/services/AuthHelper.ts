@@ -100,7 +100,7 @@ class AuthHelper {
 
             // Handle unexpected response types
             const text = await response.text();
-            console.error('Response text:', text.slice(0, 300));
+            console.log('Response text:', text.slice(0, 300));
 
             if (!response.ok) {
                 throw new Error(`Request failed with status ${response.status}`);

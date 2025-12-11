@@ -74,8 +74,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             <Text style={styles.label}>Business Name</Text>
                             <TextInput
                                 style={styles.input}
-                                value={profileData.companyInfo.companyName}
-                                onChangeText={(value) => handleInputChange('companyName', value)}
+                                value={profileData.companyInfo.name}
+                                onChangeText={(value) => handleInputChange('name', value)}
                                 placeholder="Enter business name"
                                 placeholderTextColor="#94A3B8"
                             />

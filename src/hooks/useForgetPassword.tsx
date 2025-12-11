@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
-import {
-  forgotPasswordEmailSchema,
-  resetPasswordSchema,
-  ForgotPasswordEmailFormData,
-  ResetPasswordFormData,
-  forgotPasswordEmailDefaultValues,
-  resetPasswordDefaultValues,
-} from '../validations/LoginValidation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AuthController } from '../controllers/AuthController';
+import {
+    ForgotPasswordEmailFormData,
+    ResetPasswordFormData,
+    forgotPasswordEmailDefaultValues,
+    forgotPasswordEmailSchema,
+    resetPasswordDefaultValues,
+    resetPasswordSchema,
+} from '../validations/LoginValidation';
 
 export const useForgotPasswordLogic = () => {
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState<boolean>(false);
@@ -62,7 +62,7 @@ export const useForgotPasswordLogic = () => {
         setCurrentStep('verification');
       }
     } catch (error) {
-      console.error('Send email error:', error);
+      console.log('Send email error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +91,7 @@ export const useForgotPasswordLogic = () => {
         (navigation as any).navigate('Login');
       }
     } catch (error) {
-      console.error('Reset password error:', error);
+      console.log('Reset password error:', error);
       setVerificationError('Invalid verification code. Please try again.');
     } finally {
       setIsSubmitting(false);

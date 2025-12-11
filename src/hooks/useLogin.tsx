@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { loginSchema, LoginFormData, loginDefaultValues } from '../validations/LoginValidation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AuthController } from '../controllers/AuthController';
+import { RootStackParamList } from '../navigation/AppNavigator';
+import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/LoginValidation';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -45,7 +45,7 @@ export const useLoginLogic = () => {
         (navigation as any).navigate('Stepper');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.log('Login error:', error);
     } finally {
       setIsSubmitting(false);
     }

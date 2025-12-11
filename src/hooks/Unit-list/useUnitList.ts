@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { Facility } from '@/screens/authScreens/types';
-import StorageService from '@/utils/secureStorage';
-import { UserData } from '@/screens/authScreens/types';
 import { RegisterController } from '@/controllers/RegisterController';
+import { Facility, UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useCallback, useEffect, useState } from 'react';
+import { RootStackParamList } from '../../navigation/AppNavigator';
 
 const useUnitList = (navigation: NativeStackNavigationProp<RootStackParamList, 'UnitList'>) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +37,7 @@ const useUnitList = (navigation: NativeStackNavigationProp<RootStackParamList, '
             setSystems(transformedData);
             return null;
         } catch (error) {
-            console.error('Error fetching facility statistics:', error);
+            console.log('Error fetching facility statistics:', error);
             return null;
         } finally {
             setIsLoading(false);

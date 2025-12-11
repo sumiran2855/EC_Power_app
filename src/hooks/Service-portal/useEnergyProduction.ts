@@ -92,7 +92,7 @@ const useEnergyProduction = (): UseEnergyProductionReturn => {
                 setStatusData(data);
             }
         } catch (error) {
-            console.error("Error fetching status data:", error);
+            console.log("Error fetching status data:", error);
         } finally {
             setIsLoading(false);
         }

@@ -45,17 +45,20 @@ const EnergyCheckReportModal: React.FC<EnergyCheckReportModalProps> = ({
             statusBarTranslucent={true}
         >
             <View style={styles.overlay}>
+                {/* Close Button - Above Modal */}
+                <TouchableOpacity
+                    style={styles.closeButtonAbove}
+                    onPress={onClose}
+                    activeOpacity={0.7}
+                >
+                    <Icon name="close" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+                
                 <View style={styles.container}>
+
                     {/* Header */}
                     <View style={styles.header}>
                         <Text style={styles.title}>Create EnergyCheck Report</Text>
-                        <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={onClose}
-                            activeOpacity={0.7}
-                        >
-                            <Icon name="close" size={24} color="#666" />
-                        </TouchableOpacity>
                     </View>
 
                     {/* Question */}
@@ -110,6 +113,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 24,
     },
+    closeButtonAbove: {
+        position: 'absolute',
+        top: 240,
+        right: 180,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        borderRadius: 20,
+        padding: 8,
+        zIndex: 2,
+        borderWidth: 2,
+        borderColor: '#646363ff',
+    },
     container: {
         width: '100%',
         maxWidth: 400,
@@ -123,18 +137,14 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 20,
+        paddingTop: 8,
     },
     title: {
         fontSize: 20,
         fontWeight: '600',
         color: '#1a365d',
-    },
-    closeButton: {
-        padding: 4,
     },
     question: {
         fontSize: 16,

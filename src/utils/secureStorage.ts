@@ -1,5 +1,5 @@
-import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
 export type StorageKey =
@@ -35,7 +35,7 @@ export const storeSecureValue = async <T>(
             await SecureStore.setItemAsync(key, stringValue);
         }
     } catch (error) {
-        console.error(`Failed to store '${key}':`, error);
+        console.log(`Failed to store '${key}':`, error);
         throw new Error(`Storage operation failed for key: ${key}`);
     }
 };
@@ -53,7 +53,7 @@ export const getSecureValue = async <T = string>(
 
         return parseStoredValue<T>(value);
     } catch (error) {
-        console.error(`Failed to retrieve '${key}':`, error);
+        console.log(`Failed to retrieve '${key}':`, error);
         return null;
     }
 };
@@ -66,7 +66,7 @@ export const removeSecureValue = async (key: StorageKey): Promise<void> => {
             await SecureStore.deleteItemAsync(key);
         }
     } catch (error) {
-        console.error(`Failed to remove '${key}':`, error);
+        console.log(`Failed to remove '${key}':`, error);
         throw new Error(`Removal operation failed for key: ${key}`);
     }
 };
@@ -81,7 +81,7 @@ export const clearSecureStore = async (): Promise<void> => {
         );
         await Promise.all(removePromises);
     } catch (error) {
-        console.error('Failed to clear secure store:', error);
+        console.log('Failed to clear secure store:', error);
         throw new Error('Clear storage operation failed');
     }
 };
@@ -100,7 +100,7 @@ export const storeMultipleValues = async (
             items.map(([key, value]) => storeSecureValue(key, value))
         );
     } catch (error) {
-        console.error('Failed to store multiple values:', error);
+        console.log('Failed to store multiple values:', error);
         throw new Error('Batch storage operation failed');
     }
 };
@@ -119,7 +119,7 @@ export const getMultipleValues = async <K extends StorageKey>(
             return acc;
         }, {} as Record<K, any>);
     } catch (error) {
-        console.error('Failed to retrieve multiple values:', error);
+        console.log('Failed to retrieve multiple values:', error);
         return {} as Record<K, any>;
     }
 };

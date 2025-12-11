@@ -1,18 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AuthController } from '../controllers/AuthController';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import {
-  signupSchema,
-  verificationSchema,
-  SignupFormData,
-  VerificationFormData,
-  signupDefaultValues,
-  verificationDefaultValues,
-  countryCodes,
+    SignupFormData,
+    VerificationFormData,
+    countryCodes,
+    signupDefaultValues,
+    signupSchema,
+    verificationDefaultValues,
+    verificationSchema,
 } from '../validations/LoginValidation';
-import { AuthController } from '../controllers/AuthController';
 
 export const useSignupLogic = () => {
   // State management
@@ -75,7 +75,7 @@ export const useSignupLogic = () => {
         setCurrentStep('verification');
       }
     } catch (error) {
-      console.error('Signup error:', error);
+      console.log('Signup error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -96,7 +96,7 @@ export const useSignupLogic = () => {
         navigation.navigate('Login' as never);
       }
     } catch (error) {
-      console.error('Verification error:', error);
+      console.log('Verification error:', error);
     } finally {
       setIsSubmitting(false);
     }

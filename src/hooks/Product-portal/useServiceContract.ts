@@ -62,7 +62,7 @@ const useServiceContract = () => {
                 })) : [];
                 setSystems(transformedData);
             } catch (err: any) {
-                console.error('Error fetching systems:', err);
+                console.log('Error fetching systems:', err);
             } finally {
                 setIsLoading(false);
             }

@@ -19,7 +19,7 @@ export class serviceReportController {
                 return response.data;
             }
         } catch (error) {
-            console.error('Failed to get service report:', error);
+            console.log('Failed to get service report:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -42,7 +42,7 @@ export class serviceReportController {
                 return response.data;
             }
         } catch (error) {
-            console.error('Failed to get uploaded service report:', error);
+            console.log('Failed to get uploaded service report:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred'

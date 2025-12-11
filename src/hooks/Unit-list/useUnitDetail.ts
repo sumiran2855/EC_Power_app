@@ -200,7 +200,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
                 setStatusData(data);
             }
         } catch (error) {
-            console.error("Error fetching status data:", error);
+            console.log("Error fetching status data:", error);
         } finally {
             setIsStatusData2025Loading(false);
         }
@@ -214,7 +214,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
                 setSystemConfiguration(response.raw?.plantConfigurationData?.[0]?.configuration);
             }
         } catch (error) {
-            console.error("Error fetching system configuration:", error);
+            console.log("Error fetching system configuration:", error);
         } finally {
             setIsSystemConfigurationLoading(false);
         }

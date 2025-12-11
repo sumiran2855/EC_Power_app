@@ -1,8 +1,8 @@
 import { BackendType } from '../config/api.config';
 import { RegisterFormData } from '../screens/authScreens/types';
 import AuthHelper from '../services/AuthHelper';
-import { LoginFormData } from '../validations/LoginValidation';
 import { StorageService } from '../utils/secureStorage';
+import { LoginFormData } from '../validations/LoginValidation';
 
 export class AuthController {
   static async login(data: LoginFormData): Promise<{
@@ -38,7 +38,7 @@ export class AuthController {
         };
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.log('Login error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -72,7 +72,7 @@ export class AuthController {
         };
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.log('Registration error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -101,7 +101,7 @@ export class AuthController {
         };
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.log('Registration error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -129,7 +129,7 @@ export class AuthController {
         };
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.log('Registration error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -159,7 +159,7 @@ export class AuthController {
         };
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.log('Registration error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -171,7 +171,7 @@ export class AuthController {
     try {
       await StorageService.logout();
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.log('Error during logout:', error);
       throw error;
     }
   }

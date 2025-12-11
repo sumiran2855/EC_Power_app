@@ -26,7 +26,7 @@ export class StepperController {
                 };
             }
         } catch (error) {
-            console.error('Profile creation error:', error);
+            console.log('Profile creation error:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred'
@@ -57,7 +57,7 @@ export class StepperController {
                 };
             }
         } catch (error) {
-            console.error('Profile update error:', error);
+            console.log('Profile update error:', error);
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'An unexpected error occurred while updating profile'

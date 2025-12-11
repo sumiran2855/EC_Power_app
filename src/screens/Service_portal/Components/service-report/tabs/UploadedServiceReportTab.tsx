@@ -70,7 +70,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                 setUploadedReports([]);
             }
         } catch (error) {
-            console.error('Failed to fetch uploaded reports:', error);
+            console.log('Failed to fetch uploaded reports:', error);
             setUploadedReports([]);
         } finally {
             setIsLoading(false);
@@ -147,7 +147,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                 throw new Error('Download failed');
             }
         } catch (error) {
-            console.error('Download error:', error);
+            console.log('Download error:', error);
             setErrorAlert({
                 visible: true,
                 message: 'Failed to download the file. Please try again later.'
@@ -347,7 +347,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                         console.log(`PDF loaded with ${numberOfPages} pages`);
                                     }}
                                     onError={(error) => {
-                                        console.error('PDF error:', error);
+                                        console.log('PDF error:', error);
                                     }}
                                     trustAllCerts={false}
                                     enablePaging={true}
@@ -365,7 +365,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                     )}
                                     onError={(syntheticEvent) => {
                                         const { nativeEvent } = syntheticEvent;
-                                        console.error('WebView error:', nativeEvent);
+                                        console.log('WebView error:', nativeEvent);
                                         setErrorAlert({
                                             visible: true,
                                             message: 'Failed to load the document. The file might be corrupted or in an unsupported format.'

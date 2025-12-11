@@ -168,7 +168,7 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
                 setCallsData(formattedData);
             }
         } catch (error) {
-            console.error("Error in getting calls data", error);
+            console.log("Error in getting calls data", error);
         } finally {
             setIsLoading(false);
         }
