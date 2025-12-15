@@ -35,4 +35,20 @@ export class UserController {
             console.log("Error updating user profile", error);
         }
     }
+
+    static async getCustomerDetail(userId:string){
+         const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `get-customer-profile?id=${userId}`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log("Error getting customer profile", error);
+        }
+    }
 }

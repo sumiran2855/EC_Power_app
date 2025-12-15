@@ -27,6 +27,7 @@ const HomeScreen: React.FC = () => {
         showProfileMenu,
         dropdownAnimation,
         filteredSections,
+        customerDetails,
 
         // Handlers
         setSearchQuery,
@@ -111,7 +112,7 @@ const HomeScreen: React.FC = () => {
                             activeOpacity={0.8}
                         >
                             <View style={styles.profileAvatar}>
-                                <Text style={styles.profileAvatarText}>JD</Text>
+                                <Text style={styles.profileAvatarText}>{customerDetails?.contactPerson?.firstName.trim().charAt(0)}{customerDetails?.contactPerson?.lastName.trim().charAt(0)}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -142,11 +143,11 @@ const HomeScreen: React.FC = () => {
                                 <View style={styles.dropdownHeader}>
                                     <View style={styles.dropdownProfileSection}>
                                         <View style={styles.dropdownAvatar}>
-                                            <Text style={styles.dropdownAvatarText}>JD</Text>
+                                            <Text style={styles.dropdownAvatarText}>{customerDetails?.contactPerson?.firstName.trim().charAt(0)}{customerDetails?.contactPerson?.lastName.trim().charAt(0)}</Text>
                                         </View>
                                         <View style={styles.dropdownUserInfo}>
-                                            <Text style={styles.dropdownUserName}>John Doe</Text>
-                                            <Text style={styles.dropdownUserEmail}>Joe Interpreter</Text>
+                                            <Text style={styles.dropdownUserName}>{customerDetails?.contactPerson?.firstName} {customerDetails?.contactPerson?.lastName}</Text>
+                                            <Text style={styles.dropdownUserEmail}>{customerDetails?.contactPerson?.email}</Text>
                                         </View>
                                     </View>
                                 </View>

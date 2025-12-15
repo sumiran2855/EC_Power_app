@@ -1,10 +1,13 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { AuthController } from '../controllers/AuthController';
+import { UserController } from '@/controllers/UserController';
+import StorageService from '@/utils/secureStorage';
+import { UserData } from '@/screens/authScreens/types';
 
 export interface MenuItem {
     id: string;
@@ -26,6 +29,7 @@ const useHome = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const dropdownAnimation = useRef(new Animated.Value(0)).current;
+    const [customerDetails, setCustomerDetails] = useState<any>(null);
 
     const allSections: Section[] = [
         {
@@ -201,6 +205,26 @@ const useHome = () => {
         setSearchQuery('');
     }, []);
 
+    const getCustomerDetails = useCallback(async () => {
+        const userData = await StorageService.user.getData<UserData>();
+        if (!userData?.id) {
+            return;
+        }
+        try {
+            const response = await UserController.getCustomerDetail(userData?.id);
+            if (!response!.success) {
+                return;
+            }
+            setCustomerDetails(response!.data);
+        } catch (error) {
+            console.log("Error getting customer details", error);
+        }
+    }, []);
+
+    useEffect(() => {
+        getCustomerDetails();
+    }, []);
+
     return {
         // State
         searchVisible,
@@ -208,6 +232,7 @@ const useHome = () => {
         showProfileMenu,
         dropdownAnimation,
         filteredSections,
+        customerDetails,
 
         // Handlers
         setSearchQuery,
