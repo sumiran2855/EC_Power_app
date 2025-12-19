@@ -1,8 +1,9 @@
-import DownloadSuccessAlert from '@/components/Modals/DownloadSuccessAlert';
+import DownloadSuccessAlert from '@/components/Modals/Alert';
 import EnergyCheckReportModal from '@/components/Modals/EnergyCheckReportModal';
 import { RegisterController } from '@/controllers/RegisterController';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     Image,
@@ -19,6 +20,7 @@ import { GroupedEnergyRecords, XRGIDetailsScreenProps } from '../types';
 import styles from './DetailsScreen.styles';
 
 const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) => {
+    const { t } = useTranslation();
     const { item } = route.params;
     const [expandedRecords, setExpandedRecords] = useState<Set<string>>(new Set());
     const [groupedRecords, setGroupedRecords] = useState<GroupedEnergyRecords[]>([]);
@@ -217,7 +219,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
             <SafeAreaView style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#1a5490" />
                 <Text style={styles.loadingText}>
-                    {generatingReport ? 'Generating Report...' : downloading ? 'Downloading...' : 'Loading...'}
+                    {generatingReport ? t('detailScreen.loading.generatingReport') : downloading ? t('detailScreen.loading.downloading') : t('detailScreen.loading.loading')}
                 </Text>
             </SafeAreaView>
         );
@@ -233,7 +235,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
                     <Ionicons name="arrow-back" size={24} color="#1a365d" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>XRGI® System Details</Text>
+                <Text style={styles.headerTitle}>{t('detailScreen.title')}</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
@@ -244,19 +246,19 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 {/* System Info Card */}
                 <View style={styles.card}>
                     <View style={styles.infoRow}>
-                        <Text style={styles.label}>Name</Text>
+                        <Text style={styles.label}>{t('detailScreen.systemInfo.name')}</Text>
                         <Text style={styles.value}>{item.name || 'N/A'}</Text>
                     </View>
                     <View style={styles.divider} />
                     <View style={styles.infoRow}>
-                        <Text style={styles.label}>Serial Number</Text>
+                        <Text style={styles.label}>{t('detailScreen.systemInfo.serialNumber')}</Text>
                         <Text style={styles.value}>{item.xrgiID || 'N/A'}</Text>
                     </View>
                 </View>
 
                 {/* Model Section */}
                 <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Model - {item.modelNumber || 'N/A'}</Text>
+                    <Text style={styles.sectionTitle}>{t('detailScreen.systemInfo.modelLabel')} - {item.modelNumber || 'N/A'}</Text>
                     <View style={styles.imageContainer}>
                         <View style={styles.imagePlaceholder}>
                             <Image
@@ -271,7 +273,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 {/* Basic Data Section */}
                 <View style={styles.card}>
                     <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionTitle}>Basic Data</Text>
+                        <Text style={styles.sectionTitle}>{t('detailScreen.systemInfo.basicData')}</Text>
                         <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
                             <MaterialIcons name="edit" size={20} color="#3b82f6" />
                         </TouchableOpacity>
@@ -279,7 +281,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
 
                     <View style={styles.dataGrid}>
                         <View style={styles.dataRow}>
-                            <Text style={styles.dataLabel}>Expected Savings</Text>
+                            <Text style={styles.dataLabel}>{t('detailScreen.data.expectedSavings')}</Text>
                             <Text style={styles.dataValue}>
                                 {groupedRecords.length > 0 && groupedRecords[0].latestRecord
                                     ? `€ ${groupedRecords[0].latestRecord.annualSavings}`
@@ -287,19 +289,19 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                             </Text>
                         </View>
                         <View style={styles.dataRow}>
-                            <Text style={styles.dataLabel}>Annual CO₂ savings</Text>
+                            <Text style={styles.dataLabel}>{t('detailScreen.data.annualCo2Savings')}</Text>
                             <Text style={styles.dataValue}>{item.EnergyCheck_plus?.co2Savings || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
-                            <Text style={styles.dataLabel}>Operating hours per year</Text>
+                            <Text style={styles.dataLabel}>{t('detailScreen.data.operatingHours')}</Text>
                             <Text style={styles.dataValue}>{item.EnergyCheck_plus?.operatingHours || '-'} hrs</Text>
                         </View>
                         <View style={styles.dataRow}>
-                            <Text style={styles.dataLabel}>Industry</Text>
+                            <Text style={styles.dataLabel}>{t('detailScreen.data.industry')}</Text>
                             <Text style={styles.dataValue}>{item.EnergyCheck_plus?.industry || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
-                            <Text style={styles.dataLabel}>Contact</Text>
+                            <Text style={styles.dataLabel}>{t('detailScreen.data.contact')}</Text>
                             <View style={styles.emailContainer}>
                                 {item.EnergyCheck_plus?.email ? (
                                     item.EnergyCheck_plus?.email.split(',').map((email: string, index: number) => (
@@ -320,24 +322,24 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     <View style={styles.energyHeader}>
                         <View style={styles.energyTitleContainer}>
                             <Ionicons name="information-circle-outline" size={24} color="#1a365d" />
-                            <Text style={styles.sectionTitle}>Energy Check Plus Details</Text>
+                            <Text style={styles.sectionTitle}>{t('detailScreen.energyCheckPlus.title')}</Text>
                         </View>
                         <TouchableOpacity style={styles.createButton} onPress={handleCreateReportPress}>
-                            <Text style={styles.createButtonText}>Create EnergyCheck Report</Text>
+                            <Text style={styles.createButtonText}>{t('detailScreen.energyCheckPlus.createReport')}</Text>
                         </TouchableOpacity>
                     </View>
 
                     {loading ? (
                         <View style={styles.loadingContainer}>
                             <ActivityIndicator size="large" color="#3b82f6" />
-                            <Text style={styles.loadingText}>Loading Energy Check Plus reports...</Text>
+                            <Text style={styles.loadingText}>{t('detailScreen.loading.loadingReports')}</Text>
                         </View>
                     ) : groupedRecords.length === 0 ? (
                         <View style={styles.noDataContainer}>
                             <Ionicons name="document-text-outline" size={48} color="#94a3b8" />
-                            <Text style={styles.noDataTitle}>No Energy Reports Available</Text>
+                            <Text style={styles.noDataTitle}>{t('detailScreen.energyCheckPlus.noReports.title')}</Text>
                             <Text style={styles.noDataMessage}>
-                                Energy Check Plus reports for this XRGI® system will appear here once they become available.
+                                {t('detailScreen.energyCheckPlus.noReports.message')}
                             </Text>
                         </View>
                     ) : (
@@ -354,7 +356,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                                         </Text>
                                         <View style={styles.recordBadge}>
                                             <Text style={styles.recordBadgeText}>
-                                                1 Record
+                                                {t('detailScreen.energyCheckPlus.record.badge')}
                                             </Text>
                                         </View>
                                     </View>
@@ -368,7 +370,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                                 {expandedRecords.has(`${monthRecord.month}-${monthRecord.year}`) && (
                                     <View style={styles.recordContent}>
                                         <View style={styles.recordIdRow}>
-                                            <Text style={styles.recordIdLabel}>Date:</Text>
+                                            <Text style={styles.recordIdLabel}>{t('detailScreen.energyCheckPlus.record.date')}</Text>
                                             <Text style={styles.recordIdValue}>
                                                 {new Date(monthRecord.latestRecord.createdAt).toLocaleDateString('en-GB')}
                                             </Text>
@@ -376,19 +378,19 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
 
                                         <View style={styles.recordDetailsGrid}>
                                             <View style={styles.recordDetailRow}>
-                                                <Text style={styles.recordDetailLabel}>Expected Savings:</Text>
+                                                <Text style={styles.recordDetailLabel}>{t('detailScreen.energyCheckPlus.record.expectedSavings')}</Text>
                                                 <Text style={styles.recordDetailValue}>€ {monthRecord.latestRecord.annualSavings}</Text>
                                             </View>
                                             <View style={styles.recordDetailRow}>
-                                                <Text style={styles.recordDetailLabel}>Runtime Hours:</Text>
+                                                <Text style={styles.recordDetailLabel}>{t('detailScreen.energyCheckPlus.record.runtimeHours')}</Text>
                                                 <Text style={styles.recordDetailValue}>{monthRecord.latestRecord.runtimeHours} hrs</Text>
                                             </View>
                                             <View style={styles.recordDetailRow}>
-                                                <Text style={styles.recordDetailLabel}>Monthly Savings:</Text>
+                                                <Text style={styles.recordDetailLabel}>{t('detailScreen.energyCheckPlus.record.monthlySavings')}</Text>
                                                 <Text style={styles.recordDetailValue}>€ {monthRecord.latestRecord.energy_check_plus_saving}</Text>
                                             </View>
                                             <View style={styles.recordDetailRow}>
-                                                <Text style={styles.recordDetailLabel}>Service Provider:</Text>
+                                                <Text style={styles.recordDetailLabel}>{t('detailScreen.energyCheckPlus.record.serviceProvider')}</Text>
                                                 <Text style={styles.recordDetailValue}>
                                                     {monthRecord.latestRecord.serviceProvider?.name || '-'}
                                                 </Text>
@@ -402,7 +404,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                                         >
                                             <MaterialIcons name="file-download" size={20} color="#3b82f6" />
                                             <Text style={styles.downloadButtonText}>
-                                                {downloading ? 'Downloading...' : 'Download PDF'}
+                                                {downloading ? t('detailScreen.energyCheckPlus.download.downloading') : t('detailScreen.energyCheckPlus.download.downloadPdf')}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -419,18 +421,18 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 isVisible={showDownloadSuccess}
                 onClose={() => setShowDownloadSuccess(false)}
                 type="success"
-                title="Download Complete!"
-                message={`File has been saved to ${Platform.OS === 'ios' ? 'Documents' : 'Downloads'} folder`}
-                buttonText="OK"
+                title={t('detailScreen.alerts.downloadComplete.title')}
+                message={t('detailScreen.alerts.downloadComplete.message', { folder: Platform.OS === 'ios' ? 'Documents' : 'Downloads' })}
+                buttonText={t('detailScreen.alerts.downloadComplete.buttonText')}
             />
 
             <DownloadSuccessAlert
                 isVisible={showReportSuccess}
                 onClose={() => setShowReportSuccess(false)}
                 type="success"
-                title="Report Generated Successfully!"
-                message="EnergyCheck report has been generated successfully."
-                buttonText="OK"
+                title={t('detailScreen.alerts.reportGenerated.title')}
+                message={t('detailScreen.alerts.reportGenerated.message')}
+                buttonText={t('detailScreen.alerts.reportGenerated.buttonText')}
             />
 
             <EnergyCheckReportModal

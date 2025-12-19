@@ -1,5 +1,5 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     ActivityIndicator,
     ScrollView,
@@ -14,8 +14,15 @@ import useServiceContract from '../../hooks/Product-portal/useServiceContract';
 import styles from './ServiceContractScreen.styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Facility } from '../authScreens/types';
+import DeleteConfirmationModal from '../../components/Modals/DeleteConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 const ServiceContractScreen: React.FC = () => {
+    const { t } = useTranslation();
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<Facility | null>(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    
     const {
         searchQuery,
         selectedFilter,
@@ -28,16 +35,41 @@ const ServiceContractScreen: React.FC = () => {
         setShowFilterModal,
         handleBackButton,
         handleCardPress,
-        handleDelete,
         handleFilterSelect,
+        confirmDelete: confirmDeleteFromHook,
     } = useServiceContract();
+
+    const handleDelete = (item: Facility) => {
+        setSelectedItem(item);
+        setDeleteModalVisible(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!selectedItem) return;
+        
+        setDeleteLoading(true);
+        try {
+            await confirmDeleteFromHook(selectedItem);
+        } catch (error) {
+            console.log('Error deleting service contract unit', error);
+        } finally {
+            setDeleteLoading(false);
+            setDeleteModalVisible(false);
+            setSelectedItem(null);
+        }
+    };
+
+    const cancelDelete = () => {
+        setDeleteModalVisible(false);
+        setSelectedItem(null);
+    };
 
     const renderSystemCard = (system: Facility) => (
         <Card
             key={system.id}
             item={system}
             onPress={handleCardPress}
-            onDelete={handleDelete}
+            onDelete={() => handleDelete(system)}
         />
     );
 
@@ -56,9 +88,9 @@ const ServiceContractScreen: React.FC = () => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {/* Title Section */}
                 <View style={styles.titleSection}>
-                    <Text style={styles.title}>Service Contracts</Text>
+                    <Text style={styles.title}>{t('serviceContract.title')}</Text>
                     <Text style={styles.subtitle}>
-                        View and manage all XRGI® systems that have an associated service partner
+                        {t('serviceContract.subtitle')}
                     </Text>
                 </View>
 
@@ -68,7 +100,7 @@ const ServiceContractScreen: React.FC = () => {
                         <Ionicons name="search" size={20} color="#64748b" />
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="Search by name or XRGI ID"
+                            placeholder={t('serviceContract.search.placeholder')}
                             placeholderTextColor="#94a3b8"
                             value={searchQuery}
                             onChangeText={setSearchQuery}
@@ -87,7 +119,7 @@ const ServiceContractScreen: React.FC = () => {
                             onPress={() => setShowFilterModal(!showFilterModal)}
                         >
                             <MaterialIcons name="filter-list" size={20} color="#1a365d" />
-                            <Text style={styles.sortButtonText}>Sort by : </Text>
+                            <Text style={styles.sortButtonText}>{t('serviceContract.filter.sortBy')}</Text>
                             <Ionicons
                                 name="chevron-down"
                                 size={16}
@@ -130,14 +162,14 @@ const ServiceContractScreen: React.FC = () => {
                 {isLoading ? (
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color="#1a5490" />
-                        <Text style={styles.loadingText}>Loading facilities...</Text>
+                        <Text style={styles.loadingText}>{t('serviceContract.loading')}</Text>
                     </View>
                 ) : (
                     <>
                         {pendingSystems.length > 0 && (
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>
-                                    XRGI® systems requesting a service contract
+                                    {t('serviceContract.sections.pending')}
                                 </Text>
                                 {pendingSystems.map(renderSystemCard)}
                             </View>
@@ -147,7 +179,7 @@ const ServiceContractScreen: React.FC = () => {
                         {activeSystems.length > 0 && (
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>
-                                    XRGI® systems with active service contract
+                                    {t('serviceContract.sections.active')}
                                 </Text>
                                 {activeSystems.map(renderSystemCard)}
                             </View>
@@ -157,9 +189,9 @@ const ServiceContractScreen: React.FC = () => {
                         {pendingSystems.length === 0 && activeSystems.length === 0 && !isLoading && (
                             <View style={styles.emptyState}>
                                 <MaterialIcons name="search-off" size={64} color="#cbd5e1" />
-                                <Text style={styles.emptyStateTitle}>No XRGI® systems found</Text>
+                                <Text style={styles.emptyStateTitle}>{t('serviceContract.emptyState.title')}</Text>
                                 <Text style={styles.emptyStateText}>
-                                    Try adjusting your search or filter criteria
+                                    {t('serviceContract.emptyState.message')}
                                 </Text>
                             </View>
                         )}
@@ -168,6 +200,14 @@ const ServiceContractScreen: React.FC = () => {
 
                 <View style={styles.bottomSpacer} />
             </ScrollView>
+            
+            <DeleteConfirmationModal
+                isVisible={deleteModalVisible}
+                onClose={cancelDelete}
+                onConfirm={confirmDelete}
+                itemName={selectedItem?.name || selectedItem?.xrgiID}
+                loading={deleteLoading}
+            />
         </SafeAreaView>
     );
 };

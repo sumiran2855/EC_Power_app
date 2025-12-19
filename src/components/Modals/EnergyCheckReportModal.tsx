@@ -1,5 +1,6 @@
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface EnergyCheckReportModalProps {
@@ -17,6 +18,7 @@ const EnergyCheckReportModal: React.FC<EnergyCheckReportModalProps> = ({
     previousMonth,
     isGenerating = false,
 }) => {
+    const { t } = useTranslation();
     const [isMonthSelected, setIsMonthSelected] = useState(false);
 
     React.useEffect(() => {
@@ -58,12 +60,12 @@ const EnergyCheckReportModal: React.FC<EnergyCheckReportModalProps> = ({
 
                     {/* Header */}
                     <View style={styles.header}>
-                        <Text style={styles.title}>Create EnergyCheck Report</Text>
+                        <Text style={styles.title}>{t('modals.energyCheckReport.title')}</Text>
                     </View>
 
                     {/* Question */}
                     <Text style={styles.question}>
-                        For which month do you want to generate the report?
+                        {t('modals.energyCheckReport.question')}
                     </Text>
 
                     {/* Month Selection */}
@@ -96,7 +98,7 @@ const EnergyCheckReportModal: React.FC<EnergyCheckReportModalProps> = ({
                             <Icon name="file-download" size={20} color="#fff" />
                         )}
                         <Text style={styles.generateButtonText}>
-                            {isGenerating ? 'Generating...' : 'Generate Report'}
+                            {isGenerating ? t('modals.energyCheckReport.generatingButton') : t('modals.energyCheckReport.generateButton')}
                         </Text>
                     </TouchableOpacity>
                 </View>

@@ -21,8 +21,8 @@
       "icon": "./assets/images/logo.png",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png"
+        "foregroundImage": "./assets/images/ecpower.png",
+        "backgroundImage": "./assets/images/ecpower.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

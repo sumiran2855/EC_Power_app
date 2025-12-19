@@ -1,5 +1,6 @@
 import { SystemController } from '@/controllers/SystemController';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface StatusItem {
     icon: 'checkmark-circle' | 'stop-circle' | 'alert-circle' | 'call-outline' | 'pause-circle' | 'flask' | 'construct' | 'time';
@@ -21,6 +22,7 @@ interface UseSystemStatusReturn {
 }
 
 const useSystemStatus = (): UseSystemStatusReturn => {
+    const { t } = useTranslation();
     const [apiData, setApiData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -28,7 +30,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'checkmark-circle',
             count: apiData?.ok || 0,
-            label: 'Operating Normal',
+            label: t('systemStatus.statusTypes.operatingNormal'),
             color: '#3B82F6',
             bgColor: '#EFF6FF',
             percentage: apiData ? ((apiData.ok / apiData.total) * 100) : 0,
@@ -37,7 +39,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'stop-circle',
             count: apiData?.fullstop || 0,
-            label: 'Full Stop',
+            label: t('systemStatus.statusTypes.fullStop'),
             color: '#EF4444',
             bgColor: '#FEF2F2',
             percentage: apiData ? ((apiData.fullstop / apiData.total) * 100) : 0,
@@ -46,7 +48,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'alert-circle',
             count: apiData?.alarmstop || 0,
-            label: 'Alarm Stop',
+            label: t('systemStatus.statusTypes.alarmStop'),
             color: '#F59E0B',
             bgColor: '#FFFBEB',
             percentage: apiData ? ((apiData.alarmstop / apiData.total) * 100) : 0,
@@ -55,7 +57,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'call-outline',
             count: apiData?.notcalled || 0,
-            label: 'Stopped Calling',
+            label: t('systemStatus.statusTypes.stoppedCalling'),
             color: '#8B5CF6',
             bgColor: '#F5F3FF',
             percentage: apiData ? ((apiData.notcalled / apiData.total) * 100) : 0,
@@ -64,7 +66,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'pause-circle',
             count: apiData?.standby || 0,
-            label: 'Standby Mode',
+            label: t('systemStatus.statusTypes.standbyMode'),
             color: '#EC4899',
             bgColor: '#FDF2F8',
             percentage: apiData ? ((apiData.standby / apiData.total) * 100) : 0,
@@ -73,7 +75,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'flask',
             count: apiData?.testsites || 0,
-            label: 'Test System',
+            label: t('systemStatus.statusTypes.testSystem'),
             color: '#14B8A6',
             bgColor: '#F0FDFA',
             percentage: apiData ? ((apiData.testsites / apiData.total) * 100) : 0,
@@ -82,7 +84,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'construct',
             count: apiData?.underinstallation || 0,
-            label: 'Under Installation',
+            label: t('systemStatus.statusTypes.underInstallation'),
             color: '#06B6D4',
             bgColor: '#ECFEFF',
             percentage: apiData ? ((apiData.underinstallation / apiData.total) * 100) : 0,
@@ -91,7 +93,7 @@ const useSystemStatus = (): UseSystemStatusReturn => {
         {
             icon: 'time',
             count: apiData?.parked || 0,
-            label: 'Waiting Position',
+            label: t('systemStatus.statusTypes.waitingPosition'),
             color: '#6366F1',
             bgColor: '#EEF2FF',
             percentage: apiData ? ((apiData.parked / apiData.total) * 100) : 0,

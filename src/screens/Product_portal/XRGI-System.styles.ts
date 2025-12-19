@@ -162,12 +162,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: '#e2e8f0',
+    width: 160,
+    height: 'auto',
+    minHeight: 44,
+    justifyContent: 'space-between',
   },
   sortText: {
     fontSize: 15,
     color: '#475569',
-    marginHorizontal: 8,
     fontWeight: '500',
+    flex: 1,
+    textAlign: 'center',
   },
   dropdownIcon: {
     fontSize: 12,
@@ -175,7 +180,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     backgroundColor: '#1a5490',
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
     paddingVertical: 12,
     borderRadius: 10,
     shadowColor: '#1a5490',
@@ -183,6 +188,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
+    width: 140,
+    height: 'auto',
+    minHeight: 44,
   },
   registerText: {
     color: '#ffffff',

@@ -1,6 +1,7 @@
 import { SystemController } from '@/controllers/SystemController';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getCallReason, getOperationTypes, getServiceCodes } from './serviceCode';
 
 export interface CallData {
@@ -45,6 +46,7 @@ interface UseStatisticsResultReturn {
 }
 
 const useStatisticsResult = (fromDate: string, toDate: string, system: any): UseStatisticsResultReturn => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [callsData, setCallsData] = useState<MappedCallData[]>([]);
@@ -56,7 +58,7 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
 
     // Helper function to find a service code by code value and format the text with code
     const findServiceCode = useCallback((code: number | null) => {
-        if (code === null) return { code: -1, text: 'No New Events', type: 'no-events' as const };
+        if (code === null) return { code: -1, text: t('statistics.statusTypes.noNewEvents'), type: 'no-events' as const };
         const found = serviceCodes.find(sc => sc.code === code);
         if (found) {
             return {
@@ -64,12 +66,12 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
                 text: `${code} - ${found.text}`
             };
         }
-        return { code, text: `${code} - Unknown`, type: 'warning' as const };
-    }, [serviceCodes]);
+        return { code, text: `${code} - ${t('statistics.statusTypes.unknown')}`, type: 'warning' as const };
+    }, [serviceCodes, t]);
 
     // Helper function to find an operation type by code value and format the text with code
     const findOperationType = useCallback((code: number | null) => {
-        if (code === null) return { code: -1, text: 'No New Events', type: 'no-events' as const };
+        if (code === null) return { code: -1, text: t('statistics.statusTypes.noNewEvents'), type: 'no-events' as const };
         const found = operationTypes.find(ot => ot.code === code);
         if (found) {
             return {
@@ -77,12 +79,12 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
                 text: `${code} - ${found.text}`
             };
         }
-        return { code, text: `${code} - Unknown`, type: 'warning' as const };
-    }, [operationTypes]);
+        return { code, text: `${code} - ${t('statistics.statusTypes.unknown')}`, type: 'warning' as const };
+    }, [operationTypes, t]);
 
     // Helper function to find a call reason by causeCode and format the text with code
     const findCallReason = useCallback((causeCode: number | null) => {
-        if (causeCode === null) return { causeCode: -1, cause: 'No New Events', type: 'no-events' as const };
+        if (causeCode === null) return { causeCode: -1, cause: t('statistics.statusTypes.noNewEvents'), type: 'no-events' as const };
         const found = callReasons.find(cr => cr.causeCode === causeCode);
         if (found) {
             return {
@@ -90,8 +92,8 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
                 cause: `${causeCode} - ${found.cause}`
             };
         }
-        return { causeCode, cause: `${causeCode} - Unknown`, type: 'warning' as const };
-    }, [callReasons]);
+        return { causeCode, cause: `${causeCode} - ${t('statistics.statusTypes.unknown')}`, type: 'warning' as const };
+    }, [callReasons, t]);
 
     const getCallsData = useCallback(async () => {
         setIsLoading(true);
@@ -124,10 +126,10 @@ const useStatisticsResult = (fromDate: string, toDate: string, system: any): Use
                         const currentStatusInfo = findOperationType(rawData.currentStatusCode);
                         const latestIncidentInfo = rawData.latestIncidentCode !== null
                             ? findServiceCode(rawData.latestIncidentCode)
-                            : { code: null, text: 'No New Events', type: 'no-events' as const };
+                            : { code: null, text: t('statistics.statusTypes.noNewEvents'), type: 'no-events' as const };
                         const statusOfIncidentInfo = rawData.statusOfIncidentCode !== null
                             ? findOperationType(rawData.statusOfIncidentCode)
-                            : { code: null, text: 'No New Events', type: 'no-events' as const };
+                            : { code: null, text: t('statistics.statusTypes.noNewEvents'), type: 'no-events' as const };
 
                         return {
                             id: rawData.id,

@@ -1,15 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import { Ionicons, Feather } from '@expo/vector-icons';
-import styles from './unit-listScreen.styles';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import React from "react";
-import useUnitList from '../../hooks/Unit-list/useUnitList';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useUnitList from '../../hooks/Unit-list/useUnitList';
+import styles from './unit-listScreen.styles';
 
 interface UnitListScreenProps {
     navigation: any;
 }
 
 const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
     const {
         systems,
         handleBackButton,
@@ -36,33 +38,33 @@ const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
                     <View style={styles.titleIconContainer}>
                         <Feather name="server" size={24} color="#0f172a" />
                     </View>
-                    <Text style={styles.title}>Unit List</Text>
+                    <Text style={styles.title}>{t('unitList.title')}</Text>
                 </View>
 
                 {/* Description */}
                 <Text style={styles.description}>
-                    To see status, production and consumption for the current year, please choose a system from the list below
+                    {t('unitList.description')}
                 </Text>
 
                 {/* Systems Count */}
                 <View style={styles.statsBar}>
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>{totalSystems}</Text>
-                        <Text style={styles.statLabel}>Total Systems</Text>
+                        <Text style={styles.statLabel}>{t('unitList.totalSystems')}</Text>
                     </View>
                     <View style={styles.statDivider} />
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>
                             {activeSystems}
                         </Text>
-                        <Text style={styles.statLabel}>Active</Text>
+                        <Text style={styles.statLabel}>{t('unitList.active')}</Text>
                     </View>
                 </View>
 
                 {isLoading ? (
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color="#1a5490" />
-                        <Text style={styles.loadingText}>Loading facilities...</Text>
+                        <Text style={styles.loadingText}>{t('unitList.loading')}</Text>
                     </View>
                 ) : (
                     <>
@@ -97,12 +99,12 @@ const UnitListScreen: React.FC<UnitListScreenProps> = ({ navigation }) => {
                                     {/* System Details Grid */}
                                     <View style={styles.detailsGrid}>
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>XRGI® ID</Text>
+                                            <Text style={styles.gridLabel}>{t('unitList.xrgiId')}</Text>
                                             <Text style={styles.gridValue}>{system.xrgiID}</Text>
                                         </View>
                                         <View style={styles.gridDivider} />
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>Recent Calls</Text>
+                                            <Text style={styles.gridLabel}>{t('unitList.recentCalls')}</Text>
                                             <Text style={styles.gridValue}>-</Text>
                                         </View>
                                     </View>

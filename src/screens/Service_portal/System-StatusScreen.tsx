@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
 import styles from './System-StatusScreen.styles';
 import useSystemStatus from '../../hooks/Service-portal/useSystemStatus';
 import useCardAnimations from '../../hooks/Service-portal/useCardAnimations';
+import { useTranslation } from 'react-i18next';
 
 interface StatusCardProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -75,6 +76,7 @@ interface SystemStatusScreenProps {
 }
 
 const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const {
     totalUnits,
     getStatsBarData,
@@ -103,32 +105,32 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
       >
         {/* Hero Section */}
         <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>System Status</Text>
+          <Text style={styles.heroTitle}>{t('systemStatus.title')}</Text>
           <Text style={styles.heroSubtitle}>
-            Monitor all system units in real-time with detailed analytics
+            {t('systemStatus.subtitle')}
           </Text>
         </View>
 
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#1a5490" />
-            <Text style={styles.loadingText}>Loading facilities...</Text>
+            <Text style={styles.loadingText}>{t('systemStatus.loading')}</Text>
           </View>
         ) : (
           <>
             {/* Statistics Card */}
             <View style={styles.statsCard}>
               <View style={styles.statsHeader}>
-                <Text style={styles.statsTitle}>TOTAL ACTIVE UNITS</Text>
+                <Text style={styles.statsTitle}>{t('systemStatus.totalActiveUnits')}</Text>
                 <View style={styles.liveBadge}>
                   <View style={styles.liveDot} />
-                  <Text style={styles.liveBadgeText}>Live</Text>
+                  <Text style={styles.liveBadgeText}>{t('systemStatus.live')}</Text>
                 </View>
               </View>
 
               <View style={styles.totalContainer}>
                 <Text style={styles.totalNumber}>{totalUnits.toLocaleString()}</Text>
-                <Text style={styles.totalLabel}>units</Text>
+                <Text style={styles.totalLabel}>{t('systemStatus.units')}</Text>
               </View>
 
               <View style={styles.statsBar}>
@@ -146,7 +148,7 @@ const SystemStatusScreen: React.FC<SystemStatusScreenProps> = ({ navigation }) =
 
             {/* Section Header */}
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Status Overview</Text>
+              <Text style={styles.sectionTitle}>{t('systemStatus.statusOverview')}</Text>
             </View>
 
             {/* Status Grid */}

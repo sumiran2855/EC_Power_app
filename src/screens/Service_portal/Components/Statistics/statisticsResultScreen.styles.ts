@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     noDataText:{
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '600',
         color: '#64748b',
     },

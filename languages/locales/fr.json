@@ -1,5 +1,5 @@
 {
-    "login":{
+    "login": {
         "title": "CONNEXION",
         "subtitle": "Entrez votre nom d'utilisateur et votre mot de passe\npour vous connecter à votre compte",
         "usernameLabel": "Nom d'utilisateur",
@@ -12,7 +12,7 @@
         "noAccount": "Vous n'avez pas de compte?",
         "createAccount": "Créer un compte"
     },
-    "signup":{
+    "signup": {
         "title": "Créer un compte",
         "subtitle": "Remplissez les détails ci-dessous pour créer\nvotre nouveau compte",
         "firstNameLabel": "Prénom",
@@ -38,62 +38,62 @@
         "verifyButton": "Vérifier",
         "verifying": "Vérification..."
     },
-    "validation":{
-        "username":{
+    "validation": {
+        "username": {
             "required": "Le nom d'utilisateur est requis",
             "minLength": "Le nom d'utilisateur doit contenir au moins 3 caractères",
             "maxLength": "Le nom d'utilisateur ne doit pas dépasser 50 caractères",
             "pattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des points, des traits d'union et des underscores"
         },
-        "email":{
+        "email": {
             "required": "L'e-mail est requis",
             "invalid": "Veuillez entrer une adresse e-mail valide",
             "maxLength": "L'e-mail ne doit pas dépasser 254 caractères"
         },
-        "password":{
+        "password": {
             "required": "Le mot de passe est requis",
             "minLength": "Le mot de passe doit contenir au moins 8 caractères",
             "maxLength": "Le mot de passe ne doit pas dépasser 128 caractères",
             "pattern": "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial."
         },
-        "firstName":{
+        "firstName": {
             "required": "Le prénom est requis",
             "minLength": "Le prénom doit contenir au moins 2 caractères",
             "maxLength": "Le prénom ne doit pas dépasser 50 caractères",
             "pattern": "Le prénom ne peut contenir que des lettres, des espaces, des apostrophes et des traits d'union"
         },
-        "lastName":{
+        "lastName": {
             "required": "Le nom de famille est requis",
             "minLength": "Le nom de famille doit contenir au moins 2 caractères",
             "maxLength": "Le nom de famille ne doit pas dépasser 50 caractères",
             "pattern": "Le nom de famille ne peut contenir que des lettres, des espaces, des apostrophes et des traits d'union"
         },
-        "countryCode":{
+        "countryCode": {
             "required": "Le code pays est requis",
             "invalid": "Format de code pays invalide"
         },
-        "phoneNumber":{
+        "phoneNumber": {
             "required": "Le numéro de téléphone est requis",
             "minLength": "Le numéro de téléphone doit contenir au moins 8 chiffres",
             "maxLength": "Le numéro de téléphone ne doit pas dépasser 15 chiffres",
             "pattern": "Le numéro de téléphone ne peut contenir que des chiffres"
         },
-        "confirmPassword":{
+        "confirmPassword": {
             "required": "Veuillez confirmer votre mot de passe",
             "match": "Les mots de passe ne correspondent pas"
         },
-        "verificationCode":{
+        "verificationCode": {
             "required": "Le code de vérification est requis",
             "length": "Le code de vérification doit contenir exactement 6 chiffres",
             "pattern": "Le code de vérification ne peut contenir que des chiffres"
         },
-        "newPassword":{
+        "newPassword": {
             "required": "Le nouveau mot de passe est requis",
             "minLength": "Le mot de passe doit contenir au moins 8 caractères",
             "maxLength": "Le mot de passe ne doit pas dépasser 128 caractères",
             "pattern": "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial."
         },
-        "resetConfirmPassword":{
+        "resetConfirmPassword": {
             "required": "Veuillez confirmer votre nouveau mot de passe",
             "match": "Les mots de passe ne correspondent pas"
         },
@@ -106,12 +106,12 @@
         "recipientEmailRequired": "Au moins un e-mail de destinataire est requis",
         "validEmailAddresses": "Veuillez entrer des adresses e-mail valides séparées par des virgules"
     },
-    "systemRegistrationStep":{
-        "header":{
+    "systemRegistrationStep": {
+        "header": {
             "title": "Enregistrez Votre Système XRGI",
             "subtitle": "Si vous n'avez pas les détails du système, enregistrez pour plus tard en bas de la page"
         },
-        "systemDetails":{
+        "systemDetails": {
             "title": "Détails du Système",
             "systemName": "Nom du système",
             "systemNamePlaceholder": "Entrez le nom du système",
@@ -123,7 +123,7 @@
             "modelPlaceholder": "Choisissez votre modèle XRGI",
             "modelHelper": "Le modèle est sur la plaque signalétique à l'arrière de l'Unité de Puissance"
         },
-        "xrgiSite":{
+        "xrgiSite": {
             "title": "Site XRGI®",
             "address": "Adresse",
             "addressPlaceholder": "Adresse du Site XRGI®",
@@ -134,7 +134,7 @@
             "country": "Pays",
             "countryPlaceholder": "Sélectionner le pays"
         },
-        "serviceContract":{
+        "serviceContract": {
             "title": "Contrat de Service",
             "question": "Avez-vous un contrat de service?",
             "yes": "Oui",
@@ -155,11 +155,11 @@
             "salesPartnerPhonePlaceholder": "Entrez le téléphone du partenaire de vente",
             "description": "Les informations sont nécessaires pour donner à votre partenaire de vente accès à notre base de données de service EC POWER."
         },
-        "installation":{
+        "installation": {
             "question": "Votre système est-il installé?",
             "description": "Cochez ceci si votre système XRGI est déjà configuré"
         },
-        "energyCheckPlus":{
+        "energyCheckPlus": {
             "title": "EnergyCheck Plus",
             "subtitle": "Obtenez un aperçu mensuel de combien vous avez économisé avec votre Système XRGI",
             "enable": "Activer EnergyCheck Plus",
@@ -186,11 +186,41 @@
             "hours": "Heures",
             "total": "Total"
         },
-        "buttons":{
+        "buttons": {
             "back": "Retour",
-            "continue": "Continuer"
+            "continue": "Continuer",
+            "addFacility": "Ajouter une Facilité",
+            "saveChanges": "Sauvegarder les modifications"
         },
-        "months":{
+        "errors": {
+            "systemNameRequired": "Le nom du système est requis",
+            "xrgiIdRequired": "Le numéro d'identification XRGI est requis",
+            "xrgiIdInvalid": "L'ID XRGI doit comporter 10 chiffres",
+            "modelRequired": "Veuillez sélectionner un modèle",
+            "addressRequired": "L'adresse est requise",
+            "postcodeRequired": "Le code postal est requis",
+            "cityRequired": "La ville est requise",
+            "countryRequired": "Le pays est requis",
+            "serviceProviderNameRequired": "Le nom du fournisseur de services est requis",
+            "serviceProviderEmailRequired": "L'e-mail du fournisseur de services est requis",
+            "serviceProviderEmailInvalid": "Veuillez entrer une adresse e-mail valide",
+            "serviceProviderPhoneRequired": "Le téléphone du fournisseur de services est requis",
+            "serviceProviderPhoneInvalid": "Le numéro de téléphone doit comporter au moins 8 chiffres",
+            "salesPartnerNameRequired": "Le nom du partenaire commercial est requis",
+            "salesPartnerEmailRequired": "L'e-mail du partenaire commercial est requis",
+            "salesPartnerEmailInvalid": "Veuillez entrer une adresse e-mail valide",
+            "salesPartnerPhoneRequired": "Le téléphone du partenaire commercial est requis",
+            "salesPartnerPhoneInvalid": "Le numéro de téléphone doit comporter au moins 8 chiffres",
+            "expectedAnnualSavingsRequired": "Les économies annuelles attendues sont requises",
+            "expectedCO2SavingsRequired": "Les économies annuelles de CO2 attendues sont requises",
+            "expectedOperatingHoursRequired": "Les heures de fonctionnement attendues sont requises",
+            "expectedOperatingHoursInvalid": "Les heures de fonctionnement doivent être comprises entre 0 et 8760",
+            "recipientEmailsRequired": "Au moins une e-mail de destinataire est requis",
+            "recipientEmailsInvalid": "Veuillez entrer des adresses e-mail valides séparées par des virgules",
+            "percentageRequired": "Le pourcentage doit être compris entre 0 et 100",
+            "totalPercentageError": "Le pourcentage total doit être égal à 100%. Actuel : {{current}}%"
+        },
+        "months": {
             "january": "Janvier",
             "february": "Février",
             "march": "Mars",
@@ -205,21 +235,21 @@
             "december": "Décembre"
         }
     },
-    "smartPriceStep":{
-        "header":{
+    "smartPriceStep": {
+        "header": {
             "title": "Smart PriceControl",
             "subtitle": "Optimisez votre production d'énergie avec les prix du marché électrique en temps réel"
         },
-        "infoCard":{
+        "infoCard": {
             "title": "Comment ça marche",
             "description": "Notre logiciel utilise les prix du marché EPEX Day-ahead pour mettre automatiquement en pause la production d'énergie lorsque les prix sont nuls ou négatifs, maximisant ainsi vos économies.",
             "badge": "Standard sur tous les systèmes XRCP® à partir d'avril 2025"
         },
-        "featureToggle":{
+        "featureToggle": {
             "title": "Installer SmartPriceControl",
             "description": "Activer l'optimisation automatique"
         },
-        "installation":{
+        "installation": {
             "title": "Calendrier d'Installation",
             "subtitle": "Choisissez quand installer le logiciel",
             "alert": "L'installation physique sur votre système XRGI® est requise par votre partenaire de service",
@@ -232,16 +262,189 @@
                 "description": "Planifier une visite d'installation dédiée"
             }
         },
-        "success":{
+        "success": {
             "title": "Presque Terminé!",
             "description": "Examinez vos informations et enregistrez pour compléter le processus de configuration"
         },
-        "buttons":{
+        "buttons": {
             "back": "Retour",
-            "complete": "Terminer la Configuration"
+            "complete": "Terminer la Configuration",
+            "creating": "Création...",
+            "addFacility": "Ajouter une Facilité"
         }
     },
-    "forgotPassword":{
+    "home": {
+        "sections": {
+            "productPortal": "Portail Produit",
+            "servicePortal": "Portail Service",
+            "functionalPortal": "Portail Fonctionnel"
+        },
+        "menuItems": {
+            "xrgiSystems": {
+                "title": "Systèmes XRGI®",
+                "subtitle": "Gérer vos systèmes"
+            },
+            "serviceContracts": {
+                "title": "Contrats de Service",
+                "subtitle": "Voir tous les contrats"
+            },
+            "systemStatus": {
+                "title": "État du système",
+                "subtitle": "Voir le statut du système"
+            },
+            "statistics": {
+                "title": "Statistiques",
+                "subtitle": "Voir les analyses"
+            },
+            "systemConfiguration": {
+                "title": "Configuration du Système",
+                "subtitle": "Configurer les paramètres"
+            },
+            "serviceReports": {
+                "title": "Rapports de Service",
+                "subtitle": "Accéder aux rapports"
+            },
+            "callDetails": {
+                "title": "Détails d'Appel",
+                "subtitle": "Voir les détails d'appel"
+            },
+            "energyProduction": {
+                "title": "Production d'Énergie",
+                "subtitle": "Voir la production d'énergie"
+            },
+            "unitList": {
+                "title": "Liste des Unités",
+                "subtitle": "Unités XRGI®"
+            }
+        },
+        "search": {
+            "placeholder": "Rechercher des portails et services...",
+            "noResults": "Aucun résultat trouvé",
+            "tryDifferent": "Essayez un terme de recherche différent"
+        },
+        "profile": {
+            "myProfile": "Mon Profil",
+            "settings": "Paramètres",
+            "logout": "Déconnexion"
+        },
+        "help": {
+            "title": "Besoin d'Aide?",
+            "description": "Notre équipe de support est là pour vous aider 24/7",
+            "button": "Contacter le Support"
+        }
+    },
+    "xrgiSystem": {
+        "title": "Vos Systèmes XRGI®",
+        "subtitle": "Ceci est un aperçu de vos Systèmes XRGI®.",
+        "search": {
+            "placeholder": "Rechercher par nom ou ID XRGI"
+        },
+        "filter": {
+            "sortBy": "Trier par :",
+            "options": {
+                "all": "Tous",
+                "active": "Actif",
+                "inactive": "Inactif",
+                "dataMissing": "Données Manquantes"
+            }
+        },
+        "registerButton": "Enregistrer XRGI®",
+        "sections": {
+            "active": "Actif",
+            "inactive": "Inactif",
+            "dataMissing": "Données Manquantes"
+        },
+        "loading": "Chargement des installations...",
+        "noResults": {
+            "withQuery": "Aucun système XRGI® trouvé correspondant à \"{query}\"",
+            "withoutQuery": "Aucun système XRGI® trouvé"
+        }
+    },
+    "detailScreen": {
+        "title": "Détails du Système XRGI®",
+        "loading": {
+            "generatingReport": "Génération du Rapport...",
+            "downloading": "Téléchargement...",
+            "loading": "Chargement...",
+            "loadingReports": "Chargement des rapports Energy Check Plus..."
+        },
+        "systemInfo": {
+            "name": "Nom",
+            "serialNumber": "Numéro de Série",
+            "modelLabel": "Modèle",
+            "basicData": "Données de Base"
+        },
+        "data": {
+            "expectedSavings": "Économies Attendues",
+            "annualCo2Savings": "Économies Annuelles de CO₂",
+            "operatingHours": "Heures de Fonctionnement par an",
+            "industry": "Secteur",
+            "contact": "Adresse e-mail"
+        },
+        "energyCheckPlus": {
+            "title": "Détails Energy Check Plus",
+            "createReport": "Créer un Rapport EnergyCheck",
+            "noReports": {
+                "title": "Aucune donnée EnergyCheck Plus disponible",
+                "message": "Les rapports Energy Check Plus pour ce système XRGI® apparaîtront ici dès qu'ils seront disponibles."
+            },
+            "record": {
+                "badge": "1 Enregistrement",
+                "date": "Date:",
+                "expectedSavings": "Économies Attendues:",
+                "runtimeHours": "Heures de Fonctionnement:",
+                "monthlySavings": "Économies Mensuelles:",
+                "serviceProvider": "Fournisseur de Services:"
+            },
+            "download": {
+                "downloading": "Téléchargement...",
+                "downloadPdf": "Télécharger PDF"
+            }
+        },
+        "alerts": {
+            "downloadComplete": {
+                "title": "Téléchargement Terminé!",
+                "message": "Le fichier a été enregistré dans le dossier {folder}",
+                "buttonText": "OK"
+            },
+            "reportGenerated": {
+                "title": "Rapport Généré avec Succès!",
+                "message": "Le rapport EnergyCheck a été généré avec succès.",
+                "buttonText": "OK"
+            }
+        }
+    },
+    "serviceContract": {
+        "title": "Contrats de service",
+        "subtitle": "Voir et gérer tous les systèmes XRGI® qui ont un partenaire de service associé",
+        "search": {
+            "placeholder": "Rechercher par nom ou ID XRGI"
+        },
+        "filter": {
+            "sortBy": "Trier par : ",
+            "options": {
+                "all": "Tous",
+                "active": "Actif",
+                "pending": "En attente"
+            }
+        },
+        "loading": "Chargement des installations...",
+        "sections": {
+            "pending": "Systèmes XRGI® demandant un partenaire de service",
+            "active": "Systèmes XRGI® avec un partenaire de service"
+        },
+        "emptyState": {
+            "title": "Aucun système XRGI® trouvé",
+            "message": "Essayez d'ajuster vos critères de recherche ou de filtre"
+        },
+        "deleteAlert": {
+            "title": "Supprimer le Système",
+            "message": "Êtes-vous sûr de vouloir supprimer ce système?",
+            "cancel": "Annuler",
+            "delete": "Supprimer"
+        }
+    },
+    "forgotPassword": {
         "title": "Mot de Passe Oublié",
         "subtitle": "Entrez votre adresse e-mail et nous vous enverrons\nun code pour réinitialiser votre mot de passe",
         "emailLabel": "Adresse e-mail",
@@ -261,25 +464,25 @@
         "backToLogin": "Retour à la connexion",
         "rememberedPassword": "Vous vous souvenez de votre mot de passe?"
     },
-    "stepper":{
-        "steps":{
+    "stepper": {
+        "steps": {
             "profile": "Profil",
             "systemRegistration": "Enregistrement du Système",
             "smartPriceControl": "Contrôle Intelligent des Prix"
         },
-        "completion":{
+        "completion": {
             "title": "Inscription Terminée!",
             "message": "Votre système XRGI a été enregistré et sauvegardé avec succès.",
             "redirecting": "Redirection vers le tableau de bord...",
             "goToDashboard": "Aller au Tableau de Bord"
         }
     },
-    "profileStep":{
-        "header":{
+    "profileStep": {
+        "header": {
             "title": "Créer Votre Profil",
             "subtitle": "Suivez les étapes pour compléter la configuration de votre profil."
         },
-        "companyInfo":{
+        "companyInfo": {
             "title": "Informations de l'Entreprise",
             "subtitle": "Entrez les détails de votre entreprise",
             "companyName": "Nom de l'entreprise",
@@ -298,7 +501,7 @@
             "phonePlaceholder": "Entrez le numéro de téléphone",
             "validPhone": "Numéro de téléphone valide"
         },
-        "contactPerson":{
+        "contactPerson": {
             "title": "Personne de Contact",
             "subtitle": "Remplissez les détails",
             "firstName": "Prénom",
@@ -311,7 +514,7 @@
             "phonePlaceholder": "Entrez le numéro de téléphone",
             "validPhone": "Numéro de téléphone valide"
         },
-        "buttons":{
+        "buttons": {
             "saveForLater": "Enregistrer pour Plus Tard",
             "continue": "Continuer"
         }
@@ -324,6 +527,580 @@
         },
         "info": {
             "text": "Les modifications de langue prendront effet immédiatement. Certains contenus peuvent nécessiter un redémarrage de l'application."
+        }
+    },
+    "systemStatus": {
+        "title": "État du Système",
+        "subtitle": "Surveillez toutes les unités système en temps réel avec une analyse détaillée",
+        "loading": "Chargement des installations...",
+        "totalActiveUnits": "TOTAL DES UNITÉS ACTIVES",
+        "live": "En direct",
+        "units": "unités",
+        "statusOverview": "Aperçu de l'état",
+        "statusTypes": {
+            "operatingNormal": "Fonctionnement Normal",
+            "fullStop": "Arrêt Complet",
+            "alarmStop": "Arrêt d'Alarme",
+            "stoppedCalling": "Appels Arrêtés",
+            "standbyMode": "Mode Veille",
+            "testSystem": "Système de Test",
+            "underInstallation": "En Installation",
+            "waitingPosition": "Position d'Attente"
+        }
+    },
+    "statistics": {
+        "title": "Statistiques",
+        "subtitle": "Voir les statistiques système",
+        "resultsTitle": "Résultats Statistiques",
+        "resultsDescription": "Résultats du",
+        "loadingSystemData": "Chargement des données système...",
+        "refreshingData": "Actualisation des données...",
+        "totalCalls": "Total {count} appels",
+        "noCallsFound": "Aucun appel trouvé",
+        "noCallsFoundForDateRange": "Aucun appel trouvé pour la période sélectionnée",
+        "tryDifferentDateRange": "Essayez de sélectionner une autre période",
+        "newSearch": "Nouvelle Recherche",
+        "labels": {
+            "cause": "Cause",
+            "currentStatus": "État Actuel",
+            "latestIncident": "Dernier Incident",
+            "incidentStatus": "État de l'Incident"
+        },
+        "form": {
+            "note": "Veuillez noter : La date et l'heure doivent être définies",
+            "fromDateLabel": "Date de Début (JJ-MM-AA HH:MM) *",
+            "toDateLabel": "Date de Fin (JJ-MM-AA HH:MM) *",
+            "dateLabel": "DATE",
+            "timeLabel": "HEURE",
+            "backButton": "Retour",
+            "getDataButton": "Obtenir les Données"
+        },
+        "statusTypes": {
+            "noNewEvents": "Aucun Nouvel Événement",
+            "unknown": "Inconnu"
+        },
+        "mainScreen": {
+            "title": "Statistiques",
+            "description": "Sélectionnez un système pour voir des statistiques détaillées et des métriques de performance.",
+            "loading": "Chargement des installations...",
+            "totalSystems": "Total des Systèmes",
+            "active": "Actif",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Appels Récents"
+        },
+        "systemStatus": {
+            "active": "Actif",
+            "inactive": "Inactif",
+            "dataMissing": "Données Manquantes"
+        },
+        "systemConfiguration": {
+            "title": "Configuration Système",
+            "description": "Gérez et surveillez toutes vos configurations système en un seul endroit. Affichez les systèmes actifs, suivez l'activité récente et mettez à jour les paramètres selon les besoins.",
+            "loading": "Chargement des installations...",
+            "totalSystems": "Total des Systèmes",
+            "active": "Actif",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Appels Récents",
+            "detailScreen": {
+                "title": "Configuration Système",
+                "description": "La liste ci-dessous contient les configurations système, affichant la plus récente en premier.",
+                "instruction": "Pour ouvrir une configuration, cliquez sur la ligne grise ou blanche",
+                "loadingData": "Chargement des données de configuration...",
+                "noDataAvailable": "Aucune donnée de configuration disponible",
+                "currentConfig": "Configuration Système Actuelle",
+                "configDetails": "Détails de la Configuration",
+                "labels": {
+                    "date": "Date",
+                    "softwareVersion": "Version Logiciel",
+                    "hardwareVersion": "Version Matériel",
+                    "supplier": "Fournisseur",
+                    "size": "Taille",
+                    "technology": "Technologie",
+                    "allowSale": "Autoriser la Vente",
+                    "catalystType": "Type de Catalyseur",
+                    "emptyStoragePeriod": "Période de Stockage Vide",
+                    "fillStoragePeriod": "Période de Remplissage Stockage",
+                    "saleWeekdays": "Vente Jours de Semaine",
+                    "saleSaturday": "Vente Samedi",
+                    "saleSunday": "Vente Dimanche",
+                    "storageFillPeriod": "Période de Remplissage Stockage",
+                    "storageEmptyPeriod": "Période de Vidage Stockage",
+                    "hrtmEnabled": "HRTM Activé",
+                    "smartStarterSwVersion": "Version SW Smart Starter",
+                    "timeNotation": "Notation Temps",
+                    "smartStarterSerialNumber": "Numéro Série Smart Starter",
+                    "unitNotation": "Notation Unité",
+                    "systemMode": "Mode Système",
+                    "apn": "APN",
+                    "timeZone": "Fuseau Horaire",
+                    "timeZoneOffset": "Décalage Fuseau Horaire",
+                    "smartStarterHwVersion": "Version HW Smart Starter",
+                    "dateNotation": "Notation Date",
+                    "highTariffSaturday": "Tarif Élevé Samedi",
+                    "highTariffSunday": "Tarif Élevé Dimanche",
+                    "highTariffWeekday": "Tarif Élevé Semaine",
+                    "highLoadMaxPower": "Puissance Max Charge Élevée",
+                    "communicationType": "Type de Communication",
+                    "heatPumpEfficiency": "Efficacité Pompe à Chaleur 1",
+                    "terminalSerialNo": "Numéro Série Terminal",
+                    "simCardNo": "Numéro Carte SIM",
+                    "operator": "Opérateur",
+                    "highLoadWeekdays": "Charge Élevée Jours Semaine",
+                    "highLoadSaturday": "Charge Élevée Samedi",
+                    "highLoadSunday": "Charge Élevée Dimanche",
+                    "lowLoadMaxPower": "Puissance Max Charge Faible",
+                    "powerUnitEfficiencyLimit": "Limite Efficacité Unité Puissance",
+                    "heatBackup": "Sauvegarde Chaleur",
+                    "fuelSelector": "Sélecteur Carburant"
+                }
+            }
+        },
+        "serviceReport": {
+            "title": "Rapport de Service",
+            "description": "Sélectionnez le système pertinent dans la liste.",
+            "loading": "Chargement des installations...",
+            "totalSystems": "Total des Systèmes",
+            "active": "Actif",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Appels Récents",
+            "detailScreen": {
+                "tabs": {
+                    "serviceReports": "Rapports de Service",
+                    "itemUsage": "Utilisation d'Articles",
+                    "uploadedReports": "Rapports Téléchargés",
+                    "upload": "Télécharger"
+                },
+                "serviceReportsTab": {
+                    "loading": "Chargement des rapports de service...",
+                    "noDataAvailable": "Aucun rapport de service disponible",
+                    "noDataSubtext": "Il n'y a aucun rapport de service à afficher pour le moment.",
+                    "searchPlaceholder": "Rechercher des rapports...",
+                    "descriptionLabel": "Description",
+                    "noDescriptionAvailable": "Aucune description disponible",
+                    "deliveryDate": "Date de livraison",
+                    "creationDate": "Date de création",
+                    "hideResources": "Masquer les Ressources",
+                    "viewResources": "Voir les Ressources",
+                    "resourcesDetails": "Détails des Ressources",
+                    "workType": "Type de Travail",
+                    "date": "Date",
+                    "technician": "Technicien",
+                    "quantity": "Quantité",
+                    "unit": "Unité",
+                    "scrollHint": "Faites défiler horizontalement pour voir toutes les colonnes"
+                },
+                "itemUsageTab": {
+                    "loading": "Chargement des données d'utilisation d'articles...",
+                    "noDataAvailable": "Aucune donnée d'utilisation d'articles disponible",
+                    "noDataSubtext": "Il n'y a aucun enregistrement d'utilisation d'articles à afficher pour le moment.",
+                    "sectionHeader": "Enregistrements d'Utilisation d'Articles",
+                    "creationDate": "Date de Création",
+                    "deliveryDate": "Date de Livraison",
+                    "hideItems": "Masquer les Articles",
+                    "viewItems": "Voir les Articles",
+                    "itemUsages": "Utilisations d'Articles",
+                    "description": "Description",
+                    "partNumber": "Numéro de Pièce",
+                    "serialNumber": "Numéro de Série",
+                    "quantity": "Quantité",
+                    "unit": "Unité",
+                    "scrollHint": "Faites défiler horizontalement pour voir toutes les colonnes"
+                },
+                "uploadedReportsTab": {
+                    "loading": "Chargement des rapports téléchargés...",
+                    "noDataAvailable": "Aucun rapport téléchargé disponible",
+                    "noDataSubtext": "Il n'y a aucun rapport téléchargé à afficher pour le moment.",
+                    "searchPlaceholder": "Rechercher des rapports...",
+                    "noMatchingReports": "Aucun rapport correspondant trouvé",
+                    "noUploadedReports": "Aucun Rapport Téléchargé",
+                    "tryDifferentSearch": "Essayez un terme de recherche différent",
+                    "noReportsDescription": "Il n'y a aucun rapport de service téléchargé pour ce système pour le moment.",
+                    "dateOfDelivery": "Date de livraison",
+                    "creationDate": "Date de création",
+                    "view": "Voir",
+                    "download": "Télécharger",
+                    "downloadComplete": "Téléchargement Terminé!",
+                    "downloadMessage": "Le fichier a été sauvegardé dans le dossier {folder}",
+                    "downloadError": "Échec du téléchargement du fichier. Veuillez réessayer plus tard.",
+                    "loadingDocument": "Chargement du document...",
+                    "documentLoadError": "Échec du chargement du document. Le fichier pourrait être corrompu ou dans un format non supporté.",
+                    "noDocumentAvailable": "Aucun document disponible",
+                    "documentsFolder": "Documents",
+                    "downloadsFolder": "Downloads",
+                    "error": "Erreur",
+                    "ok": "OK"
+                },
+                "uploadTab": {
+                    "title": "Télécharger Rapport de Service",
+                    "description": "Sélectionnez et téléchargez un fichier de rapport de service pour ce système.",
+                    "selectFile": "Sélectionner Fichier",
+                    "upload": "Télécharger",
+                    "uploading": "Téléchargement...",
+                    "uploadSuccess": "Rapport téléchargé avec succès!",
+                    "uploadError": "Échec du téléchargement du rapport. Veuillez réessayer.",
+                    "formDescription": "Remplissez les détails et téléchargez votre document de rapport de service.",
+                    "creationDate": "Date de création",
+                    "dateOfDelivery": "Date de livraison *",
+                    "serviceType": "Type de Service *",
+                    "serviceReportNumber": "Numéro de Rapport de Service *",
+                    "uploadFile": "Télécharger fichier (PDF, JPEG, PNG uniquement)",
+                    "chooseFile": "Choisir Fichier",
+                    "dragDropHint": "Glissez & Déposez le fichier ici ou cliquez pour parcourir",
+                    "fileFormatsHint": "PDF, JPEG, PNG uniquement",
+                    "clearAll": "Tout Effacer",
+                    "uploadGuidelines": "Directives de Téléchargement",
+                    "acceptedFormats": "Formats acceptés: PDF, JPEG, PNG",
+                    "maxFileSize": "Taille maximale du fichier: 10 MB",
+                    "ensureDatesCorrect": "Assurez-vous que les dates sont dans le bon format",
+                    "selectAppropriateServiceType": "Sélectionnez le type de service approprié",
+                    "selectServiceTypePlaceholder": "Sélectionner Type de Service",
+                    "enterServiceReportNumberPlaceholder": "Entrer le numéro de rapport de service",
+                    "serviceTypes": {
+                        "regularService": "Service Régulier",
+                        "repair": "Réparation",
+                        "maintenance": "Maintenance",
+                        "commissioning": "Mise en Service"
+                    },
+                    "errors": {
+                        "invalidFileType": "Type de fichier invalide. Seuls les fichiers PDF, JPEG et PNG sont autorisés.",
+                        "fileSizeExceedsLimit": "La taille du fichier dépasse la limite de 10MB.",
+                        "failedToSelectFile": "Échec de la sélection du fichier. Veuillez réessayer.",
+                        "pleaseSelectFile": "Veuillez sélectionner un fichier à télécharger",
+                        "selectedFileEmpty": "Le fichier sélectionné est vide.",
+                        "systemDataMissing": "Les données système sont manquantes. Veuillez réessayer.",
+                        "pleaseSelectServiceType": "Veuillez sélectionner un type de service.",
+                        "pleaseEnterServiceReportNumber": "Veuillez entrer un numéro de rapport de service.",
+                        "uploadSuccessful": "Téléchargement Réussi",
+                        "uploadFailed": "Échec du Téléchargement",
+                        "reportUploadedSuccessfully": "Votre rapport de service a été téléchargé avec succès.",
+                        "failedToUploadFile": "Échec du téléchargement du fichier. Veuillez réessayer."
+                    }
+                }
+            }
+        }
+    },
+    "callDetails": {
+        "title": "Détails de l’appel",
+        "description": "Cliquez sur le système pour lequel vous souhaitez générer les détails de l’appel.",
+        "loading": "Chargement des systèmes...",
+        "totalSystems": "Nombre total de systèmes",
+        "active": "Actif",
+        "xrgiId": "ID XRGI®",
+        "recentCalls": "Appels récents",
+        "subtitle": "Détails de l’appel pour le système {{xrgiID}} / {{modelNumber}}",
+        "note": "Remarque : la date et l’heure doivent être définies",
+        "fromDate": "Date de début (JJ-MM-AA HH:MM)",
+        "toDate": "Date de fin (JJ-MM-AA HH:MM)",
+        "date": "DATE",
+        "time": "HEURE",
+        "back": "Retour",
+        "getData": "Obtenir les données",
+        "heatDistributor": "Distributeur de chaleur",
+        "timeOfCall": "Heure de l’appel :",
+        "attemptedRedials": "Tentatives de rappel :",
+        "softwareValidated": "Logiciel validé :",
+        "operationStatus": "Statut opérationnel",
+        "actualStatus": "Statut actuel :",
+        "stopped": "Arrêté",
+        "operationalHoursToNextService": "Heures de fonctionnement avant la prochaine maintenance :",
+        "operatingHours": "Heures de fonctionnement :",
+        "actualElecProduced": "Énergie électrique produite :",
+        "forcedStandby": "Veille forcée :",
+        "loadLevel": "Niveau de charge :",
+        "storageLevel": "Niveau de stockage :",
+        "oilPressure": "Pression d’huile :",
+        "smartstarterBoardTemp": "Température de la carte Smartstarter :",
+        "boilerReleased": "Chaudière libérée :",
+        "systemStatus": "Statut du système :",
+        "controlPanelAntennaSignal": "Signal d’antenne du panneau de commande :",
+        "controlPanelPCBTemp": "Température PCB du panneau de commande :",
+        "controlPanelPSUVoltage": "Tension PSU du panneau de commande :",
+        "powerUnitUPSAccumulator": "Accumulateur UPS de l’unité d’alimentation :",
+        "powerUnitPCBTemp": "Température PCB de l’unité d’alimentation :",
+        "heatDistributorPCBTemp": "Température PCB du distributeur de chaleur :",
+        "flowmasterPSUVoltage": "Tension PSU Flowmaster :",
+        "flowmasterPCBTemp": "Température PCB Flowmaster :",
+        "surgeProtector": "Protection contre les surtensions :",
+        "smartstarterLastError": "Dernière erreur Smartstarter :",
+        "incidents": "Incidents",
+        "loadingIncidents": "Chargement des incidents...",
+        "noIncidentsFound": "Aucun incident trouvé",
+        "adjustDateRange": "Essayez d’ajuster la plage de dates pour inclure plus de données historiques",
+        "currentRange": "Plage actuelle : de {{fromDate}} à {{toDate}}",
+        "incident": "Incident",
+        "dateTime": "Date et heure",
+        "statusOfIncident": "Statut de l’incident",
+        "newSearch": "Nouvelle recherche"
+    },
+    "heatDistribution": {
+        "title": "Distribution de chaleur",
+        "controlSystem": "Système de contrôle de la distribution de chaleur",
+        "dataMonitor": "Moniteur de données de contrôle thermique",
+        "showingLatestRecords": "Affichage des {{count}} derniers enregistrements",
+        "loading": "Chargement...",
+        "manualStatus": "Statut manuel",
+        "engineValve": "Vanne moteur",
+        "flowValve": "Vanne de débit",
+        "storagePercent": "Stockage %",
+        "heatOutput": "Puissance thermique",
+        "engineSystem": "Système moteur",
+        "engineFlow": "Débit moteur",
+        "pumpForce": "Force de la pompe",
+        "tmkSetpoint": "Consigne TMK",
+        "tmvMax": "TMV max",
+        "enginePumpFeedback": "Retour pompe moteur",
+        "heatControlTemperatureSensors": "Capteurs de température du contrôle thermique",
+        "tlkSensor": "Capteur TLK",
+        "tlvSensor": "Capteur TLV",
+        "tmkSensor": "Capteur TMK",
+        "returnTemperature": "Température de retour",
+        "flowControlSensors": "Capteurs de contrôle du débit",
+        "powerUnitSetpoint": "Consigne de l’unité d’alimentation",
+        "operational": "Opérationnel",
+        "return": "Retour",
+        "supply": "Alimentation",
+        "masterBypass": "Bypass principal",
+        "masterSource": "Source principale",
+        "auxiliaryTemperatureTrackers": "Suivi auxiliaire de température",
+        "auxSensor1": "Capteur auxiliaire 1",
+        "auxSensor2": "Capteur auxiliaire 2",
+        "auxSensor3": "Capteur auxiliaire 3",
+        "auxSensor4": "Capteur auxiliaire 4",
+        "storageSystem": "Système de stockage",
+        "storageFlow": "Débit du stockage",
+        "sensorStatus": "Statut des capteurs",
+        "sequenceStatus": "Statut de séquence",
+        "storageTopSensor": "Capteur supérieur du stockage",
+        "storageBottomSensor": "Capteur inférieur du stockage",
+        "storagePumpFeedback": "Retour pompe de stockage",
+        "flowMasterSystem": "Système Flow Master",
+        "valvePosition": "Position de la vanne",
+        "flowPump": "Pompe de débit",
+        "virtualSourceActive": "Source virtuelle active",
+        "flowMasterPumpFeedback": "Retour pompe Flow Master",
+        "controlParameters": "Paramètres de contrôle",
+        "engineRegulationDeadband": "Bande morte de régulation moteur",
+        "flowControlDeadband": "Bande morte de contrôle du débit",
+        "basis": "Base",
+        "t1Position": "Position T1",
+        "t2Position": "Position T2",
+        "engineRegulationValveRuntime": "Temps de fonctionnement vanne moteur",
+        "flowControlValveRuntime": "Temps de fonctionnement vanne de débit",
+        "engineRegulationIntegral": "Intégrale de régulation moteur",
+        "flowControlIntegral": "Intégrale de contrôle du débit",
+        "flowControlRF": "Contrôle du débit RF"
+    },
+    "energyProduction": {
+        "title": "Production d'Énergie",
+        "description": "Sélectionnez un système pour voir les données détaillées de production d'énergie et les analyses.",
+        "loadingFacilities": "Chargement des installations...",
+        "totalSystems": "Total des Systèmes",
+        "active": "Actif",
+        "xrgiId": "XRGI® ID",
+        "status": "État",
+        "loadingSystemData": "Chargement des données système...",
+        "energyOverview": "Aperçu Énergie",
+        "production": "Production",
+        "consumption": "Consommation",
+        "heatProduction": "Prod. Chaleur",
+        "sold": "Vendu",
+        "filterOptions": {
+            "last7days": "les 7 derniers jours",
+            "last183days": "les 183 derniers jours",
+            "last365days": "les 365 derniers jours",
+            "firstcall": "depuis le premier appel",
+            "2025": "2025",
+            "2024": "2024"
+        },
+        "systemInfo": {
+            "latestUpdate": "Dernière mise à jour:",
+            "operatingHours": "Heures de fonctionnement:",
+            "outOfPossibleHours": "sur heures possibles",
+            "lastService": "Dernier service:",
+            "operationalHoursToNextService": "Heures de fonctionnement jusqu'au prochain service:",
+            "elecProduction": "Production élec.:",
+            "heatProduction": "Production de chaleur:",
+            "fuelConsumption": "Consommation de carburant:",
+            "firstCall": "Premier appel:",
+            "siteElecConsumption": "Consommation élec. du site:",
+            "coveredByXRGI": "Couvert par le système XRG®:",
+            "coveredByPowerPurchase": "Couvert par achat d'énergie:",
+            "soldElectricity": "Électricité vendue:",
+            "loading": "Chargement...",
+            "kwh": "kWh",
+            "hours": "heures"
+        }
+    },
+    "unitList": {
+        "title": "Liste des Unités",
+        "subtitle": "Unités XRGI®",
+        "description": "Pour voir le statut, la production et la consommation pour l'année en cours, veuillez choisir un système dans la liste ci-dessous",
+        "totalSystems": "Systèmes Totaux",
+        "active": "Actifs",
+        "loading": "Chargement des installations...",
+        "xrgiId": "XRGI® ID",
+        "recentCalls": "Appels Récents"
+    },
+    "unitDetail": {
+        "header": "Unité XRGI",
+        "xrgiId": "XRGI ID",
+        "running": "En cours",
+        "loading": "Chargement des données système...",
+        "comingSoon": "Bientôt disponible",
+        "systemControl": {
+            "title": "Contrôle Système",
+            "description": "Utilisez ces contrôles pour démarrer ou arrêter manuellement le système XRGI. Veuillez assurer une autorisation appropriée avant d'apporter des modifications.",
+            "start": "Démarrer",
+            "stop": "Arrêter",
+            "starting": "Démarrage...",
+            "stopping": "Arrêt..."
+        },
+        "general": {
+            "systemName": "Nom du Système XRGI®",
+            "dealer": "CONCESSIONNAIRE",
+            "technician": "Technicien",
+            "name": "Nom",
+            "address": "Adresse",
+            "city": "Ville",
+            "postalCode": "Code Postal",
+            "country": "Pays",
+            "email": "E-mail",
+            "cellPhone": "Téléphone Mobile"
+        },
+        "lastCall": {
+            "calls": "Appels:",
+            "timeOfCall": "Heure d'appel:",
+            "operationStatus": "Statut Opérationnel",
+            "status": "Statut",
+            "noise": "Bruit",
+            "oilPressure": "Pression d'Huile",
+            "gasAlarm": "Alarme Gaz",
+            "controlPanelTemp": "Température Panneau de Contrôle",
+            "controlPanelSignal": "Signal Antenne Panneau de Contrôle",
+            "tempRange": "Froid • Normal • Chaud",
+            "signalRange": "Faible • Moyen • Élevé"
+        },
+        "customerLogin": {
+            "lastLogin": "Dernière Connexion"
+        },
+        "status2025": {
+            "latestUpdate": "Dernière mise à jour:",
+            "operatingHours": "Heures d'opération:",
+            "lastService": "Dernier service:",
+            "operationalHoursToNextService": "Heures opérationnelles jusqu'au prochain service:",
+            "elecProduction": "Production électrique:",
+            "heatProduction": "Production thermique:",
+            "fuelConsumption": "Consommation de carburant:",
+            "firstCall": "Premier appel:",
+            "siteElecConsumption": "Consommation électrique du site:",
+            "coveredByXRGI": "Couvert par le système XRGI®:",
+            "coveredByPowerPurchase": "Couvert par achat d'électricité:",
+            "soldElectricity": "Électricité vendue:"
+        },
+        "existingConfig": {
+            "title": "Configuration Existante"
+        },
+        "menuItems": {
+            "general": "Général",
+            "lastCall": "Dernier Appel",
+            "customerLogin": "Connexion Client",
+            "status2025": "Statut 2025",
+            "existingConfig": "Configuration Existante"
+        },
+        "alerts": {
+            "success": "Succès",
+            "systemStarted": "Système XRGI démarré avec succès",
+            "systemStopped": "Système XRGI arrêté avec succès",
+            "cancel":"Annuler",
+            "ok":"OK",
+            "startSystemTitle": "Démarrer le système",
+            "startSystemMessage": "Êtes-vous sûr de vouloir démarrer le système XRGI?",
+            "stopSystemTitle": "Arrêter le système",
+            "stopSystemMessage": "Êtes-vous sûr de vouloir arrêter le système XRGI?"
+        },
+        "contact": {
+            "title": "Contactez-nous",
+            "subtitle": "Nous sommes là pour aider! Remplissez le formulaire ci-dessous et nous vous répondrons bientôt.",
+            "subjectLabel": "Sujet",
+            "required": "*",
+            "selectSubject": "Sélectionnez un sujet",
+            "descriptionLabel": "Description",
+            "descriptionPlaceholder": "Veuillez décrire votre problème ou votre question en détail...",
+            "charCount": "{{count}} / 500",
+            "submitButton": "Soumettre",
+            "loading": "Chargement des rapports de service...",
+            "subjects": {
+                "problemWithXRGI": "Problème avec XRGI",
+                "problemWithAddingInfo": "Problème avec l'ajout d'informations",
+                "problemWithPriceSmart": "Problème avec Price Smart",
+                "wantContact": "Je souhaite être contacté par EC POWER",
+                "otherInquiry": "Autre demande"
+            },
+            "alerts": {
+                "missingInfo": {
+                    "title": "Informations manquantes",
+                    "message": "Veuillez remplir tous les champs obligatoires"
+                },
+                "submissionSuccess": {
+                    "title": "Requête soumise",
+                    "message": "Votre requête a été soumise avec succès. Nous vous répondrons bientôt."
+                },
+                "submissionFailed": {
+                    "title": "Échec de la soumission",
+                    "message": "Impossible de soumettre votre requête. Veuillez réessayer plus tard."
+                },
+                "okButton": "OK"
+            }
+        },
+        "modals": {
+            "deleteConfirmation": {
+                "title": "Supprimer l'Unité",
+                "message": "Êtes-vous sûr de vouloir supprimer cette unité{{itemName}}?\nCette action ne peut pas être annulée.",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer",
+                "deletingButton": "Suppression..."
+            },
+            "downloadSuccess": {
+                "okButton": "OK"
+            },
+            "energyCheckReport": {
+                "title": "Créer un Rapport EnergyCheck",
+                "question": "Pour quel mois souhaitez-vous générer le rapport ?",
+                "generateButton": "Générer le Rapport",
+                "generatingButton": "Génération..."
+            },
+            "termsAndConditions": {
+                "title": "Termes et Conditions",
+                "acceptButton": "Accepter",
+                "cancelButton": "Annuler",
+                "checkboxLabel": "J'ai lu et j'accepte les Termes et Conditions",
+                "checkboxLabel2": "Ignorer pour le moment"
+            }
+        }
+    },
+    "facilityTerms": {
+        "title": "Conditions d’enregistrement du produit",
+        "checkboxLabel": "J’ai lu et j’accepte les conditions générales",
+        "checkboxLabel2": "Je ne souhaite pas accepter les conditions générales",
+        "cancelButton": "Annuler",
+        "acceptButton": "Accepter les conditions",
+        "termsAndConsent": {
+            "paragraph1": "Les produits et systèmes fournis par EC Power peuvent, dans certains cas, être considérés comme des infrastructures critiques. Nous recommandons donc l’enregistrement sur le portail Productportal.ecpower.net.",
+            "paragraph2": "EC Power est le responsable du traitement des données personnelles liées à l’utilisation du portail.",
+            "paragraph3": "Le terme « EC Power » désigne EC Power A/S, Samsøvej 25, 8382 Hinnerup, Danemark.",
+            "paragraph4": "Le terme « produit » désigne les produits et/ou systèmes enregistrés.",
+            "paragraph5": "Le terme « vous » désigne le propriétaire et/ou l’utilisateur du produit.",
+            "paragraph6": "Informations traitées : données personnelles, de contact, professionnelles et d’identification du produit.",
+            "paragraph7": "Nous traitons également des données techniques générées par le produit.",
+            "paragraph8": "Ces informations peuvent constituer des données personnelles.",
+            "paragraph9": "Les données sont utilisées pour la gestion des incidents et la maintenance.",
+            "paragraph10": "Les données techniques servent à l’amélioration continue des produits.",
+            "paragraph11": "Les données sont partagées avec votre partenaire de service.",
+            "paragraph12": "Base légale : article 6(1)(f) du RGPD.",
+            "paragraph13": "Les données sont conservées jusqu’à la mise hors service du produit.",
+            "paragraph14": "Vous pouvez modifier ou supprimer vos données à tout moment.",
+            "paragraph15": "Sécurité : EC Power est conforme à la directive NIS2.",
+            "paragraph16": "Pour exercer vos droits, contactez info@ecpower.eu."
         }
     }
 }

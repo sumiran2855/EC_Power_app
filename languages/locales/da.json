@@ -1,5 +1,5 @@
 {
-    "login":{
+    "login": {
         "title": "LOGIN",
         "subtitle": "Indtast dit brugernavn og adgangskode\nfor at logge ind på din konto",
         "usernameLabel": "Brugernavn",
@@ -12,7 +12,7 @@
         "noAccount": "Har du ikke en konto?",
         "createAccount": "Opret konto"
     },
-    "signup":{
+    "signup": {
         "title": "Opret konto",
         "subtitle": "Udfyld detaljerne nedenfor for at oprette\ndin nye konto",
         "firstNameLabel": "Fornavn",
@@ -38,62 +38,62 @@
         "verifyButton": "Bekræft",
         "verifying": "Bekræfter..."
     },
-    "validation":{
-        "username":{
+    "validation": {
+        "username": {
             "required": "Brugernavn er påkrævet",
             "minLength": "Brugernavn skal være mindst 3 tegn",
             "maxLength": "Brugernavn må ikke overstige 50 tegn",
             "pattern": "Brugernavn må kun indeholde bogstaver, tal, punkter, bindestreger og understregninger"
         },
-        "email":{
+        "email": {
             "required": "E-mail er påkrævet",
             "invalid": "Indtast venligst en gyldig e-mailadresse",
             "maxLength": "E-mail må ikke overstige 254 tegn"
         },
-        "password":{
+        "password": {
             "required": "Adgangskode er påkrævet",
             "minLength": "Adgangskode skal være mindst 8 tegn",
             "maxLength": "Adgangskode må ikke overstige 128 tegn",
             "pattern": "Adgangskode skal indeholde mindst ét lille bogstav, ét stort bogstav, ét tal og ét specialtegn."
         },
-        "firstName":{
+        "firstName": {
             "required": "Fornavn er påkrævet",
             "minLength": "Fornavn skal være mindst 2 tegn",
             "maxLength": "Fornavn må ikke overstige 50 tegn",
             "pattern": "Fornavn må kun indeholde bogstaver, mellemrum, apostroffer og bindestreger"
         },
-        "lastName":{
+        "lastName": {
             "required": "Efternavn er påkrævet",
             "minLength": "Efternavn skal være mindst 2 tegn",
             "maxLength": "Efternavn må ikke overstige 50 tegn",
             "pattern": "Efternavn må kun indeholde bogstaver, mellemrum, apostroffer og bindestreger"
         },
-        "countryCode":{
+        "countryCode": {
             "required": "Landekode er påkrævet",
             "invalid": "Ugyldigt landekode-format"
         },
-        "phoneNumber":{
+        "phoneNumber": {
             "required": "Telefonnummer er påkrævet",
             "minLength": "Telefonnummer skal have mindst 8 cifre",
             "maxLength": "Telefonnummer må ikke overstige 15 cifre",
             "pattern": "Telefonnummer må kun indeholde cifre"
         },
-        "confirmPassword":{
+        "confirmPassword": {
             "required": "Bekræft venligst din adgangskode",
             "match": "Adgangskoder matcher ikke"
         },
-        "verificationCode":{
+        "verificationCode": {
             "required": "Verifikationskode er påkrævet",
             "length": "Verifikationskode skal være præcis 6 cifre",
             "pattern": "Verifikationskode må kun indeholde cifre"
         },
-        "newPassword":{
+        "newPassword": {
             "required": "Ny adgangskode er påkrævet",
             "minLength": "Adgangskode skal være mindst 8 tegn",
             "maxLength": "Adgangskode må ikke overstige 128 tegn",
             "pattern": "Adgangskode skal indeholde mindst ét lille bogstav, ét stort bogstav, ét tal og ét specialtegn."
         },
-        "resetConfirmPassword":{
+        "resetConfirmPassword": {
             "required": "Bekræft venligst din nye adgangskode",
             "match": "Adgangskoder matcher ikke"
         },
@@ -106,12 +106,12 @@
         "recipientEmailRequired": "Mindst én modtager e-mail er påkrævet",
         "validEmailAddresses": "Indtast venligst gyldige e-mailadresser adskilt af kommaer"
     },
-    "systemRegistrationStep":{
-        "header":{
+    "systemRegistrationStep": {
+        "header": {
             "title": "Registrer Dit XRGI System",
             "subtitle": "Hvis du ikke har systemdetaljerne, gem til senere nederst på siden"
         },
-        "systemDetails":{
+        "systemDetails": {
             "title": "Systemdetaljer",
             "systemName": "Systemnavn",
             "systemNamePlaceholder": "Indtast systemnavnet",
@@ -123,7 +123,7 @@
             "modelPlaceholder": "Vælg din XRGI model",
             "modelHelper": "Modellen er på navneskiltet på bagsiden af Power Unit"
         },
-        "xrgiSite":{
+        "xrgiSite": {
             "title": "XRGI® Placering",
             "address": "Adresse",
             "addressPlaceholder": "XRGI® Placeringsadresse",
@@ -134,7 +134,7 @@
             "country": "Land",
             "countryPlaceholder": "Vælg land"
         },
-        "serviceContract":{
+        "serviceContract": {
             "title": "Servicekontrakt",
             "question": "Har du en servicekontrakt?",
             "yes": "Ja",
@@ -155,11 +155,11 @@
             "salesPartnerPhonePlaceholder": "Indtast salgspartner telefon",
             "description": "Oplysningerne er nødvendige for at give din servicepartner adgang til vores EC POWER Servicedatabase."
         },
-        "installation":{
+        "installation": {
             "question": "Er dit system installeret?",
             "description": "Tjek dette hvis dit XRGI system allerede er opsat"
         },
-        "energyCheckPlus":{
+        "energyCheckPlus": {
             "title": "EnergyCheck Plus",
             "subtitle": "Få en månedlig oversigt over hvor meget du har sparet med dit XRGI System",
             "enable": "Aktiver EnergyCheck Plus",
@@ -186,11 +186,41 @@
             "hours": "Timer",
             "total": "Total"
         },
-        "buttons":{
+        "buttons": {
             "back": "Tilbage",
-            "continue": "Fortsæt"
+            "continue": "Fortsæt",
+            "addFacility": "Tilføj Facilitet",
+            "saveChanges": "Gem ændringer"
         },
-        "months":{
+        "errors": {
+            "systemNameRequired": "Systemnavn er påkrævet",
+            "xrgiIdRequired": "XRGI ID-nummer er påkrævet",
+            "xrgiIdInvalid": "XRGI ID skal være 10 cifre",
+            "modelRequired": "Vælg venligst en model",
+            "addressRequired": "Adresse er påkrævet",
+            "postcodeRequired": "Postnummer er påkrævet",
+            "cityRequired": "By er påkrævet",
+            "countryRequired": "Land er påkrævet",
+            "serviceProviderNameRequired": "Serviceudbyder navn er påkrævet",
+            "serviceProviderEmailRequired": "Serviceudbyder e-mail er påkrævet",
+            "serviceProviderEmailInvalid": "Indtast venligst en gyldig e-mailadresse",
+            "serviceProviderPhoneRequired": "Serviceudbyder telefon er påkrævet",
+            "serviceProviderPhoneInvalid": "Telefonnummer skal være mindst 8 cifre",
+            "salesPartnerNameRequired": "Salgspartner navn er påkrævet",
+            "salesPartnerEmailRequired": "Salgspartner e-mail er påkrævet",
+            "salesPartnerEmailInvalid": "Indtast venligst en gyldig e-mailadresse",
+            "salesPartnerPhoneRequired": "Salgspartner telefon er påkrævet",
+            "salesPartnerPhoneInvalid": "Telefonnummer skal være mindst 8 cifre",
+            "expectedAnnualSavingsRequired": "Forventede årlige besparelser er påkrævet",
+            "expectedCO2SavingsRequired": "Forventede årlige CO2-besparelser er påkrævet",
+            "expectedOperatingHoursRequired": "Forventede driftstimer er påkrævet",
+            "expectedOperatingHoursInvalid": "Driftstimer skal være mellem 0 og 8760",
+            "recipientEmailsRequired": "Mindst én modtager e-mail er påkrævet",
+            "recipientEmailsInvalid": "Indtast venligst gyldige e-mailadresser adskilt af kommaer",
+            "percentageRequired": "Procentdel skal være mellem 0 og 100",
+            "totalPercentageError": "Total procentdel skal være 100%. Nuværende: {{current}}%"
+        },
+        "months": {
             "january": "Januar",
             "february": "Februar",
             "march": "Marts",
@@ -205,21 +235,21 @@
             "december": "December"
         }
     },
-    "smartPriceStep":{
-        "header":{
+    "smartPriceStep": {
+        "header": {
             "title": "Smart PriceControl",
             "subtitle": "Optimer din energiproduktion med realtid elmarkedspriser"
         },
-        "infoCard":{
+        "infoCard": {
             "title": "Sådan virker det",
             "description": "Vores software bruger EPEX Day-ahead markedspriser til automatisk at pause energiproduktion når priserne er nul eller negative, hvilket maksimerer dine besparelser.",
             "badge": "Standard på alle XRCP® systemer fra april 2025"
         },
-        "featureToggle":{
+        "featureToggle": {
             "title": "Installer SmartPriceControl",
             "description": "Aktiver automatisk optimering"
         },
-        "installation":{
+        "installation": {
             "title": "Installationstidspunkt",
             "subtitle": "Vælg hvornår softwaren skal installeres",
             "alert": "Fysisk installation på dit XRGI® system er påkrævet af din servicepartner",
@@ -232,16 +262,189 @@
                 "description": "Planlæg en dedikeret installationsbesøg"
             }
         },
-        "success":{
+        "success": {
             "title": "Næsten Færdig!",
             "description": "Gennemgå dine oplysninger og gem for at fuldføre opsætningsprocessen"
         },
-        "buttons":{
+        "buttons": {
             "back": "Tilbage",
-            "complete": "Fuldfør Opsætning"
+            "complete": "Fuldfør Opsætning",
+            "creating": "Opretter...",
+            "addFacility": "Tilføj Facilitet"
         }
     },
-    "forgotPassword":{
+    "home": {
+        "sections": {
+            "productPortal": "Produktportal",
+            "servicePortal": "Serviceportal",
+            "functionalPortal": "Funktionel Portal"
+        },
+        "menuItems": {
+            "xrgiSystems": {
+                "title": "XRGI®-systemer",
+                "subtitle": "Administrer dine systemer"
+            },
+            "serviceContracts": {
+                "title": "Servicekontrakter",
+                "subtitle": "Se alle kontrakter"
+            },
+            "systemStatus": {
+                "title": "Systemstatus",
+                "subtitle": "Se systemstatus"
+            },
+            "statistics": {
+                "title": "Statistik",
+                "subtitle": "Se analyser"
+            },
+            "systemConfiguration": {
+                "title": "Systemkonfiguration",
+                "subtitle": "Konfigurer indstillinger"
+            },
+            "serviceReports": {
+                "title": "Servicerapporter",
+                "subtitle": "Adgang til rapporter"
+            },
+            "callDetails": {
+                "title": "Oplysninger om Opkald",
+                "subtitle": "Se opkaldsdetaljer"
+            },
+            "energyProduction": {
+                "title": "Energiproduktion",
+                "subtitle": "Se energiproduktion"
+            },
+            "unitList": {
+                "title": "Enhedsliste",
+                "subtitle": "XRGI® enheder"
+            }
+        },
+        "search": {
+            "placeholder": "Søg portaler og tjenester...",
+            "noResults": "Ingen resultater fundet",
+            "tryDifferent": "Prøv et andet søgeord"
+        },
+        "profile": {
+            "myProfile": "Min Profil",
+            "settings": "Indstillinger",
+            "logout": "Log Ud"
+        },
+        "help": {
+            "title": "Brug for Hjælp?",
+            "description": "Vores supportteam er her for at hjælpe dig 24/7",
+            "button": "Kontakt Support"
+        }
+    },
+    "xrgiSystem": {
+        "title": "Dine XRGI® Systemer",
+        "subtitle": "Dette er et overblik over dine XRGI® Systemer.",
+        "search": {
+            "placeholder": "Søg efter navn eller XRGI ID"
+        },
+        "filter": {
+            "sortBy": "Sorter efter :",
+            "options": {
+                "all": "Alle",
+                "active": "Aktive",
+                "inactive": "Inaktive",
+                "dataMissing": "Data Mangler"
+            }
+        },
+        "registerButton": "Registrer XRGI®",
+        "sections": {
+            "active": "Aktive",
+            "inactive": "Inaktive",
+            "dataMissing": "Data Mangler"
+        },
+        "loading": "Indlæser faciliteter...",
+        "noResults": {
+            "withQuery": "Ingen XRGI® systemer fundet der matcher \"{query}\"",
+            "withoutQuery": "Ingen XRGI® systemer fundet"
+        }
+    },
+    "detailScreen": {
+        "title": "XRGI® Systemdetaljer",
+        "loading": {
+            "generatingReport": "Genererer Rapport...",
+            "downloading": "Downloader...",
+            "loading": "Indlæser...",
+            "loadingReports": "Indlæser Energy Check Plus rapporter..."
+        },
+        "systemInfo": {
+            "name": "Navn",
+            "serialNumber": "Serienummer",
+            "modelLabel": "Model",
+            "basicData": "Grunddata"
+        },
+        "data": {
+            "expectedSavings": "Årlige besparelser",
+            "annualCo2Savings": "Årlige CO₂-besparelser",
+            "operatingHours": "Driftstimer pr. år",
+            "industry": "Branche",
+            "contact": "E-mailadresse"
+        },
+        "energyCheckPlus": {
+            "title": "EnergyCheck Plus-detaljer",
+            "createReport": "Opret Energirapport",
+            "noReports": {
+                "title": "Ingen Energy Check Plus-data tilgængelige",
+                "message": "Energy Check Plus rapporter for dette XRGI® system vil vises her, når de bliver tilgængelige."
+            },
+            "record": {
+                "badge": "1 Post",
+                "date": "Dato:",
+                "expectedSavings": "Forventede Besparelser:",
+                "runtimeHours": "Køretid Timer:",
+                "monthlySavings": "Månedlige Besparelser:",
+                "serviceProvider": "Serviceudbyder:"
+            },
+            "download": {
+                "downloading": "Downloader...",
+                "downloadPdf": "Download PDF"
+            }
+        },
+        "alerts": {
+            "downloadComplete": {
+                "title": "Download Færdig!",
+                "message": "Filen er gemt i {folder} mappe",
+                "buttonText": "OK"
+            },
+            "reportGenerated": {
+                "title": "Rapport Genereret Succesfuldt!",
+                "message": "EnergyCheck rapport er blevet genereret succesfuldt.",
+                "buttonText": "OK"
+            }
+        }
+    },
+    "serviceContract": {
+        "title": "Serviceaftaler",
+        "subtitle": "Se og administrer alle XRGI®-systemer, der har en tilknyttet servicepartner",
+        "search": {
+            "placeholder": "Søg efter navn eller XRGI ID"
+        },
+        "filter": {
+            "sortBy": "Sorter efter : ",
+            "options": {
+                "all": "Alle",
+                "active": "Aktiv",
+                "pending": "Afventer"
+            }
+        },
+        "loading": "Indlæser faciliteter...",
+        "sections": {
+            "pending": "XRGI® systemer, der anmoder om en servicepartner",
+            "active": "XRGI®-systemer med en servicepartner"
+        },
+        "emptyState": {
+            "title": "Ingen XRGI® systemer fundet",
+            "message": "Prøv at justere din søgning eller filterkriterier"
+        },
+        "deleteAlert": {
+            "title": "Slet System",
+            "message": "Er du sikker på, at du vil fjerne dette system?",
+            "cancel": "Annuller",
+            "delete": "Slet"
+        }
+    },
+    "forgotPassword": {
         "title": "Glemt Adgangskode",
         "subtitle": "Indtast din e-mailadresse, så sender vi dig\nen kode til at nulstille din adgangskode",
         "emailLabel": "E-mailadresse",
@@ -261,25 +464,25 @@
         "backToLogin": "Tilbage til Login",
         "rememberedPassword": "Husket din adgangskode?"
     },
-    "stepper":{
-        "steps":{
+    "stepper": {
+        "steps": {
             "profile": "Profil",
             "systemRegistration": "Systemregistrering",
             "smartPriceControl": "Smart Priskontrol"
         },
-        "completion":{
+        "completion": {
             "title": "Registrering Fuldført!",
             "message": "Dit XRGI-system er blevet registreret og gemt.",
             "redirecting": "Omdirigerer til dashboard...",
             "goToDashboard": "Gå til Dashboard Nu"
         }
     },
-    "profileStep":{
-        "header":{
+    "profileStep": {
+        "header": {
             "title": "Opret Din Profil",
             "subtitle": "Følg trinnene for at fuldføre din profilopsætning."
         },
-        "companyInfo":{
+        "companyInfo": {
             "title": "Virksomhedsinformation",
             "subtitle": "Indtast dine forretningsoplysninger",
             "companyName": "Virksomhedsnavn",
@@ -298,7 +501,7 @@
             "phonePlaceholder": "Indtast telefonnummer",
             "validPhone": "Gyldigt telefonnummer"
         },
-        "contactPerson":{
+        "contactPerson": {
             "title": "Kontaktperson",
             "subtitle": "Udfyld detaljerne",
             "firstName": "Fornavn",
@@ -311,7 +514,7 @@
             "phonePlaceholder": "Indtast telefonnummer",
             "validPhone": "Gyldigt telefonnummer"
         },
-        "buttons":{
+        "buttons": {
             "saveForLater": "Gem Til Senere",
             "continue": "Fortsæt"
         }
@@ -324,6 +527,580 @@
         },
         "info": {
             "text": "Sprogændringer træder umiddelbart i kraft. Nogle indhold kan krævere en app-genstart."
+        }
+    },
+    "systemStatus": {
+        "title": "Systemstatus",
+        "subtitle": "Overvåg alle systemenheder i realtid med detaljeret analyse",
+        "loading": "Indlæser faciliteter...",
+        "totalActiveUnits": "TOTAL AKTIVE ENHEDER",
+        "live": "Live",
+        "units": "enheder",
+        "statusOverview": "Statusoversigt",
+        "statusTypes": {
+            "operatingNormal": "Normal Drift",
+            "fullStop": "Fuldstop",
+            "alarmStop": "Alarmstop",
+            "stoppedCalling": "Stoppet Opkald",
+            "standbyMode": "Standby-tilstand",
+            "testSystem": "Testsystem",
+            "underInstallation": "Under Installation",
+            "waitingPosition": "Venteposition"
+        }
+    },
+    "statistics": {
+        "title": "Statistik",
+        "subtitle": "Se systemstatistik",
+        "resultsTitle": "Statistikresultater",
+        "resultsDescription": "Resultater fra",
+        "loadingSystemData": "Indlæser systemdata...",
+        "refreshingData": "Opdaterer data...",
+        "totalCalls": "Total {count} opkald",
+        "noCallsFound": "Ingen opkald fundet",
+        "noCallsFoundForDateRange": "Ingen opkald fundet for den valgte datoperiode",
+        "tryDifferentDateRange": "Prøv at vælge en anden datoperiode",
+        "newSearch": "Ny Søgning",
+        "labels": {
+            "cause": "Årsag",
+            "currentStatus": "Nuværende Status",
+            "latestIncident": "Seneste Hændelse",
+            "incidentStatus": "Hændelsesstatus"
+        },
+        "form": {
+            "note": "Bemærk venligst: Både dato og time skal være indstillet",
+            "fromDateLabel": "Fra Dato (DD-MM-ÅÅ TT:MM) *",
+            "toDateLabel": "Til Dato (DD-MM-ÅÅ TT:MM) *",
+            "dateLabel": "DATO",
+            "timeLabel": "TID",
+            "backButton": "Tilbage",
+            "getDataButton": "Hent Data"
+        },
+        "statusTypes": {
+            "noNewEvents": "Ingen Nye Hændelser",
+            "unknown": "Ukendt"
+        },
+        "mainScreen": {
+            "title": "Statistik",
+            "description": "Vælg et system for at se detaljeret statistik og præstationsmålinger.",
+            "loading": "Indlæser faciliteter...",
+            "totalSystems": "Total Systemer",
+            "active": "Aktiv",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Seneste Opkald"
+        },
+        "systemStatus": {
+            "active": "Aktiv",
+            "inactive": "Inaktiv",
+            "dataMissing": "Data Mangler"
+        },
+        "systemConfiguration": {
+            "title": "Systemkonfiguration",
+            "description": "Administrer og overvåg alle dine systemkonfigurationer på ét sted. Se aktive systemer, spor seneste aktivitet og opdater indstillinger efter behov.",
+            "loading": "Indlæser faciliteter...",
+            "totalSystems": "Total Systemer",
+            "active": "Aktiv",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Seneste Opkald",
+            "detailScreen": {
+                "title": "Systemkonfiguration",
+                "description": "Listen nedenfor indeholder systemkonfigurationer, vist med den seneste først.",
+                "instruction": "For at åbne en konfiguration, klik på den grå eller hvide linje",
+                "loadingData": "Indlæser konfigurationsdata...",
+                "noDataAvailable": "Ingen konfigurationsdata tilgængelig",
+                "currentConfig": "Nuværende Systemkonfiguration",
+                "configDetails": "Konfigurationsdetaljer",
+                "labels": {
+                    "date": "Dato",
+                    "softwareVersion": "Softwareversion",
+                    "hardwareVersion": "Hardwareversion",
+                    "supplier": "Leverandør",
+                    "size": "Størrelse",
+                    "technology": "Teknologi",
+                    "allowSale": "Tillad Salg",
+                    "catalystType": "Katalysator Type",
+                    "emptyStoragePeriod": "Tom Lagerperiode",
+                    "fillStoragePeriod": "Fyld Lagerperiode",
+                    "saleWeekdays": "Salg Hverdage",
+                    "saleSaturday": "Salg Lørdag",
+                    "saleSunday": "Salg Søndag",
+                    "storageFillPeriod": "Lager Fyldperiode",
+                    "storageEmptyPeriod": "Lager Tomperiode",
+                    "hrtmEnabled": "HRTM Aktiveret",
+                    "smartStarterSwVersion": "Smart Starter SW Version",
+                    "timeNotation": "Tidsnotation",
+                    "smartStarterSerialNumber": "Smart Starter Serienummer",
+                    "unitNotation": "Enhedsnotation",
+                    "systemMode": "Systemtilstand",
+                    "apn": "APN",
+                    "timeZone": "Tidszone",
+                    "timeZoneOffset": "Tidszone Forskydning",
+                    "smartStarterHwVersion": "Smart Starter HW Version",
+                    "dateNotation": "Datonotation",
+                    "highTariffSaturday": "Høj Tarif Lørdag",
+                    "highTariffSunday": "Høj Tarif Søndag",
+                    "highTariffWeekday": "Høj Tarif Hverdag",
+                    "highLoadMaxPower": "Høj Belastning Maks Effekt",
+                    "communicationType": "Kommunikationstype",
+                    "heatPumpEfficiency": "Varmepumpe 1 Effektivitet",
+                    "terminalSerialNo": "Terminal Serienr.",
+                    "simCardNo": "SIM Kort Nr.",
+                    "operator": "Operatør",
+                    "highLoadWeekdays": "Høj Belastning Hverdage",
+                    "highLoadSaturday": "Høj Belastning Lørdag",
+                    "highLoadSunday": "Høj Belastning Søndag",
+                    "lowLoadMaxPower": "Lav Belastning Maks Effekt",
+                    "powerUnitEfficiencyLimit": "Effekt Enhed Effektivitetsgrænse",
+                    "heatBackup": "Varme Backup",
+                    "fuelSelector": "Brændstofvælger"
+                }
+            }
+        },
+        "serviceReport": {
+            "title": "Servicerapport",
+            "description": "Vælg det relevante system fra listen.",
+            "loading": "Indlæser faciliteter...",
+            "totalSystems": "Total Systemer",
+            "active": "Aktiv",
+            "xrgiId": "XRGI® ID",
+            "recentCalls": "Seneste Opkald",
+            "detailScreen": {
+                "tabs": {
+                    "serviceReports": "Servicerapporter",
+                    "itemUsage": "Vareforbrug",
+                    "uploadedReports": "Uploadede Rapporter",
+                    "upload": "Upload"
+                },
+                "serviceReportsTab": {
+                    "loading": "Indlæser servicerapporter...",
+                    "noDataAvailable": "Ingen servicerapporter tilgængelige",
+                    "noDataSubtext": "Der er ingen servicerapporter at vise i øjeblikket.",
+                    "searchPlaceholder": "Søg rapporter...",
+                    "descriptionLabel": "Beskrivelse",
+                    "noDescriptionAvailable": "Ingen beskrivelse tilgængelig",
+                    "deliveryDate": "Leveringsdato",
+                    "creationDate": "Oprettelsesdato",
+                    "hideResources": "Skjul Ressourcer",
+                    "viewResources": "Vis Ressourcer",
+                    "resourcesDetails": "Ressourcedetaljer",
+                    "workType": "Arbejdstype",
+                    "date": "Dato",
+                    "technician": "Tekniker",
+                    "quantity": "Antal",
+                    "unit": "Enhed",
+                    "scrollHint": "Rul vandret for at se alle kolonner"
+                },
+                "itemUsageTab": {
+                    "loading": "Indlæser vareforbrugsdata...",
+                    "noDataAvailable": "Ingen vareforbrugsdata tilgængelige",
+                    "noDataSubtext": "Der er ingen vareforbrugsposter at vise i øjeblikket.",
+                    "sectionHeader": "Vareforbrugsregistreringer",
+                    "creationDate": "Oprettelsesdato",
+                    "deliveryDate": "Leveringsdato",
+                    "hideItems": "Skjul Varer",
+                    "viewItems": "Vis Varer",
+                    "itemUsages": "Vareforbrug",
+                    "description": "Beskrivelse",
+                    "partNumber": "Varenummer",
+                    "serialNumber": "Serienummer",
+                    "quantity": "Antal",
+                    "unit": "Enhed",
+                    "scrollHint": "Rul vandret for at se alle kolonner"
+                },
+                "uploadedReportsTab": {
+                    "loading": "Indlæser uploadede rapporter...",
+                    "noDataAvailable": "Ingen uploadede rapporter tilgængelige",
+                    "noDataSubtext": "Der er ingen uploadede rapporter at vise i øjeblikket.",
+                    "searchPlaceholder": "Søg rapporter...",
+                    "noMatchingReports": "Ingen matchende rapporter fundet",
+                    "noUploadedReports": "Ingen Uploadede Rapporter",
+                    "tryDifferentSearch": "Prøv et andet søgeord",
+                    "noReportsDescription": "Der er ingen uploadede servicerapporter for dette system endnu.",
+                    "dateOfDelivery": "Leveringsdato",
+                    "creationDate": "Oprettelsesdato",
+                    "view": "Vis",
+                    "download": "Download",
+                    "downloadComplete": "Download Færdig!",
+                    "downloadMessage": "Filen er gemt i {folder} mappe",
+                    "downloadError": "Kunne ikke downloade filen. Prøv venligst senere.",
+                    "loadingDocument": "Indlæser dokument...",
+                    "documentLoadError": "Kunne ikke indlæse dokumentet. Filen kan være korrupt eller i et ikke-understøttet format.",
+                    "noDocumentAvailable": "Intet dokument tilgængeligt",
+                    "documentsFolder": "Dokumenter",
+                    "downloadsFolder": "Downloads",
+                    "error": "Fejl",
+                    "ok": "OK"
+                },
+                "uploadTab": {
+                    "title": "Upload Servicerapport",
+                    "description": "Vælg og upload en servicerapportfil for dette system.",
+                    "selectFile": "Vælg Fil",
+                    "upload": "Upload",
+                    "uploading": "Uploader...",
+                    "uploadSuccess": "Rapport uploadet succesfuldt!",
+                    "uploadError": "Kunne ikke uploade rapport. Prøv venligst igen.",
+                    "formDescription": "Udfyld detaljerne og upload din servicerapportdokument.",
+                    "creationDate": "Oprettelsesdato",
+                    "dateOfDelivery": "Leveringsdato *",
+                    "serviceType": "Servicetype *",
+                    "serviceReportNumber": "Servicerapportnummer *",
+                    "uploadFile": "Upload fil (PDF, JPEG, PNG kun)",
+                    "chooseFile": "Vælg fil",
+                    "dragDropHint": "Træk & Slip fil her eller klik for at browse",
+                    "fileFormatsHint": "PDF, JPEG, PNG kun",
+                    "clearAll": "Ryd alt",
+                    "uploadGuidelines": "Upload Retningslinjer",
+                    "acceptedFormats": "Accepterede formater: PDF, JPEG, PNG",
+                    "maxFileSize": "Maksimal filstørrelse: 10 MB",
+                    "ensureDatesCorrect": "Sørg for at datoer er i korrekt format",
+                    "selectAppropriateServiceType": "Vælg passende servicetype",
+                    "selectServiceTypePlaceholder": "Vælg Servicetype",
+                    "enterServiceReportNumberPlaceholder": "Indtast servicerapportnummer",
+                    "serviceTypes": {
+                        "regularService": "Regelmæssig Service",
+                        "repair": "Reparation",
+                        "maintenance": "Vedligeholdelse",
+                        "commissioning": "Ibtagning"
+                    },
+                    "errors": {
+                        "invalidFileType": "Ugyldig filtype. Kun PDF, JPEG og PNG filer er tilladt.",
+                        "fileSizeExceedsLimit": "Filstørrelse overstiger 10MB grænse.",
+                        "failedToSelectFile": "Kunne ikke vælge fil. Prøv venligst igen.",
+                        "pleaseSelectFile": "Vælg venligst en fil at uploade",
+                        "selectedFileEmpty": "Valgte fil er tom.",
+                        "systemDataMissing": "Systemdata mangler. Prøv venligst igen.",
+                        "pleaseSelectServiceType": "Vælg venligst en servicetype.",
+                        "pleaseEnterServiceReportNumber": "Indtast venligst et servicerapportnummer.",
+                        "uploadSuccessful": "Upload Succesfuld",
+                        "uploadFailed": "Upload Fejlet",
+                        "reportUploadedSuccessfully": "Din servicerapport er blevet uploadet succesfuldt.",
+                        "failedToUploadFile": "Kunne ikke uploade fil. Prøv venligst igen."
+                    }
+                }
+            }
+        }
+    },
+    "callDetails": {
+        "title": "Opkaldsdetaljer",
+        "description": "Klik på det system, du vil generere opkaldsdetaljer for.",
+        "loading": "Indlæser systemer...",
+        "totalSystems": "Samlet antal systemer",
+        "active": "Aktiv",
+        "xrgiId": "XRGI® ID",
+        "recentCalls": "Seneste opkald",
+        "subtitle": "Opkaldsdetaljer for system {{xrgiID}} / {{modelNumber}}",
+        "note": "Bemærk: Dato og tid skal være indstillet",
+        "fromDate": "Fra dato (DD-MM-ÅÅ TT:MM)",
+        "toDate": "Til dato (DD-MM-ÅÅ TT:MM)",
+        "date": "DATO",
+        "time": "TID",
+        "back": "Tilbage",
+        "getData": "Hent data",
+        "heatDistributor": "Varmefordeler",
+        "timeOfCall": "Opkaldstid:",
+        "attemptedRedials": "Forsøgte genopkald:",
+        "softwareValidated": "Software valideret:",
+        "operationStatus": "Driftsstatus",
+        "actualStatus": "Aktuel status:",
+        "stopped": "Stoppet",
+        "operationalHoursToNextService": "Driftstimer til næste service:",
+        "operatingHours": "Driftstimer:",
+        "actualElecProduced": "Produceret el:",
+        "forcedStandby": "Tvungen standby:",
+        "loadLevel": "Belastningsniveau:",
+        "storageLevel": "Lagerniveau:",
+        "oilPressure": "Olietryk:",
+        "smartstarterBoardTemp": "Smartstarter korttemperatur:",
+        "boilerReleased": "Kedel frigivet:",
+        "systemStatus": "Systemstatus:",
+        "controlPanelAntennaSignal": "Styrepanel antennesignal:",
+        "controlPanelPCBTemp": "Styrepanel PCB-temperatur:",
+        "controlPanelPSUVoltage": "Styrepanel PSU-spænding:",
+        "powerUnitUPSAccumulator": "Strømenhed UPS-akkumulator:",
+        "powerUnitPCBTemp": "Strømenhed PCB-temperatur:",
+        "heatDistributorPCBTemp": "Varmefordeler PCB-temperatur:",
+        "flowmasterPSUVoltage": "Flowmaster PSU-spænding:",
+        "flowmasterPCBTemp": "Flowmaster PCB-temperatur:",
+        "surgeProtector": "Overspændingsbeskyttelse:",
+        "smartstarterLastError": "Seneste Smartstarter-fejl:",
+        "incidents": "Hændelser",
+        "loadingIncidents": "Indlæser hændelser...",
+        "noIncidentsFound": "Ingen hændelser fundet",
+        "adjustDateRange": "Prøv at justere datointervallet for at inkludere flere historiske data",
+        "currentRange": "Aktuelt interval: fra {{fromDate}} til {{toDate}}",
+        "incident": "Hændelse",
+        "dateTime": "Dato og tid",
+        "statusOfIncident": "Hændelsesstatus",
+        "newSearch": "Ny søgning"
+    },
+    "heatDistribution": {
+        "title": "Varmefordeling",
+        "controlSystem": "Styringssystem til varmefordeling",
+        "dataMonitor": "Datamonitor for varmekontrol",
+        "showingLatestRecords": "Viser de seneste {{count}} poster",
+        "loading": "Indlæser...",
+        "manualStatus": "Manuel status",
+        "engineValve": "Motorventil",
+        "flowValve": "Flowventil",
+        "storagePercent": "Lager %",
+        "heatOutput": "Varmeeffekt",
+        "engineSystem": "Motorsystem",
+        "engineFlow": "Motorflow",
+        "pumpForce": "Pumpekraft",
+        "tmkSetpoint": "TMK-sætværdi",
+        "tmvMax": "TMV maks",
+        "enginePumpFeedback": "Feedback fra motorpumpe",
+        "heatControlTemperatureSensors": "Temperaturfølere til varmekontrol",
+        "tlkSensor": "TLK-sensor",
+        "tlvSensor": "TLV-sensor",
+        "tmkSensor": "TMK-sensor",
+        "returnTemperature": "Returtemperatur",
+        "flowControlSensors": "Flowkontrolsensorer",
+        "powerUnitSetpoint": "Sætværdi for strømforsyning",
+        "operational": "Operationel",
+        "return": "Retur",
+        "supply": "Fremløb",
+        "masterBypass": "Hoved-bypass",
+        "masterSource": "Hovedkilde",
+        "auxiliaryTemperatureTrackers": "Ekstra temperaturovervågning",
+        "auxSensor1": "Ekstra sensor 1",
+        "auxSensor2": "Ekstra sensor 2",
+        "auxSensor3": "Ekstra sensor 3",
+        "auxSensor4": "Ekstra sensor 4",
+        "storageSystem": "Lagersystem",
+        "storageFlow": "Lagerflow",
+        "sensorStatus": "Sensorstatus",
+        "sequenceStatus": "Sekvensstatus",
+        "storageTopSensor": "Topføler i lager",
+        "storageBottomSensor": "Bundføler i lager",
+        "storagePumpFeedback": "Feedback fra lagerpumpe",
+        "flowMasterSystem": "Flow Master-system",
+        "valvePosition": "Ventilposition",
+        "flowPump": "Flowpumpe",
+        "virtualSourceActive": "Virtuel kilde aktiv",
+        "flowMasterPumpFeedback": "Feedback fra Flow Master-pumpe",
+        "controlParameters": "Styringsparametre",
+        "engineRegulationDeadband": "Dødbånd for motorregulering",
+        "flowControlDeadband": "Dødbånd for flowkontrol",
+        "basis": "Basis",
+        "t1Position": "T1-position",
+        "t2Position": "T2-position",
+        "engineRegulationValveRuntime": "Køretid for motorreguleringsventil",
+        "flowControlValveRuntime": "Køretid for flowkontrolventil",
+        "engineRegulationIntegral": "Motorreguleringsintegral",
+        "flowControlIntegral": "Flowkontrolintegral",
+        "flowControlRF": "Flowkontrol RF"
+    },
+    "energyProduction": {
+        "title": "Energiproduktion",
+        "description": "Vælg et system for at se detaljerede energiproduktionsdata og analyser.",
+        "loadingFacilities": "Indlæser faciliteter...",
+        "totalSystems": "Total Systemer",
+        "active": "Aktiv",
+        "xrgiId": "XRGI® ID",
+        "status": "Status",
+        "loadingSystemData": "Indlæser systemdata...",
+        "energyOverview": "Energioversigt",
+        "production": "Produktion",
+        "consumption": "Forbrug",
+        "heatProduction": "Varme Prod.",
+        "sold": "Solgt",
+        "filterOptions": {
+            "last7days": "de sidste 7 dage",
+            "last183days": "de sidste 183 dage",
+            "last365days": "de sidste 365 dage",
+            "firstcall": "siden første opkald",
+            "2025": "2025",
+            "2024": "2024"
+        },
+        "systemInfo": {
+            "latestUpdate": "Seneste opdatering:",
+            "operatingHours": "Driftstimer:",
+            "outOfPossibleHours": "af mulige timer",
+            "lastService": "Seneste service:",
+            "operationalHoursToNextService": "Driftstimer til næste service:",
+            "elecProduction": "Elec. produktion:",
+            "heatProduction": "Varmeproduktion:",
+            "fuelConsumption": "Brændstofforbrug:",
+            "firstCall": "Første opkald:",
+            "siteElecConsumption": "Stedets elforbrug:",
+            "coveredByXRGI": "Dækket af XRG® system:",
+            "coveredByPowerPurchase": "Dækket af strømkøb:",
+            "soldElectricity": "Solgt el:",
+            "loading": "Indlæser...",
+            "kwh": "kWh",
+            "hours": "timer"
+        }
+    },
+    "unitList": {
+        "title": "Enhedsliste",
+        "subtitle": "XRGI® enheder",
+        "description": "For at se status, produktion og forbrug for indeværende år, vælg venligst et system fra listen nedenfor",
+        "totalSystems": "Total Systemer",
+        "active": "Aktive",
+        "loading": "Indlæser faciliteter...",
+        "xrgiId": "XRGI® ID",
+        "recentCalls": "Seneste Opkald"
+    },
+    "unitDetail": {
+        "header": "XRGI Enhed",
+        "xrgiId": "XRGI ID",
+        "running": "Kører",
+        "loading": "Indlæser systemdata...",
+        "comingSoon": "Kommer Snart",
+        "systemControl": {
+            "title": "Systemkontrol",
+            "description": "Brug disse kontroller til manuelt at starte eller stoppe XRGI systemet. Sørg for korrekt autorisation før du foretager ændringer.",
+            "start": "Start",
+            "stop": "Stop",
+            "starting": "Starter...",
+            "stopping": "Stopper..."
+        },
+        "general": {
+            "systemName": "XRGI® Systemnavn",
+            "dealer": "FORHANDLER",
+            "technician": "Tekniker",
+            "name": "Navn",
+            "address": "Adresse",
+            "city": "By",
+            "postalCode": "Postnummer",
+            "country": "Land",
+            "email": "E-mail",
+            "cellPhone": "Mobilnummer"
+        },
+        "lastCall": {
+            "calls": "Opkald:",
+            "timeOfCall": "Tidspunkt for opkald:",
+            "operationStatus": "Driftsstatus",
+            "status": "Status",
+            "noise": "Støj",
+            "oilPressure": "Oliepres",
+            "gasAlarm": "Gasalarm",
+            "controlPanelTemp": "Kontrolpanel Temperatur",
+            "controlPanelSignal": "Kontrolpanel Antennesignal",
+            "tempRange": "Kold • Normal • Varm",
+            "signalRange": "Lav • Mellem • Høj"
+        },
+        "customerLogin": {
+            "lastLogin": "Sidste Login"
+        },
+        "status2025": {
+            "latestUpdate": "Seneste opdatering:",
+            "operatingHours": "Driftstimer:",
+            "lastService": "Sidste service:",
+            "operationalHoursToNextService": "Driftstimer til næste service:",
+            "elecProduction": "El-produktion:",
+            "heatProduction": "Varmeproduktion:",
+            "fuelConsumption": "Brændstofforbrug:",
+            "firstCall": "Første opkald:",
+            "siteElecConsumption": "Stedets el-forbrug:",
+            "coveredByXRGI": "Dækket af XRGI® system:",
+            "coveredByPowerPurchase": "Dækket af strømkøb:",
+            "soldElectricity": "Solgt el:"
+        },
+        "existingConfig": {
+            "title": "Eksisterende Konfiguration"
+        },
+        "menuItems": {
+            "general": "Generelt",
+            "lastCall": "Seneste Opkald",
+            "customerLogin": "Kundelogin",
+            "status2025": "Status 2025",
+            "existingConfig": "Eksisterende Konfiguration"
+        },
+        "alerts": {
+            "success": "Succes",
+            "systemStarted": "XRGI system startet succesfuldt",
+            "systemStopped": "XRGI system stoppet succesfuldt",
+            "cancel":"Annuller",
+            "ok":"OK",
+            "startSystemTitle": "Start system",
+            "startSystemMessage": "Er du sikker på, at du vil starte XRGI-systemet?",
+            "stopSystemTitle": "Stop system",
+            "stopSystemMessage": "Er du sikker på, at du vil stoppe XRGI-systemet?"
+        }
+    },
+    "contact": {
+        "title": "Kontakt Os",
+        "subtitle": "Vi er her for at hjælpe! Udfyld formularen nedenfor, så vender vi tilbage til dig snart.",
+        "subjectLabel": "Emne",
+        "required": "*",
+        "selectSubject": "Vælg et emne",
+        "descriptionLabel": "Beskrivelse",
+        "descriptionPlaceholder": "Beskriv venligst dit problem eller dit spørgsmål i detaljer...",
+        "charCount": "{{count}} / 500",
+        "submitButton": "Send",
+        "loading": "Indlæser service rapporter...",
+        "subjects": {
+            "problemWithXRGI": "Problem med XRGI",
+            "problemWithAddingInfo": "Problem med tilføjelse af information",
+            "problemWithPriceSmart": "Problem med Price Smart",
+            "wantContact": "Jeg ønsker at blive kontaktet af EC POWER",
+            "otherInquiry": "Anden forespørgsel"
+        },
+        "alerts": {
+            "missingInfo": {
+                "title": "Manglende Information",
+                "message": "Udfyld venligst alle påkrævede felter"
+            },
+            "submissionSuccess": {
+                "title": "Forespørgsel Sendt",
+                "message": "Din forespørgsel er blevet sendt succesfuldt. Vi vender tilbage til dig snart."
+            },
+            "submissionFailed": {
+                "title": "Afsendelse Fejlet",
+                "message": "Kunne ikke sende din forespørgsel. Prøv venligst igen senere."
+            },
+            "okButton": "OK"
+        },
+        "modals": {
+            "deleteConfirmation": {
+                "title": "Slet Enhed",
+                "message": "Er du sikker på, at du vil slette denne enhed{{itemName}}?\nDenne handling kan ikke fortrydes.",
+                "cancelButton": "Annuller",
+                "deleteButton": "Slet",
+                "deletingButton": "Sletter..."
+            },
+            "downloadSuccess": {
+                "okButton": "OK"
+            },
+            "energyCheckReport": {
+                "title": "Opret EnergyCheck Rapport",
+                "question": "For hvilken måned vil du generere rapport?",
+                "generateButton": "Generer Rapport",
+                "generatingButton": "Genererer..."
+            },
+            "termsAndConditions": {
+                "title": "Betingelser og Vilkår",
+                "acceptButton": "Accepter",
+                "cancelButton": "Annuller",
+                "checkboxLabel": "Jeg har læst og accepterer Betingelser og Vilkår",
+                "checkboxLabel2": "Spring over for nu"
+            }
+        }
+    },
+    "facilityTerms": {
+        "title": "Vilkår for produktregistrering",
+        "checkboxLabel": "Jeg har læst og accepterer vilkår og betingelser",
+        "checkboxLabel2": "Jeg ønsker ikke at acceptere vilkår og betingelser",
+        "cancelButton": "Annuller",
+        "acceptButton": "Accepter vilkår",
+        "termsAndConsent": {
+            "paragraph1": "Produkter og systemer leveret af EC Power kan i visse tilfælde betragtes som kritisk infrastruktur. Derfor anbefaler vi, at du registrerer dine produkter og/eller systemer på produktregistreringsportalen (Productportal.ecpower.net). Det er valgfrit, om du benytter denne mulighed, men registrering er nødvendig for at opnå de fordele, den tilbyder. Registrering gør det muligt for os at kontakte dig, hvis der opstår en hændelse, som kan påvirke produkter og/eller systemer leveret af EC Power, samt at give din servicepartner de tekniske data, der er nødvendige for drift og vedligeholdelse.",
+            "paragraph2": "EC Power er dataansvarlig for behandlingen af personoplysninger i forbindelse med din brug af produktregistreringsportalen. Når du registrerer dine produkter og/eller systemer på portalen, accepterer du, at dine personoplysninger behandles i overensstemmelse med disse vilkår.",
+            "paragraph3": "Begrebet \"EC Power\" eller \"os\" henviser til EC Power A/S, Samsøvej 25, 8382 Hinnerup, Danmark, CVR-nummer: 19228509.",
+            "paragraph4": "Begrebet \"produkt\" henviser til produkter og/eller systemer, som du har registreret på produktregistreringsportalen.",
+            "paragraph5": "Begrebet \"du\" henviser til produktejeren og/eller brugeren, der er registreret på produktregistreringsportalen.",
+            "paragraph6": "De oplysninger, vi behandler: For at registrere dit produkt skal du oprette en brugerkonto. Du skal vælge en adgangskode og angive dine personlige identifikationsoplysninger (fornavn og efternavn), kontaktoplysninger (telefonnummer og e-mail) samt virksomhedsoplysninger (virksomhedsnavn, adresse, e-mail, telefonnummer og CVR-nummer). Derudover skal du angive produktidentifikationsoplysninger (produktnavn, model, XRGI ID-nummer og installationsadresse) samt navn og kontaktoplysninger på din salgs- og/eller servicepartner.",
+            "paragraph7": "Derudover behandler vi tekniske data genereret af dit produkt, herunder, men ikke begrænset til: stamdata (model, type og XRGI ID-nummer), driftsdata (driftsstatus, driftstimer, komponenttilstand som fejl og mangler), ydeevnedata samt service- og vedligeholdelsesdata.",
+            "paragraph8": "De oplysninger, vi behandler om dig, er personoplysninger. I sjældne tilfælde kan tekniske data også udgøre personoplysninger, hvis oplysninger om dig eller brugere af produktet kan udledes heraf.",
+            "paragraph9": "Hvordan vi anvender oplysninger: Vi anvender oplysningerne til at kontakte dig i tilfælde af hændelser, der kan påvirke dit produkt, f.eks. cyber- eller hackerangreb, samt til at informere dig om produktets tilstand, service- og vedligeholdelsesbehov eller risiko for skader.",
+            "paragraph10": "Tekniske data anvendes af os, vores tilknyttede selskaber og forretningspartnere til videreudvikling og forbedring af produkter og systemer, herunder optimering af drift, fejlanalyse og statistiske analyser.",
+            "paragraph11": "Tekniske data deles med din servicepartner med henblik på teknisk support, fejldiagnosticering, overvågning m.m., så du kan modtage skræddersyet service og support.",
+            "paragraph12": "Retsgrundlag og opbevaring: Personoplysninger behandles i overensstemmelse med GDPR. Behandlingsgrundlaget er artikel 6, stk. 1, litra f, baseret på vores legitime interesse.",
+            "paragraph13": "Oplysninger opbevares som hovedregel, indtil produktet tages ud af drift, hvorefter de slettes.",
+            "paragraph14": "Du kan til enhver tid opdatere eller slette oplysninger i din brugerkonto, herunder produkter eller servicepartner, eller slette din konto helt.",
+            "paragraph15": "Sikkerhed: EC Power er NIS2-kompatibel og har implementeret tekniske og organisatoriske sikkerhedsforanstaltninger.",
+            "paragraph16": "Registreredes rettigheder: I henhold til GDPR har du ret til indsigt, berigtigelse, sletning, begrænsning, indsigelse, dataportabilitet og til at klage til tilsynsmyndigheden. Kontakt os på info@ecpower.eu."
         }
     }
 }

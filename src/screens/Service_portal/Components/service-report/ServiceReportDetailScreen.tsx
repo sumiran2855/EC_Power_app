@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './ServiceReportDetailScreen.styles';
-import ServiceReportsTab from './tabs/serviceReportTab';
 import ItemUsageTab from './tabs/ItemUsageTab';
+import ServiceReportsTab from './tabs/serviceReportTab';
 import UploadedServiceReportTab from './tabs/UploadedServiceReportTab';
 import UploadTab from './tabs/uploadTab';
-import { serviceReportController } from '@/controllers/serviceReportController';
 
 interface ServiceReportDetailScreenProps {
     navigation: any;
@@ -17,6 +18,7 @@ interface ServiceReportDetailScreenProps {
 type TabType = 'service_reports' | 'item_usage' | 'uploaded_reports' | 'upload';
 
 const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const systemData = route?.params?.system;
     const [activeTab, setActiveTab] = useState<TabType>('service_reports');
     const [serviceReport, setServiceReport] = useState<any[]>([]);
@@ -43,10 +45,10 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
     }, []);
 
     const tabs = [
-        { id: 'service_reports', label: 'Service Reports', icon: 'document-text' },
-        { id: 'item_usage', label: 'Item Usage', icon: 'list' },
-        { id: 'uploaded_reports', label: 'Uploaded Reports', icon: 'cloud-done' },
-        { id: 'upload', label: 'Upload', icon: 'cloud-upload-outline' }
+        { id: 'service_reports', label: t('statistics.serviceReport.detailScreen.tabs.serviceReports'), icon: 'document-text' },
+        { id: 'item_usage', label: t('statistics.serviceReport.detailScreen.tabs.itemUsage'), icon: 'list' },
+        { id: 'uploaded_reports', label: t('statistics.serviceReport.detailScreen.tabs.uploadedReports'), icon: 'cloud-done' },
+        { id: 'upload', label: t('statistics.serviceReport.detailScreen.tabs.upload'), icon: 'cloud-upload-outline' }
     ];
 
     const renderTabContent = () => {
@@ -58,7 +60,7 @@ const ServiceReportDetailScreen: React.FC<ServiceReportDetailScreenProps> = ({ n
             case 'uploaded_reports':
                 return <UploadedServiceReportTab systemData={systemData} navigation={navigation} loading={isLoading} />;
             case 'upload':
-                return <UploadTab systemData={systemData} navigation={navigation} loading={isLoading} customerID={serviceReport[0].customerID}/>;
+                return <UploadTab systemData={systemData} navigation={navigation} loading={isLoading} customerID={serviceReport[0]?.customerID}/>;
             default:
                 return <ServiceReportsTab systemData={systemData} navigation={navigation} loading={isLoading} />;
         }

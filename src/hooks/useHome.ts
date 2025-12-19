@@ -8,6 +8,7 @@ import { AuthController } from '../controllers/AuthController';
 import { UserController } from '@/controllers/UserController';
 import StorageService from '@/utils/secureStorage';
 import { UserData } from '@/screens/authScreens/types';
+import { useTranslation } from 'react-i18next';
 
 export interface MenuItem {
     id: string;
@@ -24,6 +25,7 @@ export interface Section {
 }
 
 const useHome = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -34,82 +36,82 @@ const useHome = () => {
     const allSections: Section[] = [
         {
             id: '1',
-            title: 'Product Portal',
+            title: t('home.sections.productPortal'),
             items: [
                 {
                     id: '1-1',
-                    title: 'XRGI® Systems',
+                    title: t('home.menuItems.xrgiSystems.title'),
                     icon: 'devices',
                     color: '#1E88E5',
-                    subtitle: 'Manage your systems'
+                    subtitle: t('home.menuItems.xrgiSystems.subtitle')
                 },
                 {
                     id: '1-2',
-                    title: 'Service Contracts',
+                    title: t('home.menuItems.serviceContracts.title'),
                     icon: 'assignment',
                     color: '#43A047',
-                    subtitle: 'View all contracts'
+                    subtitle: t('home.menuItems.serviceContracts.subtitle')
                 },
             ],
         },
         {
             id: '2',
-            title: 'Service Portal',
+            title: t('home.sections.servicePortal'),
             items: [
                 {
                     id: '2-1',
-                    title: 'System Status',
+                    title: t('home.menuItems.systemStatus.title'),
                     icon: 'monitor',
                     color: '#8E24AA',
-                    subtitle: 'View system status'
+                    subtitle: t('home.menuItems.systemStatus.subtitle')
                 },
                 {
                     id: '2-2',
-                    title: 'Statistics',
+                    title: t('home.menuItems.statistics.title'),
                     icon: 'bar-chart',
                     color: '#8E24AA',
-                    subtitle: 'View analytics'
+                    subtitle: t('home.menuItems.statistics.subtitle')
                 },
                 {
                     id: '2-3',
-                    title: 'System Configuration',
+                    title: t('home.menuItems.systemConfiguration.title'),
                     icon: 'settings',
                     color: '#3949AB',
-                    subtitle: 'Configure settings'
+                    subtitle: t('home.menuItems.systemConfiguration.subtitle')
                 },
                 {
                     id: '2-4',
-                    title: 'Service Reports',
+                    title: t('home.menuItems.serviceReports.title'),
                     icon: 'description',
                     color: '#F4511E',
-                    subtitle: 'Access reports'
+                    subtitle: t('home.menuItems.serviceReports.subtitle')
                 },
                 {
                     id: '2-5',
-                    title: 'Call Details',
+                    title: t('home.menuItems.callDetails.title'),
                     icon: 'list',
                     color: '#F4511E',
-                    subtitle: 'View call details'
+                    subtitle: t('home.menuItems.callDetails.subtitle')
                 },
                 {
                     id: '2-6',
-                    title: 'Energy Production',
+                    title: t('home.menuItems.energyProduction.title'),
                     icon: 'battery-charging-full',
                     color: '#1E88E5',
-                    subtitle: 'View energy production'
+                    subtitle: t('home.menuItems.energyProduction.subtitle')
                 },
             ],
         },
         {
             id: '3',
-            title: 'Functional Portal',
+            title: t('home.sections.functionalPortal'),
             items: [
                 {
                     id: '3-1',
-                    title: 'Unit List',
+                    title: t('home.menuItems.unitList.title'),
                     icon: 'contacts',
                     color: '#00897B',
-                    subtitle: 'XRGI® units'
+                    subtitle: t('home.menuItems.unitList.subtitle')
                 },
             ],
         },
@@ -183,7 +185,7 @@ const useHome = () => {
                 navigation.navigate('CallDetails');
                 break;
             case '2-6':
-                navigation.navigate('EnergyProduction');
+                navigation.navigate('EnergyProductionList');
                 break;
             case '3-1':
                 navigation.navigate('UnitList');

@@ -1,14 +1,16 @@
 import { MaterialIcons as Icon, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../../components/Card/Card';
 import useDashboard from '../../hooks/Product-portal/useDashboard';
-import Sidebar from '../common/Sidebar';
 import styles from './XRGI-System.styles';
 import { Facility } from "../authScreens/types";
+import { RegisterController } from "@/controllers/RegisterController";
+import DeleteConfirmationModal from '../../components/Modals/DeleteConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 type RootStackParamList = {
   XRGI_System: undefined;
@@ -20,13 +22,17 @@ type XRGISystemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'X
 interface XRGI_SystemProps { }
 
 const XRGI_System: React.FC<XRGI_SystemProps> = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<XRGISystemScreenNavigationProp>();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Facility | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  
   const {
     // State
     selectedFilter,
     dropdownVisible,
     searchQuery,
-    sidebarVisible,
     loading,
 
     // Data
@@ -35,11 +41,10 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
 
     // Functions
     setDropdownVisible,
-    setSidebarVisible,
     handleFilterSelect,
     handleSearchChange,
-    handleSidebarMenuPress,
     handleRegisterXRGI,
+    HandleGetFacilityList,
   } = useDashboard();
 
   const handleBackPress = () => {
@@ -50,8 +55,32 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
     navigation.navigate('XRGI_Details', { item });
   };
 
-  const handleDelete = (id: string) => {
-    console.log('Delete item with id:', id);
+  const handleDelete = (item: Facility) => {
+    setSelectedItem(item);
+    setDeleteModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedItem) return;
+    
+    setDeleteLoading(true);
+    try {
+      const response = await RegisterController.deleteXRGIUnit(selectedItem.id);
+      if (response?.success) {
+        await HandleGetFacilityList();
+      }
+    } catch (error) {
+      console.log("Error deleting xrgi unit", error);
+    } finally {
+      setDeleteLoading(false);
+      setDeleteModalVisible(false);
+      setSelectedItem(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalVisible(false);
+    setSelectedItem(null);
   };
 
   const renderCard = (item: Facility) => (
@@ -59,7 +88,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
       key={item.id}
       item={item}
       onPress={handleCardPress}
-      onDelete={handleDelete}
+      onDelete={() => handleDelete(item)}
     />
   );
 
@@ -80,8 +109,8 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
 
       {/* Title Section */}
       <View style={styles.titleSection}>
-        <Text style={styles.mainTitle}>Your XRGI® Systems</Text>
-        <Text style={styles.subtitle}>This is an overview of your XRGI® Systems.</Text>
+        <Text style={styles.mainTitle}>{t('xrgiSystem.title')}</Text>
+        <Text style={styles.subtitle}>{t('xrgiSystem.subtitle')}</Text>
       </View>
 
       {/* Search Bar */}
@@ -90,7 +119,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
           <Ionicons name="search" size={20} color="#64748b" />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search by name or XRGI ID"
+            placeholder={t('xrgiSystem.search.placeholder')}
             placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={handleSearchChange}
@@ -106,7 +135,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
             onPress={() => setDropdownVisible(!dropdownVisible)}
           >
             <MaterialIcons name="filter-list" size={20} color="#1a365d" />
-            <Text style={styles.sortText}>Sort by :</Text>
+            <Text style={styles.sortText}>{t('xrgiSystem.filter.sortBy')}</Text>
             <Ionicons name="chevron-down" size={16} color="#1a365d" />
           </TouchableOpacity>
 
@@ -137,7 +166,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
         </View>
 
         <TouchableOpacity style={styles.registerButton} onPress={handleRegisterXRGI}>
-          <Text style={styles.registerText}>Register XRGI®</Text>
+          <Text style={styles.registerText}>{t('xrgiSystem.registerButton')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -152,14 +181,14 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#1a5490" />
-          <Text style={styles.loadingText}>Loading facilities...</Text>
+          <Text style={styles.loadingText}>{t('xrgiSystem.loading')}</Text>
         </View>
       ) : (
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {/* Active Section */}
           {filteredCards.active.length > 0 && (
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Active</Text>
+              <Text style={styles.sectionTitle}>{t('xrgiSystem.sections.active')}</Text>
               {filteredCards.active.map(renderCard)}
             </View>
           )}
@@ -167,7 +196,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
           {/* Inactive Section */}
           {filteredCards.inactive.length > 0 && (
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitleInactive}>Inactive</Text>
+              <Text style={styles.sectionTitleInactive}>{t('xrgiSystem.sections.inactive')}</Text>
               {filteredCards.inactive.map(renderCard)}
             </View>
           )}
@@ -175,7 +204,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
           {/* Data Missing Section */}
           {filteredCards.dataMissing.length > 0 && (
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitleDataMissing}>Data Missing</Text>
+              <Text style={styles.sectionTitleDataMissing}>{t('xrgiSystem.sections.dataMissing')}</Text>
               {filteredCards.dataMissing.map(renderCard)}
             </View>
           )}
@@ -188,18 +217,20 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
               <View style={styles.noResultsContainer}>
                 <Text style={styles.noResultsText}>
                   {searchQuery.trim() !== ''
-                    ? `No XRGI® systems found matching "${searchQuery}"`
-                    : 'No XRGI® systems found'}
+                    ? t('xrgiSystem.noResults.withQuery', { query: searchQuery })
+                    : t('xrgiSystem.noResults.withoutQuery')}
                 </Text>
               </View>
             )}
         </ScrollView>
       )}
 
-      <Sidebar
-        isVisible={sidebarVisible}
-        onClose={() => setSidebarVisible(false)}
-        onMenuItemPress={handleSidebarMenuPress}
+      <DeleteConfirmationModal
+        isVisible={deleteModalVisible}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+        itemName={selectedItem?.name || selectedItem?.xrgiID}
+        loading={deleteLoading}
       />
     </SafeAreaView>
   );

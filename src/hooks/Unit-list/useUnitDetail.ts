@@ -3,7 +3,7 @@ import { SystemController } from '@/controllers/SystemController';
 import { UserController } from '@/controllers/UserController';
 import { Facility } from '@/screens/authScreens/types';
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface MenuItem {
     id: string;
@@ -71,23 +71,37 @@ interface Status2025Data {
 }
 
 type SystemStatus = 'idle' | 'running' | 'stopped';
+type AlertType = 'success' | 'error' | 'warning' | 'info';
 
 interface UseUnitDetailProps {
     XrgiId?: string;
 }
 
 const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
+    const { t } = useTranslation();
     const [isStarting, setIsStarting] = useState(false);
     const [isStopping, setIsStopping] = useState(false);
     const [systemStatus, setSystemStatus] = useState<SystemStatus>('idle');
     const [expandedSection, setExpandedSection] = useState<string | null>(null);
+    const [alert, setAlert] = useState<{
+        visible: boolean;
+        type: AlertType;
+        title: string;
+        message: string;
+        onConfirm?: () => void;
+    }>({
+        visible: false,
+        type: 'info',
+        title: '',
+        message: ''
+    });
 
     const menuItems: MenuItem[] = [
-        { id: 'general', title: 'General', icon: 'information-circle-outline', hasData: true },
-        { id: 'lastCall', title: 'Last Call', icon: 'call-outline', hasData: false },
-        { id: 'customerLogin', title: 'Customer Login', icon: 'person-outline', hasData: false },
-        { id: 'status2025', title: 'Status 2025', icon: 'stats-chart-outline', hasData: false },
-        { id: 'existingConfig', title: 'Existing Configuration', icon: 'settings-outline', hasData: false },
+        { id: 'general', title: t('unitDetail.menuItems.general'), icon: 'information-circle-outline', hasData: true },
+        { id: 'lastCall', title: t('unitDetail.menuItems.lastCall'), icon: 'call-outline', hasData: false },
+        { id: 'customerLogin', title: t('unitDetail.menuItems.customerLogin'), icon: 'person-outline', hasData: false },
+        { id: 'status2025', title: t('unitDetail.menuItems.status2025'), icon: 'stats-chart-outline', hasData: false },
+        { id: 'existingConfig', title: t('unitDetail.menuItems.existingConfig'), icon: 'settings-outline', hasData: false },
     ];
 
     // Fetch facility and user details
@@ -375,52 +389,48 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
     };
 
     const handleStartSystem = (onSuccess?: () => void) => {
-        Alert.alert(
-            'Start System',
-            'Are you sure you want to start the XRGI system?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                },
-                {
-                    text: 'Start',
-                    onPress: () => {
-                        setIsStarting(true);
-                        setTimeout(() => {
-                            setIsStarting(false);
-                            setSystemStatus('running');
-                            onSuccess?.();
-                        }, 2000);
-                    }
-                }
-            ]
-        );
+        setAlert({
+            visible: true,
+            type: 'warning',
+            title: t('unitDetail.alerts.startSystemTitle'),
+            message: t('unitDetail.alerts.startSystemMessage'),
+            onConfirm: () => {
+                setIsStarting(true);
+                setTimeout(() => {
+                    setIsStarting(false);
+                    setSystemStatus('running');
+                    onSuccess?.();
+                }, 2000);
+            }
+        });
     };
 
     const handleStopSystem = (onSuccess?: () => void) => {
-        Alert.alert(
-            'Stop System',
-            'Are you sure you want to stop the XRGI system?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                },
-                {
-                    text: 'Stop',
-                    onPress: () => {
-                        setIsStopping(true);
-                        setTimeout(() => {
-                            setIsStopping(false);
-                            setSystemStatus('stopped');
-                            onSuccess?.();
-                        }, 2000);
-                    },
-                    style: 'destructive'
-                }
-            ]
-        );
+        setAlert({
+            visible: true,
+            type: 'error',
+            title: t('unitDetail.alerts.stopSystemTitle'),
+            message: t('unitDetail.alerts.stopSystemMessage'),
+            onConfirm: () => {
+                setIsStopping(true);
+                setTimeout(() => {
+                    setIsStopping(false);
+                    setSystemStatus('stopped');
+                    onSuccess?.();
+                }, 2000);
+            }
+        });
+    };
+
+    const handleAlertConfirm = () => {
+        if (alert.onConfirm) {
+            alert.onConfirm();
+        }
+        setAlert(prev => ({ ...prev, visible: false }));
+    };
+
+    const handleAlertCancel = () => {
+        setAlert(prev => ({ ...prev, visible: false }));
     };
 
     return {
@@ -433,6 +443,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
         isRecentCallLoading,
         isSystemConfigurationLoading,
         isStatusData2025Loading,
+        alert,
 
         // Data
         menuItems,
@@ -446,6 +457,8 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
         toggleSection,
         handleStartSystem,
         handleStopSystem,
+        handleAlertConfirm,
+        handleAlertCancel,
         setExpandedSection
     };
 };

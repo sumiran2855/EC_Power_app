@@ -14,6 +14,7 @@ import { RootStackParamList } from '../../../../navigation/AppNavigator';
 import { styles as stepperStyles } from '../../../authScreens/StepperScreen.styles';
 import { FormData } from '../../../authScreens/types';
 import { styles as localStyles } from './InstallationScreen.styles';
+import { useTranslation } from 'react-i18next';
 
 type InstallationScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Installation' | 'ProductDashboard'>;
 
@@ -26,6 +27,7 @@ interface InstallationScreenProps {
 }
 
 const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation<InstallationScreenNavigationProp>();
     const { formData: initialFormData } = route.params;
     const [formData, setFormData] = React.useState(initialFormData);
@@ -114,14 +116,14 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                     >
                         <Icon name="arrow-back" size={24} color="#1a5490" />
                     </TouchableOpacity>
-                    <Text style={localStyles.headerTitle}>Smart PriceControl</Text>
-                    <View style={localStyles.backButton} /> {/* Empty view for spacing */}
+                    <Text style={localStyles.headerTitle}>{t('smartPriceStep.header.title')}</Text>
+                    <View style={localStyles.backButton} /> 
                 </View>
 
                 <View style={stepperStyles.headerSection}>
-                    <Text style={stepperStyles.title}>Smart PriceControl</Text>
+                    <Text style={stepperStyles.title}>{t('smartPriceStep.header.title')}</Text>
                     <Text style={stepperStyles.subtitle}>
-                        Optimize your energy production with real-time electricity market prices
+                        {t('smartPriceStep.header.subtitle')}
                     </Text>
                 </View>
 
@@ -130,14 +132,13 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         <Icon name="lightbulb" size={32} color="#FFA000" />
                     </View>
                     <View style={stepperStyles.infoCardContent}>
-                        <Text style={stepperStyles.infoCardTitle}>How it works</Text>
+                        <Text style={stepperStyles.infoCardTitle}>{t('smartPriceStep.infoCard.title')}</Text>
                         <Text style={stepperStyles.infoCardText}>
-                            Our software uses EPEX Day-ahead market prices to automatically pause energy
-                            production when prices are zero or negative, maximizing your savings.
+                            {t('smartPriceStep.infoCard.description')}
                         </Text>
                         <View style={stepperStyles.infoBadge}>
                             <Icon name="star" size={14} color="#FFA000" />
-                            <Text style={stepperStyles.infoBadgeText}>Standard on all XRGI® systems from April 2025</Text>
+                            <Text style={stepperStyles.infoBadgeText}>{t('smartPriceStep.infoCard.badge')}</Text>
                         </View>
                     </View>
                 </View>
@@ -154,9 +155,9 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                                 )}
                             </View>
                             <View style={stepperStyles.featureToggleContent}>
-                                <Text style={stepperStyles.featureToggleTitle}>Setup SmartPriceControl</Text>
+                                <Text style={stepperStyles.featureToggleTitle}>{t('smartPriceStep.featureToggle.title')}</Text>
                                 <Text style={stepperStyles.featureToggleDescription}>
-                                    Enable automatic optimization
+                                    {t('smartPriceStep.featureToggle.description')}
                                 </Text>
                             </View>
                         </View>
@@ -173,15 +174,15 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         <View style={stepperStyles.cardHeader}>
                             <Icon name="build" size={24} color="#003D82" />
                             <View style={stepperStyles.cardHeaderText}>
-                                <Text style={stepperStyles.cardTitle}>Installation Timing</Text>
-                                <Text style={stepperStyles.cardSubtitle}>Choose when to install the software</Text>
+                                <Text style={stepperStyles.cardTitle}>{t('smartPriceStep.installation.title')}</Text>
+                                <Text style={stepperStyles.cardSubtitle}>{t('smartPriceStep.installation.subtitle')}</Text>
                             </View>
                         </View>
 
                         <View style={stepperStyles.alertBox}>
                             <Icon name="info" size={20} color="#1976D2" />
                             <Text style={stepperStyles.alertText}>
-                                Physical installation on your XRGI® system is required by your service partner
+                                {t('smartPriceStep.installation.alert')}
                             </Text>
                         </View>
 
@@ -198,9 +199,9 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                                 )}
                             </View>
                             <View style={stepperStyles.radioCardContent}>
-                                <Text style={stepperStyles.radioCardTitle}>At next on-site visit</Text>
+                                <Text style={stepperStyles.radioCardTitle}>{t('smartPriceStep.installation.onSiteVisit.title')}</Text>
                                 <Text style={stepperStyles.radioCardDescription}>
-                                    Install during scheduled maintenance
+                                    {t('smartPriceStep.installation.onSiteVisit.description')}
                                 </Text>
                             </View>
                             <Icon name="event" size={24} color="#003D82" />
@@ -219,9 +220,9 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                                 )}
                             </View>
                             <View style={stepperStyles.radioCardContent}>
-                                <Text style={stepperStyles.radioCardTitle}>As soon as possible</Text>
+                                <Text style={stepperStyles.radioCardTitle}>{t('smartPriceStep.installation.asSoonAsPossible.title')}</Text>
                                 <Text style={stepperStyles.radioCardDescription}>
-                                    Schedule a dedicated installation visit
+                                    {t('smartPriceStep.installation.asSoonAsPossible.description')}
                                 </Text>
                             </View>
                             <Icon name="flash-on" size={24} color="#003D82" />
@@ -233,15 +234,15 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                     <View style={stepperStyles.successIconWrapper}>
                         <Icon name="check-circle" size={48} color="#00B050" />
                     </View>
-                    <Text style={stepperStyles.successTitle}>Almost Done!</Text>
+                    <Text style={stepperStyles.successTitle}>{t('smartPriceStep.success.title')}</Text>
                     <Text style={stepperStyles.successText}>
-                        Review your information and save to complete the setup process
+                        {t('smartPriceStep.success.description')}
                     </Text>
                 </View>
 
                 <View style={stepperStyles.buttonContainer}>
                     <TouchableOpacity style={stepperStyles.buttonSecondary} onPress={handleBack}>
-                        <Text style={stepperStyles.buttonSecondaryText}>Back</Text>
+                        <Text style={stepperStyles.buttonSecondaryText}>{t('smartPriceStep.buttons.back')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[stepperStyles.buttonPrimary, isSubmitting && { opacity: 0.7 }]}
@@ -249,7 +250,7 @@ const InstallationScreen: React.FC<InstallationScreenProps> = ({ route }) => {
                         disabled={isSubmitting}
                     >
                         <Text style={stepperStyles.buttonPrimaryText}>
-                            {isSubmitting ? 'Creating...' : 'Add Facility'}
+                            {isSubmitting ? t('smartPriceStep.buttons.creating') : t('smartPriceStep.buttons.addFacility')}
                         </Text>
                     </TouchableOpacity>
                 </View>

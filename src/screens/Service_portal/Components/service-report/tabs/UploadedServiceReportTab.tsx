@@ -1,7 +1,8 @@
-import Alert from '@/components/Modals/DownloadSuccessAlert';
+import Alert from '@/components/Modals/Alert';
 import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     Dimensions,
@@ -44,6 +45,7 @@ interface UploadedServiceReportTabProps {
 }
 
 const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ systemData, loading }) => {
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedReport, setExpandedReport] = useState<string | null>(null);
     const [uploadedReports, setUploadedReports] = useState<any[]>([]);
@@ -150,7 +152,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
             console.log('Download error:', error);
             setErrorAlert({
                 visible: true,
-                message: 'Failed to download the file. Please try again later.'
+                message: t('statistics.serviceReport.detailScreen.uploadedReportsTab.downloadError')
             });
         } finally {
             setDownloading(false);
@@ -170,7 +172,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
         return (
             <View style={tabCommonStyles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+                <Text style={tabCommonStyles.loadingText}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.loading')}</Text>
             </View>
         );
     }
@@ -187,7 +189,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                     <Ionicons name="search" size={20} color="#64748b" style={tabCommonStyles.searchIcon} />
                     <TextInput
                         style={tabCommonStyles.searchInput}
-                        placeholder="Search reports..."
+                        placeholder={t('statistics.serviceReport.detailScreen.uploadedReportsTab.searchPlaceholder')}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                         placeholderTextColor="#94a3b8"
@@ -201,12 +203,12 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                             <Ionicons name="cloud-upload-outline" size={40} color="#94a3b8" />
                         </View>
                         <Text style={tabCommonStyles.emptyTitle}>
-                            {searchQuery ? 'No matching reports found' : 'No Uploaded Reports'}
+                            {searchQuery ? t('statistics.serviceReport.detailScreen.uploadedReportsTab.noMatchingReports') : t('statistics.serviceReport.detailScreen.uploadedReportsTab.noUploadedReports')}
                         </Text>
                         <Text style={tabCommonStyles.emptyDescription}>
                             {searchQuery
-                                ? 'Try a different search term'
-                                : 'There are no uploaded service reports for this system yet.'
+                                ? t('statistics.serviceReport.detailScreen.uploadedReportsTab.tryDifferentSearch')
+                                : t('statistics.serviceReport.detailScreen.uploadedReportsTab.noReportsDescription')
                             }
                         </Text>
                     </View>
@@ -253,13 +255,13 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                             {/* Info Rows */}
                             <View style={{ marginTop: 12 }}>
                                 <View style={tabCommonStyles.infoRow}>
-                                    <Text style={tabCommonStyles.infoLabel}>Date of delivery</Text>
+                                    <Text style={tabCommonStyles.infoLabel}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.dateOfDelivery')}</Text>
                                     <Text style={tabCommonStyles.infoValue}>
                                         {new Date(report.deliveryDate).toLocaleDateString()}
                                     </Text>
                                 </View>
                                 <View style={[tabCommonStyles.infoRow, tabCommonStyles.infoRowLast]}>
-                                    <Text style={tabCommonStyles.infoLabel}>Creation date</Text>
+                                    <Text style={tabCommonStyles.infoLabel}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.creationDate')}</Text>
                                     <Text style={tabCommonStyles.infoValue}>
                                         {new Date(report.creationDate).toLocaleDateString()}
                                     </Text>
@@ -277,7 +279,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                             activeOpacity={0.7}
                                         >
                                             <Ionicons name="eye" size={18} color="#ffffff" />
-                                            <Text style={tabCommonStyles.actionButtonText}>View</Text>
+                                            <Text style={tabCommonStyles.actionButtonText}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.view')}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[
@@ -360,7 +362,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                     renderLoading={() => (
                                         <View style={styles.loadingContainer}>
                                             <ActivityIndicator size="large" color="#3b82f6" />
-                                            <Text style={styles.loadingText}>Loading document...</Text>
+                                            <Text style={styles.loadingText}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.loadingDocument')}</Text>
                                         </View>
                                     )}
                                     onError={(syntheticEvent) => {
@@ -368,7 +370,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                                         console.log('WebView error:', nativeEvent);
                                         setErrorAlert({
                                             visible: true,
-                                            message: 'Failed to load the document. The file might be corrupted or in an unsupported format.'
+                                            message: t('statistics.serviceReport.detailScreen.uploadedReportsTab.documentLoadError')
                                         });
                                     }}
                                 />
@@ -376,7 +378,7 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                         </>
                     ) : (
                         <View style={styles.loadingContainer}>
-                            <Text style={styles.errorText}>No document available</Text>
+                            <Text style={styles.errorText}>{t('statistics.serviceReport.detailScreen.uploadedReportsTab.noDocumentAvailable')}</Text>
                         </View>
                     )}
                 </SafeAreaView>
@@ -386,18 +388,18 @@ const UploadedServiceReportTab: React.FC<UploadedServiceReportTabProps> = ({ sys
                 isVisible={showDownloadSuccess}
                 onClose={() => setShowDownloadSuccess(false)}
                 type="success"
-                title="Download Complete!"
-                message={`File has been saved to ${Platform.OS === 'ios' ? 'Documents' : 'Downloads'} folder`}
-                buttonText="OK"
+                title={t('statistics.serviceReport.detailScreen.uploadedReportsTab.downloadComplete')}
+                message={`File has been saved to ${Platform.OS === 'ios' ? t('statistics.serviceReport.detailScreen.uploadedReportsTab.documentsFolder') : t('statistics.serviceReport.detailScreen.uploadedReportsTab.downloadsFolder')} folder`}
+                buttonText={t('statistics.serviceReport.detailScreen.uploadedReportsTab.ok')}
             />
             
             <Alert
                 isVisible={errorAlert.visible}
                 onClose={() => setErrorAlert({ ...errorAlert, visible: false })}
                 type="error"
-                title="Error"
+                title={t('statistics.serviceReport.detailScreen.uploadedReportsTab.error')}
                 message={errorAlert.message}
-                buttonText="OK"
+                buttonText={t('statistics.serviceReport.detailScreen.uploadedReportsTab.ok')}
             />
             </>
     );

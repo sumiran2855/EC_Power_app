@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tabCommonStyles from './tabsComman.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ItemUsageTabProps {
     systemData: any;
@@ -11,6 +11,7 @@ interface ItemUsageTabProps {
 }
 
 const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
+    const { t } = useTranslation();
     const [expandedReport, setExpandedReport] = useState<string | null>(null);
 
     const toggleExpand = (reportId: string) => {
@@ -21,7 +22,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
         return (
             <View style={tabCommonStyles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={tabCommonStyles.loadingText}>Loading item usages...</Text>
+                <Text style={tabCommonStyles.loadingText}>{t('statistics.serviceReport.detailScreen.itemUsageTab.loading')}</Text>
             </View>
         );
     }
@@ -30,9 +31,9 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
         return (
             <View style={tabCommonStyles.emptyState}>
                 <Ionicons name="cube-outline" size={48} color="#cbd5e1" />
-                <Text style={tabCommonStyles.emptyStateText}>No item usages available</Text>
+                <Text style={tabCommonStyles.emptyStateText}>{t('statistics.serviceReport.detailScreen.itemUsageTab.noDataAvailable')}</Text>
                 <Text style={tabCommonStyles.emptyStateSubtext}>
-                    There are no item usages to display at the moment.
+                    {t('statistics.serviceReport.detailScreen.itemUsageTab.noDataSubtext')}
                 </Text>
             </View>
         );
@@ -48,7 +49,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                 contentContainerStyle={tabCommonStyles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                <Text style={tabCommonStyles.sectionHeader}>Item Usage Records</Text>
+                <Text style={tabCommonStyles.sectionHeader}>{t('statistics.serviceReport.detailScreen.itemUsageTab.sectionHeader')}</Text>
 
                 {systemData.map((report: any) => (
                     <View
@@ -86,7 +87,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                                         <Ionicons name="calendar" size={16} color="#3b82f6" />
                                     </View>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={tabCommonStyles.infoGridLabel}>Creation Date</Text>
+                                        <Text style={tabCommonStyles.infoGridLabel}>{t('statistics.serviceReport.detailScreen.itemUsageTab.creationDate')}</Text>
                                         <Text style={tabCommonStyles.infoGridValue}>
                                             {report.creatingDate?.creationDate || 'N/A'}
                                         </Text>
@@ -97,7 +98,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                                         <Ionicons name="cube" size={16} color="#3b82f6" />
                                     </View>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={tabCommonStyles.infoGridLabel}>Delivery Date</Text>
+                                        <Text style={tabCommonStyles.infoGridLabel}>{t('statistics.serviceReport.detailScreen.itemUsageTab.deliveryDate')}</Text>
                                         <Text style={tabCommonStyles.infoGridValue}>
                                             {report.creatingDate?.deliveryDate || 'N/A'}
                                         </Text>
@@ -115,7 +116,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                                         color="#3b82f6"
                                     />
                                     <Text style={tabCommonStyles.expandText}>
-                                        {expandedReport === report.id ? 'Hide' : 'View'} Items
+                                        {expandedReport === report.id ? t('statistics.serviceReport.detailScreen.itemUsageTab.hideItems') : t('statistics.serviceReport.detailScreen.itemUsageTab.viewItems')}
                                     </Text>
                                 </View>
                                 <View style={tabCommonStyles.expandLine} />
@@ -127,7 +128,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                             <View style={tabCommonStyles.expandedContent}>
                                 <View style={tabCommonStyles.resourcesHeader}>
                                     <Ionicons name="list" size={18} color="#0f172a" />
-                                    <Text style={tabCommonStyles.resourcesTitle}>Item Usages</Text>
+                                    <Text style={tabCommonStyles.resourcesTitle}>{t('statistics.serviceReport.detailScreen.itemUsageTab.itemUsages')}</Text>
                                 </View>
 
                                 {/* Item Usages Table */}
@@ -140,11 +141,11 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                                     <View style={tabCommonStyles.tableContainer}>
                                         {/* Table Header */}
                                         <View style={tabCommonStyles.tableHeader}>
-                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 200 }]}>Description</Text>
-                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>Part Number</Text>
-                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 100 }]}>Serial Number</Text>
-                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>Quantity</Text>
-                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 60 }]}>Unit</Text>
+                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 200 }]}>{t('statistics.serviceReport.detailScreen.itemUsageTab.description')}</Text>
+                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>{t('statistics.serviceReport.detailScreen.itemUsageTab.partNumber')}</Text>
+                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 100 }]}>{t('statistics.serviceReport.detailScreen.itemUsageTab.serialNumber')}</Text>
+                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>{t('statistics.serviceReport.detailScreen.itemUsageTab.quantity')}</Text>
+                                            <Text style={[tabCommonStyles.tableHeaderText, { width: 60 }]}>{t('statistics.serviceReport.detailScreen.itemUsageTab.unit')}</Text>
                                         </View>
 
                                         {/* Table Rows */}
@@ -179,7 +180,7 @@ const ItemUsageTab: React.FC<ItemUsageTabProps> = ({ systemData, loading }) => {
                                 {/* Scroll Hint */}
                                 <View style={tabCommonStyles.scrollHint}>
                                     <Ionicons name="swap-horizontal" size={14} color="#94a3b8" />
-                                    <Text style={tabCommonStyles.scrollHintText}>Scroll horizontally to view all columns</Text>
+                                    <Text style={tabCommonStyles.scrollHintText}>{t('statistics.serviceReport.detailScreen.itemUsageTab.scrollHint')}</Text>
                                 </View>
                             </View>
                         )}

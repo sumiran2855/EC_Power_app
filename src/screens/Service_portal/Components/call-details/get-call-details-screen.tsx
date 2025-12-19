@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, ScrollView, Platform } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import React, { useCallback } from "react";
-import styles from "../Statistics/get-statisticsScreen.styles";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useCallDetailsScreen from '../../../../hooks/Service-portal/call-details/useGetCallDetails';
+import styles from "../Statistics/get-statisticsScreen.styles";
 
 interface get_call_detailsScreenProps {
     navigation: any;
@@ -12,6 +13,7 @@ interface get_call_detailsScreenProps {
 }
 
 const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const { system } = route.params;
     const {
         fromDate,
@@ -58,22 +60,22 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                         <View style={styles.iconContainer}>
                             <Ionicons name="list" size={22} color="#FFFFFF" />
                         </View>
-                        <Text style={styles.title}>Call Details</Text>
+                        <Text style={styles.title}>{t('callDetails.title')}</Text>
                     </View>
-                    <Text style={styles.subtitle}>See system call details {system.xrgiID} / {system.modelNumber}</Text>
+                    <Text style={styles.subtitle}>{t('callDetails.subtitle', { xrgiID: system.xrgiID, modelNumber: system.modelNumber })}</Text>
                 </View>
 
                 <View style={styles.card}>
                     <View style={styles.noteContainer}>
                         <Text style={styles.noteText}>
-                            Please note: Both date and hour must be set
+                            {t('callDetails.note')}
                         </Text>
                     </View>
 
                     {/* From Date Input */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            From Date (DD-MM-YY HH:MM) <Text style={styles.required}>*</Text>
+                            {t('callDetails.fromDate')} <Text style={styles.required}>*</Text>
                         </Text>
                         <View style={styles.dateTimePickerContainer}>
                             <View style={styles.dateTimeRow}>
@@ -83,7 +85,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                                         onPress={() => setShowFromDatePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>DATE</Text>
+                                            <Text style={styles.inputLabel}>{t('callDetails.date')}</Text>
                                             <Text style={styles.inputValue}>{formatDate(fromDate)}</Text>
                                         </View>
                                         <Ionicons name="calendar-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -95,7 +97,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                                         onPress={() => setShowFromTimePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>TIME</Text>
+                                            <Text style={styles.inputLabel}>{t('callDetails.time')}</Text>
                                             <Text style={styles.inputValue}>{formatTime(fromDate)}</Text>
                                         </View>
                                         <Ionicons name="time-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -108,7 +110,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                     {/* To Date Input */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            To Date (DD-MM-YY HH:MM) <Text style={styles.required}>*</Text>
+                            {t('callDetails.toDate')} <Text style={styles.required}>*</Text>
                         </Text>
                         <View style={styles.dateTimePickerContainer}>
                             <View style={styles.dateTimeRow}>
@@ -118,7 +120,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                                         onPress={() => setShowToDatePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>DATE</Text>
+                                            <Text style={styles.inputLabel}>{t('callDetails.date')}</Text>
                                             <Text style={styles.inputValue}>{formatDate(toDate)}</Text>
                                         </View>
                                         <Ionicons name="calendar-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -130,7 +132,7 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                                         onPress={() => setShowToTimePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>TIME</Text>
+                                            <Text style={styles.inputLabel}>{t('callDetails.time')}</Text>
                                             <Text style={styles.inputValue}>{formatTime(toDate)}</Text>
                                         </View>
                                         <Ionicons name="time-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -146,13 +148,13 @@ const Get_call_detailsScreen: React.FC<get_call_detailsScreenProps> = ({ navigat
                             style={[styles.button, styles.backButtonStyle]}
                             onPress={handleBackButton}
                         >
-                            <Text style={[styles.buttonText, styles.backButtonText]}>Back</Text>
+                            <Text style={[styles.buttonText, styles.backButtonText]}>{t('callDetails.back')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.button, styles.getDataButton]}
                             onPress={handleGetDataPress}
                         >
-                            <Text style={[styles.buttonText, styles.getDataButtonText]}>Get Data</Text>
+                            <Text style={[styles.buttonText, styles.getDataButtonText]}>{t('callDetails.getData')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

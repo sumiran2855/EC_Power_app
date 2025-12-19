@@ -6,11 +6,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import useStatistics from '../../hooks/Service-portal/useStatistics';
 import styles from './StatisticsScreen.styles';
 
-interface StatisticsScreenProps {
+interface EnergyProductionListScreenProps {
     navigation: any;
 }
 
-const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
+const EnergyProductionListScreen: React.FC<EnergyProductionListScreenProps> = ({ navigation }) => {
     const { t } = useTranslation();
     const {
         systems,
@@ -20,13 +20,14 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
         totalSystemsCount,
         isLoading
     } = useStatistics();
+    console.log("Systems:", systems);
 
     const handleBackButton = () => {
         navigation.goBack();
     };
 
     const handleSystemPress = (system: any) => {
-        navigation.navigate('Get_Statistics', { system });
+        navigation.navigate('EnergyProduction', { xrgiId: system.xrgiID });
     };
 
     return (
@@ -42,20 +43,20 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
                 {/* Title Section */}
                 <View style={styles.titleSection}>
                     <View style={styles.titleIconContainer}>
-                        <Ionicons name="stats-chart" size={24} color="#0f172a" />
+                        <Ionicons name="flash" size={24} color="#0f172a" />
                     </View>
-                    <Text style={styles.title}>{t('statistics.mainScreen.title')}</Text>
+                    <Text style={styles.title}>{t('energyProduction.title')}</Text>
                 </View>
 
                 {/* Description */}
                 <Text style={styles.description}>
-                    {t('statistics.mainScreen.description')}
+                    {t('energyProduction.description')}
                 </Text>
 
                 {isLoading ? (
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color="#1a5490" />
-                        <Text style={styles.loadingText}>{t('statistics.mainScreen.loading')}</Text>
+                        <Text style={styles.loadingText}>{t('energyProduction.loadingFacilities')}</Text>
                     </View>
                 ) : (
                     <>
@@ -64,14 +65,14 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
                         <View style={styles.statsBar}>
                             <View style={styles.statItem}>
                                 <Text style={styles.statValue}>{totalSystemsCount}</Text>
-                                <Text style={styles.statLabel}>{t('statistics.mainScreen.totalSystems')}</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.totalSystems')}</Text>
                             </View>
                             <View style={styles.statDivider} />
                             <View style={styles.statItem}>
                                 <Text style={styles.statValue}>
                                     {activeSystemsCount}
                                 </Text>
-                                <Text style={styles.statLabel}>{t('statistics.mainScreen.active')}</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.active')}</Text>
                             </View>
                         </View>
 
@@ -106,20 +107,19 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
                                     {/* System Details Grid */}
                                     <View style={styles.detailsGrid}>
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>{t('statistics.mainScreen.xrgiId')}</Text>
+                                            <Text style={styles.gridLabel}>{t('energyProduction.xrgiId')}</Text>
                                             <Text style={styles.gridValue}>{system.xrgiID}</Text>
                                         </View>
                                         <View style={styles.gridDivider} />
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>{t('statistics.mainScreen.recentCalls')}</Text>
-                                            <Text style={styles.gridValue}>-</Text>
+                                            <Text style={styles.gridLabel}>{t('energyProduction.status')}</Text>
+                                            <Text style={styles.gridValue}>{getStatusText(system.status)}</Text>
                                         </View>
                                     </View>
 
                                     {/* Card Footer */}
                                     <View style={styles.cardFooter}>
                                         <View style={styles.countryInfo}>
-                                            {/* <Text style={styles.flagEmoji}>🇺🇸</Text> */}
                                             <Text style={styles.countryText}>{system.location?.country}</Text>
                                         </View>
                                         <Ionicons name="chevron-forward" size={18} color="#94a3b8" />
@@ -134,4 +134,4 @@ const StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation }) => {
     );
 }
 
-export default StatisticsScreen;
+export default EnergyProductionListScreen;

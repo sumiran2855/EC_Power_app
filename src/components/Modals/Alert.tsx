@@ -1,5 +1,6 @@
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info';
@@ -20,9 +21,11 @@ const Alert: React.FC<AlertProps> = ({
     title,
     message,
     type = 'info',
-    buttonText = 'OK',
+    buttonText,
     showIcon = true,
 }) => {
+    const { t } = useTranslation();
+    const finalButtonText = buttonText || t('modals.downloadSuccess.okButton');
     const getIconConfig = () => {
         switch (type) {
             case 'success':
@@ -67,7 +70,7 @@ const Alert: React.FC<AlertProps> = ({
                         onPress={onClose}
                         activeOpacity={0.8}
                     >
-                        <Text style={styles.buttonText}>{buttonText}</Text>
+                        <Text style={styles.buttonText}>{finalButtonText}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

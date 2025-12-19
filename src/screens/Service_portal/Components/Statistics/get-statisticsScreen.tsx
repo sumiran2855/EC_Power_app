@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useStatisticsScreen from "../../../../hooks/Service-portal/useGetStatistics";
@@ -12,6 +13,7 @@ interface StatisticsScreenProps {
 }
 
 const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const { system } = route.params;
     const {
         fromDate,
@@ -63,22 +65,24 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                         <View style={styles.iconContainer}>
                             <Ionicons name="stats-chart" size={22} color="#FFFFFF" />
                         </View>
-                        <Text style={styles.title}>Statistics</Text>
+                        <Text style={styles.title}>{t('statistics.title')}</Text>
                     </View>
-                    <Text style={styles.subtitle}>See system statistics {system.xrgiID} / {system.modelNumber}</Text>
+                    <Text style={styles.subtitle}>
+                        {t('statistics.subtitle')} {system.xrgiID} / {system.modelNumber}
+                    </Text>
                 </View>
 
                 <View style={styles.card}>
                     <View style={styles.noteContainer}>
                         <Text style={styles.noteText}>
-                            Please note: Both date and hour must be set
+                            {t('statistics.form.note')}
                         </Text>
                     </View>
 
                     {/* From Date Input */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            From Date (DD-MM-YY HH:MM) <Text style={styles.required}>*</Text>
+                            {t('statistics.form.fromDateLabel')} <Text style={styles.required}>*</Text>
                         </Text>
                         <View style={styles.dateTimePickerContainer}>
                             <View style={styles.dateTimeRow}>
@@ -88,7 +92,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                                         onPress={() => setShowFromDatePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>DATE</Text>
+                                            <Text style={styles.inputLabel}>{t('statistics.form.dateLabel')}</Text>
                                             <Text style={styles.inputValue}>{formatDate(fromDate)}</Text>
                                         </View>
                                         <Ionicons name="calendar-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -100,7 +104,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                                         onPress={() => setShowFromTimePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>TIME</Text>
+                                            <Text style={styles.inputLabel}>{t('statistics.form.timeLabel')}</Text>
                                             <Text style={styles.inputValue}>{formatTime(fromDate)}</Text>
                                         </View>
                                         <Ionicons name="time-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -113,7 +117,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                     {/* To Date Input */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            To Date (DD-MM-YY HH:MM) <Text style={styles.required}>*</Text>
+                            {t('statistics.form.toDateLabel')} <Text style={styles.required}>*</Text>
                         </Text>
                         <View style={styles.dateTimePickerContainer}>
                             <View style={styles.dateTimeRow}>
@@ -123,7 +127,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                                         onPress={() => setShowToDatePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>DATE</Text>
+                                            <Text style={styles.inputLabel}>{t('statistics.form.dateLabel')}</Text>
                                             <Text style={styles.inputValue}>{formatDate(toDate)}</Text>
                                         </View>
                                         <Ionicons name="calendar-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -135,7 +139,7 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                                         onPress={() => setShowToTimePicker(true)}
                                     >
                                         <View style={styles.inputContent}>
-                                            <Text style={styles.inputLabel}>TIME</Text>
+                                            <Text style={styles.inputLabel}>{t('statistics.form.timeLabel')}</Text>
                                             <Text style={styles.inputValue}>{formatTime(toDate)}</Text>
                                         </View>
                                         <Ionicons name="time-outline" size={20} color="#3B82F6" style={styles.inputIcon} />
@@ -151,13 +155,13 @@ const Get_StatisticsScreen: React.FC<StatisticsScreenProps> = ({ navigation, rou
                             style={[styles.button, styles.backButtonStyle]}
                             onPress={handleBackButton}
                         >
-                            <Text style={[styles.buttonText, styles.backButtonText]}>Back</Text>
+                            <Text style={[styles.buttonText, styles.backButtonText]}>{t('statistics.form.backButton')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.button, styles.getDataButton]}
                             onPress={handleGetDataPress}
                         >
-                            <Text style={[styles.buttonText, styles.getDataButtonText]}>Get Data</Text>
+                            <Text style={[styles.buttonText, styles.getDataButtonText]}>{t('statistics.form.getDataButton')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

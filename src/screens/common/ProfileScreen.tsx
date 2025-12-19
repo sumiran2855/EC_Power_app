@@ -146,7 +146,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>First Name</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={profileData.firstName}
+                                    value={profileData.contactPerson.firstName}
                                     onChangeText={(value) => handleInputChange('firstName', value)}
                                     placeholder="First name"
                                     placeholderTextColor="#94A3B8"
@@ -157,7 +157,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Text style={styles.label}>Last Name</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={profileData.lastName}
+                                    value={profileData.contactPerson.lastName}
                                     onChangeText={(value) => handleInputChange('lastName', value)}
                                     placeholder="Last name"
                                     placeholderTextColor="#94A3B8"
@@ -171,8 +171,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 <Ionicons name="mail-outline" size={20} color="#64748B" style={styles.inputIcon} />
                                 <TextInput
                                     style={styles.inputWithIconField}
-                                    value={profileData.email}
-                                    onChangeText={(value) => handleInputChange('email', value)}
+                                    value={profileData.contactPerson.personalEmail}
+                                    onChangeText={(value) => handleInputChange('personalEmail', value)}
                                     placeholder="Enter email address"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="email-address"
@@ -193,8 +193,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <TextInput
                                     style={styles.phoneInput}
-                                    value={profileData.phone_number}
-                                    onChangeText={(value) => handleInputChange('phone_number', value)}
+                                    value={profileData.contactPerson.personalPhone}
+                                    onChangeText={(value) => handleInputChange('personalPhone', value)}
                                     placeholder="Enter mobile number"
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="phone-pad"

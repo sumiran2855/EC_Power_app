@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 20,
     color: '#4b5563',
-    marginBottom: 12,
+    marginBottom: 20,
     fontFamily: 'System',
   },
   checkboxContainer: {

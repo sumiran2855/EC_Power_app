@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
 import { HelpController } from '@/controllers/HelpController';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { TFunction } from 'i18next';
+import { useCallback, useState } from 'react';
+import { RootStackParamList } from '../navigation/AppNavigator';
 
 export interface ContactFormData {
     selectedSubject: string;
@@ -9,16 +10,14 @@ export interface ContactFormData {
 }
 type AlertType = 'success' | 'error' | 'warning' | 'info';
 
-const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'Contact'>) => {
+const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'Contact'>, t: TFunction) => {
     const [formData, setFormData] = useState<ContactFormData>({
         selectedSubject: '',
         description: '',
     });
 
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [alert, setAlert] = useState<{
         visible: boolean;
         type: AlertType;
@@ -32,11 +31,11 @@ const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'C
     });
 
     const subjects = [
-        'Problem with XRGI',
-        'Problem with adding information',
-        'Problem with Price Smart',
-        'I want to be contacted by EC POWER',
-        'Other Inquiry',
+        t('contact.subjects.problemWithXRGI'),
+        t('contact.subjects.problemWithAddingInfo'),
+        t('contact.subjects.problemWithPriceSmart'),
+        t('contact.subjects.wantContact'),
+        t('contact.subjects.otherInquiry'),
     ];
 
     const handleInputChange = useCallback((field: keyof ContactFormData, value: string) => {
@@ -61,7 +60,7 @@ const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'C
 
     const handleSubmit = useCallback(async () => {
         if (!formData.selectedSubject || !formData.description) {
-            showAlert('warning', 'Missing Information', 'Please fill in all required fields');
+            showAlert('warning', t('contact.alerts.missingInfo.title'), t('contact.alerts.missingInfo.message'));
             return;
         }
 
@@ -78,11 +77,11 @@ const useContact = (navigation: NativeStackNavigationProp<RootStackParamList, 'C
                     selectedSubject: '',
                     description: ''
                 });
-                showAlert('success', 'Query Submitted', "Your query has been submitted successfully. We'll get back to you soon.");
+                showAlert('success', t('contact.alerts.submissionSuccess.title'), t('contact.alerts.submissionSuccess.message'));
             }
         } catch (err) {
             console.log('Failed to send query:', err);
-            showAlert('error', 'Submission Failed', 'Failed to submit your query. Please try again later.');
+            showAlert('error', t('contact.alerts.submissionFailed.title'), t('contact.alerts.submissionFailed.message'));
         } finally {
             setIsSubmitting(false);
         }

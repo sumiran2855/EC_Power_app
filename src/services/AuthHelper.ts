@@ -67,7 +67,6 @@ class AuthHelper {
         try {
             const config = getApiConfig(backendType);
             requestUrl = `${config.BASE_URL}/${endpoint}`;
-            console.log("Request URL:", requestUrl);
             const isFormData = body instanceof FormData;
             const fetchOptions: RequestInit = {
                 method,

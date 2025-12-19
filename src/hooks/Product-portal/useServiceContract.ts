@@ -4,7 +4,7 @@ import StorageService from '@/utils/secureStorage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 type RootStackParamList = {
     XRGI_System: undefined;
@@ -14,6 +14,7 @@ type RootStackParamList = {
 type XRGISystemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'XRGI_System'>;
 
 const useServiceContract = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation<XRGISystemScreenNavigationProp>();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedFilter, setSelectedFilter] = useState<string>('All');
@@ -23,51 +24,12 @@ const useServiceContract = () => {
     const [error, setError] = useState<string | null>(null);
 
     const filterOptions = [
-        { label: 'All', value: 'All' },
-        { label: 'Has Service Contract', value: 'Active' },
-        { label: 'Requested', value: 'Pending' },
+        { label: t('serviceContract.filter.options.all'), value: 'All' },
+        { label: t('serviceContract.filter.options.active'), value: 'Active' },
+        { label: t('serviceContract.filter.options.pending'), value: 'Pending' },
     ];
 
     useEffect(() => {
-        const fetchSystems = async () => {
-            setIsLoading(true);
-            setError(null);
-
-            try {
-                const userData = await StorageService.user.getData<UserData>();
-                if (!userData?.id) {
-                    setIsLoading(false);
-                    return;
-                }
-                const response = await RegisterController.GetFacilityList(userData.id);
-                const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
-                    id: facility.id || facility.xrgiID,
-                    name: facility.name,
-                    xrgiID: facility.xrgiID,
-                    status: facility.hasServiceContract ? 'Active' : 'Inactive',
-                    modelNumber: facility.modelNumber,
-                    location: facility.location,
-                    hasEnergyCheckPlus: facility.hasEnergyCheckPlus,
-                    EnergyCheck_plus: facility.EnergyCheck_plus,
-                    isInstalled: facility.isInstalled,
-                    hasServiceContract: facility.hasServiceContract,
-                    needServiceContract: facility.needServiceContract,
-                    salesPartner: facility.salesPartner,
-                    serviceProvider: facility.serviceProvider,
-                    DaSigned: facility.DaSigned,
-                    energyCheckPlus: facility.energyCheckPlus,
-                    smartPriceControl: facility.smartPriceControl,
-                    installedSmartPriceController: facility.installedSmartPriceController,
-                    distributeHoursEvenly: facility.distributeHoursEvenly,
-                })) : [];
-                setSystems(transformedData);
-            } catch (err: any) {
-                console.log('Error fetching systems:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         fetchSystems();
     }, []);
 
@@ -117,21 +79,58 @@ const useServiceContract = () => {
         navigation.navigate('XRGI_Details', { item });
     };
 
-    const handleDelete = (id: string) => {
-        Alert.alert(
-            'Delete System',
-            'Are you sure you want to remove this system?',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'Delete',
-                    style: 'destructive',
-                    onPress: () => {
-                        setSystems(prev => prev.filter(s => s.xrgiID !== id));
-                    },
-                },
-            ]
-        );
+    const handleDelete = (item: Facility) => {
+        return item;
+    };
+
+    const confirmDelete = async (item: Facility) => {
+        try {
+            const response = await RegisterController.deleteXRGIUnit(item.id);
+            if (response?.success) {
+                await fetchSystems();
+            }
+        } catch (error) {
+            console.log('Error deleting service contract unit', error);
+        }
+    };
+
+    const fetchSystems = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const userData = await StorageService.user.getData<UserData>();
+            if (!userData?.id) {
+                setIsLoading(false);
+                return;
+            }
+            const response = await RegisterController.GetFacilityList(userData.id);
+            const transformedData: Facility[] = response?.success ? response.data?.map((facility: any) => ({
+                id: facility.id || facility.xrgiID,
+                name: facility.name,
+                xrgiID: facility.xrgiID,
+                status: facility.hasServiceContract ? 'Active' : 'Inactive',
+                modelNumber: facility.modelNumber,
+                location: facility.location,
+                hasEnergyCheckPlus: facility.hasEnergyCheckPlus,
+                EnergyCheck_plus: facility.EnergyCheck_plus,
+                isInstalled: facility.isInstalled,
+                hasServiceContract: facility.hasServiceContract,
+                needServiceContract: facility.needServiceContract,
+                salesPartner: facility.salesPartner,
+                serviceProvider: facility.serviceProvider,
+                DaSigned: facility.DaSigned,
+                energyCheckPlus: facility.energyCheckPlus,
+                smartPriceControl: facility.smartPriceControl,
+                installedSmartPriceController: facility.installedSmartPriceController,
+                distributeHoursEvenly: facility.distributeHoursEvenly,
+            })) : [];
+            setSystems(transformedData);
+        } catch (err: any) {
+            console.log('Error fetching systems:', err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleFilterSelect = (filterValue: string) => {
@@ -159,6 +158,8 @@ const useServiceContract = () => {
         handleCardPress,
         handleDelete,
         handleFilterSelect,
+        confirmDelete,
+        fetchSystems,
     };
 };
 

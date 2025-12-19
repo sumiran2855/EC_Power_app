@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Alert from '@/components/Modals/DownloadSuccessAlert';
+import Alert from '@/components/Modals/Alert';
 import { serviceReportController } from '@/controllers/serviceReportController';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as DocumentPicker from 'expo-document-picker';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tabCommonStyles from './tabsComman.styles';
 
 interface UploadTabProps {
@@ -22,6 +23,7 @@ export interface UploadedFile {
 }
 
 const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }) => {
+    const { t } = useTranslation();
     const [creationDate, setCreationDate] = useState<Date>(new Date());
     const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
     const [showCreationDatePicker, setShowCreationDatePicker] = useState(false);
@@ -42,10 +44,10 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
     });
 
     const serviceTypes = [
-        { id: 'RegularService', label: 'Regular Service', icon: 'people' },
-        { id: 'repair', label: 'Repair', icon: 'construct' },
-        { id: 'maintenance', label: 'Maintenance', icon: 'settings' },
-        { id: 'Commissioning', label: 'Commissioning', icon: 'hammer' }
+        { id: 'RegularService', label: t('statistics.serviceReport.detailScreen.uploadTab.serviceTypes.regularService'), icon: 'people' },
+        { id: 'repair', label: t('statistics.serviceReport.detailScreen.uploadTab.serviceTypes.repair'), icon: 'construct' },
+        { id: 'maintenance', label: t('statistics.serviceReport.detailScreen.uploadTab.serviceTypes.maintenance'), icon: 'settings' },
+        { id: 'Commissioning', label: t('statistics.serviceReport.detailScreen.uploadTab.serviceTypes.commissioning'), icon: 'hammer' }
     ];
 
     const handleRemoveFile = () => {
@@ -71,12 +73,12 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                     "image/jpg",
                 ];
                 if (!allowedTypes.includes(asset.mimeType || '')) {
-                    setUploadError('Invalid file type. Only PDF, JPEG, and PNG files are allowed.');
+                    setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.invalidFileType'));
                     return;
                 }
 
                 if (asset.size && asset.size > 10 * 1024 * 1024) {
-                    setUploadError('File size exceeds 10MB limit.');
+                    setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.fileSizeExceedsLimit'));
                     return;
                 }
 
@@ -92,33 +94,33 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
             }
         } catch (error) {
             console.log('Error picking file:', error);
-            setUploadError('Failed to select file. Please try again.');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.failedToSelectFile'));
         }
     };
 
     const handleFileUpload = async () => {
         if (!uploadedFile) {
-            setUploadError('Please select a file to upload');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.pleaseSelectFile'));
             return;
         }
 
         if (!uploadedFile.size || uploadedFile.size === 0) {
-            setUploadError('Selected file is empty.');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.selectedFileEmpty'));
             return;
         }
 
         if (!systemData?.xrgiID || !customerID) {
-            setUploadError('System data is missing. Please try again.');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.systemDataMissing'));
             return;
         }
 
         if (!serviceType) {
-            setUploadError('Please select a service type.');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.pleaseSelectServiceType'));
             return;
         }
 
         if (!serviceReportNumber) {
-            setUploadError('Please enter a service report number.');
+            setUploadError(t('statistics.serviceReport.detailScreen.uploadTab.errors.pleaseEnterServiceReportNumber'));
             return;
         }
 
@@ -147,18 +149,18 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
             setAlert({
                 visible: true,
                 type: 'success',
-                title: 'Upload Successful',
-                message: 'Your service report has been uploaded successfully.'
+                title: t('statistics.serviceReport.detailScreen.uploadTab.errors.uploadSuccessful'),
+                message: t('statistics.serviceReport.detailScreen.uploadTab.errors.reportUploadedSuccessfully')
             });
             handleClearAll();
         } catch (error) {
             console.log("Upload error:", error);
-            const errorMessage = error instanceof Error ? error.message : 'Failed to upload file. Please try again.';
+            const errorMessage = error instanceof Error ? error.message : t('statistics.serviceReport.detailScreen.uploadTab.errors.failedToUploadFile');
             setUploadError(errorMessage);
             setAlert({
                 visible: true,
                 type: 'error',
-                title: 'Upload Failed',
+                title: t('statistics.serviceReport.detailScreen.uploadTab.errors.uploadFailed'),
                 message: errorMessage
             });
         } finally {
@@ -224,14 +226,14 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
 
     const getSelectedServiceTypeLabel = () => {
         const selected = serviceTypes.find(st => st.id === serviceType);
-        return selected ? selected.label : 'Select Service Type';
+        return selected ? selected.label : t('statistics.serviceReport.detailScreen.uploadTab.selectServiceTypePlaceholder');
     };
 
     if (isUploading) {
         return (
             <View style={tabCommonStyles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+                <Text style={tabCommonStyles.loadingText}>{t('statistics.serviceReport.detailScreen.uploadTab.loading')}</Text>
             </View>
         );
     }
@@ -249,18 +251,18 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                         <View style={tabCommonStyles.iconContainer}>
                             <Ionicons name="cloud-upload" size={20} color="#3b82f6" />
                         </View>
-                        <Text style={styles.formTitle}>Upload Service Report</Text>
+                        <Text style={styles.formTitle}>{t('statistics.serviceReport.detailScreen.uploadTab.title')}</Text>
                     </View>
 
                     <Text style={styles.formDescription}>
-                        Fill in the details and upload your service report document.
+                        {t('statistics.serviceReport.detailScreen.uploadTab.formDescription')}
                     </Text>
 
                     {/* Form Fields */}
                     <View style={styles.formSection}>
                         {/* Creation Date */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>Creation date</Text>
+                            <Text style={styles.inputLabel}>{t('statistics.serviceReport.detailScreen.uploadTab.creationDate')}</Text>
                             <View style={styles.dateTimeContainer}>
                                 <TouchableOpacity
                                     style={[styles.input, styles.dateTimeButton]}
@@ -297,7 +299,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
 
                         {/* Date of Delivery */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>Date of delivery *</Text>
+                            <Text style={styles.inputLabel}>{t('statistics.serviceReport.detailScreen.uploadTab.dateOfDelivery')}</Text>
                             <View style={styles.dateTimeContainer}>
                                 <TouchableOpacity
                                     style={[styles.input, styles.dateTimeButton]}
@@ -334,7 +336,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
 
                         {/* Service Type Dropdown */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>Service Type *</Text>
+                            <Text style={styles.inputLabel}>{t('statistics.serviceReport.detailScreen.uploadTab.serviceType')}</Text>
                             <TouchableOpacity
                                 style={styles.dropdownButton}
                                 onPress={() => setShowServiceTypeDropdown(!showServiceTypeDropdown)}
@@ -395,12 +397,12 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
 
                         {/* Service Report Number */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>Service Report Number *</Text>
+                            <Text style={styles.inputLabel}>{t('statistics.serviceReport.detailScreen.uploadTab.serviceReportNumber')}</Text>
                             <View style={styles.inputContainer}>
                                 <Ionicons name="document-text" size={18} color="#64748b" />
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Enter service report number"
+                                    placeholder={t('statistics.serviceReport.detailScreen.uploadTab.enterServiceReportNumberPlaceholder')}
                                     value={serviceReportNumber}
                                     onChangeText={setServiceReportNumber}
                                     placeholderTextColor="#94a3b8"
@@ -410,7 +412,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
 
                         {/* File Upload */}
                         <View style={styles.inputGroup}>
-                            <Text style={styles.inputLabel}>Upload file (PDF, JPEG, PNG only)</Text>
+                            <Text style={styles.inputLabel}>{t('statistics.serviceReport.detailScreen.uploadTab.uploadFile')}</Text>
 
                             {!uploadedFile ? (
                                 <TouchableOpacity
@@ -421,12 +423,12 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                                     <View style={styles.uploadIconContainer}>
                                         <Ionicons name="cloud-upload-outline" size={40} color="#3b82f6" />
                                     </View>
-                                    <Text style={styles.uploadTitle}>Choose file</Text>
+                                    <Text style={styles.uploadTitle}>{t('statistics.serviceReport.detailScreen.uploadTab.chooseFile')}</Text>
                                     <Text style={styles.uploadSubtitle}>
-                                        Drag & Drop file here or click to browse
+                                        {t('statistics.serviceReport.detailScreen.uploadTab.dragDropHint')}
                                     </Text>
                                     <Text style={styles.uploadHint}>
-                                        PDF, JPEG, PNG only
+                                        {t('statistics.serviceReport.detailScreen.uploadTab.fileFormatsHint')}
                                     </Text>
                                 </TouchableOpacity>
                             ) : (
@@ -458,7 +460,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                         >
                             <Ionicons name="refresh" size={18} color="#3b82f6" />
                             <Text style={[tabCommonStyles.actionButtonText, tabCommonStyles.secondaryButtonText]}>
-                                Clear all
+                                {t('statistics.serviceReport.detailScreen.uploadTab.clearAll')}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -467,7 +469,7 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                             activeOpacity={0.8}
                         >
                             <Ionicons name="cloud-upload" size={18} color="#ffffff" />
-                            <Text style={tabCommonStyles.actionButtonText}>Upload</Text>
+                            <Text style={tabCommonStyles.actionButtonText}>{t('statistics.serviceReport.detailScreen.uploadTab.upload')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -476,24 +478,24 @@ const UploadTab: React.FC<UploadTabProps> = ({ systemData, loading, customerID }
                 <View style={[tabCommonStyles.card, styles.infoCard]}>
                     <View style={styles.infoHeader}>
                         <Ionicons name="information-circle" size={20} color="#3b82f6" />
-                        <Text style={styles.infoTitle}>Upload Guidelines</Text>
+                        <Text style={styles.infoTitle}>{t('statistics.serviceReport.detailScreen.uploadTab.uploadGuidelines')}</Text>
                     </View>
                     <View style={styles.infoList}>
                         <View style={styles.infoItem}>
                             <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-                            <Text style={styles.infoText}>Accepted formats: PDF, JPEG, PNG</Text>
+                            <Text style={styles.infoText}>{t('statistics.serviceReport.detailScreen.uploadTab.acceptedFormats')}</Text>
                         </View>
                         <View style={styles.infoItem}>
                             <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-                            <Text style={styles.infoText}>Maximum file size: 10 MB</Text>
+                            <Text style={styles.infoText}>{t('statistics.serviceReport.detailScreen.uploadTab.maxFileSize')}</Text>
                         </View>
                         <View style={styles.infoItem}>
                             <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-                            <Text style={styles.infoText}>Ensure dates are in correct format</Text>
+                            <Text style={styles.infoText}>{t('statistics.serviceReport.detailScreen.uploadTab.ensureDatesCorrect')}</Text>
                         </View>
                         <View style={styles.infoItem}>
                             <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-                            <Text style={styles.infoText}>Select appropriate service type</Text>
+                            <Text style={styles.infoText}>{t('statistics.serviceReport.detailScreen.uploadTab.selectAppropriateServiceType')}</Text>
                         </View>
                     </View>
                 </View>

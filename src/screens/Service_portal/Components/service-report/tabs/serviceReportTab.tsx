@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tabCommonStyles from './tabsComman.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ServiceReport } from './types';
 
 interface ServiceReportsTabProps {
@@ -12,6 +12,7 @@ interface ServiceReportsTabProps {
 }
 
 const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loading }) => {
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedReport, setExpandedReport] = useState<string | null>(null);
 
@@ -23,7 +24,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
         return (
             <View style={tabCommonStyles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={tabCommonStyles.loadingText}>Loading service reports...</Text>
+                <Text style={tabCommonStyles.loadingText}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.loading')}</Text>
             </View>
         );
     }
@@ -32,9 +33,9 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
         return (
             <View style={tabCommonStyles.emptyState}>
                 <Ionicons name="document-text" size={48} color="#cbd5e1" />
-                <Text style={tabCommonStyles.emptyStateText}>No service reports available</Text>
+                <Text style={tabCommonStyles.emptyStateText}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.noDataAvailable')}</Text>
                 <Text style={tabCommonStyles.emptyStateSubtext}>
-                    There are no service reports to display at the moment.
+                    {t('statistics.serviceReport.detailScreen.serviceReportsTab.noDataSubtext')}
                 </Text>
             </View>
         );
@@ -77,7 +78,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                     <Ionicons name="search" size={20} color="#3b82f6" style={tabCommonStyles.searchIcon} />
                     <TextInput
                         style={tabCommonStyles.searchInput}
-                        placeholder="Search reports..."
+                        placeholder={t('statistics.serviceReport.detailScreen.serviceReportsTab.searchPlaceholder')}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                         placeholderTextColor="#94a3b8"
@@ -124,9 +125,9 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
 
                                 {/* Description */}
                                 <View style={tabCommonStyles.descriptionContainer}>
-                                    <Text style={tabCommonStyles.descriptionLabel}>Description:</Text>
+                                    <Text style={tabCommonStyles.descriptionLabel}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.descriptionLabel')}:</Text>
                                     <Text style={tabCommonStyles.descriptionText}>
-                                    {report.creatingDate.serviceDescription || 'No description available'}
+                                    {report.creatingDate.serviceDescription || t('statistics.serviceReport.detailScreen.serviceReportsTab.noDescriptionAvailable')}
                                 </Text>
                             </View>
 
@@ -137,7 +138,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                             <Ionicons name="calendar" size={16} color="#3b82f6" />
                                         </View>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={tabCommonStyles.infoGridLabel}>Delivery Date</Text>
+                                            <Text style={tabCommonStyles.infoGridLabel}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.deliveryDate')}</Text>
                                             <Text style={tabCommonStyles.infoGridValue}>
                                             {report.creatingDate.deliveryDate}
                                         </Text>
@@ -148,7 +149,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                             <Ionicons name="time" size={16} color="#3b82f6" />
                                         </View>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={tabCommonStyles.infoGridLabel}>Creation Date</Text>
+                                            <Text style={tabCommonStyles.infoGridLabel}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.creationDate')}</Text>
                                             <Text style={tabCommonStyles.infoGridValue}>
                                             {report.creatingDate.creationDate}
                                         </Text>
@@ -165,7 +166,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                             color="#3b82f6"
                                         />
                                         <Text style={tabCommonStyles.expandText}>
-                                            {expandedReport === report.id ? 'Hide' : 'View'} Resources
+                                            {expandedReport === report.id ? t('statistics.serviceReport.detailScreen.serviceReportsTab.hideResources') : t('statistics.serviceReport.detailScreen.serviceReportsTab.viewResources')}
                                         </Text>
                                     </View>
                                     <View style={tabCommonStyles.expandLine} />
@@ -177,7 +178,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                 <View style={tabCommonStyles.expandedContent}>
                                     <View style={tabCommonStyles.resourcesHeader}>
                                         <Ionicons name="list" size={18} color="#0f172a" />
-                                        <Text style={tabCommonStyles.resourcesTitle}>Resources Details</Text>
+                                        <Text style={tabCommonStyles.resourcesTitle}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.resourcesDetails')}</Text>
                                     </View>
 
                                     {/* Resources Table */}
@@ -190,11 +191,11 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                         <View style={tabCommonStyles.tableContainer}>
                                             {/* Table Header */}
                                             <View style={tabCommonStyles.tableHeader}>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 150 }]}>Work Type</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>Date</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 130 }]}>Technician</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 100 }]}>Quantity</Text>
-                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>Unit</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 150 }]}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.workType')}</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 120 }]}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.date')}</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 130 }]}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.technician')}</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 100 }]}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.quantity')}</Text>
+                                                <Text style={[tabCommonStyles.tableHeaderText, { width: 80 }]}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.unit')}</Text>
                                             </View>
 
                                             {/* Table Rows */}
@@ -229,7 +230,7 @@ const ServiceReportsTab: React.FC<ServiceReportsTabProps> = ({ systemData, loadi
                                     {/* Scroll Hint */}
                                     <View style={tabCommonStyles.scrollHint}>
                                         <Ionicons name="swap-horizontal" size={14} color="#94a3b8" />
-                                        <Text style={tabCommonStyles.scrollHintText}>Scroll horizontally to view all columns</Text>
+                                        <Text style={tabCommonStyles.scrollHintText}>{t('statistics.serviceReport.detailScreen.serviceReportsTab.scrollHint')}</Text>
                                     </View>
                                 </View>
                             )}

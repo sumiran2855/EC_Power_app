@@ -1,6 +1,7 @@
 import useSystemConfiguration from '@/hooks/Service-portal/useSystemConfiguration';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './system-configurationDetailScreen.styles';
@@ -11,6 +12,7 @@ interface SystemConfigurationDetailScreenProps {
 }
 
 const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const { system } = route.params;
     const {
         isLoading,
@@ -54,7 +56,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
             return (
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#3B82F6" />
-                    <Text style={styles.loadingText}>Loading configuration data...</Text>
+                    <Text style={styles.loadingText}>{t('statistics.systemConfiguration.detailScreen.loadingData')}</Text>
                 </View>
             );
         }
@@ -63,7 +65,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
             return (
                 <View style={styles.emptyContainer}>
                     <Ionicons name="information-circle-outline" size={48} color="#64748B" />
-                    <Text style={styles.emptyText}>No configuration data available</Text>
+                    <Text style={styles.emptyText}>{t('statistics.systemConfiguration.detailScreen.noDataAvailable')}</Text>
                 </View>
             );
         }
@@ -92,8 +94,8 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
                             <View style={styles.detailsContainer}>
                                 <Text style={styles.detailsTitle}>
                                     {config.timestamp === 'Latest Configuration'
-                                        ? 'Current System Configuration'
-                                        : 'Configuration Details'}
+                                        ? t('statistics.systemConfiguration.detailScreen.currentConfig')
+                                        : t('statistics.systemConfiguration.detailScreen.configDetails')}
                                 </Text>
                                 {config.details.map((detail, index) => (
                                     <View key={`${config.id}-${index}`} style={styles.detailRow}>
@@ -130,13 +132,13 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
                     <Ionicons name="desktop-outline" size={24} color="#3B82F6" />
                 </View>
                 <View style={styles.titleContent}>
-                    <Text style={styles.title}>System Configuration</Text>
+                    <Text style={styles.title}>{t('statistics.systemConfiguration.detailScreen.title')}</Text>
                     <Text style={styles.configId}>{system.xrgiID}</Text>
                     <Text style={styles.description}>
-                        The list below contains system configurations, showing the latest first.
+                        {t('statistics.systemConfiguration.detailScreen.description')}
                     </Text>
                     <Text style={styles.instruction}>
-                        To open a configuration click the grey or white line
+                        {t('statistics.systemConfiguration.detailScreen.instruction')}
                     </Text>
                 </View>
             </View>

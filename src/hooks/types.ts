@@ -22,6 +22,13 @@ export interface ProfileData {
         cvrNumber: string;
         email: string;
     };
+    contactPerson:{
+        firstName: string;
+        lastName: string;
+        personalEmail: string;
+        personalPhone: string;
+        personalCountryCode: string;
+    }
     role: string;
     status: string;
 }

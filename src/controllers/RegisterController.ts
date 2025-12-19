@@ -70,6 +70,22 @@ export class RegisterController {
         }
     }
 
+    static async deleteXRGIUnit(xrgiId: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `delete-facility?id=${xrgiId}`,
+                method: 'DELETE',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.PRODUCT_PORTAL,
+            });
+            return response;
+        } catch (error) {
+            console.log(`Error deleting xrgi unit`, error);
+        }
+    }
+
     static async GetAllDealers() {
         const { authToken, idToken } = await StorageService.auth.getTokens();
         try {

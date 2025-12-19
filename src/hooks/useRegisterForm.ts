@@ -3,12 +3,30 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { FormData } from '../screens/authScreens/types';
+import { useTranslation } from 'react-i18next';
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type RegisterScreenRouteProp = RouteProp<RootStackParamList, 'Register'>;
 
 const useRegisterForm = (route?: RegisterScreenRouteProp) => {
+    const { t } = useTranslation();
     const navigation = useNavigation<RegisterScreenNavigationProp>();
+
+    // Helper function to get translated months array
+    const getTranslatedMonths = () => [
+        t('systemRegistrationStep.months.january'),
+        t('systemRegistrationStep.months.february'),
+        t('systemRegistrationStep.months.march'),
+        t('systemRegistrationStep.months.april'),
+        t('systemRegistrationStep.months.may'),
+        t('systemRegistrationStep.months.june'),
+        t('systemRegistrationStep.months.july'),
+        t('systemRegistrationStep.months.august'),
+        t('systemRegistrationStep.months.september'),
+        t('systemRegistrationStep.months.october'),
+        t('systemRegistrationStep.months.november'),
+        t('systemRegistrationStep.months.december')
+    ];
     const [formData, setFormData] = useState<FormData>({
         id: '',
         name: '',
@@ -346,7 +364,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
             const operatingHours = parseFloat(formData.EnergyCheck_plus.operatingHours);
             if (!isNaN(operatingHours) && operatingHours > 0) {
                 const newDistribution: { [key: string]: number } = {};
-                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const months = getTranslatedMonths();
 
                 // Set 8.33% for first 11 months
                 months.forEach((month, index) => {
@@ -382,7 +400,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
         if (numValue < 0 || numValue > 100) {
             setMonthlyErrors(prev => ({
                 ...prev,
-                [month]: 'Percentage must be between 0 and 100'
+                [month]: t('systemRegistrationStep.errors.percentageRequired')
             }));
             return;
         }
@@ -418,7 +436,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
 
         if (checked) {
             const evenDistribution: { [key: string]: number } = {};
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const months = getTranslatedMonths();
 
             months.forEach((month, index) => {
                 if (index < 11) {
@@ -463,7 +481,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
 
     // Convert monthlyDistribution object to array format for rendering
     const getMonthlyDistributionArray = () => {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const months = getTranslatedMonths();
         return months.map(month => ({
             month,
             percentage: monthlyDistribution[month] || 0,
@@ -522,7 +540,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
         if (!isValid) return;
 
         if (formData.EnergyCheck_plus && formData.hasEnergyCheckPlus && !isDistributionValid()) {
-            setTotalPercentageError(`Total percentage must equal 100%. Current: ${getTotalPercentage().toFixed(2)}%`);
+            setTotalPercentageError(t('systemRegistrationStep.errors.totalPercentageError', { current: getTotalPercentage().toFixed(2) }));
             return;
         }
 
@@ -544,64 +562,64 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
 
         // System Details Validation
         if (!formData.name?.trim()) {
-            newErrors.systemName = 'System name is required';
+            newErrors.systemName = t('systemRegistrationStep.errors.systemNameRequired');
             isValid = false;
         }
 
         if (!formData.xrgiID?.trim()) {
-            newErrors.xrgiIdNumber = 'XRGI ID Number is required';
+            newErrors.xrgiIdNumber = t('systemRegistrationStep.errors.xrgiIdRequired');
             isValid = false;
         } else if (!/^\d{10}$/.test(formData.xrgiID)) {
-            newErrors.xrgiIdNumber = 'XRGI ID must be 10 digits';
+            newErrors.xrgiIdNumber = t('systemRegistrationStep.errors.xrgiIdInvalid');
             isValid = false;
         }
 
         if (!formData.modelNumber) {
-            newErrors.selectedModel = 'Please select a model';
+            newErrors.selectedModel = t('systemRegistrationStep.errors.modelRequired');
             isValid = false;
         }
 
         // XRGI Site Validation
         if (!formData.location?.address?.trim()) {
-            newErrors.systemAddress = 'Address is required';
+            newErrors.systemAddress = t('systemRegistrationStep.errors.addressRequired');
             isValid = false;
         }
 
         if (!formData.location?.postalCode?.trim()) {
-            newErrors.systemPostcode = 'Postcode is required';
+            newErrors.systemPostcode = t('systemRegistrationStep.errors.postcodeRequired');
             isValid = false;
         }
 
         if (!formData.location?.city?.trim()) {
-            newErrors.systemCity = 'City is required';
+            newErrors.systemCity = t('systemRegistrationStep.errors.cityRequired');
             isValid = false;
         }
 
         if (!formData.location?.country) {
-            newErrors.systemCountry = 'Country is required';
+            newErrors.systemCountry = t('systemRegistrationStep.errors.countryRequired');
             isValid = false;
         }
 
         // Service Contract Validation - only validate if hasServiceContract is true
         if (formData.hasServiceContract === true) {
             if (!formData.serviceProvider?.name?.trim()) {
-                newErrors.serviceProviderName = 'Service provider name is required';
+                newErrors.serviceProviderName = t('systemRegistrationStep.errors.serviceProviderNameRequired');
                 isValid = false;
             }
 
             if (!formData.serviceProvider?.mailAddress?.trim()) {
-                newErrors.serviceProviderEmail = 'Service provider email is required';
+                newErrors.serviceProviderEmail = t('systemRegistrationStep.errors.serviceProviderEmailRequired');
                 isValid = false;
             } else if (!validateEmail(formData.serviceProvider.mailAddress)) {
-                newErrors.serviceProviderEmail = 'Please enter a valid email address';
+                newErrors.serviceProviderEmail = t('systemRegistrationStep.errors.serviceProviderEmailInvalid');
                 isValid = false;
             }
 
             if (!formData.serviceProvider?.phone?.trim()) {
-                newErrors.serviceProviderPhone = 'Service provider phone is required';
+                newErrors.serviceProviderPhone = t('systemRegistrationStep.errors.serviceProviderPhoneRequired');
                 isValid = false;
             } else if (!validatePhone(formData.serviceProvider.phone)) {
-                newErrors.serviceProviderPhone = 'Phone number must be at least 8 digits';
+                newErrors.serviceProviderPhone = t('systemRegistrationStep.errors.serviceProviderPhoneInvalid');
                 isValid = false;
             }
         }
@@ -610,63 +628,63 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
         if ((formData.hasServiceContract === true || formData.needServiceContract === true) &&
             formData.isSalesPartnerSame === false) {
             if (!formData.salesPartner?.name?.trim()) {
-                newErrors.salesPartnerName = 'Sales partner name is required';
+                newErrors.salesPartnerName = t('systemRegistrationStep.errors.salesPartnerNameRequired');
                 isValid = false;
             }
 
             if (!formData.salesPartner?.mailAddress?.trim()) {
-                newErrors.salesPartnerEmail = 'Sales partner email is required';
+                newErrors.salesPartnerEmail = t('systemRegistrationStep.errors.salesPartnerEmailRequired');
                 isValid = false;
             } else if (!validateEmail(formData.salesPartner.mailAddress)) {
-                newErrors.salesPartnerEmail = 'Please enter a valid email address';
+                newErrors.salesPartnerEmail = t('systemRegistrationStep.errors.salesPartnerEmailInvalid');
                 isValid = false;
             }
 
             if (!formData.salesPartner?.phone?.trim()) {
-                newErrors.salesPartnerPhone = 'Sales partner phone is required';
+                newErrors.salesPartnerPhone = t('systemRegistrationStep.errors.salesPartnerPhoneRequired');
                 isValid = false;
             } else if (!validatePhone(formData.salesPartner.phone)) {
-                newErrors.salesPartnerPhone = 'Phone number must be at least 8 digits';
+                newErrors.salesPartnerPhone = t('systemRegistrationStep.errors.salesPartnerPhoneInvalid');
                 isValid = false;
             }
         }
 
-        // EnergyCheck Plus Validation - only if enabled and isInstall is true
-        if (formData.isInstalled === true && isInstall && formData.hasEnergyCheckPlus) {
+        // EnergyCheck Plus Validation - validate if enabled (both during install and regular form submission)
+        if (!formData.hasEnergyCheckPlus) {
             if (formData.EnergyCheck_plus) {
                 if (!formData.EnergyCheck_plus?.annualSavings?.trim()) {
-                    newErrors.expectedAnnualSavings = 'Expected annual savings are required';
+                    newErrors.expectedAnnualSavings = t('systemRegistrationStep.errors.expectedAnnualSavingsRequired');
                     isValid = false;
                 }
 
                 if (!formData.EnergyCheck_plus?.co2Savings?.trim()) {
-                    newErrors.expectedCO2Savings = 'Expected annual CO2 savings are required';
+                    newErrors.expectedCO2Savings = t('systemRegistrationStep.errors.expectedCO2SavingsRequired');
                     isValid = false;
                 }
 
                 if (!formData.EnergyCheck_plus?.operatingHours?.trim()) {
-                    newErrors.expectedOperatingHours = 'Expected operating hours are required';
+                    newErrors.expectedOperatingHours = t('systemRegistrationStep.errors.expectedOperatingHoursRequired');
                     isValid = false;
                 } else {
                     const hours = parseFloat(formData.EnergyCheck_plus.operatingHours);
                     if (isNaN(hours) || hours < 0 || hours > 8760) {
-                        newErrors.expectedOperatingHours = 'Operating hours must be between 0 and 8760';
+                        newErrors.expectedOperatingHours = t('systemRegistrationStep.errors.expectedOperatingHoursInvalid');
                         isValid = false;
                     }
                 }
 
                 if (!formData.EnergyCheck_plus?.email?.trim()) {
-                    newErrors.recipientEmails = 'At least one recipient email is required';
+                    newErrors.recipientEmails = t('systemRegistrationStep.errors.recipientEmailsRequired');
                     isValid = false;
                 } else {
                     const emails = formData.EnergyCheck_plus.email.split(',').map(email => email.trim()).filter(Boolean);
                     if (emails.length === 0) {
-                        newErrors.recipientEmails = 'At least one recipient email is required';
+                        newErrors.recipientEmails = t('systemRegistrationStep.errors.recipientEmailsRequired');
                         isValid = false;
                     } else {
                         const invalidEmails = emails.filter(email => !validateEmail(email));
                         if (invalidEmails.length > 0) {
-                            newErrors.recipientEmails = 'Please enter valid email addresses separated by commas';
+                            newErrors.recipientEmails = t('systemRegistrationStep.errors.recipientEmailsInvalid');
                             isValid = false;
                         }
                     }
@@ -674,7 +692,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
 
                 // Validate distribution if not evenly distributed
                 if (!isDistributionValid()) {
-                    newErrors.monthlyDistribution = `Total percentage must equal 100%. Current: ${getTotalPercentage().toFixed(2)}%`;
+                    newErrors.monthlyDistribution = t('systemRegistrationStep.errors.totalPercentageError', { current: getTotalPercentage().toFixed(2) });
                     isValid = false;
                 }
             }

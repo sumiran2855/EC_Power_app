@@ -1,6 +1,7 @@
-import Alert from '@/components/Modals/DownloadSuccessAlert';
+import Alert from '@/components/Modals/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     ScrollView,
@@ -10,14 +11,15 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from './ContactScreen.styles';
 import useContact from '../../hooks/useContact';
+import { styles } from './ContactScreen.styles';
 
 interface ContactScreenProps {
     navigation: any;
 }
 
 const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
     const {
         formData,
         dropdownOpen,
@@ -30,7 +32,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
         alert,
         handleAlertClose,
         setDropdownOpen
-    } = useContact(navigation);
+    } = useContact(navigation, t);
 
     const { selectedSubject, description } = formData;
 
@@ -38,7 +40,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={styles.loadingText}>Loading service reports...</Text>
+                <Text style={styles.loadingText}>{t('contact.loading')}</Text>
             </View>
         );
     }
@@ -54,22 +56,22 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {/* Contact Form Section */}
                 <View style={styles.formSection}>
-                    <Text style={styles.sectionTitle}>Contact Us</Text>
+                    <Text style={styles.sectionTitle}>{t('contact.title')}</Text>
                     <Text style={styles.sectionSubtitle}>
-                        We're here to help! Fill out the form below and we'll get back to you soon.
+                        {t('contact.subtitle')}
                     </Text>
 
                     {/* Subject Field */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            Subject <Text style={styles.required}>*</Text>
+                            {t('contact.subjectLabel')} <Text style={styles.required}>{t('contact.required')}</Text>
                         </Text>
                         <TouchableOpacity
                             style={styles.selectInput}
                             onPress={toggleDropdown}
                         >
                             <Text style={selectedSubject ? styles.selectedText : styles.placeholderText}>
-                                {selectedSubject || 'Select a subject'}
+                                {selectedSubject || t('contact.selectSubject')}
                             </Text>
                             <Text style={[styles.dropdownIcon, dropdownOpen && styles.dropdownIconOpen]}>
                                 ▼
@@ -111,11 +113,11 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                     {/* Description Field */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>
-                            Description <Text style={styles.required}>*</Text>
+                            {t('contact.descriptionLabel')} <Text style={styles.required}>{t('contact.required')}</Text>
                         </Text>
                         <TextInput
                             style={styles.textArea}
-                            placeholder="Please describe your issue or question in detail..."
+                            placeholder={t('contact.descriptionPlaceholder')}
                             placeholderTextColor="#999"
                             multiline
                             numberOfLines={6}
@@ -123,7 +125,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                             onChangeText={(text) => handleInputChange('description', text)}
                             textAlignVertical="top"
                         />
-                        <Text style={styles.charCount}>{description.length} / 500</Text>
+                        <Text style={styles.charCount}>{t('contact.charCount', { count: description.length })}</Text>
                     </View>
 
                     {/* Submit Button */}
@@ -135,7 +137,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                         onPress={handleSubmit}
                         disabled={!selectedSubject || !description}
                     >
-                        <Text style={styles.submitButtonText}>Submit</Text>
+                        <Text style={styles.submitButtonText}>{t('contact.submitButton')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -147,7 +149,7 @@ const ContactScreen: React.FC<ContactScreenProps> = ({ navigation }) => {
                 type={alert.type}
                 title={alert.title}
                 message={alert.message}
-                buttonText="OK"
+                buttonText={t('contact.alerts.okButton')}
             />
         </SafeAreaView>
     );

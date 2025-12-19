@@ -1,15 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import styles from './StatisticsScreen.styles';
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useServiceReport from '../../hooks/Service-portal/service-report/useServiceReport';
+import styles from './StatisticsScreen.styles';
 
 interface ServiceReportScreenProps {
     navigation: any;
 }
 
 const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
     const {
         systems,
         getStatusColor,
@@ -24,7 +26,7 @@ const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation })
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#1a5490" />
-                <Text style={styles.loadingText}>Loading facilities...</Text>
+                <Text style={styles.loadingText}>{t('statistics.serviceReport.loading')}</Text>
             </View>
         );
     }
@@ -44,26 +46,26 @@ const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation })
                     <View style={styles.titleIconContainer}>
                         <Ionicons name="stats-chart" size={24} color="#0f172a" />
                     </View>
-                    <Text style={styles.title}>Service Report</Text>
+                    <Text style={styles.title}>{t('statistics.serviceReport.title')}</Text>
                 </View>
 
                 {/* Description */}
                 <Text style={styles.description}>
-                    Select the relevant system from the list.
+                    {t('statistics.serviceReport.description')}
                 </Text>
 
                 {/* Systems Count */}
                 <View style={styles.statsBar}>
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>{systems.length}</Text>
-                        <Text style={styles.statLabel}>Total Systems</Text>
+                        <Text style={styles.statLabel}>{t('statistics.serviceReport.totalSystems')}</Text>
                     </View>
                     <View style={styles.statDivider} />
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>
                             {systems.filter(s => s.status === 'Active').length}
                         </Text>
-                        <Text style={styles.statLabel}>Active</Text>
+                        <Text style={styles.statLabel}>{t('statistics.serviceReport.active')}</Text>
                     </View>
                 </View>
 
@@ -98,12 +100,12 @@ const ServiceReportScreen: React.FC<ServiceReportScreenProps> = ({ navigation })
                             {/* System Details Grid */}
                             <View style={styles.detailsGrid}>
                                 <View style={styles.gridItem}>
-                                    <Text style={styles.gridLabel}>XRGI® ID</Text>
+                                    <Text style={styles.gridLabel}>{t('statistics.serviceReport.xrgiId')}</Text>
                                     <Text style={styles.gridValue}>{system.xrgiID}</Text>
                                 </View>
                                 <View style={styles.gridDivider} />
                                 <View style={styles.gridItem}>
-                                    <Text style={styles.gridLabel}>Recent Calls</Text>
+                                    <Text style={styles.gridLabel}>{t('statistics.serviceReport.recentCalls')}</Text>
                                     <Text style={styles.gridValue}>-</Text>
                                 </View>
                             </View>

@@ -16,8 +16,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { styles } from './HomeScreen.styles';
 import useHome, { MenuItem, Section } from '../../hooks/useHome';
+import { useTranslation } from 'react-i18next';
 
 const HomeScreen: React.FC = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
     const {
@@ -147,7 +149,7 @@ const HomeScreen: React.FC = () => {
                                         </View>
                                         <View style={styles.dropdownUserInfo}>
                                             <Text style={styles.dropdownUserName}>{customerDetails?.contactPerson?.firstName} {customerDetails?.contactPerson?.lastName}</Text>
-                                            <Text style={styles.dropdownUserEmail}>{customerDetails?.contactPerson?.email}</Text>
+                                            <Text style={styles.dropdownUserEmail}>{customerDetails?.contactPerson?.personalEmail}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -162,7 +164,7 @@ const HomeScreen: React.FC = () => {
                                     <View style={styles.dropdownIconWrapper}>
                                         <Icon name="person-outline" size={20} color="#546E7A" />
                                     </View>
-                                    <Text style={styles.dropdownItemText}>My Profile</Text>
+                                    <Text style={styles.dropdownItemText}>{t('home.profile.myProfile')}</Text>
                                     <Icon name="chevron-right" size={18} color="#B0BEC5" />
                                 </TouchableOpacity>
 
@@ -177,7 +179,7 @@ const HomeScreen: React.FC = () => {
                                     <View style={styles.dropdownIconWrapper}>
                                         <Icon name="settings" size={20} color="#546E7A" />
                                     </View>
-                                    <Text style={styles.dropdownItemText}>Settings</Text>
+                                    <Text style={styles.dropdownItemText}>{t('home.profile.settings')}</Text>
                                     <Icon name="chevron-right" size={18} color="#B0BEC5" />
                                 </TouchableOpacity>
 
@@ -191,7 +193,7 @@ const HomeScreen: React.FC = () => {
                                     <View style={[styles.dropdownIconWrapper, styles.logoutIconWrapper]}>
                                         <Icon name="logout" size={20} color="#E53935" />
                                     </View>
-                                    <Text style={[styles.dropdownItemText, styles.logoutText]}>Logout</Text>
+                                    <Text style={[styles.dropdownItemText, styles.logoutText]}>{t('home.profile.logout')}</Text>
                                 </TouchableOpacity>
                             </Animated.View>
                         )}
@@ -204,7 +206,7 @@ const HomeScreen: React.FC = () => {
                         <Icon name="search" size={20} color="#90A4AE" style={styles.searchIcon} />
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="Search portals and services..."
+                            placeholder={t('home.search.placeholder')}
                             placeholderTextColor="#90A4AE"
                             value={searchQuery}
                             onChangeText={setSearchQuery}
@@ -239,8 +241,8 @@ const HomeScreen: React.FC = () => {
                 ) : (
                     <View style={styles.noResultsContainer}>
                         <Icon name="search-off" size={48} color="#90A4AE" />
-                        <Text style={styles.noResultsText}>No results found</Text>
-                        <Text style={styles.noResultsSubtext}>Try a different search term</Text>
+                        <Text style={styles.noResultsText}>{t('home.search.noResults')}</Text>
+                        <Text style={styles.noResultsSubtext}>{t('home.search.tryDifferent')}</Text>
                     </View>
                 )}
 
@@ -248,16 +250,16 @@ const HomeScreen: React.FC = () => {
                 <View style={styles.helpCard}>
                     <View style={styles.helpContent}>
                         <View style={styles.helpTextContainer}>
-                            <Text style={styles.helpTitle}>Need Assistance?</Text>
+                            <Text style={styles.helpTitle}>{t('home.help.title')}</Text>
                             <Text style={styles.helpDescription}>
-                                Our support team is here to help you 24/7
+                                {t('home.help.description')}
                             </Text>
                             <TouchableOpacity
                                 style={styles.helpButton}
                                 activeOpacity={0.8}
                                 onPress={() => navigation.navigate('Contact')}
                             >
-                                <Text style={styles.helpButtonText}>Contact Support</Text>
+                                <Text style={styles.helpButtonText}>{t('home.help.button')}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.helpIconContainer}>

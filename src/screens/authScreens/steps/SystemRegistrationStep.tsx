@@ -1,11 +1,11 @@
+import TermsAndConditionsModal from "@/components/Modals/TermsAndConditionsModal";
+import { FACILITY_TERMS_DATA } from "@/constants/facilityTermsConstants";
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 import React, { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../StepperScreen.styles';
 import { SalesPartnerInfo, ServiceProviderInfo, SystemRegisterStepProps, country, countryCodes, industries, models } from '../types';
-import TermsAndConditionsModal from "@/components/Modals/TermsAndConditionsModal";
-import { FACILITY_TERMS_DATA } from "@/constants/facilityTermsConstants";
 
 interface SystemRegistrationStepProps extends SystemRegisterStepProps {
     errors: Record<string, string>;
@@ -1052,7 +1052,14 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                 isOpen={isTermsModalOpen}
                 onClose={handleTermsClose}
                 onAccept={handleTermsAccept}
-                termsData={FACILITY_TERMS_DATA}
+                termsData={{
+                    termsAndConsent: FACILITY_TERMS_DATA.termsAndConsent.map(key => t(key)),
+                    title: t(FACILITY_TERMS_DATA.title),
+                    checkboxLabel: t(FACILITY_TERMS_DATA.checkboxLabel),
+                    checkboxLabel2: t(FACILITY_TERMS_DATA.checkboxLabel2),
+                    cancelButton: t(FACILITY_TERMS_DATA.cancelButton),
+                    acceptButton: t(FACILITY_TERMS_DATA.acceptButton)
+                }}
             />
         </ScrollView>
     );

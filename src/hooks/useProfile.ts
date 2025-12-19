@@ -23,6 +23,13 @@ const useProfile = () => {
       cvrNumber: '',
       email: '',
     },
+    contactPerson:{
+      firstName: '',
+      lastName: '',
+      personalEmail: '',
+      personalPhone: '',
+      personalCountryCode: '',
+    },
     role: '',
     status: '',
   });
@@ -50,7 +57,7 @@ const useProfile = () => {
     return { countryCode: '+44', phoneNumber };
   }, [countries]);
 
-  const handleInputChange = useCallback((field: keyof ProfileData | keyof ProfileData['companyInfo'], value: string) => {
+  const handleInputChange = useCallback((field: keyof ProfileData | keyof ProfileData['companyInfo'] | keyof ProfileData['contactPerson'], value: string) => {
     setProfileData(prev => {
       if (field in prev.companyInfo) {
         return {
@@ -60,10 +67,13 @@ const useProfile = () => {
             [field]: value
           }
         };
-      } else if (field === 'phone_number') {
+      } else if (field in prev.contactPerson) {
         return {
           ...prev,
-          [field]: value
+          contactPerson: {
+            ...prev.contactPerson,
+            [field]: value
+          }
         };
       } else {
         return {
@@ -94,7 +104,7 @@ const useProfile = () => {
     }
 
     try {
-      const response = await UserController.GetUserProfile(userData?.id)
+      const response = await UserController.getCustomerDetail(userData?.id)
       if (!response!.success) {
         return;
       }
@@ -102,15 +112,25 @@ const useProfile = () => {
       const profileData = response!.data;
       setProfileData(profileData);
 
-      if (profileData.phone_number) {
-        const { countryCode, phoneNumber } = parsePhoneNumber(profileData.phone_number);
-        const country = countries.find(c => c.code === countryCode);
+      const countryCodeToUse = profileData.contactPerson?.personalCountryCode || 
+                              (profileData.phone_number ? parsePhoneNumber(profileData.phone_number).countryCode : null);
+      
+      if (countryCodeToUse) {
+        const country = countries.find(c => c.code === countryCodeToUse);
         if (country) {
           setSelectedCountry(country);
         }
+      }
+      
+      if (profileData.phone_number) {
+        const { phoneNumber } = parsePhoneNumber(profileData.phone_number);
         setProfileData(prev => ({
           ...prev,
-          phone_number: phoneNumber
+          phone_number: phoneNumber,
+          companyInfo: {
+            ...prev.companyInfo,
+            countryCode: countryCodeToUse || ''
+          }
         }));
       }
     } catch (error) {
@@ -130,7 +150,15 @@ const useProfile = () => {
     try {
       const updatedProfileData = {
         ...profileData,
-        phone_number: profileData.phone_number ? `${selectedCountry.code}${profileData.phone_number}` : ''
+        phone_number: profileData.phone_number ? `${selectedCountry.code}${profileData.phone_number}` : '',
+        companyInfo: {
+          ...profileData.companyInfo,
+          countryCode: selectedCountry.code
+        },
+        contactPerson: {
+          ...profileData.contactPerson,
+          personalCountryCode: selectedCountry.code
+        }
       };
 
       delete (updatedProfileData as any).createdAt;

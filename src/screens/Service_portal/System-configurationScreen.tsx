@@ -1,15 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import styles from './StatisticsScreen.styles';
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useSystemConfiguration from '../../hooks/Service-portal/useSystemConfiguration';
+import styles from './StatisticsScreen.styles';
 
 interface SystemConfigurationScreenProps {
     navigation: any;
 }
 
 const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
     const {
         systems,
         handleBackButton,
@@ -34,18 +36,18 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
                     <View style={styles.titleIconContainer}>
                         <Ionicons name="desktop-outline" size={24} color="#0f172a" />
                     </View>
-                    <Text style={styles.title}>System Configuration</Text>
+                    <Text style={styles.title}>{t('statistics.systemConfiguration.title')}</Text>
                 </View>
 
                 {/* Description */}
                 <Text style={styles.description}>
-                    Manage and monitor all your system configurations in one place. View active systems, track recent activity, and update settings as needed.
+                    {t('statistics.systemConfiguration.description')}
                 </Text>
 
                 {isLoading ? (
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color="#1a5490" />
-                        <Text style={styles.loadingText}>Loading facilities...</Text>
+                        <Text style={styles.loadingText}>{t('statistics.systemConfiguration.loading')}</Text>
                     </View>
                 ) : (
                     <>
@@ -54,14 +56,14 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
                         <View style={styles.statsBar}>
                             <View style={styles.statItem}>
                                 <Text style={styles.statValue}>{systems.length}</Text>
-                                <Text style={styles.statLabel}>Total Systems</Text>
+                                <Text style={styles.statLabel}>{t('statistics.systemConfiguration.totalSystems')}</Text>
                             </View>
                             <View style={styles.statDivider} />
                             <View style={styles.statItem}>
                                 <Text style={styles.statValue}>
                                     {systems.filter(s => s.status === 'Active').length}
                                 </Text>
-                                <Text style={styles.statLabel}>Active</Text>
+                                <Text style={styles.statLabel}>{t('statistics.systemConfiguration.active')}</Text>
                             </View>
                         </View>
 
@@ -96,12 +98,12 @@ const SystemConfigurationScreen: React.FC<SystemConfigurationScreenProps> = ({ n
                                     {/* System Details Grid */}
                                     <View style={styles.detailsGrid}>
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>XRGI® ID</Text>
+                                            <Text style={styles.gridLabel}>{t('statistics.systemConfiguration.xrgiId')}</Text>
                                             <Text style={styles.gridValue}>{system.xrgiID}</Text>
                                         </View>
                                         <View style={styles.gridDivider} />
                                         <View style={styles.gridItem}>
-                                            <Text style={styles.gridLabel}>Recent Calls</Text>
+                                            <Text style={styles.gridLabel}>{t('statistics.systemConfiguration.recentCalls')}</Text>
                                             <Text style={styles.gridValue}>-</Text>
                                         </View>
                                     </View>

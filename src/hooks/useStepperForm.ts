@@ -448,7 +448,7 @@ export const useStepperForm = () => {
             }
         }
 
-        if (formData.hasEnergyCheckPlus) {
+        if (!formData.hasEnergyCheckPlus) {
             if (!formData.EnergyCheck_plus?.operatingHours?.trim()) {
                 newErrors.expectedOperatingHours = t('validation.required', { field: 'Expected operating hours' });
                 isValid = false;

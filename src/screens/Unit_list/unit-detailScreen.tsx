@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import styles from './unit-detailScreen.styles';
+import Alert from '@/components/Modals/Alert';
+import ConfirmationModal from '@/components/Modals/ConfirmationModal';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useUnitDetail from '../../hooks/Unit-list/useUnitDetail';
+import styles from './unit-detailScreen.styles';
 
 interface UnitDetailScreenProps {
     navigation: any;
@@ -12,7 +15,10 @@ interface UnitDetailScreenProps {
 }
 
 const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const system = route.params?.system;
+    const [successAlert, setSuccessAlert] = useState({ visible: false, message: '' });
+    
     const {
         // State
         isStarting,
@@ -23,6 +29,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         isRecentCallLoading,
         isSystemConfigurationLoading,
         isStatusData2025Loading,
+        alert,
 
         // Data
         menuItems,
@@ -36,6 +43,8 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         toggleSection,
         handleStartSystem,
         handleStopSystem,
+        handleAlertConfirm,
+        handleAlertCancel,
     } = useUnitDetail({ XrgiId: system?.xrgiID });
 
     const handleBackButton = () => {
@@ -43,10 +52,10 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
     };
 
     const onSystemActionSuccess = (action: 'start' | 'stop') => {
-        Alert.alert(
-            'Success',
-            `XRGI system ${action === 'start' ? 'started' : 'stopped'} successfully`
-        );
+        setSuccessAlert({
+            visible: true,
+            message: action === 'start' ? t('unitDetail.alerts.systemStarted') : t('unitDetail.alerts.systemStopped')
+        });
     };
 
     // Move render functions after state and handlers
@@ -61,13 +70,13 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         <View style={styles.subSection}>
             {showTitle && title && <Text style={styles.subSectionTitle}>{title}</Text>}
             <View style={styles.infoGrid}>
-                {renderInfoRow('Name', data.name)}
-                {renderInfoRow('Address', data.address)}
-                {renderInfoRow('City', data.city)}
-                {renderInfoRow('Postal Code', data.postalCode)}
-                {renderInfoRow('Country', data.country)}
-                {renderInfoRow('Email', data.email)}
-                {renderInfoRow('Cell Phone no', data.cellPhone)}
+                {renderInfoRow(t('unitDetail.general.name'), data.name)}
+                {renderInfoRow(t('unitDetail.general.address'), data.address)}
+                {renderInfoRow(t('unitDetail.general.city'), data.city)}
+                {renderInfoRow(t('unitDetail.general.postalCode'), data.postalCode)}
+                {renderInfoRow(t('unitDetail.general.country'), data.country)}
+                {renderInfoRow(t('unitDetail.general.email'), data.email)}
+                {renderInfoRow(t('unitDetail.general.cellPhone'), data.cellPhone)}
             </View>
         </View>
     );
@@ -77,41 +86,41 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
             <View style={styles.lastCallContainer}>
                 <View style={styles.lastCallSection}>
                     <View style={styles.lastCallRow}>
-                        <Text style={styles.lastCallLabel}>Calls:</Text>
+                        <Text style={styles.lastCallLabel}>{t('unitDetail.lastCall.calls')}</Text>
                         <Text style={styles.lastCallValue}>{lastCallData.calls}</Text>
                     </View>
                     <View style={styles.lastCallRow}>
-                        <Text style={styles.lastCallLabel}>Time of call:</Text>
+                        <Text style={styles.lastCallLabel}>{t('unitDetail.lastCall.timeOfCall')}</Text>
                         <Text style={styles.lastCallValue}>{lastCallData.timeOfCall}</Text>
                     </View>
                 </View>
 
                 <View style={styles.operationStatusCard}>
-                    <Text style={styles.operationStatusTitle}>Operation Status</Text>
+                    <Text style={styles.operationStatusTitle}>{t('unitDetail.lastCall.operationStatus')}</Text>
                     <View style={styles.operationStatusGrid}>
                         <View style={styles.operationStatusItem}>
-                            <Text style={styles.operationStatusLabel}>Status</Text>
+                            <Text style={styles.operationStatusLabel}>{t('unitDetail.lastCall.status')}</Text>
                             <View style={styles.stoppedBadge}>
                                 <Text style={styles.stoppedBadgeText}>{lastCallData.operationStatus.status}</Text>
                             </View>
                         </View>
                         <View style={styles.operationStatusItem}>
-                            <Text style={styles.operationStatusLabel}>Noise</Text>
+                            <Text style={styles.operationStatusLabel}>{t('unitDetail.lastCall.noise')}</Text>
                             <Text style={styles.operationStatusValue}>{lastCallData.operationStatus.noise}</Text>
                         </View>
                         <View style={styles.operationStatusItem}>
-                            <Text style={styles.operationStatusLabel}>Oil Pressure</Text>
+                            <Text style={styles.operationStatusLabel}>{t('unitDetail.lastCall.oilPressure')}</Text>
                             <Text style={styles.operationStatusValue}>{lastCallData.operationStatus.oilPressure}</Text>
                         </View>
                         <View style={styles.operationStatusItem}>
-                            <Text style={styles.operationStatusLabel}>Gas Alarm</Text>
+                            <Text style={styles.operationStatusLabel}>{t('unitDetail.lastCall.gasAlarm')}</Text>
                             <Text style={styles.operationStatusValue}>{lastCallData.operationStatus.gasAlarm}</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.gaugeContainer}>
                     <View style={styles.gaugeCard}>
-                        <Text style={styles.gaugeTitle}>Control Panel Temperature</Text>
+                        <Text style={styles.gaugeTitle}>{t('unitDetail.lastCall.controlPanelTemp')}</Text>
                         <View style={styles.gaugeWrapper}>
                             <CircularProgress
                                 value={50}
@@ -133,12 +142,12 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                                 rotation={180}
                                 strokeLinecap={'round'}
                             />
-                            <Text style={styles.gaugeLabelBelow}>Cold • Normal • Warm</Text>
+                            <Text style={styles.gaugeLabelBelow}>{t('unitDetail.lastCall.tempRange')}</Text>
                         </View>
                     </View>
 
                     <View style={styles.gaugeCard}>
-                        <Text style={styles.gaugeTitle}>Control Panel Antenna Signal</Text>
+                        <Text style={styles.gaugeTitle}>{t('unitDetail.lastCall.controlPanelSignal')}</Text>
                         <View style={styles.gaugeWrapper}>
                             <CircularProgress
                                 value={90}
@@ -160,7 +169,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                                 rotation={180}
                                 strokeLinecap={'round'}
                             />
-                            <Text style={styles.gaugeLabelBelow}>Low • Medium • High</Text>
+                            <Text style={styles.gaugeLabelBelow}>{t('unitDetail.lastCall.signalRange')}</Text>
                         </View>
                     </View>
                 </View>
@@ -173,7 +182,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
             <View style={styles.customerLoginContainer}>
                 <View style={styles.customerLoginCard}>
                     <View style={styles.customerLoginRow}>
-                        <Text style={styles.customerLoginLabel}>Last Login</Text>
+                        <Text style={styles.customerLoginLabel}>{t('unitDetail.customerLogin.lastLogin')}</Text>
                         <Text style={styles.customerLoginValue}>{customerLoginData.lastLogin}</Text>
                     </View>
                 </View>
@@ -187,19 +196,19 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 <View style={styles.status2025Card}>
                     <View style={styles.status2025Section}>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Latest update:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.latestUpdate')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.latestUpdate}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Operating hours:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.operatingHours')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.operatingHours}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Last service:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.lastService')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.lastService}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Operational hours to next service:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.operationalHoursToNextService')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.operationalHoursToNextService}</Text>
                         </View>
                     </View>
@@ -208,19 +217,19 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
 
                     <View style={styles.status2025Section}>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Elec. production:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.elecProduction')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.elecProduction}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Heat production:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.heatProduction')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.heatProduction}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Fuel consumption:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.fuelConsumption')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.fuelConsumption}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>First Call:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.firstCall')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.firstCall}</Text>
                         </View>
                     </View>
@@ -229,19 +238,19 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
 
                     <View style={styles.status2025Section}>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Site elec. consumption:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.siteElecConsumption')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.siteElecConsumption}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Covered by XRGI® system:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.coveredByXRGI')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.coveredByXRGISystem}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Covered by power purchase:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.coveredByPowerPurchase')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.coveredByPowerPurchase}</Text>
                         </View>
                         <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>Sold electricity:</Text>
+                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.soldElectricity')}</Text>
                             <Text style={styles.status2025Value}>{status2025Data.soldElectricity}</Text>
                         </View>
                     </View>
@@ -278,11 +287,11 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 return (
                     <View style={styles.expandedContent}>
                         <View style={styles.systemNameHeader}>
-                            <Text style={styles.systemNameTitle}>XRGI® System Name</Text>
+                            <Text style={styles.systemNameTitle}>{t('unitDetail.general.systemName')}</Text>
                         </View>
                         {renderSubSection('', generalData.systemName, false)}
-                        {renderSubSection('DEALER', generalData.dealer, true)}
-                        {renderSubSection('Technician', generalData.technician, true)}
+                        {renderSubSection(t('unitDetail.general.dealer'), generalData.dealer, true)}
+                        {renderSubSection(t('unitDetail.general.technician'), generalData.technician, true)}
                     </View>
                 );
             case 'lastCall':
@@ -296,7 +305,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
             default:
                 return (
                     <View style={styles.expandedContent}>
-                        <Text style={styles.comingSoonText}>Coming Soon</Text>
+                        <Text style={styles.comingSoonText}>{t('unitDetail.comingSoon')}</Text>
                     </View>
                 );
         }
@@ -307,7 +316,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={styles.loadingText}>Loading system data...</Text>
+                <Text style={styles.loadingText}>{t('unitDetail.loading')}</Text>
             </View>
         );
     }
@@ -319,7 +328,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={24} color="#0F172A" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>XRGI Unit</Text>
+                <Text style={styles.headerTitle}>{t('unitDetail.header')}</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
@@ -330,15 +339,9 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                         <Ionicons name="cube-outline" size={28} color="#3B82F6" />
                     </View>
                     <View style={styles.unitIdContent}>
-                        <Text style={styles.unitIdLabel}>XRGI ID</Text>
+                        <Text style={styles.unitIdLabel}>{t('unitDetail.xrgiId')}</Text>
                         <Text style={styles.unitIdNumber}>{system?.xrgiID} / {system?.modelNumber}</Text>
                     </View>
-                    {systemStatus === 'running' && (
-                        <View style={styles.statusBadge}>
-                            <View style={styles.statusDot} />
-                            <Text style={styles.statusText}>Running</Text>
-                        </View>
-                    )}
                 </View>
 
                 {/* Expandable Menu Items */}
@@ -377,12 +380,11 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 <View style={styles.controlCard}>
                     <View style={styles.controlHeader}>
                         <Ionicons name="power" size={24} color="#0F172A" />
-                        <Text style={styles.controlTitle}>System Control</Text>
+                        <Text style={styles.controlTitle}>{t('unitDetail.systemControl.title')}</Text>
                     </View>
 
                     <Text style={styles.controlDescription}>
-                        Use these controls to manually start or stop the XRGI system.
-                        Please ensure proper authorization before making changes.
+                        {t('unitDetail.systemControl.description')}
                     </Text>
 
                     <View style={styles.controlButtons}>
@@ -403,7 +405,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                                 />
                             </View>
                             <Text style={styles.startButtonText}>
-                                {isStarting ? 'Starting...' : 'Start'}
+                                {isStarting ? t('unitDetail.systemControl.starting') : t('unitDetail.systemControl.start')}
                             </Text>
                         </TouchableOpacity>
 
@@ -424,7 +426,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                                 />
                             </View>
                             <Text style={styles.stopButtonText}>
-                                {isStopping ? 'Stopping...' : 'Stop'}
+                                {isStopping ? t('unitDetail.systemControl.stopping') : t('unitDetail.systemControl.stop')}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -433,6 +435,28 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 {/* Bottom Spacing */}
                 <View style={styles.bottomSpacer} />
             </ScrollView>
+
+            {/* Confirmation Modal */}
+            <ConfirmationModal
+                isVisible={alert.visible}
+                onClose={handleAlertCancel}
+                onConfirm={handleAlertConfirm}
+                title={alert.title}
+                message={alert.message}
+                type={alert.type === 'error' ? 'error' : 'success'}
+                confirmText={alert.type === 'error' ? t('unitDetail.systemControl.stop') : t('unitDetail.systemControl.start')}
+                cancelText={t('unitDetail.alerts.cancel')}
+            />
+
+            {/* Success Alert */}
+            <Alert
+                isVisible={successAlert.visible}
+                onClose={() => setSuccessAlert({ visible: false, message: '' })}
+                type="success"
+                title={t('unitDetail.alerts.success')}
+                message={successAlert.message}
+                buttonText={t('unitDetail.alerts.ok')}
+            />
         </SafeAreaView>
     );
 };

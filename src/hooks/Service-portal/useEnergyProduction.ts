@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface FilterOption {
     id: string;
@@ -35,13 +36,14 @@ interface UseEnergyProductionReturn {
     getFilterLabel: () => string;
 }
 
-const useEnergyProduction = (): UseEnergyProductionReturn => {
+const useEnergyProduction = (xrgiId: string): UseEnergyProductionReturn => {
+    const { t } = useTranslation();
     const [selectedFilter, setSelectedFilter] = useState('last7days');
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [statusData, setStatusData] = useState<any>(null);
 
-    const GetstatusData = async (filterId: string) => {
+    const GetstatusData = async (filterId: string, xrgiId: string) => {
         setIsLoading(true);
         try {
             const endDate = new Date();
@@ -86,7 +88,7 @@ const useEnergyProduction = (): UseEnergyProductionReturn => {
             const startDateStr = formatDate(startDate);
             const endDateStr = formatDate(endDate);
 
-            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/1184936474/${startDateStr}/${endDateStr}`);
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/${xrgiId}/${startDateStr}/${endDateStr}`);
             if (response) {
                 const data = await response.json();
                 setStatusData(data);
@@ -99,44 +101,44 @@ const useEnergyProduction = (): UseEnergyProductionReturn => {
     }
 
     useEffect(() => {
-        GetstatusData(selectedFilter);
-    }, [selectedFilter]);
+        GetstatusData(selectedFilter, xrgiId);
+    }, [selectedFilter, xrgiId]);
 
     const filterOptions: FilterOption[] = [
-        { id: 'last7days', label: 'the last 7 days' },
-        { id: 'last183days', label: 'the last 183 days' },
-        { id: 'last365days', label: 'the last 365 days' },
-        { id: 'firstcall', label: 'since the first call' },
-        { id: '2025', label: '2025' },
-        { id: '2024', label: '2024' },
+        { id: 'last7days', label: t('energyProduction.filterOptions.last7days') },
+        { id: 'last183days', label: t('energyProduction.filterOptions.last183days') },
+        { id: 'last365days', label: t('energyProduction.filterOptions.last365days') },
+        { id: 'firstcall', label: t('energyProduction.filterOptions.firstcall') },
+        { id: '2025', label: t('energyProduction.filterOptions.2025') },
+        { id: '2024', label: t('energyProduction.filterOptions.2024') },
     ];
 
     const systemInfo: SystemInfo[] = statusData ? [
-        { label: 'Latest update:', value: statusData.LatesCallDate ? statusData.LatesCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: 'Operating hours:', value: statusData.OperationalMinutes && statusData.PossibleMinutes ? `${Math.round(statusData.OperationalMinutes / 60)} out of ${Math.round(statusData.PossibleMinutes / 60)} hours` : 'out of possible hours' },
-        { label: 'Last service:', value: statusData.LatesServiceDate ? statusData.LatesServiceDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: 'Operational hours to next service:', value: statusData.TimeNextService ? `${Math.round(statusData.TimeNextService / 60)} hours` : '-' },
-        { label: 'Elec. production:', value: statusData.PowerProduction ? `${Math.round(statusData.PowerProduction / 1000)} kWh` : '0 kWh' },
-        { label: 'Heat production:', value: statusData.HeatProduction ? `${Math.round(statusData.HeatProduction / 1000)} kWh` : '0 kWh' },
-        { label: 'Fuel Consumption:', value: statusData.FuelConsumption ? `${Math.round(statusData.FuelConsumption / 1000)} kWh` : '0 kWh' },
-        { label: 'First Call:', value: statusData.FirstCallDate ? statusData.FirstCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: 'Site elec. consumption:', value: statusData.PowerConsumption ? `${Math.round(statusData.PowerConsumption / 1000)} kWh` : '0 kWh' },
-        { label: 'Covered by XRG® system:', value: statusData.PowerCoveredByXRGI ? `${Math.round(statusData.PowerCoveredByXRGI / 1000)} kWh` : '0 kWh' },
-        { label: 'Covered by power purchase:', value: statusData.PowerCoveredByPurchase ? `${Math.round(statusData.PowerCoveredByPurchase / 1000)} kWh` : '0 kWh' },
-        { label: 'Sold electricity:', value: statusData.PowerSoldEl ? `${Math.round(statusData.PowerSoldEl / 1000)} kWh` : '0 kWh' },
+        { label: t('energyProduction.systemInfo.latestUpdate'), value: statusData.LatesCallDate ? statusData.LatesCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
+        { label: t('energyProduction.systemInfo.operatingHours'), value: statusData.OperationalMinutes && statusData.PossibleMinutes ? `${Math.round(statusData.OperationalMinutes / 60)} out of ${Math.round(statusData.PossibleMinutes / 60)} ${t('energyProduction.systemInfo.hours')}` : t('energyProduction.systemInfo.outOfPossibleHours') },
+        { label: t('energyProduction.systemInfo.lastService'), value: statusData.LatesServiceDate ? statusData.LatesServiceDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
+        { label: t('energyProduction.systemInfo.operationalHoursToNextService'), value: statusData.TimeNextService ? `${Math.round(statusData.TimeNextService / 60)} ${t('energyProduction.systemInfo.hours')}` : '-' },
+        { label: t('energyProduction.systemInfo.elecProduction'), value: statusData.PowerProduction ? `${Math.round(statusData.PowerProduction / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.heatProduction'), value: statusData.HeatProduction ? `${Math.round(statusData.HeatProduction / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.fuelConsumption'), value: statusData.FuelConsumption ? `${Math.round(statusData.FuelConsumption / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.firstCall'), value: statusData.FirstCallDate ? statusData.FirstCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
+        { label: t('energyProduction.systemInfo.siteElecConsumption'), value: statusData.PowerConsumption ? `${Math.round(statusData.PowerConsumption / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: statusData.PowerCoveredByXRGI ? `${Math.round(statusData.PowerCoveredByXRGI / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: statusData.PowerCoveredByPurchase ? `${Math.round(statusData.PowerCoveredByPurchase / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.soldElectricity'), value: statusData.PowerSoldEl ? `${Math.round(statusData.PowerSoldEl / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
     ] : [
-        { label: 'Latest update:', value: 'Loading...' },
-        { label: 'Operating hours:', value: 'out of possible hours' },
-        { label: 'Last service:', value: '-' },
-        { label: 'Operational hours to next service:', value: '-' },
-        { label: 'Elec. production:', value: 'kWh' },
-        { label: 'Heat production:', value: 'kWh' },
-        { label: 'Fuel Consumption:', value: 'kWh' },
-        { label: 'First Call:', value: '-' },
-        { label: 'Site elec. consumption:', value: '-' },
-        { label: 'Covered by XRG® system:', value: '-' },
-        { label: 'Covered by power purchase:', value: '-' },
-        { label: 'Sold electricity:', value: '-' },
+        { label: t('energyProduction.systemInfo.latestUpdate'), value: t('energyProduction.systemInfo.loading') },
+        { label: t('energyProduction.systemInfo.operatingHours'), value: t('energyProduction.systemInfo.outOfPossibleHours') },
+        { label: t('energyProduction.systemInfo.lastService'), value: '-' },
+        { label: t('energyProduction.systemInfo.operationalHoursToNextService'), value: '-' },
+        { label: t('energyProduction.systemInfo.elecProduction'), value: t('energyProduction.systemInfo.kwh') },
+        { label: t('energyProduction.systemInfo.heatProduction'), value: t('energyProduction.systemInfo.kwh') },
+        { label: t('energyProduction.systemInfo.fuelConsumption'), value: t('energyProduction.systemInfo.kwh') },
+        { label: t('energyProduction.systemInfo.firstCall'), value: '-' },
+        { label: t('energyProduction.systemInfo.siteElecConsumption'), value: '-' },
+        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: '-' },
+        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: '-' },
+        { label: t('energyProduction.systemInfo.soldElectricity'), value: '-' },
     ];
 
     const chartData: ChartData = statusData ? {
@@ -195,12 +197,12 @@ const useEnergyProduction = (): UseEnergyProductionReturn => {
         setSelectedFilter(filterId);
         setModalVisible(false);
         // Fetch data with new filter
-        GetstatusData(filterId);
-    }, []);
+        GetstatusData(filterId, xrgiId);
+    }, [xrgiId]);
 
     const getFilterLabel = useCallback(() => {
-        return filterOptions.find(f => f.id === selectedFilter)?.label || '2025';
-    }, [selectedFilter, filterOptions]);
+        return filterOptions.find(f => f.id === selectedFilter)?.label || t('energyProduction.filterOptions.2025');
+    }, [selectedFilter, filterOptions, t]);
 
     return {
         // State

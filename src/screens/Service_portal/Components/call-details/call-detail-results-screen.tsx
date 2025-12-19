@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import styles from "./call-details-results-screen.styles";
 import useCallDetailsResult from "../../../../hooks/Service-portal/call-details/useCallDetailsResult";
+import styles from "./call-details-results-screen.styles";
 
 interface CallDetailResultScreenProps {
     navigation: any;
@@ -17,6 +18,7 @@ interface DataRowProps {
 }
 
 const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const { system, fromDate, toDate, fromDateObject, toDateObject } = route.params;
     const {
         callData,
@@ -48,7 +50,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={24} color="#1E293B" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Call Details</Text>
+                <Text style={styles.headerTitle}>{t('callDetails.title')}</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
@@ -57,7 +59,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                 <View style={styles.titleCard}>
                     <View style={styles.titleHeader}>
                         <Ionicons name="list" size={20} color="#3B82F6" />
-                        <Text style={styles.titleText}>Call details</Text>
+                        <Text style={styles.titleText}>{t('callDetails.title')}</Text>
                     </View>
                     <Text style={styles.serialNumber}>{system.xrgiID} - {system.modelNumber}</Text>
 
@@ -65,78 +67,78 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                         <View style={styles.distributorIcon}>
                             <Ionicons name="thermometer-outline" size={24} color="#f6b53bff" />
                         </View>
-                        <Text style={styles.distributorText}>Heat Distributor</Text>
+                        <Text style={styles.distributorText}>{t('callDetails.heatDistributor')}</Text>
                     </TouchableOpacity>
                 </View>
 
                 {/* Time of Call Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Time of call:</Text>
+                    <Text style={styles.sectionTitle}>{t('callDetails.timeOfCall')}</Text>
                     <Text style={styles.sectionValue}>{callData.timeOfCall}</Text>
                 </View>
 
                 {/* Attempted Redials */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Attempted redials:</Text>
+                    <Text style={styles.sectionTitle}>{t('callDetails.attemptedRedials')}</Text>
                     <Text style={styles.sectionValue}>{callData.attemptedRedials}</Text>
                 </View>
 
                 {/* Software Validated */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Software validated:</Text>
+                    <Text style={styles.sectionTitle}>{t('callDetails.softwareValidated')}</Text>
                     <Text style={styles.sectionValue}>{callData.softwareValidated}</Text>
                 </View>
 
                 {/* Operation Status */}
                 <View style={styles.statusSection}>
-                    <Text style={styles.statusSectionTitle}>Operation status</Text>
+                    <Text style={styles.statusSectionTitle}>{t('callDetails.operationStatus')}</Text>
 
-                    <DataRow label="Actual status:" value={callData.actualStatus} valueColor={callData.statusColor} />
-                    <DataRow label="Stopped" value={callData.stopped} />
-                    <DataRow label="Operational hours to next service:" value={callData.operationalHoursToNextService} />
-                    <DataRow label="Operating hours:" value={callData.operatingHours} />
-                    <DataRow label="Actual elec. produced:" value={callData.actualElecProduced} />
-                    <DataRow label="Forced standby:" value={callData.forcedStandby} />
-                    <DataRow label="Load level:" value={callData.loadLevel} />
-                    <DataRow label="Storage level:" value={callData.storageLevel} />
-                    <DataRow label="Oil pressure:" value={callData.oilPressure} />
-                    <DataRow label="Smartstarter board temp.:" value={callData.smartstarterBoardTemp} />
-                    <DataRow label="Boiler released:" value={callData.boilerReleased} />
+                    <DataRow label={t('callDetails.actualStatus')} value={callData.actualStatus} valueColor={callData.statusColor} />
+                    <DataRow label={t('callDetails.stopped')} value={callData.stopped} />
+                    <DataRow label={t('callDetails.operationalHoursToNextService')} value={callData.operationalHoursToNextService} />
+                    <DataRow label={t('callDetails.operatingHours')} value={callData.operatingHours} />
+                    <DataRow label={t('callDetails.actualElecProduced')} value={callData.actualElecProduced} />
+                    <DataRow label={t('callDetails.forcedStandby')} value={callData.forcedStandby} />
+                    <DataRow label={t('callDetails.loadLevel')} value={callData.loadLevel} />
+                    <DataRow label={t('callDetails.storageLevel')} value={callData.storageLevel} />
+                    <DataRow label={t('callDetails.oilPressure')} value={callData.oilPressure} />
+                    <DataRow label={t('callDetails.smartstarterBoardTemp')} value={callData.smartstarterBoardTemp} />
+                    <DataRow label={t('callDetails.boilerReleased')} value={callData.boilerReleased} />
                 </View>
 
                 {/* System Status */}
                 <View style={styles.statusSection}>
-                    <Text style={styles.statusSectionTitle}>System status</Text>
+                    <Text style={styles.statusSectionTitle}>{t('callDetails.systemStatus')}</Text>
 
-                    <DataRow label="Control panel antenna signal:" value={callData.controlPanelAntennaSignal} />
-                    <DataRow label="Control panel PCB temp.:" value={callData.controlPanelPCBTemp} />
-                    <DataRow label="Control panel PSU Voltage:" value={callData.controlPanelPSUVoltage} />
-                    <DataRow label="Power Unit UPS accumulator:" value={callData.powerUnitUPSAccumulator} />
-                    <DataRow label="Power Unit, PCB temperature:" value={callData.powerUnitPCBTemp} />
-                    <DataRow label="Heat Distributor, PCB temperature:" value={callData.heatDistributorPCBTemp} />
-                    <DataRow label="Flowmaster PSU Voltage:" value={callData.flowmasterPSUVoltage} />
-                    <DataRow label="Flowmaster, PCB temperature:" value={callData.flowmasterPCBTemp} />
-                    <DataRow label="Surge protector:" value={callData.surgeProtector} />
-                    <DataRow label="Smartstarter last error.:" value={callData.smartstarterLastError} />
+                    <DataRow label={t('callDetails.controlPanelAntennaSignal')} value={callData.controlPanelAntennaSignal} />
+                    <DataRow label={t('callDetails.controlPanelPCBTemp')} value={callData.controlPanelPCBTemp} />
+                    <DataRow label={t('callDetails.controlPanelPSUVoltage')} value={callData.controlPanelPSUVoltage} />
+                    <DataRow label={t('callDetails.powerUnitUPSAccumulator')} value={callData.powerUnitUPSAccumulator} />
+                    <DataRow label={t('callDetails.powerUnitPCBTemp')} value={callData.powerUnitPCBTemp} />
+                    <DataRow label={t('callDetails.heatDistributorPCBTemp')} value={callData.heatDistributorPCBTemp} />
+                    <DataRow label={t('callDetails.flowmasterPSUVoltage')} value={callData.flowmasterPSUVoltage} />
+                    <DataRow label={t('callDetails.flowmasterPCBTemp')} value={callData.flowmasterPCBTemp} />
+                    <DataRow label={t('callDetails.surgeProtector')} value={callData.surgeProtector} />
+                    <DataRow label={t('callDetails.smartstarterLastError')} value={callData.smartstarterLastError} />
                 </View>
 
                 {/* Incidents Section */}
                 <View style={styles.incidentsSection}>
-                    <Text style={styles.sectionTitle}>Incidents ({callDetailsData?.length || 0})</Text>
+                    <Text style={styles.sectionTitle}>{t('callDetails.incidents')} ({callDetailsData?.length || 0})</Text>
                     
                     {isLoading ? (
                         <View style={styles.loadingContainer}>
-                            <Text style={styles.loadingText}>Loading incidents...</Text>
+                            <Text style={styles.loadingText}>{t('callDetails.loadingIncidents')}</Text>
                         </View>
                     ) : !callDetailsData || callDetailsData.length === 0 ? (
                         <View style={styles.noDataContainer}>
                             <Ionicons name="alert-circle-outline" size={48} color="#64748B" />
-                            <Text style={styles.noDataTitle}>No incidents found</Text>
+                            <Text style={styles.noDataTitle}>{t('callDetails.noIncidentsFound')}</Text>
                             <Text style={styles.noDataSubTitle}>
-                                Try adjusting the date range to include more historical data
+                                {t('callDetails.adjustDateRange')}
                             </Text>
                             <Text style={styles.noDataSubTitle}>
-                                Current range: {fromDate} to {toDate}
+                                {t('callDetails.currentRange', { fromDate, toDate })}
                             </Text>
                         </View>
                     ) : (
@@ -147,7 +149,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                                     onPress={() => toggleIncident(incident.id)}
                                 >
                                     <View style={styles.incidentHeaderLeft}>
-                                        <Text style={styles.incidentTitle}>Incident</Text>
+                                        <Text style={styles.incidentTitle}>{t('callDetails.incident')}</Text>
                                         <Text style={styles.incidentDate}>{incident.timeOfCall}</Text>
                                     </View>
                                     <View style={styles.incidentHeaderRight}>
@@ -164,14 +166,14 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
 
                                 {expandedIncidents[incident.id] && (
                                     <View style={styles.incidentContent}>
-                                        <DataRow label="Date & Time" value={incident.timeOfCall} />
+                                        <DataRow label={t('callDetails.dateTime')} value={incident.timeOfCall} />
                                         <DataRow 
-                                            label="Incident" 
+                                            label={t('callDetails.incident')} 
                                             value={incident.incident.text} 
                                             valueColor={incident.incident.color}
                                         />
                                         <DataRow 
-                                            label="Status of Incident" 
+                                            label={t('callDetails.statusOfIncident')} 
                                             value={incident.operation.text} 
                                             valueColor={incident.operation.color}
                                         />
@@ -188,7 +190,7 @@ const CallDetailResultScreen: React.FC<CallDetailResultScreenProps> = ({ navigat
                     onPress={handleBackButton}
                 >
                     <Ionicons name="search-outline" size={20} color="#FFFFFF" />
-                    <Text style={styles.newSearchButtonText}>New Search</Text>
+                    <Text style={styles.newSearchButtonText}>{t('callDetails.newSearch')}</Text>
                 </TouchableOpacity>
 
                 <View style={styles.bottomSpacer} />

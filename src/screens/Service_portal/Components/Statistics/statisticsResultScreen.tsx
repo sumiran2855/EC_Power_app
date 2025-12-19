@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useStatisticsResult, { MappedCallData } from "../../../../hooks/Service-portal/useStatisticsResult";
@@ -11,6 +12,7 @@ interface StatisticsResultScreenProps {
 }
 
 const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }) => {
+    const { t } = useTranslation();
     const { fromDate, toDate, system } = route.params;
 
     const {
@@ -27,7 +29,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
             <SafeAreaView style={styles.container}>
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#3b82f6" />
-                    <Text style={styles.loadingText}>Loading system data...</Text>
+                    <Text style={styles.loadingText}>{t('statistics.loadingSystemData')}</Text>
                 </View>
             </SafeAreaView>
         )
@@ -48,7 +50,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                 {isLoading && callsData.length > 0 && (
                     <View style={styles.refreshLoadingContainer}>
                         <ActivityIndicator size="small" color="#3b82f6" />
-                        <Text style={styles.refreshLoadingText}>Refreshing data...</Text>
+                        <Text style={styles.refreshLoadingText}>{t('statistics.refreshingData')}</Text>
                     </View>
                 )}
                 {/* Title Section */}
@@ -57,11 +59,11 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                         <View style={styles.iconContainer}>
                             <Ionicons name="stats-chart" size={22} color="#FFFFFF" />
                         </View>
-                        <Text style={styles.title}>Statistics Results</Text>
+                        <Text style={styles.title}>{t('statistics.resultsTitle')}</Text>
                     </View>
                     <Text style={styles.subtitle}>{system?.xrgiID} - {system?.modelNumber}</Text>
                     <Text style={styles.description}>
-                        Results from {fromDate} to {toDate}
+                        {t('statistics.resultsDescription')} {fromDate} to {toDate}
                     </Text>
                 </View>
 
@@ -69,7 +71,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                 <View style={styles.summaryCard}>
                     <View style={styles.summaryHeader}>
                         <Text style={styles.summaryTitle}>
-                            {callsData.length > 0 ? `Total ${callsData.length} calls` : 'No calls found'}
+                            {callsData.length > 0 ? t('statistics.totalCalls', { count: callsData.length }) : t('statistics.noCallsFound')}
                         </Text>
                     </View>
                 </View>
@@ -78,8 +80,8 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                 {callsData.length === 0 && (
                     <View style={styles.noDataContainer}>
                         <Ionicons name="information-circle-outline" size={48} color="#9CA3AF" />
-                        <Text style={styles.noDataText}>No calls found for the selected date range</Text>
-                        <Text style={styles.noDataSubText}>Try selecting a different date range</Text>
+                        <Text style={styles.noDataText}>{t('statistics.noCallsFoundForDateRange')}</Text>
+                        <Text style={styles.noDataSubText}>{t('statistics.tryDifferentDateRange')}</Text>
                     </View>
                 )}
 
@@ -99,7 +101,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                         <View style={styles.cardContent}>
                             {/* Cause */}
                             <View style={styles.cardRow}>
-                                <Text style={styles.cardLabel}>Cause</Text>
+                                <Text style={styles.cardLabel}>{t('statistics.labels.cause')}</Text>
                                 <View style={styles.statusBadge}>
                                     <Text style={[styles.statusText, { color: getStatusColor(call.cause.type) }]}>
                                         {call.cause.text}
@@ -109,7 +111,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
 
                             {/* Current Status */}
                             <View style={styles.cardRow}>
-                                <Text style={styles.cardLabel}>Current Status</Text>
+                                <Text style={styles.cardLabel}>{t('statistics.labels.currentStatus')}</Text>
                                 <View style={styles.statusBadge}>
                                     <Text style={[styles.statusText, { color: getStatusColor(call.currentStatus.type) }]}>
                                         {call.currentStatus.text}
@@ -119,7 +121,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
 
                             {/* Latest Incident */}
                             <View style={styles.cardRow}>
-                                <Text style={styles.cardLabel}>Latest Incident</Text>
+                                <Text style={styles.cardLabel}>{t('statistics.labels.latestIncident')}</Text>
                                 <View style={styles.statusBadge}>
                                     <Text style={[styles.statusText, { color: getStatusColor(call.latestIncident.type) }]}>
                                         {call.latestIncident.text}
@@ -129,7 +131,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
 
                             {/* Status of Incident */}
                             <View style={styles.cardRow}>
-                                <Text style={styles.cardLabel}>Incident Status</Text>
+                                <Text style={styles.cardLabel}>{t('statistics.labels.incidentStatus')}</Text>
                                 <View style={styles.statusBadge}>
                                     <Text style={[styles.statusText, { color: getStatusColor(call.statusOfIncident.type) }]}>
                                         {call.statusOfIncident.text}
@@ -147,7 +149,7 @@ const StatisticsResultScreen: React.FC<StatisticsResultScreenProps> = ({ route }
                         onPress={handleBackButton}
                     >
                         <Ionicons name="search-outline" size={20} color="#FFFFFF" />
-                        <Text style={styles.newSearchButtonText}>New Search</Text>
+                        <Text style={styles.newSearchButtonText}>{t('statistics.newSearch')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

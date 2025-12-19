@@ -1,11 +1,12 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { styles } from './heat-distributionScreen.styles';
 
 import { SystemController } from '@/controllers/SystemController';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
 import { RootStackParamList } from '../../../../navigation/AppNavigator';
 
 type HeatDistributionScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HeatDistribution'>;
@@ -93,6 +94,7 @@ export interface HeatControlValue {
 }
 
 const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const system = route.params.system;
     const [selectedTime, setSelectedTime] = useState<string>('T-0s');
     const [HeatDistributionData, setHeatDistributionData] = useState<HeatControlValue | null>(null);
@@ -288,16 +290,16 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={24} color="#0F172A" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Heat Distribution</Text>
+                <Text style={styles.headerTitle}>{t('heatDistribution.title')}</Text>
                 <View style={styles.headerSpacer} />
             </View>
 
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {/* System Info */}
                 <View style={styles.systemInfoCard}>
-                    <Text style={styles.systemTitle}>Heat Distribution Control System</Text>
-                    <Text style={styles.systemId}>Heat Distribution Control System: {system.xrgiID}</Text>
-                    <Text style={styles.systemSubtitle}>Heat Control Data Monitor</Text>
+                    <Text style={styles.systemTitle}>{t('heatDistribution.controlSystem')}</Text>
+                    <Text style={styles.systemId}>{t('heatDistribution.controlSystem')}: {system.xrgiID}</Text>
+                    <Text style={styles.systemSubtitle}>{t('heatDistribution.dataMonitor')}</Text>
 
                     {/* Time Buttons - Horizontal Scrollable */}
                     <View style={styles.timeButtonsContainer}>
@@ -334,118 +336,118 @@ const HeatDistributionScreen: React.FC<HeatDistributionScreenProps> = ({ navigat
                     </View>
 
                     <Text style={styles.recordsInfo}>
-                        Showing latest 6 records | {timeButtons.find(btn => btn.label === selectedTime)?.timestamp ? formatTimestamp(timeButtons.find(btn => btn.label === selectedTime)?.timestamp) : 'Loading...'}
+                        {t('heatDistribution.showingLatestRecords', { count: 6 })} | {timeButtons.find(btn => btn.label === selectedTime)?.timestamp ? formatTimestamp(timeButtons.find(btn => btn.label === selectedTime)?.timestamp) : t('heatDistribution.loading')}
                     </Text>
                 </View>
 
                 {/* Status Cards Grid */}
                 <View style={styles.statusGrid}>
                     <View style={styles.statusCardWrapper}>
-                        {renderStatusCard('Manual Status', HeatDistributionData?.HCfMManualStatus || 'Auto', 'settings-outline', '#3B82F6')}
+                        {renderStatusCard(t('heatDistribution.manualStatus'), HeatDistributionData?.HCfMManualStatus || 'Auto', 'settings-outline', '#3B82F6')}
                     </View>
                     <View style={styles.statusCardWrapper}>
-                        {renderStatusCard('Engine Valve', HeatDistributionData?.EngineValveStatus || '-', 'water-outline', '#10B981')}
+                        {renderStatusCard(t('heatDistribution.engineValve'), HeatDistributionData?.EngineValveStatus || '-', 'water-outline', '#10B981')}
                     </View>
                 </View>
 
                 <View style={styles.statusGrid}>
                     <View style={styles.statusCardWrapper}>
-                        {renderStatusCard('Flow Valve', HeatDistributionData?.FlowValveStatus || 'Off', 'pulse-outline', '#8B5CF6')}
+                        {renderStatusCard(t('heatDistribution.flowValve'), HeatDistributionData?.FlowValveStatus || 'Off', 'pulse-outline', '#8B5CF6')}
                     </View>
                     <View style={styles.statusCardWrapper}>
-                        {renderStatusCard('Storage %', HeatDistributionData?.HeatStoragePercent ? `${HeatDistributionData.HeatStoragePercent}%` : '-', 'layers-outline', '#F59E0B')}
+                        {renderStatusCard(t('heatDistribution.storagePercent'), HeatDistributionData?.HeatStoragePercent ? `${HeatDistributionData.HeatStoragePercent}%` : '-', 'layers-outline', '#F59E0B')}
                     </View>
                 </View>
 
                 <View style={styles.statusCardFull}>
-                    {renderStatusCard('Heat Output', HeatDistributionData?.PowerUnitHeatOutput ? `${HeatDistributionData.PowerUnitHeatOutput.Value} ${HeatDistributionData.PowerUnitHeatOutput.Unit}` : '-', 'flash-outline', '#EF4444')}
+                    {renderStatusCard(t('heatDistribution.heatOutput'), HeatDistributionData?.PowerUnitHeatOutput ? `${HeatDistributionData.PowerUnitHeatOutput.Value} ${HeatDistributionData.PowerUnitHeatOutput.Unit}` : '-', 'flash-outline', '#EF4444')}
                 </View>
 
                 {/* Engine System */}
-                {renderSensorSection('Engine System', 'cog-outline', '#3B82F6', (
+                {renderSensorSection(t('heatDistribution.engineSystem'), 'cog-outline', '#3B82F6', (
                     <>
-                        {renderSensorRow('Engine Flow', HeatDistributionData?.EngineFlow ? `${HeatDistributionData.EngineFlow} L/min` : '-')}
-                        {renderSensorRow('Pump Force', HeatDistributionData?.EnginePumpForce ? `${HeatDistributionData.EnginePumpForce}` : '-')}
-                        {renderSensorRow('TMK Setpoint', HeatDistributionData?.EngineRegulationTmkSetpoint ? `${HeatDistributionData.EngineRegulationTmkSetpoint}°C` : '1.08')}
-                        {renderSensorRow('TMV Max', HeatDistributionData?.EngineRegulationTmvMax ? `${HeatDistributionData.EngineRegulationTmvMax}°C` : '-')}
-                        {renderSensorRow('Engine Pump Feedback', HeatDistributionData?.EnginePumpFeedback ? `${HeatDistributionData.EnginePumpFeedback.Actual} L/min (${HeatDistributionData.EnginePumpFeedback.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.engineFlow'), HeatDistributionData?.EngineFlow ? `${HeatDistributionData.EngineFlow} L/min` : '-')}
+                        {renderSensorRow(t('heatDistribution.pumpForce'), HeatDistributionData?.EnginePumpForce ? `${HeatDistributionData.EnginePumpForce}` : '-')}
+                        {renderSensorRow(t('heatDistribution.tmkSetpoint'), HeatDistributionData?.EngineRegulationTmkSetpoint ? `${HeatDistributionData.EngineRegulationTmkSetpoint}°C` : '1.08')}
+                        {renderSensorRow(t('heatDistribution.tmvMax'), HeatDistributionData?.EngineRegulationTmvMax ? `${HeatDistributionData.EngineRegulationTmvMax}°C` : '-')}
+                        {renderSensorRow(t('heatDistribution.enginePumpFeedback'), HeatDistributionData?.EnginePumpFeedback ? `${HeatDistributionData.EnginePumpFeedback.Actual} L/min (${HeatDistributionData.EnginePumpFeedback.Status})` : '-')}
                     </>
                 ))}
 
                 {/* Temperature Sensors */}
-                {renderSensorSection('Heat Control Temperature Sensors', 'thermometer-outline', '#EF4444', (
+                {renderSensorSection(t('heatDistribution.heatControlTemperatureSensors'), 'thermometer-outline', '#EF4444', (
                     <>
-                        {renderSensorRow('TLK Sensor', HeatDistributionData?.HeatControlTlk ? `${HeatDistributionData.HeatControlTlk.Temp}°C (${HeatDistributionData.HeatControlTlk.Status})` : '-')}
-                        {renderSensorRow('TLV Sensor', HeatDistributionData?.HeatControlTlv ? `${HeatDistributionData.HeatControlTlv.Temp}°C (${HeatDistributionData.HeatControlTlv.Status})` : '-')}
-                        {renderSensorRow('TMK Sensor', HeatDistributionData?.HeatControlTmk ? `${HeatDistributionData.HeatControlTmk.Temp}°C (${HeatDistributionData.HeatControlTmk.Status})` : '-')}
-                        {renderSensorRow('TMV Max', HeatDistributionData?.EngineRegulationTmvMax ? `${HeatDistributionData.EngineRegulationTmvMax}°C` : '-')}
-                        {renderSensorRow('Return Temperature', HeatDistributionData?.HeatControlReturnTemperature ? `${HeatDistributionData.HeatControlReturnTemperature.Temp}°C (${HeatDistributionData.HeatControlReturnTemperature.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.tlkSensor'), HeatDistributionData?.HeatControlTlk ? `${HeatDistributionData.HeatControlTlk.Temp}°C (${HeatDistributionData.HeatControlTlk.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.tlvSensor'), HeatDistributionData?.HeatControlTlv ? `${HeatDistributionData.HeatControlTlv.Temp}°C (${HeatDistributionData.HeatControlTlv.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.tmkSensor'), HeatDistributionData?.HeatControlTmk ? `${HeatDistributionData.HeatControlTmk.Temp}°C (${HeatDistributionData.HeatControlTmk.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.tmvMax'), HeatDistributionData?.EngineRegulationTmvMax ? `${HeatDistributionData.EngineRegulationTmvMax}°C` : '-')}
+                        {renderSensorRow(t('heatDistribution.returnTemperature'), HeatDistributionData?.HeatControlReturnTemperature ? `${HeatDistributionData.HeatControlReturnTemperature.Temp}°C (${HeatDistributionData.HeatControlReturnTemperature.Status})` : '-')}
                     </>
                 ))}
 
                 {/* Flow Control Sensors */}
-                {renderSensorSection('Flow Control Sensors', 'water-outline', '#10B981', (
+                {renderSensorSection(t('heatDistribution.flowControlSensors'), 'water-outline', '#10B981', (
                     <>
-                        {renderGreenStatusCard('Power Unit Setpoint', HeatDistributionData?.PowerUnitSetpointSensor ? `${HeatDistributionData.PowerUnitSetpointSensor.Temp}°C` : '0°C', HeatDistributionData?.PowerUnitSetpointSensor?.Status || 'Ok')}
-                        {renderGreenStatusCard('Operational', HeatDistributionData?.FlowControlOperationalSensor ? `${HeatDistributionData.FlowControlOperationalSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlOperationalSensor?.Status || 'Ok')}
-                        {renderGreenStatusCard('Return', HeatDistributionData?.FlowControlReturnSensor ? `${HeatDistributionData.FlowControlReturnSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlReturnSensor?.Status || 'Ok')}
-                        {renderGreenStatusCard('Supply', HeatDistributionData?.FlowControlSupplySensor ? `${HeatDistributionData.FlowControlSupplySensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlSupplySensor?.Status || 'Ok')}
-                        {renderGreenStatusCard('Master Bypass', HeatDistributionData?.FlowMasterBypassSensor ? `${HeatDistributionData.FlowMasterBypassSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowMasterBypassSensor?.Status || 'Ok')}
-                        {renderGreenStatusCard('Master Source', HeatDistributionData?.FlowMasterSourceSensor ? `${HeatDistributionData.FlowMasterSourceSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowMasterSourceSensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.powerUnitSetpoint'), HeatDistributionData?.PowerUnitSetpointSensor ? `${HeatDistributionData.PowerUnitSetpointSensor.Temp}°C` : '0°C', HeatDistributionData?.PowerUnitSetpointSensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.operational'), HeatDistributionData?.FlowControlOperationalSensor ? `${HeatDistributionData.FlowControlOperationalSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlOperationalSensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.return'), HeatDistributionData?.FlowControlReturnSensor ? `${HeatDistributionData.FlowControlReturnSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlReturnSensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.supply'), HeatDistributionData?.FlowControlSupplySensor ? `${HeatDistributionData.FlowControlSupplySensor.Temp}°C` : '0°C', HeatDistributionData?.FlowControlSupplySensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.masterBypass'), HeatDistributionData?.FlowMasterBypassSensor ? `${HeatDistributionData.FlowMasterBypassSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowMasterBypassSensor?.Status || 'Ok')}
+                        {renderGreenStatusCard(t('heatDistribution.masterSource'), HeatDistributionData?.FlowMasterSourceSensor ? `${HeatDistributionData.FlowMasterSourceSensor.Temp}°C` : '0°C', HeatDistributionData?.FlowMasterSourceSensor?.Status || 'Ok')}
                     </>
                 ))}
 
                 {/* Auxiliary Temperature Trackers */}
-                {renderSensorSection('Auxiliary Temperature Trackers', 'thermometer-outline', '#EF4444', (
+                {renderSensorSection(t('heatDistribution.auxiliaryTemperatureTrackers'), 'thermometer-outline', '#EF4444', (
                     <>
-                        {renderSensorRow('Aux Sensor 1', HeatDistributionData?.AuxTempTrackerSensor1 ? `${HeatDistributionData.AuxTempTrackerSensor1.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor1.Status})` : '-')}
-                        {renderSensorRow('Aux Sensor 2', HeatDistributionData?.AuxTempTrackerSensor2 ? `${HeatDistributionData.AuxTempTrackerSensor2.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor2.Status})` : '-')}
-                        {renderSensorRow('Aux Sensor 3', HeatDistributionData?.AuxTempTrackerSensor3 ? `${HeatDistributionData.AuxTempTrackerSensor3.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor3.Status})` : '-')}
-                        {renderSensorRow('Aux Sensor 4', HeatDistributionData?.AuxTempTrackerSensor4 ? `${HeatDistributionData.AuxTempTrackerSensor4.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor4.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.auxSensor1'), HeatDistributionData?.AuxTempTrackerSensor1 ? `${HeatDistributionData.AuxTempTrackerSensor1.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor1.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.auxSensor2'), HeatDistributionData?.AuxTempTrackerSensor2 ? `${HeatDistributionData.AuxTempTrackerSensor2.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor2.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.auxSensor3'), HeatDistributionData?.AuxTempTrackerSensor3 ? `${HeatDistributionData.AuxTempTrackerSensor3.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor3.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.auxSensor4'), HeatDistributionData?.AuxTempTrackerSensor4 ? `${HeatDistributionData.AuxTempTrackerSensor4.Temp}°C (${HeatDistributionData.AuxTempTrackerSensor4.Status})` : '-')}
                     </>
                 ))}
 
                 {/* Storage System */}
-                {renderSensorSection('Storage System', 'layers-outline', '#F59E0B', (
+                {renderSensorSection(t('heatDistribution.storageSystem'), 'layers-outline', '#F59E0B', (
                     <>
-                        {renderSensorRow('Storage Flow', HeatDistributionData?.StorageFlow ? `${HeatDistributionData.StorageFlow} L/min` : '0.28 L/min')}
-                        {renderSensorRow('Pump Force', HeatDistributionData?.StoragePumpForce ? `${HeatDistributionData.StoragePumpForce}` : '-')}
-                        {renderSensorRow('Sensor Status', HeatDistributionData?.StorageSensorStatus || '-')}
-                        {renderSensorRow('Sequence Status', HeatDistributionData?.StorageSequenceStatus || '-')}
-                        {renderSensorRow('Storage Top Sensor', HeatDistributionData?.StorageTopSensor ? `${HeatDistributionData.StorageTopSensor.Temp}°C (${HeatDistributionData.StorageTopSensor.Status})` : '-')}
-                        {renderSensorRow('Storage Bottom Sensor', HeatDistributionData?.StorageBottomSensor ? `${HeatDistributionData.StorageBottomSensor.Temp}°C (${HeatDistributionData.StorageBottomSensor.Status})` : '-')}
-                        {renderSensorRow('Storage Pump Feedback', HeatDistributionData?.StoragePumpFeedback ? `${HeatDistributionData.StoragePumpFeedback.Actual} L/min (${HeatDistributionData.StoragePumpFeedback.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.storageFlow'), HeatDistributionData?.StorageFlow ? `${HeatDistributionData.StorageFlow} L/min` : '0.28 L/min')}
+                        {renderSensorRow(t('heatDistribution.pumpForce'), HeatDistributionData?.StoragePumpForce ? `${HeatDistributionData.StoragePumpForce}` : '-')}
+                        {renderSensorRow(t('heatDistribution.sensorStatus'), HeatDistributionData?.StorageSensorStatus || '-')}
+                        {renderSensorRow(t('heatDistribution.sequenceStatus'), HeatDistributionData?.StorageSequenceStatus || '-')}
+                        {renderSensorRow(t('heatDistribution.storageTopSensor'), HeatDistributionData?.StorageTopSensor ? `${HeatDistributionData.StorageTopSensor.Temp}°C (${HeatDistributionData.StorageTopSensor.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.storageBottomSensor'), HeatDistributionData?.StorageBottomSensor ? `${HeatDistributionData.StorageBottomSensor.Temp}°C (${HeatDistributionData.StorageBottomSensor.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.storagePumpFeedback'), HeatDistributionData?.StoragePumpFeedback ? `${HeatDistributionData.StoragePumpFeedback.Actual} L/min (${HeatDistributionData.StoragePumpFeedback.Status})` : '-')}
                     </>
                 ))}
 
                 {/* Flow Master System */}
-                {renderSensorSection('Flow Master System', 'git-network-outline', '#10B981', (
+                {renderSensorSection(t('heatDistribution.flowMasterSystem'), 'git-network-outline', '#10B981', (
                     <>
-                        {renderSensorRow('Valve Position', HeatDistributionData?.FlowMasterValvePosition ? `${HeatDistributionData.FlowMasterValvePosition}%` : '-')}
+                        {renderSensorRow(t('heatDistribution.valvePosition'), HeatDistributionData?.FlowMasterValvePosition ? `${HeatDistributionData.FlowMasterValvePosition}%` : '-')}
                         <View style={styles.sensorRow}>
-                            <Text style={styles.sensorLabel}>Flow Pump</Text>
+                            <Text style={styles.sensorLabel}>{t('heatDistribution.flowPump')}</Text>
                             <Text style={[styles.sensorValue, styles.percentageValue]}>{HeatDistributionData?.FlowPump ? `${HeatDistributionData.FlowPump}%` : '60%'}</Text>
                         </View>
                         <View style={styles.sensorRow}>
-                            <Text style={styles.sensorLabel}>Virtual Source Active</Text>
+                            <Text style={styles.sensorLabel}>{t('heatDistribution.virtualSourceActive')}</Text>
                             <Text style={styles.sensorValue}>{HeatDistributionData?.VirtualFlowMasterSourceActive ? 'Active' : 'Inactive'}</Text>
                         </View>
-                        {renderSensorRow('Flow Master Pump Feedback', HeatDistributionData?.FlowMasterPumpFeedback ? `${HeatDistributionData.FlowMasterPumpFeedback.Actual} L/min (${HeatDistributionData.FlowMasterPumpFeedback.Status})` : '-')}
+                        {renderSensorRow(t('heatDistribution.flowMasterPumpFeedback'), HeatDistributionData?.FlowMasterPumpFeedback ? `${HeatDistributionData.FlowMasterPumpFeedback.Actual} L/min (${HeatDistributionData.FlowMasterPumpFeedback.Status})` : '-')}
                     </>
                 ))}
 
                 {/* Control Parameters */}
-                {renderSensorSection('Control Parameters', 'options-outline', '#8B5CF6', (
+                {renderSensorSection(t('heatDistribution.controlParameters'), 'options-outline', '#8B5CF6', (
                     <>
-                        {renderControlParameter('Engine Regulation Deadband', HeatDistributionData?.EngineRegulationDeadband ? `${HeatDistributionData.EngineRegulationDeadband}` : '0', `Basis: ${HeatDistributionData?.EngineRegulationDeadbandBasis || '0.44'}`)}
-                        {renderControlParameter('Flow Control Deadband', HeatDistributionData?.FlowControlDeadband ? `${HeatDistributionData.FlowControlDeadband}` : '2.54', `Basis: ${HeatDistributionData?.FlowControlDeadbandBasis || '1.02'}`)}
-                        {renderControlParameter('T1 Position', HeatDistributionData?.T1Position ? `${HeatDistributionData.T1Position}` : '-')}
-                        {renderControlParameter('T2 Position', HeatDistributionData?.T2Position ? `${HeatDistributionData.T2Position}` : '-')}
-                        {renderControlParameter('Engine Regulation Valve Runtime', HeatDistributionData?.EngineRegulationValveRuntime ? `${HeatDistributionData.EngineRegulationValveRuntime}s` : '120s')}
-                        {renderControlParameter('Flow Control Valve Runtime', HeatDistributionData?.FlowControlValveRuntime ? `${HeatDistributionData.FlowControlValveRuntime}s` : '68s')}
-                        {renderControlParameter('Engine Regulation Integral', HeatDistributionData?.EngineRegulationIntegral ? `${HeatDistributionData.EngineRegulationIntegral}s` : '0s')}
-                        {renderControlParameter('Flow Control Integral', HeatDistributionData?.FlowControlIntegral ? `${HeatDistributionData.FlowControlIntegral}s` : '-')}
-                        {renderControlParameter('Flow Control RF', HeatDistributionData?.FlowControlRf ? `${HeatDistributionData.FlowControlRf}` : '6')}
+                        {renderControlParameter(t('heatDistribution.engineRegulationDeadband'), HeatDistributionData?.EngineRegulationDeadband ? `${HeatDistributionData.EngineRegulationDeadband}` : '0', `${t('heatDistribution.basis')}: ${HeatDistributionData?.EngineRegulationDeadbandBasis || '0.44'}`)}
+                        {renderControlParameter(t('heatDistribution.flowControlDeadband'), HeatDistributionData?.FlowControlDeadband ? `${HeatDistributionData.FlowControlDeadband}` : '2.54', `${t('heatDistribution.basis')}: ${HeatDistributionData?.FlowControlDeadbandBasis || '1.02'}`)}
+                        {renderControlParameter(t('heatDistribution.t1Position'), HeatDistributionData?.T1Position ? `${HeatDistributionData.T1Position}` : '-')}
+                        {renderControlParameter(t('heatDistribution.t2Position'), HeatDistributionData?.T2Position ? `${HeatDistributionData.T2Position}` : '-')}
+                        {renderControlParameter(t('heatDistribution.engineRegulationValveRuntime'), HeatDistributionData?.EngineRegulationValveRuntime ? `${HeatDistributionData.EngineRegulationValveRuntime}s` : '120s')}
+                        {renderControlParameter(t('heatDistribution.flowControlValveRuntime'), HeatDistributionData?.FlowControlValveRuntime ? `${HeatDistributionData.FlowControlValveRuntime}s` : '68s')}
+                        {renderControlParameter(t('heatDistribution.engineRegulationIntegral'), HeatDistributionData?.EngineRegulationIntegral ? `${HeatDistributionData.EngineRegulationIntegral}s` : '0s')}
+                        {renderControlParameter(t('heatDistribution.flowControlIntegral'), HeatDistributionData?.FlowControlIntegral ? `${HeatDistributionData.FlowControlIntegral}s` : '-')}
+                        {renderControlParameter(t('heatDistribution.flowControlRF'), HeatDistributionData?.FlowControlRf ? `${HeatDistributionData.FlowControlRf}` : '6')}
                     </>
                 ))}
             </ScrollView>

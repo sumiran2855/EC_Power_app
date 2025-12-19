@@ -1,4 +1,5 @@
 import { Facility } from '@/screens/authScreens/types';
+import EnergyProductionScreen from '@/screens/Service_portal/Energy_production';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
@@ -7,30 +8,30 @@ import LoginScreen from '../screens/authScreens/LoginScreen';
 import SignupScreen from '../screens/authScreens/SignupScreen';
 import StepperScreen from '../screens/authScreens/StepperScreen';
 import { FormData } from '../screens/authScreens/types';
-import HomeScreen from '../screens/common/HomeScreen';
-import InstallationScreen from '../screens/Product_portal/Components/Register-XRGI/InstallationScreen';
-import RegisterScreen from '../screens/Product_portal/Components/Register-XRGI/RegisterScreen';
-import XRGI_System from '../screens/Product_portal/XRGI-System';
-import ServiceDashboardScreen from '../screens/Service_portal/System-StatusScreen';
-import DetailScreen from '../screens/Product_portal/Components/XRGI-Details/DetailScreen';
-import ServiceContractScreen from '../screens/Product_portal/ServiceContractScreen';
-import StatisticsScreen from '../screens/Service_portal/StatisticsScreen';
-import Get_StatisticsScreen from '../screens/Service_portal/Components/Statistics/get-statisticsScreen';
-import StatisticsResultScreen from '../screens/Service_portal/Components/Statistics/statisticsResultScreen';
-import SystemConfigurationScreen from '../screens/Service_portal/System-configurationScreen';
-import CallDetailsScreen from '../screens/Service_portal/call-details-Screen';
-import Get_CallDetailsScreen from '../screens/Service_portal/Components/call-details/get-call-details-screen';
-import CallDetailsResultScreen from '../screens/Service_portal/Components/call-details/call-detail-results-screen';
-import SystemConfigurationDetailScreen from '../screens/Service_portal/Components/System-configuration/system-configurationDetailScreen';
-import ServiceReportScreen from '../screens/Service_portal/Service-reportScreen';
-import ServiceReportDetailScreen from '../screens/Service_portal/Components/service-report/ServiceReportDetailScreen';
-import HeatDistributionScreen from '../screens/Service_portal/Components/call-details/heat-distributionScreen';
 import ContactScreen from '../screens/common/ContactScreen';
-import UnitListScreen from '../screens/Unit_list/unit-listScreen';
-import UnitDetailScreen from '../screens/Unit_list/unit-detailScreen';
+import HomeScreen from '../screens/common/HomeScreen';
 import ProfileScreen from '../screens/common/ProfileScreen';
 import SettingScreen from '../screens/common/SettingScreen';
-import EnergyProductionScreen from '@/screens/Service_portal/Energy_production';
+import InstallationScreen from '../screens/Product_portal/Components/Register-XRGI/InstallationScreen';
+import RegisterScreen from '../screens/Product_portal/Components/Register-XRGI/RegisterScreen';
+import DetailScreen from '../screens/Product_portal/Components/XRGI-Details/DetailScreen';
+import ServiceContractScreen from '../screens/Product_portal/ServiceContractScreen';
+import XRGI_System from '../screens/Product_portal/XRGI-System';
+import CallDetailsScreen from '../screens/Service_portal/call-details-Screen';
+import CallDetailsResultScreen from '../screens/Service_portal/Components/call-details/call-detail-results-screen';
+import Get_CallDetailsScreen from '../screens/Service_portal/Components/call-details/get-call-details-screen';
+import HeatDistributionScreen from '../screens/Service_portal/Components/call-details/heat-distributionScreen';
+import ServiceReportDetailScreen from '../screens/Service_portal/Components/service-report/ServiceReportDetailScreen';
+import Get_StatisticsScreen from '../screens/Service_portal/Components/Statistics/get-statisticsScreen';
+import StatisticsResultScreen from '../screens/Service_portal/Components/Statistics/statisticsResultScreen';
+import SystemConfigurationDetailScreen from '../screens/Service_portal/Components/System-configuration/system-configurationDetailScreen';
+import ServiceReportScreen from '../screens/Service_portal/Service-reportScreen';
+import StatisticsScreen from '../screens/Service_portal/StatisticsScreen';
+import SystemConfigurationScreen from '../screens/Service_portal/System-configurationScreen';
+import ServiceDashboardScreen from '../screens/Service_portal/System-StatusScreen';
+import UnitDetailScreen from '../screens/Unit_list/unit-detailScreen';
+import UnitListScreen from '../screens/Unit_list/unit-listScreen';
+import EnergyProductionListScreen from '@/screens/Service_portal/EnergyProductionListScreen';
 
 export type PortalType = 'PRODUCT' | 'SERVICE';
 
@@ -63,7 +64,8 @@ export type RootStackParamList = {
   UnitDetail: { system: Facility };
   Profile: undefined;
   Setting: undefined;
-  EnergyProduction: undefined;
+  EnergyProductionList: undefined;
+  EnergyProduction: { xrgiId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -205,6 +207,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="Setting"
           component={SettingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EnergyProductionList"
+          component={EnergyProductionListScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

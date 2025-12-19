@@ -1,6 +1,7 @@
 import useEnergyProduction from '@/hooks/Service-portal/useEnergyProduction';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     Dimensions,
@@ -20,10 +21,13 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface EnergyProductionScreenProps {
     navigation: any;
+    route: any;
 }
 
 
-const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigation }) => {
+const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigation, route }) => {
+    const { t } = useTranslation();
+    const { xrgiId } = route.params;
     const {
         selectedFilter,
         modalVisible,
@@ -34,7 +38,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
         setModalVisible,
         getFilterLabel,
         isLoading
-    } = useEnergyProduction();
+    } = useEnergyProduction(xrgiId);
 
 
     const handleBackButton = () => {
@@ -45,11 +49,10 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text style={styles.loadingText}>Loading system data...</Text>
+                <Text style={styles.loadingText}>{t('energyProduction.loadingSystemData')}</Text>
             </View>
         );
     }
-
 
     return (
         <SafeAreaView style={styles.container}>
@@ -57,7 +60,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={22} color="#0F172A" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Energy Production</Text>
+                <Text style={styles.headerTitle}>{t('energyProduction.title')}</Text>
                 <View style={{ width: 22 }} />
             </View>
 
@@ -93,7 +96,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
 
                 {/* Chart Card */}
                 <View style={styles.chartCard} >
-                    <Text style={styles.chartTitle}>Energy Overview</Text>
+                    <Text style={styles.chartTitle}>{t('energyProduction.energyOverview')}</Text>
                     <BarChart
                         data={{
                             labels: ['Elec.\nProd.', 'Elec.\nCons.', 'Heat \nProd.', 'Elec.\nSold'],
@@ -151,7 +154,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
                         <View style={styles.statItem}>
                             <View style={[styles.statIndicator, { backgroundColor: '#ecbc41ff' }]} />
                             <View style={styles.statContent}>
-                                <Text style={styles.statLabel}>Production</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.production')}</Text>
                                 <Text style={styles.statValue}>
                                     {chartData.datasets[0].data[0]} kWh
                                 </Text>
@@ -160,7 +163,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
                         <View style={styles.statItem}>
                             <View style={[styles.statIndicator, { backgroundColor: '#3cd4a2ff' }]} />
                             <View style={styles.statContent}>
-                                <Text style={styles.statLabel}>Consumption</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.consumption')}</Text>
                                 <Text style={styles.statValue}>
                                     {chartData.datasets[1].data[0]} kWh
                                 </Text>
@@ -169,7 +172,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
                         <View style={styles.statItem}>
                             <View style={[styles.statIndicator, { backgroundColor: '#d135d180' }]} />
                             <View style={styles.statContent}>
-                                <Text style={styles.statLabel}>Heat Prod.</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.heatProduction')}</Text>
                                 <Text style={styles.statValue}>
                                     {chartData.datasets[2].data[0]} kWh
                                 </Text>
@@ -178,7 +181,7 @@ const EnergyProductionScreen: React.FC<EnergyProductionScreenProps> = ({ navigat
                         <View style={styles.statItem}>
                             <View style={[styles.statIndicator, { backgroundColor: '#3b82f6' }]} />
                             <View style={styles.statContent}>
-                                <Text style={styles.statLabel}>Sold</Text>
+                                <Text style={styles.statLabel}>{t('energyProduction.sold')}</Text>
                                 <Text style={styles.statValue}>
                                     {chartData.datasets[3].data[0]} kWh
                                 </Text>

@@ -3,22 +3,23 @@ import { Facility, UserData } from '@/screens/authScreens/types';
 import StorageService from '@/utils/secureStorage';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-
-const filterOptions = [
-  { label: 'All', value: 'All' },
-  { label: 'Active', value: 'Active' },
-  { label: 'Inactive', value: 'Inactive' },
-  { label: 'Data Missing', value: 'Data Missing' },
-];
+import { useTranslation } from 'react-i18next';
 
 const useDashboard = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const filterOptions = [
+    { label: t('xrgiSystem.filter.options.all'), value: 'All' },
+    { label: t('xrgiSystem.filter.options.active'), value: 'Active' },
+    { label: t('xrgiSystem.filter.options.inactive'), value: 'Inactive' },
+    { label: t('xrgiSystem.filter.options.dataMissing'), value: 'Data Missing' },
+  ];
 
   // Function to filter cards based on search query
   const filterCardsBySearch = (cards: Facility[]) => {
@@ -150,7 +151,6 @@ const useDashboard = () => {
     selectedFilter,
     dropdownVisible,
     searchQuery,
-    sidebarVisible,
     loading,
 
     // Data
@@ -159,7 +159,6 @@ const useDashboard = () => {
 
     // Actions
     setDropdownVisible,
-    setSidebarVisible,
     handleFilterSelect,
     handleSearchChange,
     handleSidebarMenuPress,
