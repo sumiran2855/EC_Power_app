@@ -1,22 +1,22 @@
-import React from 'react';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-    View,
-    Text,
-    TouchableOpacity,
+    Animated,
+    Image,
     ScrollView,
     StatusBar,
+    Text,
     TextInput,
-    Image,
-    Animated,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons as Icon } from '@expo/vector-icons';
-import { styles } from './HomeScreen.styles';
 import useHome, { MenuItem, Section } from '../../hooks/useHome';
-import { useTranslation } from 'react-i18next';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { styles } from './HomeScreen.styles';
 
 const HomeScreen: React.FC = () => {
     const { t } = useTranslation();

@@ -8,7 +8,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/logo1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,8 +21,8 @@
       "icon": "./assets/images/logo.png",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/ecpower.png",
-        "backgroundImage": "./assets/images/ecpower.png"
+        "foregroundImage": "./assets/images/logo.png",
+        "backgroundImage": "./assets/images/logo.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -41,7 +41,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/logo.png",
+          "image": "./assets/images/logo1.png",
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
           "dark": {
