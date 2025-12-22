@@ -24,10 +24,11 @@ const styles = StyleSheet.create({
         paddingRight: 12,
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: 17,
+        fontWeight: '600',
         color: '#1E293B',
         flex: 1,
-        marginLeft: 66,
+        marginLeft: 100,
         letterSpacing: -0.5,
     },
     changePasswordButton: {
