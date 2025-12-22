@@ -1,7 +1,13 @@
+import { useChangePasswordAlert } from '@/hooks/useChangePasswordAlert';
+import StorageService from '@/utils/secureStorage';
 import { Ionicons } from '@expo/vector-icons';
-import React from "react";
+import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ChangePasswordModal from '../../components/Modals/ChangePasswordModal';
+import Alert from '../../components/Modals/LoginAlert';
+import { AuthController } from '../../controllers/AuthController';
 import useProfile from '../../hooks/useProfile';
 import styles from './ProfileScreen.styles';
 
@@ -10,6 +16,13 @@ interface ProfileScreenProps {
 }
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+    const { t } = useTranslation();
+    const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+    const [passwordUpdateLoading, setPasswordUpdateLoading] = useState(false);
+    
+    // Initialize change password alert hook
+    const { alert, hideAlert, showPasswordUpdateSuccess, showPasswordUpdateError } = useChangePasswordAlert();
+    
     const {
         profileData,
         showCountryPicker,
@@ -27,14 +40,44 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     };
 
     const handleChangePassword = () => {
-        console.log('Change password...');
+        setShowChangePasswordModal(true);
+    };
+
+    const handlePasswordUpdate = async (oldPassword: string, newPassword: string) => {
+        setPasswordUpdateLoading(true);
+        try {
+            const userData = await StorageService.user.getData<{ email: string }>();
+            
+            if (!userData?.email) {
+                showPasswordUpdateError(t('login.alerts.passwordUpdateFailed.message'));
+                return;
+            }
+
+            const result = await AuthController.ChangePassword({
+                oldPassword,
+                newPassword
+            });
+
+            if (result.success) {
+                showPasswordUpdateSuccess();
+                setShowChangePasswordModal(false);
+            } else {
+                showPasswordUpdateError(result.error);
+            }
+        } catch (error) {
+            console.error('Password update failed:', error);
+            showPasswordUpdateError(t('login.alerts.passwordUpdateFailed.message'));
+        } finally {
+            setPasswordUpdateLoading(false);
+            setShowChangePasswordModal(false);
+        }
     };
 
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#1a5490" />
-                <Text style={styles.loadingText}>Loading facilities...</Text>
+                <Text style={styles.loadingText}>{t('profile.loading')}</Text>
             </View>
         )
     }
@@ -46,7 +89,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={handleBackButton}>
                     <Ionicons name="arrow-back" size={24} color="#1E293B" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Profile Settings</Text>
+                <Text style={styles.headerTitle}>{t('profile.title')}</Text>
                 <TouchableOpacity
                     style={styles.changePasswordButton}
                     onPress={handleChangePassword}
@@ -66,64 +109,64 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         <View style={styles.iconContainer}>
                             <Ionicons name="business-outline" size={20} color="#3B82F6" />
                         </View>
-                        <Text style={styles.cardTitle}>Business Information</Text>
+                        <Text style={styles.cardTitle}>{t('profile.businessInformation.title')}</Text>
                     </View>
 
                     <View style={styles.cardContent}>
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Business Name</Text>
+                            <Text style={styles.label}>{t('profile.businessInformation.businessName')}</Text>
                             <TextInput
                                 style={styles.input}
                                 value={profileData.companyInfo.name}
                                 onChangeText={(value) => handleInputChange('name', value)}
-                                placeholder="Enter business name"
+                                placeholder={t('profile.businessInformation.businessNamePlaceholder')}
                                 placeholderTextColor="#94A3B8"
                             />
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>CVR Number</Text>
+                            <Text style={styles.label}>{t('profile.businessInformation.cvrNumber')}</Text>
                             <TextInput
                                 style={styles.input}
                                 value={profileData.companyInfo.cvrNumber}
                                 onChangeText={(value) => handleInputChange('cvrNumber', value)}
-                                placeholder="Enter CVR number"
+                                placeholder={t('profile.businessInformation.cvrNumberPlaceholder')}
                                 placeholderTextColor="#94A3B8"
                                 keyboardType="numeric"
                             />
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Address</Text>
+                            <Text style={styles.label}>{t('profile.businessInformation.address')}</Text>
                             <TextInput
                                 style={styles.input}
                                 value={profileData.companyInfo.address}
                                 onChangeText={(value) => handleInputChange('address', value)}
-                                placeholder="Enter address"
+                                placeholder={t('profile.businessInformation.addressPlaceholder')}
                                 placeholderTextColor="#94A3B8"
                             />
                         </View>
 
                         <View style={styles.inputRow}>
                             <View style={styles.inputHalf}>
-                                <Text style={styles.label}>Postal Code</Text>
+                                <Text style={styles.label}>{t('profile.businessInformation.postalCode')}</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={profileData.companyInfo.postal_code}
                                     onChangeText={(value) => handleInputChange('postal_code', value)}
-                                    placeholder="Enter code"
+                                    placeholder={t('profile.businessInformation.postalCodePlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="numeric"
                                 />
                             </View>
 
                             <View style={styles.inputHalf}>
-                                <Text style={styles.label}>City</Text>
+                                <Text style={styles.label}>{t('profile.businessInformation.city')}</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={profileData.companyInfo.city}
                                     onChangeText={(value) => handleInputChange('city', value)}
-                                    placeholder="Enter city"
+                                    placeholder={t('profile.businessInformation.cityPlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                 />
                             </View>
@@ -137,43 +180,43 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         <View style={styles.iconContainer}>
                             <Ionicons name="person-outline" size={20} color="#3B82F6" />
                         </View>
-                        <Text style={styles.cardTitle}>Contact Person</Text>
+                        <Text style={styles.cardTitle}>{t('profile.contactPerson.title')}</Text>
                     </View>
 
                     <View style={styles.cardContent}>
                         <View style={styles.inputRow}>
                             <View style={styles.inputHalf}>
-                                <Text style={styles.label}>First Name</Text>
+                                <Text style={styles.label}>{t('profile.contactPerson.firstName')}</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={profileData.contactPerson.firstName}
                                     onChangeText={(value) => handleInputChange('firstName', value)}
-                                    placeholder="First name"
+                                    placeholder={t('profile.contactPerson.firstNamePlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                 />
                             </View>
 
                             <View style={styles.inputHalf}>
-                                <Text style={styles.label}>Last Name</Text>
+                                <Text style={styles.label}>{t('profile.contactPerson.lastName')}</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={profileData.contactPerson.lastName}
                                     onChangeText={(value) => handleInputChange('lastName', value)}
-                                    placeholder="Last name"
+                                    placeholder={t('profile.contactPerson.lastNamePlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                 />
                             </View>
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Email Address</Text>
+                            <Text style={styles.label}>{t('profile.contactPerson.emailAddress')}</Text>
                             <View style={styles.inputWithIcon}>
                                 <Ionicons name="mail-outline" size={20} color="#64748B" style={styles.inputIcon} />
                                 <TextInput
                                     style={styles.inputWithIconField}
                                     value={profileData.contactPerson.personalEmail}
                                     onChangeText={(value) => handleInputChange('personalEmail', value)}
-                                    placeholder="Enter email address"
+                                    placeholder={t('profile.contactPerson.emailAddressPlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
@@ -182,7 +225,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         </View>
 
                         <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Mobile Number</Text>
+                            <Text style={styles.label}>{t('profile.contactPerson.mobileNumber')}</Text>
                             <View style={styles.phoneInputContainer}>
                                 <TouchableOpacity
                                     style={styles.countryCodeContainer}
@@ -195,7 +238,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                                     style={styles.phoneInput}
                                     value={profileData.contactPerson.personalPhone}
                                     onChangeText={(value) => handleInputChange('personalPhone', value)}
-                                    placeholder="Enter mobile number"
+                                    placeholder={t('profile.contactPerson.mobileNumberPlaceholder')}
                                     placeholderTextColor="#94A3B8"
                                     keyboardType="phone-pad"
                                 />
@@ -235,13 +278,11 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         <View style={styles.dangerIconContainer}>
                             <Ionicons name="alert-circle-outline" size={20} color="#EF4444" />
                         </View>
-                        <Text style={styles.dangerCardTitle}>Account Deletion</Text>
+                        <Text style={styles.dangerCardTitle}>{t('profile.accountDeletion.title')}</Text>
                     </View>
                     <View style={styles.cardContent}>
                         <Text style={styles.dangerDescription}>
-                            To permanently delete your account, send an email to{' '}
-                            <Text style={styles.emailLink}>productportal@ecpower.dk</Text>
-                            {' '}requesting account removal. You'll receive confirmation upon completion.
+                            {t('profile.accountDeletion.description', { email: 'productportal@ecpower.dk' })}
                         </Text>
                     </View>
                 </View>
@@ -252,9 +293,26 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                     onPress={handleSaveChanges}
                     activeOpacity={0.8}
                 >
-                    <Text style={styles.saveButtonText}>Save Changes</Text>
+                    <Text style={styles.saveButtonText}>{t('profile.saveChanges')}</Text>
                 </TouchableOpacity>
             </ScrollView>
+
+            {/* Change Password Modal */}
+            <ChangePasswordModal
+                isVisible={showChangePasswordModal}
+                onClose={() => setShowChangePasswordModal(false)}
+                onSubmit={handlePasswordUpdate}
+                loading={passwordUpdateLoading}
+            />
+            
+            {/* Change Password Alert */}
+            <Alert
+                isVisible={alert.isVisible}
+                onClose={hideAlert}
+                title={alert.title}
+                message={alert.message}
+                type={alert.type}
+            />
         </SafeAreaView>
     );
 }

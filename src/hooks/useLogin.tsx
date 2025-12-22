@@ -8,6 +8,7 @@ import i18n from '../../languages/i18n.config';
 import { AuthController } from '../controllers/AuthController';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/LoginValidation';
+import { useLoginAlert } from './useLoginAlert';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -19,6 +20,9 @@ export const useLoginLogic = () => {
   const navigation = useNavigation();
   const route = useRoute<LoginRouteProp>();
   const portalType = route.params?.portalType || 'PRODUCT';
+  
+  // Initialize login alert hook
+  const { alert, hideAlert, showLoginSuccess, showLoginError } = useLoginAlert();
 
   // Load saved language on mount
   useEffect(() => {
@@ -59,13 +63,21 @@ export const useLoginLogic = () => {
 
     try {
       const result = await AuthController.login(data);
-      if (result.response.journeyStatus === "completed") {
-        (navigation as any).navigate('Home');
+      if (result.success) {
+        showLoginSuccess();
+        setTimeout(() => {
+          if (result.response?.journeyStatus === "completed") {
+            (navigation as any).navigate('Home');
+          } else {
+            (navigation as any).navigate('Stepper');
+          }
+        }, 1500);
       } else {
-        (navigation as any).navigate('Stepper');
+        showLoginError(result.error);
       }
     } catch (error) {
       console.log('Login error:', error);
+      showLoginError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +126,9 @@ export const useLoginLogic = () => {
     isSubmitting,
     portalType,
     rememberMe,
-
+    // Alert state
+    alert,
+    
     // Form
     control,
     handleSubmit,
@@ -130,5 +144,6 @@ export const useLoginLogic = () => {
     toggleRememberMe,
     handleLanguageChange,
     getErrorMessage,
+    hideAlert,
   };
 };

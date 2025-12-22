@@ -10,7 +10,79 @@
         "loginButton": "Connexion",
         "signingIn": "Connexion en cours...",
         "noAccount": "Vous n'avez pas de compte?",
-        "createAccount": "Créer un compte"
+        "createAccount": "Créer un compte",
+        "alerts": {
+            "loginSuccess": {
+                "title": "Connexion Réussie",
+                "message": "Vous avez été connecté avec succès à votre compte."
+            },
+            "loginFailed": {
+                "title": "Échec de Connexion",
+                "message": "E-mail ou mot de passe incorrect. Veuillez réessayer."
+            },
+            "passwordUpdateSuccess": {
+                "title": "Mot de Passe Mis à Jour",
+                "message": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant utiliser votre nouveau mot de passe pour vous connecter."
+            },
+            "passwordUpdateFailed": {
+                "title": "Échec de Mise à Jour du Mot de Passe",
+                "message": "Échec de la mise à jour du mot de passe. Veuillez vérifier votre mot de passe actuel et réessayer."
+            }
+        }
+    },
+    "profile": {
+        "title": "Paramètres du profil",
+        "loading": "Chargement des installations...",
+        "businessInformation": {
+            "title": "Informations sur l'entreprise",
+            "businessName": "Nom de l'entreprise",
+            "businessNamePlaceholder": "Entrez le nom de l'entreprise",
+            "cvrNumber": "Numéro CVR",
+            "cvrNumberPlaceholder": "Entrez le numéro CVR",
+            "address": "Adresse",
+            "addressPlaceholder": "Entrez l'adresse",
+            "postalCode": "Code postal",
+            "postalCodePlaceholder": "Entrez le code",
+            "city": "Ville",
+            "cityPlaceholder": "Entrez la ville"
+        },
+        "contactPerson": {
+            "title": "Personne à contacter",
+            "firstName": "Prénom",
+            "firstNamePlaceholder": "Prénom",
+            "lastName": "Nom de famille",
+            "lastNamePlaceholder": "Nom de famille",
+            "emailAddress": "Adresse e-mail",
+            "emailAddressPlaceholder": "Entrez l'adresse e-mail",
+            "mobileNumber": "Numéro de mobile",
+            "mobileNumberPlaceholder": "Entrez le numéro de mobile"
+        },
+        "accountDeletion": {
+            "title": "Suppression de compte",
+            "description": "Pour supprimer définitivement votre compte, envoyez un e-mail à {{email}} demandant la suppression de compte. Vous recevrez une confirmation une fois terminé."
+        },
+        "saveChanges": "Enregistrer les modifications"
+    },
+    "changePassword": {
+        "title": "Changer le mot de passe",
+        "currentPassword": "Mot de passe actuel",
+        "currentPasswordPlaceholder": "Entrez le mot de passe actuel",
+        "newPassword": "Nouveau mot de passe",
+        "newPasswordPlaceholder": "Entrez le nouveau mot de passe",
+        "confirmNewPassword": "Confirmer le nouveau mot de passe",
+        "confirmNewPasswordPlaceholder": "Confirmer le nouveau mot de passe",
+        "cancel": "Annuler",
+        "update": "Mettre à jour",
+        "updating": "Mise à jour...",
+        "errors": {
+            "currentPasswordRequired": "Le mot de passe actuel est requis",
+            "newPasswordRequired": "Le nouveau mot de passe est requis",
+            "newPasswordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+            "newPasswordComplexity": "Le mot de passe doit contenir des majuscules, des minuscules et des chiffres",
+            "confirmPasswordRequired": "Veuillez confirmer votre nouveau mot de passe",
+            "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
+        },
+        "helperText": "Le mot de passe doit contenir au moins 8 caractères avec majuscules, minuscules et chiffres"
     },
     "signup": {
         "title": "Créer un compte",

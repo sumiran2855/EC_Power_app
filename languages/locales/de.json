@@ -10,7 +10,79 @@
         "loginButton": "Anmelden",
         "signingIn": "Anmeldung läuft...",
         "noAccount": "Haben Sie kein Konto?",
-        "createAccount": "Konto erstellen"
+        "createAccount": "Konto erstellen",
+        "alerts": {
+            "loginSuccess": {
+                "title": "Anmeldung Erfolgreich",
+                "message": "Sie wurden erfolgreich in Ihrem Konto angemeldet."
+            },
+            "loginFailed": {
+                "title": "Anmeldung Fehlgeschlagen",
+                "message": "Falsche E-Mail oder Passwort. Bitte versuchen Sie es erneut."
+            },
+            "passwordUpdateSuccess": {
+                "title": "Passwort Erfolgreich Aktualisiert",
+                "message": "Ihr Passwort wurde erfolgreich geändert. Sie können jetzt Ihr neues Passwort verwenden, um sich anzumelden."
+            },
+            "passwordUpdateFailed": {
+                "title": "Passwort Aktualisierung Fehlgeschlagen",
+                "message": "Passwort konnte nicht aktualisiert werden. Bitte überprüfen Sie Ihr aktuelles Passwort und versuchen Sie es erneut."
+            }
+        }
+    },
+    "profile": {
+        "title": "Profileinstellungen",
+        "loading": "Einrichtungen werden geladen...",
+        "businessInformation": {
+            "title": "Unternehmensinformationen",
+            "businessName": "Unternehmensname",
+            "businessNamePlaceholder": "Unternehmensname eingeben",
+            "cvrNumber": "CVR-Nummer",
+            "cvrNumberPlaceholder": "CVR-Nummer eingeben",
+            "address": "Adresse",
+            "addressPlaceholder": "Adresse eingeben",
+            "postalCode": "Postleitzahl",
+            "postalCodePlaceholder": "Code eingeben",
+            "city": "Stadt",
+            "cityPlaceholder": "Stadt eingeben"
+        },
+        "contactPerson": {
+            "title": "Kontaktperson",
+            "firstName": "Vorname",
+            "firstNamePlaceholder": "Vorname",
+            "lastName": "Nachname",
+            "lastNamePlaceholder": "Nachname",
+            "emailAddress": "E-Mail-Adresse",
+            "emailAddressPlaceholder": "E-Mail-Adresse eingeben",
+            "mobileNumber": "Mobiltelefonnummer",
+            "mobileNumberPlaceholder": "Mobiltelefonnummer eingeben"
+        },
+        "accountDeletion": {
+            "title": "Kontolöschung",
+            "description": "Um Ihr Konto permanent zu löschen, senden Sie eine E-Mail an {{email}} mit der Bitte um Kontolöschung. Sie erhalten nach Abschluss eine Bestätigung."
+        },
+        "saveChanges": "Änderungen speichern"
+    },
+    "changePassword": {
+        "title": "Passwort ändern",
+        "currentPassword": "Aktuelles Passwort",
+        "currentPasswordPlaceholder": "Aktuelles Passwort eingeben",
+        "newPassword": "Neues Passwort",
+        "newPasswordPlaceholder": "Neues Passwort eingeben",
+        "confirmNewPassword": "Neues Passwort bestätigen",
+        "confirmNewPasswordPlaceholder": "Neues Passwort bestätigen",
+        "cancel": "Abbrechen",
+        "update": "Aktualisieren",
+        "updating": "Aktualisierung...",
+        "errors": {
+            "currentPasswordRequired": "Aktuelles Passwort ist erforderlich",
+            "newPasswordRequired": "Neues Passwort ist erforderlich",
+            "newPasswordMinLength": "Passwort muss mindestens 8 Zeichen lang sein",
+            "newPasswordComplexity": "Passwort muss Großbuchstaben, Kleinbuchstaben und Zahlen enthalten",
+            "confirmPasswordRequired": "Bitte bestätigen Sie Ihr neues Passwort",
+            "passwordsDoNotMatch": "Passwörter stimmen nicht überein"
+        },
+        "helperText": "Passwort muss mindestens 8 Zeichen mit Großbuchstaben, Kleinbuchstaben und Zahlen enthalten"
     },
     "signup": {
         "title": "Konto erstellen",

@@ -10,7 +10,79 @@
         "loginButton": "Zaloguj się",
         "signingIn": "Logowanie...",
         "noAccount": "Nie masz konta?",
-        "createAccount": "Utwórz konto"
+        "createAccount": "Utwórz konto",
+        "alerts": {
+            "loginSuccess": {
+                "title": "Logowanie Pomyślne",
+                "message": "Zostałeś pomyślnie zalogowany na swoje konto."
+            },
+            "loginFailed": {
+                "title": "Logowanie Nieudane",
+                "message": "Nieprawidłowy e-mail lub hasło. Spróbuj ponownie."
+            },
+            "passwordUpdateSuccess": {
+                "title": "Hasło Zaktualizowane",
+                "message": "Twoje hasło zostało pomyślnie zmienione. Możesz teraz używać swojego nowego hasła do logowania."
+            },
+            "passwordUpdateFailed": {
+                "title": "Aktualizacja Hasła Nieudana",
+                "message": "Nie udało się zaktualizować hasła. Sprawdź swoje obecne hasło i spróbuj ponownie."
+            }
+        }
+    },
+    "profile": {
+        "title": "Ustawienia profilu",
+        "loading": "Ładowanie obiektów...",
+        "businessInformation": {
+            "title": "Informacje o firmie",
+            "businessName": "Nazwa firmy",
+            "businessNamePlaceholder": "Wprowadź nazwę firmy",
+            "cvrNumber": "Numer CVR",
+            "cvrNumberPlaceholder": "Wprowadź numer CVR",
+            "address": "Adres",
+            "addressPlaceholder": "Wprowadź adres",
+            "postalCode": "Kod pocztowy",
+            "postalCodePlaceholder": "Wprowadź kod",
+            "city": "Miasto",
+            "cityPlaceholder": "Wprowadź miasto"
+        },
+        "contactPerson": {
+            "title": "Osoba kontaktowa",
+            "firstName": "Imię",
+            "firstNamePlaceholder": "Imię",
+            "lastName": "Nazwisko",
+            "lastNamePlaceholder": "Nazwisko",
+            "emailAddress": "Adres e-mail",
+            "emailAddressPlaceholder": "Wprowadź adres e-mail",
+            "mobileNumber": "Numer telefonu komórkowego",
+            "mobileNumberPlaceholder": "Wprowadź numer telefonu komórkowego"
+        },
+        "accountDeletion": {
+            "title": "Usunięcie konta",
+            "description": "Aby trwale usunąć swoje konto, wyślij e-mail na adres {{email}} z prośbą o usunięcie konta. Otrzymasz potwierdzenie po zakończeniu."
+        },
+        "saveChanges": "Zapisz zmiany"
+    },
+    "changePassword": {
+        "title": "Zmień hasło",
+        "currentPassword": "Obecne hasło",
+        "currentPasswordPlaceholder": "Wprowadź obecne hasło",
+        "newPassword": "Nowe hasło",
+        "newPasswordPlaceholder": "Wprowadź nowe hasło",
+        "confirmNewPassword": "Potwierdź nowe hasło",
+        "confirmNewPasswordPlaceholder": "Potwierdź nowe hasło",
+        "cancel": "Anuluj",
+        "update": "Aktualizuj",
+        "updating": "Aktualizowanie...",
+        "errors": {
+            "currentPasswordRequired": "Obecne hasło jest wymagane",
+            "newPasswordRequired": "Nowe hasło jest wymagane",
+            "newPasswordMinLength": "Hasło musi mieć co najmniej 8 znaków",
+            "newPasswordComplexity": "Hasło musi zawierać wielkie litery, małe litery i cyfry",
+            "confirmPasswordRequired": "Potwierdź swoje nowe hasło",
+            "passwordsDoNotMatch": "Hasła nie są zgodne"
+        },
+        "helperText": "Hasło musi mieć co najmniej 8 znaków z wielkimi literami, małymi literami i cyframi"
     },
     "signup": {
         "title": "Utwórz konto",

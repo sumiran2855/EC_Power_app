@@ -10,7 +10,79 @@
         "loginButton": "Accedi",
         "signingIn": "Accesso in corso...",
         "noAccount": "Non hai un account?",
-        "createAccount": "Crea account"
+        "createAccount": "Crea account",
+        "alerts": {
+            "loginSuccess": {
+                "title": "Accesso Riuscito",
+                "message": "Sei stato connesso con successo al tuo account."
+            },
+            "loginFailed": {
+                "title": "Accesso Fallito",
+                "message": "Email o password errati. Riprova."
+            },
+            "passwordUpdateSuccess": {
+                "title": "Password Aggiornata",
+                "message": "La tua password è stata cambiata con successo. Ora puoi usare la tua nuova password per accedere."
+            },
+            "passwordUpdateFailed": {
+                "title": "Aggiornamento Password Fallito",
+                "message": "Impossibile aggiornare la password. Controlla la tua password attuale e riprova."
+            }
+        }
+    },
+    "profile": {
+        "title": "Impostazioni profilo",
+        "loading": "Caricamento strutture...",
+        "businessInformation": {
+            "title": "Informazioni aziendali",
+            "businessName": "Nome azienda",
+            "businessNamePlaceholder": "Inserisci nome azienda",
+            "cvrNumber": "Numero CVR",
+            "cvrNumberPlaceholder": "Inserisci numero CVR",
+            "address": "Indirizzo",
+            "addressPlaceholder": "Inserisci indirizzo",
+            "postalCode": "Codice postale",
+            "postalCodePlaceholder": "Inserisci codice",
+            "city": "Città",
+            "cityPlaceholder": "Inserisci città"
+        },
+        "contactPerson": {
+            "title": "Persona di contatto",
+            "firstName": "Nome",
+            "firstNamePlaceholder": "Nome",
+            "lastName": "Cognome",
+            "lastNamePlaceholder": "Cognome",
+            "emailAddress": "Indirizzo e-mail",
+            "emailAddressPlaceholder": "Inserisci indirizzo e-mail",
+            "mobileNumber": "Numero mobile",
+            "mobileNumberPlaceholder": "Inserisci numero mobile"
+        },
+        "accountDeletion": {
+            "title": "Eliminazione account",
+            "description": "Per eliminare definitivamente il tuo account, invia un'e-mail a {{email}} richiedendo la rimozione dell'account. Riceverai conferma al completamento."
+        },
+        "saveChanges": "Salva modifiche"
+    },
+    "changePassword": {
+        "title": "Cambia password",
+        "currentPassword": "Password attuale",
+        "currentPasswordPlaceholder": "Inserisci password attuale",
+        "newPassword": "Nuova password",
+        "newPasswordPlaceholder": "Inserisci nuova password",
+        "confirmNewPassword": "Conferma nuova password",
+        "confirmNewPasswordPlaceholder": "Conferma nuova password",
+        "cancel": "Annulla",
+        "update": "Aggiorna",
+        "updating": "Aggiornamento...",
+        "errors": {
+            "currentPasswordRequired": "La password attuale è obbligatoria",
+            "newPasswordRequired": "La nuova password è obbligatoria",
+            "newPasswordMinLength": "La password deve essere di almeno 8 caratteri",
+            "newPasswordComplexity": "La password deve contenere maiuscole, minuscole e numeri",
+            "confirmPasswordRequired": "Conferma la tua nuova password",
+            "passwordsDoNotMatch": "Le password non corrispondono"
+        },
+        "helperText": "La password deve essere di almeno 8 caratteri con maiuscole, minuscole e numeri"
     },
     "signup": {
         "title": "Crea account",

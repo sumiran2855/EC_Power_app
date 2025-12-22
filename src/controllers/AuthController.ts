@@ -24,8 +24,14 @@ export class AuthController {
       if (response.success && response.data) {
         const { token, user } = response.data;
 
-        await StorageService.auth.setTokens(token.accessToken, token.idToken);
+        await StorageService.auth.setTokens(token.accessToken, token.idToken, token.refreshToken);
 
+        // Store user email and password for automatic refresh
+        const userWithCredentials = { ...user, email: data.email, password: data.password };
+        await StorageService.user.setData(userWithCredentials);
+
+        // Set token expiry (1 hour from now)
+        AuthHelper.setTokenExpiry(Date.now() + (60 * 60 * 1000));
         if (user) {
           await StorageService.user.setData(user);
         }
@@ -167,6 +173,46 @@ export class AuthController {
     }
   }
 
+  static async ChangePassword(data: { oldPassword: string; newPassword: string }): Promise<{ success: boolean; error?: string }> {
+    try {
+      const { authToken, idToken } = await StorageService.auth.getTokens();
+
+      if (!authToken) {
+        return {
+          success: false,
+          error: 'Authentication token not found'
+        };
+      }
+
+      const response = await AuthHelper.ApiRequest({
+        endpoint: 'change-password',
+        method: 'POST',
+        body: {
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword
+        },
+        token: authToken,
+        IdToken: idToken,
+        backendType: BackendType.PRODUCT_PORTAL,
+      });
+
+      if (response.success) {
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          error: response.message || 'Failed to change password'
+        };
+      }
+    } catch (error) {
+      console.log('Failed to change password: ', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'An unexpected error occurred'
+      }
+    }
+  }
+
   static async logout(): Promise<void> {
     try {
       await StorageService.logout();
@@ -178,7 +224,41 @@ export class AuthController {
 
   // Add other auth-related methods as needed
   static async refreshToken(): Promise<boolean> {
-    return false;
+    try {
+      const userData = await StorageService.user.getData<{ email: string; password?: string }>();
+      if (!userData?.email || !userData?.password) {
+        return false;
+      }
+
+      // Re-authenticate with stored credentials
+      const response = await AuthHelper.ApiRequest({
+        endpoint: 'login',
+        method: 'POST',
+        body: {
+          email: userData.email,
+          password: userData.password
+        },
+        backendType: BackendType.SERVICE_DATABASE,
+      });
+
+      if (response.success && response.data?.token) {
+        const { token, user } = response.data;
+        await StorageService.auth.setTokens(token.accessToken, token.idToken, token.refreshToken);
+
+        // Update token expiry
+        AuthHelper.setTokenExpiry(Date.now() + (60 * 60 * 1000));
+
+        // Update stored user data with new tokens and keep credentials
+        const updatedUserData = { ...user, email: userData.email, password: userData.password };
+        await StorageService.user.setData(updatedUserData);
+
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      return false;
+    }
   }
 
   static async validateSession(): Promise<boolean> {

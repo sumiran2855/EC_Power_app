@@ -10,7 +10,79 @@
         "loginButton": "Login",
         "signingIn": "Logger ind...",
         "noAccount": "Har du ikke en konto?",
-        "createAccount": "Opret konto"
+        "createAccount": "Opret konto",
+        "alerts": {
+            "loginSuccess": {
+                "title": "Login Lykkedes",
+                "message": "Du er blevet logget ind på din konto."
+            },
+            "loginFailed": {
+                "title": "Login Mislykkedes",
+                "message": "Forkert e-mail eller adgangskode. Prøv venligst igen."
+            },
+            "passwordUpdateSuccess": {
+                "title": "Adgangskode Opdateret",
+                "message": "Din adgangskode er blevet ændret. Du kan nu bruge din nye adgangskode til at logge ind."
+            },
+            "passwordUpdateFailed": {
+                "title": "Adgangskode Opdatering Mislykkedes",
+                "message": "Kunne ikke opdatere adgangskode. Tjek venligst din nuværende adgangskode og prøv igen."
+            }
+        }
+    },
+    "profile": {
+        "title": "Profilindstillinger",
+        "loading": "Indlæser faciliteter...",
+        "businessInformation": {
+            "title": "Virksomhedsinformation",
+            "businessName": "Virksomhedsnavn",
+            "businessNamePlaceholder": "Indtast virksomhedsnavn",
+            "cvrNumber": "CVR-nummer",
+            "cvrNumberPlaceholder": "Indtast CVR-nummer",
+            "address": "Adresse",
+            "addressPlaceholder": "Indtast adresse",
+            "postalCode": "Postnummer",
+            "postalCodePlaceholder": "Indtast kode",
+            "city": "By",
+            "cityPlaceholder": "Indtast by"
+        },
+        "contactPerson": {
+            "title": "Kontaktperson",
+            "firstName": "Fornavn",
+            "firstNamePlaceholder": "Fornavn",
+            "lastName": "Efternavn",
+            "lastNamePlaceholder": "Efternavn",
+            "emailAddress": "E-mailadresse",
+            "emailAddressPlaceholder": "Indtast e-mailadresse",
+            "mobileNumber": "Mobilnummer",
+            "mobileNumberPlaceholder": "Indtast mobilnummer"
+        },
+        "accountDeletion": {
+            "title": "Kontosletning",
+            "description": "For at slette din konto permanent, send en e-mail til {{email}} med anmodning om fjernelse af konto. Du vil modtage bekræftelse ved fuldførelse."
+        },
+        "saveChanges": "Gem ændringer"
+    },
+    "changePassword": {
+        "title": "Skift adgangskode",
+        "currentPassword": "Nuværende adgangskode",
+        "currentPasswordPlaceholder": "Indtast nuværende adgangskode",
+        "newPassword": "Ny adgangskode",
+        "newPasswordPlaceholder": "Indtast ny adgangskode",
+        "confirmNewPassword": "Bekræft ny adgangskode",
+        "confirmNewPasswordPlaceholder": "Bekræft ny adgangskode",
+        "cancel": "Annuller",
+        "update": "Opdater",
+        "updating": "Opdaterer...",
+        "errors": {
+            "currentPasswordRequired": "Nuværende adgangskode er påkrævet",
+            "newPasswordRequired": "Ny adgangskode er påkrævet",
+            "newPasswordMinLength": "Adgangskode skal være mindst 8 tegn",
+            "newPasswordComplexity": "Adgangskode skal indeholde store bogstaver, små bogstaver og tal",
+            "confirmPasswordRequired": "Bekræft venligst din nye adgangskode",
+            "passwordsDoNotMatch": "Adgangskoder matcher ikke"
+        },
+        "helperText": "Adgangskode skal være mindst 8 tegn med store bogstaver, små bogstaver og tal"
     },
     "signup": {
         "title": "Opret konto",

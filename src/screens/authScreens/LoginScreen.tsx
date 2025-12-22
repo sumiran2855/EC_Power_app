@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { HorizontalScrollLanguageSelector } from '../../components/common/LanguageSelector';
 import { languageStyles } from '../../components/common/LanguageSelector.styles';
+import LoginAlert from '../../components/Modals/LoginAlert';
 import { useLoginLogic } from '../../hooks/useLogin';
 import { styles } from './LoginScreen.styles';
 
@@ -25,6 +26,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
     selectedLanguage,
     isSubmitting,
     rememberMe,
+    alert,
     
     // Form
     control,
@@ -40,6 +42,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
     togglePasswordVisibility,
     handleLanguageChange,
     getErrorMessage,
+    hideAlert,
   } = useLoginLogic();
 
   return (
@@ -198,6 +201,15 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
           </View>
         </View>
       </SafeAreaView>
+      
+      {/* Login Alert */}
+      <LoginAlert
+        isVisible={alert.isVisible}
+        onClose={hideAlert}
+        title={alert.title}
+        message={alert.message}
+        type={alert.type}
+      />
     </>
   );
 };

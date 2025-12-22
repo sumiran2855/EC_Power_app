@@ -135,14 +135,18 @@ const parseStoredValue = <T>(value: string): T => {
 
 export const StorageService = {
     auth: {
-        setTokens: async (accessToken: string, idToken: string) => {
-            await storeMultipleValues([
+        setTokens: async (accessToken: string, idToken: string, refreshToken?: string) => {
+            const items: Array<[StorageKey, string]> = [
                 ['authToken', accessToken],
                 ['idToken', idToken],
-            ]);
+            ];
+            if (refreshToken) {
+                items.push(['refreshToken', refreshToken]);
+            }
+            await storeMultipleValues(items);
         },
         getTokens: async () => {
-            return await getMultipleValues(['authToken', 'idToken']);
+            return await getMultipleValues(['authToken', 'idToken', 'refreshToken']);
         },
         clearTokens: async () => {
             await Promise.all([
