@@ -1,4 +1,4 @@
-package com.anonymous.ecpower
+package com.ecpower.client
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.anonymous.ecpower
+package com.ecpower.client
 
 import android.app.Application
 import android.content.res.Configuration

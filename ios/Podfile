@@ -5,56 +5,138 @@ require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
 def ccache_enabled?(podfile_properties)
-  # Environment variable takes precedence
-  return ENV['USE_CCACHE'] == '1' if ENV['USE_CCACHE']
-  
-  # Fall back to Podfile properties
-  podfile_properties['apple.ccacheEnabled'] == 'true'
+ return ENV['USE_CCACHE'] == '1' if ENV['USE_CCACHE']
+ podfile_properties['apple.ccacheEnabled'] == 'true'
 end
 
 ENV['RCT_NEW_ARCH_ENABLED'] ||= '0' if podfile_properties['newArchEnabled'] == 'false'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] ||= podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
 ENV['RCT_USE_RN_DEP'] ||= '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
 ENV['RCT_USE_PREBUILT_RNCORE'] ||= '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
-platform :ios, podfile_properties['ios.deploymentTarget'] || '15.1'
+
+project 'ecpower.xcodeproj'
+
+platform :ios, '16.6'
 
 prepare_react_native_project!
 
 target 'ecpower' do
-  use_expo_modules!
+ use_expo_modules!
 
-  if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'
-    config_command = ['node', '-e', "process.argv=['', '', 'config'];require('@react-native-community/cli').run()"];
-  else
-    config_command = [
-      'npx',
-      'expo-modules-autolinking',
-      'react-native-config',
-      '--json',
-      '--platform',
-      'ios'
-    ]
-  end
+ if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'
+   config_command = ['node', '-e', "process.argv=['', '', 'config'];require('@react-native-community/cli').run()"]
+ else
+   config_command = [
+     'npx',
+     'expo-modules-autolinking',
+     'react-native-config',
+     '--json',
+     '--platform',
+     'ios'
+   ]
+ end
 
-  config = use_native_modules!(config_command)
+ config = use_native_modules!(config_command)
 
-  use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
-  use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
+ use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
+ use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
 
-  use_react_native!(
-    :path => config[:reactNativePath],
-    :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
-    # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/..",
-    :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
-  )
+ use_react_native!(
+   :path => config[:reactNativePath],
+   :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
+   :app_path => "#{Pod::Config.instance.installation_root}/..",
+   :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
+ )
 
-  post_install do |installer|
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      :ccache_enabled => ccache_enabled?(podfile_properties),
-    )
-  end
+ post_install do |installer|
+   react_native_post_install(
+     installer,
+     config[:reactNativePath],
+     :mac_catalyst_enabled => false,
+     :ccache_enabled => ccache_enabled?(podfile_properties),
+   )
+  
+   installer.pods_project.targets.each do |target|
+     target.build_configurations.each do |config|
+       # Set deployment target for all pods
+       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.4'
+      
+       # Swift version
+       config.build_settings['SWIFT_VERSION'] = '5.0'
+      
+       # Disable bitcode
+       config.build_settings['ENABLE_BITCODE'] = 'NO'
+       
+       # === GLOBAL SWIFT FIXES FOR ALL TARGETS ===
+       
+       # Optimization levels
+       if config.name == 'Debug'
+         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
+       else
+         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-O'
+       end
+       
+       # Use singlefile compilation to avoid incremental build issues
+       config.build_settings['SWIFT_COMPILATION_MODE'] = 'singlefile'
+       
+       # Disable index store
+       config.build_settings['COMPILER_INDEX_STORE_ENABLE'] = 'NO'
+       
+       # Suppress all warnings to prevent warning-as-error issues
+       config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES'
+       config.build_settings['CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER'] = 'NO'
+       
+       # Swift flags to suppress errors
+       config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
+       config.build_settings['OTHER_SWIFT_FLAGS'] << '-suppress-warnings'
+       config.build_settings['OTHER_SWIFT_FLAGS'] << '-Xfrontend'
+       config.build_settings['OTHER_SWIFT_FLAGS'] << '-no-verify-emitted-module-interface'
+       
+       # Disable strict concurrency checking
+       config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
+       
+       # Disable library evolution (can cause Swift issues)
+       config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
+       config.build_settings['SWIFT_EMIT_MODULE_INTERFACE'] = 'NO'
+       
+       # Enable modules
+       config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+       
+       # === SPECIFIC FIXES FOR NITRO/IAP MODULES ===
+       if target.name.include?('Nitro') || target.name == 'NitroIap'
+         # C++20 for NitroModules
+         config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+         config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+         
+         # Preprocessor definitions
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
+         
+         # Header search paths
+         config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
+         config.build_settings['HEADER_SEARCH_PATHS'] << '"${PODS_ROOT}/Headers/Public"'
+         config.build_settings['HEADER_SEARCH_PATHS'] << '"${PODS_ROOT}/Headers/Public/React-Core"'
+         config.build_settings['HEADER_SEARCH_PATHS'] << '"${PODS_ROOT}/Headers/Public/React-Codegen"'
+         config.build_settings['HEADER_SEARCH_PATHS'] << '"${PODS_ROOT}/Headers/Public/ReactCommon"'
+         config.build_settings['HEADER_SEARCH_PATHS'] << '"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen/React_Codegen.framework/Headers"'
+         
+         # C++ interoperability
+         config.build_settings['CLANG_ENABLE_OBJC_INTEROP'] = 'YES'
+         config.build_settings['OTHER_SWIFT_FLAGS'] << '-cxx-interoperability-mode=default'
+       end
+       
+       # === FIXES FOR EXPO MODULES ===
+       if target.name.include?('Expo') || target.name.include?('EX')
+         # Ensure proper module setup
+         config.build_settings['DEFINES_MODULE'] = 'YES'
+         config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+       end
+     end
+   end
+   
+   # === FIX PROJECT-LEVEL SETTINGS ===
+   installer.pods_project.build_configurations.each do |config|
+     config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+   end
+ end
 end

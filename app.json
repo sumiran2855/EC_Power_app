@@ -14,8 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.ecpower",
-      "icon": "./assets/images/logo1.png"
+      "bundleIdentifier": "com.ecpower.client",
+      "icon": "./assets/images/logo1.png",
+      "deploymentTarget": "16.6",
+      "newArchEnabled": true
     },
     "android": {
       "icon": "./assets/images/logo1.png",
@@ -26,7 +28,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.ecpower",
+      "package": "com.ecpower.client",
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE",
