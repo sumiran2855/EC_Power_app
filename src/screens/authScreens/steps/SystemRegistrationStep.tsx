@@ -821,7 +821,7 @@ const SystemRegistrationStep: React.FC<SystemRegistrationStepProps> = ({
                                 <View style={styles.inputGroup}>
                                     <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.expectedCo2Savings')}</Text>
                                     <View style={styles.inputWrapper}>
-                                        <Icon name="eco" size={18} color="#999" style={styles.inputIcon} />
+                                        <Icon name={formData?.location?.country === 'USA' ? 'attach-money' : 'eco'} size={18} color="#999" style={styles.inputIcon} />
                                         <TextInput
                                             style={styles.input}
                                             placeholder={t('systemRegistrationStep.energyCheckPlus.co2SavingsPlaceholder')}

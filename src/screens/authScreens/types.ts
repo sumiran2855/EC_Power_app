@@ -145,6 +145,7 @@ export const country = [
     "Denmark",
     "Poland",
     "Italy",
+    "USA",
     "Others",
 ];
 

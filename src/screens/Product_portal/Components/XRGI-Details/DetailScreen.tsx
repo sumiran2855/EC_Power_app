@@ -60,41 +60,24 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                 'July', 'August', 'September', 'October', 'November', 'December'];
             const adjustedMonth = `${monthNames[adjustedDate.getMonth()]} ${adjustedDate.getFullYear()}`;
 
-            console.log('Selected month:', selectedMonth);
-            console.log('Latest record createdAt:', createdAt.toLocaleDateString());
-            console.log('Display month (one month before createdAt):', adjustedMonth);
-
             try {
                 setGeneratingReport(true);
-
                 // Create the payload with month and XRGI ID
                 const payload = {
                     month: monthNames[adjustedDate.getMonth()],
                     xrgiID: item.xrgiID
                 };
 
-                console.log('Creating EnergyCheckPlus report with payload:', payload);
-
                 const response = await RegisterController.CreateEnergyCheckPlus(payload);
-
                 if (response?.success) {
-                    console.log('EnergyCheckPlus report created successfully');
-
-                    // Refresh the data to fetch the latest reports
                     await getEnergyCheckPlusDetails();
-
-                    // Show success message
                     setShowReportSuccess(true);
-                } else {
-                    console.log('Failed to create EnergyCheckPlus report:', response);
                 }
             } catch (error) {
                 console.log('Error creating EnergyCheckPlus report:', error);
             } finally {
                 setGeneratingReport(false);
             }
-        } else {
-            console.log('No records available for report generation');
         }
     };
 
@@ -282,11 +265,7 @@ const DetailScreen: React.FC<XRGIDetailsScreenProps> = ({ route, navigation }) =
                     <View style={styles.dataGrid}>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>{t('detailScreen.data.expectedSavings')}</Text>
-                            <Text style={styles.dataValue}>
-                                {groupedRecords.length > 0 && groupedRecords[0].latestRecord
-                                    ? `€ ${groupedRecords[0].latestRecord.annualSavings}`
-                                    : '-'}
-                            </Text>
+                            <Text style={styles.dataValue}>{item.location?.country === 'USA' ? '$' : '€'} {item.EnergyCheck_plus?.annualSavings || '-'}</Text>
                         </View>
                         <View style={styles.dataRow}>
                             <Text style={styles.dataLabel}>{t('detailScreen.data.annualCo2Savings')}</Text>

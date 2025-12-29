@@ -730,7 +730,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ route }) => {
                   <View style={styles.inputGroup}>
                     <Text style={styles.label}>{t('systemRegistrationStep.energyCheckPlus.expectedSavings')}</Text>
                     <View style={styles.inputWrapper}>
-                      <Icon name="euro" size={18} color="#999" style={styles.inputIcon} />
+                      <Icon name={formData.location.country === 'USA' ? 'attach-money' : 'euro'} size={18} color="#999" style={styles.inputIcon} />
                       <TextInput
                         style={styles.input}
                         placeholder={t('systemRegistrationStep.energyCheckPlus.savingsPlaceholder')}
