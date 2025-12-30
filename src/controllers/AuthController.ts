@@ -32,9 +32,6 @@ export class AuthController {
 
         // Set token expiry (1 hour from now)
         AuthHelper.setTokenExpiry(Date.now() + (60 * 60 * 1000));
-        if (user) {
-          await StorageService.user.setData(user);
-        }
 
         return { success: true , response: response.data.user };
       } else {

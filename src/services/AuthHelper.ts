@@ -20,7 +20,8 @@ class AuthHelper {
     private tokenExpiryTime: number | null = null;
     private isRefreshing = false;
     private failedQueue: Array<{
-        resolve: (value: any) => void;
+        request: () => Promise<{ success: boolean; data?: any; message?: string; details?: string; status?: number }>;
+        resolve: (value: { success: boolean; data?: any; message?: string; details?: string; status?: number }) => void;
         reject: (reason: any) => void;
     }> = [];
 
@@ -63,23 +64,25 @@ class AuthHelper {
     }
 
     private processQueue(error: any) {
-        this.failedQueue.forEach(({ resolve, reject }) => {
+        this.failedQueue.forEach(({ request, resolve, reject }) => {
             if (error) {
                 reject(error);
-            } else {
-                resolve(true);
+                return;
             }
+
+            request()
+                .then(resolve)
+                .catch(reject);
         });
         this.failedQueue = [];
     }
 
-    private async ensureValidToken(): Promise<void> {
+    private async ensureValidToken(): Promise<boolean> {
         if (this.tokenExpiryTime && Date.now() >= this.tokenExpiryTime) {
             const refreshed = await AuthController.refreshToken();
-            if (!refreshed) {
-                throw new Error('Session expired - please login again');
-            }
+            return refreshed;
         }
+        return true;
     }
 
     public setTokenExpiry(expiryTime: number): void {
@@ -96,11 +99,14 @@ class AuthHelper {
         timeoutDuration,
         backendType,
         isRetry
-    }: RequestOptions): Promise<{ success: boolean; data?: any; message?: string; details?: string }> {
+    }: RequestOptions): Promise<{ success: boolean; data?: any; message?: string; details?: string; status?: number }> {
         let requestUrl = '';
 
         if (token && !isRetry && endpoint !== 'login') {
-            await this.ensureValidToken();
+            const isValid = await this.ensureValidToken();
+            if (!isValid) {
+                return { success: false, status: 401, message: 'Session expired - please login again' };
+            }
         }
 
         try {
@@ -120,12 +126,29 @@ class AuthHelper {
                 this.timeout(timeoutDuration || this.defaultTimeout),
             ]);
 
-            // Handle 401 Unauthorized - attempt token refresh
-            if (!response.ok && response.status === 401 && !isRetry && endpoint !== 'login') {
+            // Handle 401 Unauthorized - attempt token refresh (only once)
+            if (!response.ok && response.status === 401 && endpoint !== 'login' && !isRetry) {
                 if (this.isRefreshing) {
                     // Queue the request while refreshing
                     return new Promise((resolve, reject) => {
-                        this.failedQueue.push({ resolve, reject });
+                        this.failedQueue.push({
+                            request: async () => {
+                                const { authToken, idToken } = await StorageService.auth.getTokens();
+                                return this.ApiRequest({
+                                    endpoint,
+                                    method,
+                                    body,
+                                    token: authToken,
+                                    IdToken: idToken,
+                                    x_api_token,
+                                    timeoutDuration,
+                                    backendType,
+                                    isRetry: true,
+                                });
+                            },
+                            resolve,
+                            reject,
+                        });
                     });
                 }
 
@@ -151,7 +174,7 @@ class AuthHelper {
                     } else {
                         // Refresh failed, process queue with error
                         this.processQueue(new Error('Session expired'));
-                        return { success: false, message: 'Session expired - please login again' };
+                        return { success: false, status: 401, message: 'Session expired - please login again' };
                     }
                 } catch (error) {
                     this.processQueue(error);
