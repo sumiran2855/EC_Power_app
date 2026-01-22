@@ -387,7 +387,16 @@
             "unitList": {
                 "title": "Enhedsliste",
                 "subtitle": "XRGI® enheder"
+            },
+            "generalStatus": {
+                "title": "Generel Status",
+                "subtitle": "Start / Stop - Systemvisning"
             }
+        },
+        "viewMode": {
+            "label": "Visningstilstand",
+            "easy": "Nem",
+            "advanced": "Avanceret"
         },
         "search": {
             "placeholder": "Søg portaler og tjenester...",

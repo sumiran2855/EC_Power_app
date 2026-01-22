@@ -387,7 +387,16 @@
             "unitList": {
                 "title": "Lista Jednostek",
                 "subtitle": "Jednostki XRGI®"
+            },
+            "generalStatus": {
+                "title": "Status Ogólny",
+                "subtitle": "Uruchomienie / Zatrzymanie - Widok Systemu"
             }
+        },
+        "viewMode": {
+            "label": "Tryb Widoku",
+            "easy": "Łatwy",
+            "advanced": "Zaawansowany"
         },
         "search": {
             "placeholder": "Szukaj portali i usług...",

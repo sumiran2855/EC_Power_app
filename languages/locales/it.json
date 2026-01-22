@@ -387,7 +387,16 @@
             "unitList": {
                 "title": "Lista Unità",
                 "subtitle": "Unità XRGI®"
+            },
+            "generalStatus": {
+                "title": "Stato Generale",
+                "subtitle": "Avvia / Ferma - Visualizzazione Sistema"
             }
+        },
+        "viewMode": {
+            "label": "Modalità Visualizzazione",
+            "easy": "Facile",
+            "advanced": "Avanzato"
         },
         "search": {
             "placeholder": "Cerca portali e servizi...",

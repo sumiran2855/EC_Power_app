@@ -387,7 +387,16 @@
             "unitList": {
                 "title": "Unit List",
                 "subtitle": "XRGI® units"
+            },
+            "generalStatus": {
+                "title": "General Status",
+                "subtitle": "Start / Stop - System view"
             }
+        },
+        "viewMode": {
+            "label": "View Mode",
+            "easy": "Easy",
+            "advanced": "Advanced"
         },
         "search": {
             "placeholder": "Search portals and services...",

@@ -1,14 +1,15 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MaterialIcons as Icon } from '@expo/vector-icons';
-import { AuthController } from '../controllers/AuthController';
 import { UserController } from '@/controllers/UserController';
-import StorageService from '@/utils/secureStorage';
 import { UserData } from '@/screens/authScreens/types';
+import StorageService from '@/utils/secureStorage';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthController } from '../controllers/AuthController';
+import { RootStackParamList } from '../navigation/AppNavigator';
+import useViewMode from './useViewMode';
 
 export interface MenuItem {
     id: string;
@@ -16,6 +17,7 @@ export interface MenuItem {
     icon: keyof typeof Icon.glyphMap;
     color: string;
     subtitle: string;
+    inEasyView?: boolean;
 }
 
 export interface Section {
@@ -27,105 +29,140 @@ export interface Section {
 const useHome = () => {
     const { t } = useTranslation();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
+    const { viewMode, isLoading, toggleViewMode } = useViewMode();
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const dropdownAnimation = useRef(new Animated.Value(0)).current;
     const [customerDetails, setCustomerDetails] = useState<any>(null);
 
-    const allSections: Section[] = [
-        {
-            id: '1',
-            title: t('home.sections.productPortal'),
-            items: [
-                {
-                    id: '1-1',
-                    title: t('home.menuItems.xrgiSystems.title'),
-                    icon: 'devices',
-                    color: '#1E88E5',
-                    subtitle: t('home.menuItems.xrgiSystems.subtitle')
-                },
-                {
-                    id: '1-2',
-                    title: t('home.menuItems.serviceContracts.title'),
-                    icon: 'assignment',
-                    color: '#43A047',
-                    subtitle: t('home.menuItems.serviceContracts.subtitle')
-                },
-            ],
-        },
-        {
-            id: '2',
-            title: t('home.sections.servicePortal'),
-            items: [
-                {
-                    id: '2-1',
-                    title: t('home.menuItems.systemStatus.title'),
-                    icon: 'monitor',
-                    color: '#8E24AA',
-                    subtitle: t('home.menuItems.systemStatus.subtitle')
-                },
-                {
-                    id: '2-2',
-                    title: t('home.menuItems.statistics.title'),
-                    icon: 'bar-chart',
-                    color: '#8E24AA',
-                    subtitle: t('home.menuItems.statistics.subtitle')
-                },
-                {
-                    id: '2-3',
-                    title: t('home.menuItems.systemConfiguration.title'),
-                    icon: 'settings',
-                    color: '#3949AB',
-                    subtitle: t('home.menuItems.systemConfiguration.subtitle')
-                },
-                {
-                    id: '2-4',
-                    title: t('home.menuItems.serviceReports.title'),
-                    icon: 'description',
-                    color: '#F4511E',
-                    subtitle: t('home.menuItems.serviceReports.subtitle')
-                },
-                {
-                    id: '2-5',
-                    title: t('home.menuItems.callDetails.title'),
-                    icon: 'list',
-                    color: '#F4511E',
-                    subtitle: t('home.menuItems.callDetails.subtitle')
-                },
-                {
-                    id: '2-6',
-                    title: t('home.menuItems.energyProduction.title'),
-                    icon: 'battery-charging-full',
-                    color: '#1E88E5',
-                    subtitle: t('home.menuItems.energyProduction.subtitle')
-                },
-            ],
-        },
-        {
-            id: '3',
-            title: t('home.sections.functionalPortal'),
-            items: [
-                {
-                    id: '3-1',
-                    title: t('home.menuItems.unitList.title'),
-                    icon: 'contacts',
-                    color: '#00897B',
-                    subtitle: t('home.menuItems.unitList.subtitle')
-                },
-            ],
-        },
-    ];
+    // Build all sections with all items - filtering happens later based on viewMode
+    const buildAllSections = useCallback((): Section[] => {
+        return [
+            {
+                id: '2',
+                title: t('home.sections.servicePortal'),
+                items: [
+                    {
+                        id: '2-1',
+                        title: t('home.menuItems.systemStatus.title'),
+                        icon: 'monitor',
+                        color: '#8E24AA',
+                        subtitle: t('home.menuItems.systemStatus.subtitle'),
+                        inEasyView: true,
+                    },
+                    {
+                        id: '2-2',
+                        title: t('home.menuItems.statistics.title'),
+                        icon: 'bar-chart',
+                        color: '#8E24AA',
+                        subtitle: t('home.menuItems.statistics.subtitle'),
+                        inEasyView: false,
+                    },
+                    {
+                        id: '2-3',
+                        title: t('home.menuItems.systemConfiguration.title'),
+                        icon: 'settings',
+                        color: '#3949AB',
+                        subtitle: t('home.menuItems.systemConfiguration.subtitle'),
+                        inEasyView: false,
+                    },
+                    {
+                        id: '2-4',
+                        title: t('home.menuItems.serviceReports.title'),
+                        icon: 'description',
+                        color: '#F4511E',
+                        subtitle: t('home.menuItems.serviceReports.subtitle'),
+                        inEasyView: false,
+                    },
+                    {
+                        id: '2-5',
+                        title: t('home.menuItems.callDetails.title'),
+                        icon: 'list',
+                        color: '#F4511E',
+                        subtitle: t('home.menuItems.callDetails.subtitle'),
+                        inEasyView: false,
+                    },
+                    {
+                        id: '2-6',
+                        title: t('home.menuItems.energyProduction.title'),
+                        icon: 'battery-charging-full',
+                        color: '#1E88E5',
+                        subtitle: t('home.menuItems.energyProduction.subtitle'),
+                        inEasyView: true,
+                    },
+                    {
+                        id: '2-7',
+                        title: t('home.menuItems.generalStatus.title'),
+                        icon: 'power-settings-new',
+                        color: '#00897B',
+                        subtitle: t('home.menuItems.generalStatus.subtitle'),
+                        inEasyView: true,
+                    },
+                ],
+            },
+            {
+                id: '1',
+                title: t('home.sections.productPortal'),
+                items: [
+                    {
+                        id: '1-1',
+                        title: t('home.menuItems.xrgiSystems.title'),
+                        icon: 'devices',
+                        color: '#1E88E5',
+                        subtitle: t('home.menuItems.xrgiSystems.subtitle'),
+                        inEasyView: true,
+                    },
+                    {
+                        id: '1-2',
+                        title: t('home.menuItems.serviceContracts.title'),
+                        icon: 'assignment',
+                        color: '#43A047',
+                        subtitle: t('home.menuItems.serviceContracts.subtitle'),
+                        inEasyView: false,
+                    },
+                ],
+            },
+        ];
+    }, [t]);
+
+    const allSections = buildAllSections();
+
+    // Filter sections based on view mode
+    const filterSectionsByViewMode = useCallback((sections: Section[]): Section[] => {
+        if (viewMode === 'advanced') {
+            return sections
+                .map(section => ({
+                    ...section,
+                    items: section.items.filter(item => item.inEasyView === false),
+                }))
+                .filter(section => section.items.length > 0);
+        } else {
+            return sections
+                .map(section => ({
+                    ...section,
+                    items: section.items.filter(item => item.inEasyView === true),
+                }))
+                .filter(section => section.items.length > 0);
+        }
+    }, [viewMode]);
 
     // Filter sections based on search query
-    const filteredSections = allSections.filter(section => {
-        if (!searchQuery.trim()) return true;
-        return section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            section.items.some(item =>
-                item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                item.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-    });
+    const searchFilteredSections = useMemo(() => {
+        return allSections.filter(section => {
+            if (!searchQuery.trim()) return true;
+            return section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                section.items.some(item =>
+                    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+        });
+    }, [allSections, searchQuery]);
+
+    // Apply view mode filter
+    const filteredSections = useMemo(() => {
+        return filterSectionsByViewMode(searchFilteredSections);
+    }, [filterSectionsByViewMode, searchFilteredSections]);
 
     const toggleProfileMenu = useCallback(() => {
         const toValue = showProfileMenu ? 0 : 1;
@@ -187,7 +224,7 @@ const useHome = () => {
             case '2-6':
                 navigation.navigate('EnergyProductionList');
                 break;
-            case '3-1':
+            case '2-7':
                 navigation.navigate('UnitList');
                 break;
             default:
@@ -235,10 +272,13 @@ const useHome = () => {
         dropdownAnimation,
         filteredSections,
         customerDetails,
+        viewMode,
+        isLoading,
 
         // Handlers
         setSearchQuery,
         toggleProfileMenu,
+        toggleViewMode,
         handleLogout,
         handleProfile,
         handleMenuPress,

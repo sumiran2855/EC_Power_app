@@ -8,7 +8,8 @@ export type StorageKey =
     | 'userData'
     | 'appSettings'
     | 'lastLogin'
-    | 'idToken';
+    | 'idToken'
+    | 'viewMode';
 
 
 const ALL_STORAGE_KEYS: StorageKey[] = [
@@ -18,6 +19,7 @@ const ALL_STORAGE_KEYS: StorageKey[] = [
     'appSettings',
     'lastLogin',
     'idToken',
+    'viewMode',
 ];
 
 export const storeSecureValue = async <T>(
@@ -168,6 +170,19 @@ export const StorageService = {
         },
         clearData: async () => {
             await removeSecureValue('userData');
+        },
+    },
+
+    viewMode: {
+        setMode: async (mode: 'easy' | 'advanced') => {
+            await storeSecureValue('viewMode', mode);
+        },
+        getMode: async (): Promise<'easy' | 'advanced'> => {
+            const mode = await getSecureValue<string>('viewMode');
+            return (mode as 'easy' | 'advanced') || 'easy';
+        },
+        clearMode: async () => {
+            await removeSecureValue('viewMode');
         },
     },
 

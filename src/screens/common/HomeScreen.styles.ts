@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -9,9 +9,9 @@ export const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: '#FFFFFF',
-        paddingHorizontal: 16,
-        paddingTop: 12,
-        paddingBottom: 12,
+        paddingHorizontal: 12,
+        paddingTop: 8,
+        paddingBottom: 8,
         borderBottomWidth: 1,
         borderBottomColor: '#ECEFF1',
         shadowColor: '#000',
@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 12,
     },
     headerLeft: {
         flexDirection: 'row',
@@ -153,7 +154,7 @@ export const styles = StyleSheet.create({
     },
     contentContainer: {
         padding: 16,
-        paddingBottom: 90,
+        paddingBottom: 20,
     },
     statsContainer: {
         flexDirection: 'row',
@@ -430,5 +431,72 @@ export const styles = StyleSheet.create({
     },
     logoutIconWrapper: {
         backgroundColor: '#FFEBEE',
+    },
+    viewModeToggleContainer: {
+        backgroundColor: '#FFFFFF',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ECEFF1',
+        alignItems: 'center',
+    },
+    headerToggleContainer: {
+        backgroundColor: '#F5F7FA',
+        borderRadius: 8,
+        padding: 4,
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: '#E0E7FF',
+        gap: 0,
+    },
+    viewModeToggleButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 6,
+        gap: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    viewModeToggleButtonActive: {
+        backgroundColor: '#1E88E5',
+    },
+    viewModeToggleButtonInactive: {
+        backgroundColor: 'transparent',
+    },
+    viewModeToggleText: {
+        fontSize: 11,
+        fontWeight: '600',
+        color: '#90A4AE',
+    },
+    viewModeToggleTextActive: {
+        color: '#FFFFFF',
+    },
+    viewModeIndicator: {
+        backgroundColor: '#FFFFFF',
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ECEFF1',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+    },
+    viewModeLabel: {
+        fontSize: 12,
+        fontWeight: '600',
+        color: '#546E7A',
+    },
+    viewModeBadge: {
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 12,
+        backgroundColor: '#E3F2FD',
+    },
+    viewModeBadgeText: {
+        fontSize: 11,
+        fontWeight: '700',
+        color: '#1E88E5',
     },
 });

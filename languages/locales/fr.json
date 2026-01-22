@@ -387,7 +387,16 @@
             "unitList": {
                 "title": "Liste des Unités",
                 "subtitle": "Unités XRGI®"
+            },
+            "generalStatus": {
+                "title": "Statut Général",
+                "subtitle": "Démarrer / Arrêter - Vue Système"
             }
+        },
+        "viewMode": {
+            "label": "Mode d'Affichage",
+            "easy": "Facile",
+            "advanced": "Avancé"
         },
         "search": {
             "placeholder": "Rechercher des portails et services...",

@@ -30,10 +30,12 @@ const HomeScreen: React.FC = () => {
         dropdownAnimation,
         filteredSections,
         customerDetails,
+        viewMode,
 
         // Handlers
         setSearchQuery,
         toggleProfileMenu,
+        toggleViewMode,
         handleLogout,
         handleProfile,
         handleMenuPress,
@@ -96,6 +98,39 @@ const HomeScreen: React.FC = () => {
                             />
                         </View>
                     </View>
+
+                    {/* View Mode Toggle - Header */}
+                    <View style={styles.headerToggleContainer}>
+                        <TouchableOpacity
+                            style={[
+                                styles.viewModeToggleButton,
+                                viewMode === 'easy' && styles.viewModeToggleButtonActive,
+                                viewMode !== 'easy' && styles.viewModeToggleButtonInactive,
+                            ]}
+                            onPress={toggleViewMode}
+                            activeOpacity={0.8}
+                        >
+                            <Icon name="lightbulb" size={14} color={viewMode === 'easy' ? '#FFFFFF' : '#90A4AE'} />
+                            <Text style={[styles.viewModeToggleText, viewMode === 'easy' && styles.viewModeToggleTextActive]}>
+                                {t('home.viewMode.easy')}
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                styles.viewModeToggleButton,
+                                viewMode === 'advanced' && styles.viewModeToggleButtonActive,
+                                viewMode !== 'advanced' && styles.viewModeToggleButtonInactive,
+                            ]}
+                            onPress={toggleViewMode}
+                            activeOpacity={0.8}
+                        >
+                            <Icon name="settings" size={14} color={viewMode === 'advanced' ? '#FFFFFF' : '#90A4AE'} />
+                            <Text style={[styles.viewModeToggleText, viewMode === 'advanced' && styles.viewModeToggleTextActive]}>
+                                {t('home.viewMode.advanced')}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <View style={styles.headerRight}>
                         <TouchableOpacity
                             style={styles.iconButton}
@@ -103,10 +138,6 @@ const HomeScreen: React.FC = () => {
                             activeOpacity={0.7}
                         >
                             <Icon name="search" size={22} color="#546E7A" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
-                            <Icon name="notifications-none" size={22} color="#546E7A" />
-                            <View style={styles.notificationBadge} />
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.profileButton}
@@ -247,26 +278,28 @@ const HomeScreen: React.FC = () => {
                 )}
 
                 {/* Help Card */}
-                <View style={styles.helpCard}>
-                    <View style={styles.helpContent}>
-                        <View style={styles.helpTextContainer}>
-                            <Text style={styles.helpTitle}>{t('home.help.title')}</Text>
-                            <Text style={styles.helpDescription}>
-                                {t('home.help.description')}
-                            </Text>
-                            <TouchableOpacity
-                                style={styles.helpButton}
-                                activeOpacity={0.8}
-                                onPress={() => navigation.navigate('Contact')}
-                            >
-                                <Text style={styles.helpButtonText}>{t('home.help.button')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.helpIconContainer}>
-                            <Icon name="help-outline" size={32} color="#FFFFFF" />
+                {viewMode === 'easy' && (
+                    <View style={styles.helpCard}>
+                        <View style={styles.helpContent}>
+                            <View style={styles.helpTextContainer}>
+                                <Text style={styles.helpTitle}>{t('home.help.title')}</Text>
+                                <Text style={styles.helpDescription}>
+                                    {t('home.help.description')}
+                                </Text>
+                                <TouchableOpacity
+                                    style={styles.helpButton}
+                                    activeOpacity={0.8}
+                                    onPress={() => navigation.navigate('Contact')}
+                                >
+                                    <Text style={styles.helpButtonText}>{t('home.help.button')}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.helpIconContainer}>
+                                <Icon name="help-outline" size={32} color="#FFFFFF" />
+                            </View>
                         </View>
                     </View>
-                </View>
+                )}
             </ScrollView>
         </SafeAreaView>
     );
