@@ -464,44 +464,44 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     // Status 2025 Styles
-    status2025Container: {
+    statusContainer: {
         paddingHorizontal: 16,
     },
-    status2025Header: {
+    statusHeader: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 16,
     },
-    status2025Title: {
+    statusTitle: {
         fontSize: 16,
         fontWeight: '700',
         color: '#0F172A',
         marginLeft: 8,
     },
-    status2025Card: {
+    statusCard: {
         backgroundColor: '#FFFFFF',
         borderRadius: 12,
         padding: 16,
         borderWidth: 1,
         borderColor: '#E2E8F0',
     },
-    status2025Section: {
+    statusSection: {
         gap: 12,
     },
-    status2025Row: {
+    statusRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         gap: 12,
     },
-    status2025Label: {
+    statusLabel: {
         fontSize: 13,
         color: '#64748B',
         fontWeight: '500',
         flex: 1,
         lineHeight: 18,
     },
-    status2025Value: {
+    statusValue: {
         fontSize: 13,
         color: '#0F172A',
         fontWeight: '600',
@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         lineHeight: 18,
     },
-    status2025Divider: {
+    statusDivider: {
         height: 1,
         backgroundColor: '#E2E8F0',
         marginVertical: 16,

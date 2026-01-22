@@ -36,7 +36,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         generalData,
         lastCallData,
         customerLoginData,
-        status2025Data,
+        formattedStatusData,
         existingConfigData,
 
         // Methods
@@ -190,68 +190,68 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         </View>
     );
 
-    const renderStatus2025Content = () => (
+    const renderstatusContent = () => (
         <View style={styles.expandedContent}>
-            <View style={styles.status2025Container}>
-                <View style={styles.status2025Card}>
-                    <View style={styles.status2025Section}>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.latestUpdate')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.latestUpdate}</Text>
+            <View style={styles.statusContainer}>
+                <View style={styles.statusCard}>
+                    <View style={styles.statusSection}>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.latestUpdate')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.latestUpdate}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.operatingHours')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.operatingHours}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.operatingHours')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.operatingHours}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.lastService')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.lastService}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.lastService')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.lastService}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.operationalHoursToNextService')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.operationalHoursToNextService}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.status2025Divider} />
-
-                    <View style={styles.status2025Section}>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.elecProduction')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.elecProduction}</Text>
-                        </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.heatProduction')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.heatProduction}</Text>
-                        </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.fuelConsumption')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.fuelConsumption}</Text>
-                        </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.firstCall')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.firstCall}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.operationalHoursToNextService')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.operationalHoursToNextService}</Text>
                         </View>
                     </View>
 
-                    <View style={styles.status2025Divider} />
+                    <View style={styles.statusDivider} />
 
-                    <View style={styles.status2025Section}>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.siteElecConsumption')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.siteElecConsumption}</Text>
+                    <View style={styles.statusSection}>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.elecProduction')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.elecProduction}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.coveredByXRGI')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.coveredByXRGISystem}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.heatProduction')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.heatProduction}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.coveredByPowerPurchase')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.coveredByPowerPurchase}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.fuelConsumption')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.fuelConsumption}</Text>
                         </View>
-                        <View style={styles.status2025Row}>
-                            <Text style={styles.status2025Label}>{t('unitDetail.status2025.soldElectricity')}</Text>
-                            <Text style={styles.status2025Value}>{status2025Data.soldElectricity}</Text>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.firstCall')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.firstCall}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.statusDivider} />
+
+                    <View style={styles.statusSection}>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.siteElecConsumption')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.siteElecConsumption}</Text>
+                        </View>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.coveredByXRGI')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.coveredByXRGISystem}</Text>
+                        </View>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.coveredByPowerPurchase')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.coveredByPowerPurchase}</Text>
+                        </View>
+                        <View style={styles.statusRow}>
+                            <Text style={styles.statusLabel}>{t('unitDetail.status.soldElectricity')}</Text>
+                            <Text style={styles.statusValue}>{formattedStatusData.soldElectricity}</Text>
                         </View>
                     </View>
                 </View>
@@ -298,8 +298,8 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                 return renderLastCallContent();
             case 'customerLogin':
                 return renderCustomerLoginContent();
-            case 'status2025':
-                return renderStatus2025Content();
+            case 'status':
+                return renderstatusContent();
             case 'existingConfig':
                 return renderExistingConfigContent();
             default:

@@ -55,7 +55,7 @@ interface LastCallData {
     controlPanelAntennaSignal: string;
 }
 
-interface Status2025Data {
+interface StatusData {
     latestUpdate: string;
     operatingHours: string;
     lastService: string;
@@ -100,7 +100,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
         { id: 'general', title: t('unitDetail.menuItems.general'), icon: 'information-circle-outline', hasData: true },
         { id: 'lastCall', title: t('unitDetail.menuItems.lastCall'), icon: 'call-outline', hasData: false },
         { id: 'customerLogin', title: t('unitDetail.menuItems.customerLogin'), icon: 'person-outline', hasData: false },
-        { id: 'status2025', title: t('unitDetail.menuItems.status2025'), icon: 'stats-chart-outline', hasData: false },
+        { id: 'status', title: t('unitDetail.menuItems.status'), icon: 'stats-chart-outline', hasData: false },
         { id: 'existingConfig', title: t('unitDetail.menuItems.existingConfig'), icon: 'settings-outline', hasData: false },
     ];
 
@@ -315,7 +315,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
             : '-'
     };
 
-    const status2025Data: Status2025Data = {
+    const formattedStatusData: StatusData = {
         latestUpdate: statusData?.LatesCallDate
             ? statusData.LatesCallDate
             : '-',
@@ -450,7 +450,7 @@ const useUnitDetail = ({ XrgiId }: UseUnitDetailProps = {}) => {
         generalData,
         lastCallData,
         customerLoginData,
-        status2025Data,
+        formattedStatusData,
         existingConfigData,
 
         // Methods

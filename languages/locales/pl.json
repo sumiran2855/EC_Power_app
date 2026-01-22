@@ -1064,7 +1064,7 @@
         "customerLogin": {
             "lastLogin": "Ostatnie Logowanie"
         },
-        "status2025": {
+        "status": {
             "latestUpdate": "Najnowsza aktualizacja:",
             "operatingHours": "Godziny pracy:",
             "lastService": "Ostatni serwis:",
@@ -1085,7 +1085,7 @@
             "general": "Ogólne",
             "lastCall": "Ostatnie Połączenie",
             "customerLogin": "Logowanie Klienta",
-            "status2025": "Status 2025",
+            "status": "Status",
             "existingConfig": "Istniejąca Konfiguracja"
         },
         "alerts": {
