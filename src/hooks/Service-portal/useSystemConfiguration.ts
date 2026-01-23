@@ -24,6 +24,7 @@ interface UseSystemConfigurationReturn {
     isLoading: boolean;
     isError: boolean;
     hasData: boolean;
+    isPartialLoading: boolean;
     expandedId: string | null;
     handleBackButton: () => void;
     handleSystemPress: (system: Facility) => void;
@@ -36,6 +37,7 @@ interface UseSystemConfigurationReturn {
 const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn => {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
+    const [isPartialLoading, setIsPartialLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [systems, setSystems] = useState<Facility[]>([]);
     const [hasData, setHasData] = useState(false);
@@ -275,8 +277,10 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
 
     const fetchSystemConfiguration = useCallback(async (id: string) => {
         setIsLoading(true);
+        setIsPartialLoading(false);
         setIsError(false);
         setHasData(false);
+        setConfigurations([]);
 
         try {
             const userData = await StorageService.user.getData<UserData>();
@@ -287,25 +291,101 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
             const response = await SystemController.getSystemConfiguration(id);
 
             if (response) {
-                const { configurations: transformedData, hasData: dataAvailable } = transformConfigurationData(response);
-                transformConfigurationData(response);
-                setConfigurations(transformedData);
-                setHasData(dataAvailable && transformedData.length > 0);
+                const latestPlantConfig = response?.raw?.plantConfigurationData?.[0]?.configuration;
+                const latestConfigTimestamp = response?.raw?.plantConfigurationData?.[0]?.timestamp;
 
-                if (transformedData.length > 0) {
-                    setExpandedId(transformedData[0].id);
+                const initialItems: ConfigItem[] = [];
+
+                if (latestPlantConfig) {
+                    const latestDate = latestConfigTimestamp
+                        ? new Date(latestConfigTimestamp).toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                        : new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
+                    const latestConfigItem: SystemConfiguration = {
+                        id: `config-0`,
+                        timestamp: latestDate,
+                        isExpanded: true,
+                        details: createConfigDetails(latestPlantConfig, latestDate)
+                    };
+
+                    initialItems.push(latestConfigItem);
+                    
+                    // Display initial data immediately
+                    setConfigurations(initialItems);
+                    setHasData(true);
+                    setExpandedId(latestConfigItem.id);
+                    setIsLoading(false);
+                    setIsPartialLoading(true);
+
+                    // Now process and display logs progressively
+                    const rawLogs = response?.raw?.plantServiceLogData;
+                    const logs: any[] = Array.isArray(rawLogs?.[0]) ? rawLogs[0] : (rawLogs || []);
+
+                    // Process logs in batches to display progressively
+                    let processedItems = [...initialItems];
+                    let logIndex = 0;
+
+                    const processBatch = () => {
+                        const batchSize = 5; 
+                        const endIndex = Math.min(logIndex + batchSize, logs.length);
+
+                        for (let i = logIndex; i < endIndex; i++) {
+                            const entry = logs[i];
+                            if (entry?.eventType === 'plantConfiguration') {
+                                const timestamp = entry['date#time'] || entry.date || new Date().toISOString();
+                                const displayDate = (timestamp + '').replace(/#/g, ' ');
+
+                                const newConfigItem: SystemConfiguration = {
+                                    id: entry.id || `log-${i}`,
+                                    timestamp: displayDate,
+                                    isExpanded: false,
+                                    details: createConfigDetails(latestPlantConfig, displayDate)
+                                };
+
+                                processedItems.push(newConfigItem);
+                            }
+                        }
+
+                        if (processedItems.length > initialItems.length) {
+                            setConfigurations([...processedItems]);
+                        }
+
+                        logIndex = endIndex;
+
+                        if (logIndex < logs.length) {
+                            setTimeout(processBatch, 50);
+                        } else {
+                            setIsPartialLoading(false);
+                        }
+                    };
+
+                    if (logs.length > 0) {
+                        setTimeout(processBatch, 100);
+                    } else {
+                        setIsPartialLoading(false);
+                    }
+                } else {
+                    const { configurations: transformedData, hasData: dataAvailable } = transformConfigurationData(response);
+                    setConfigurations(transformedData);
+                    setHasData(dataAvailable && transformedData.length > 0);
+
+                    if (transformedData.length > 0) {
+                        setExpandedId(transformedData[0].id);
+                    }
+                    setIsLoading(false);
                 }
             } else {
                 setConfigurations([]);
                 setHasData(false);
+                setIsLoading(false);
             }
         } catch (error) {
             console.log('Error fetching system configuration:', error);
             setIsError(true);
             setConfigurations([]);
             setHasData(false);
-        } finally {
             setIsLoading(false);
+            setIsPartialLoading(false);
         }
     }, []);
 
@@ -321,6 +401,7 @@ const useSystemConfiguration = (navigation: any): UseSystemConfigurationReturn =
         isLoading,
         isError,
         hasData,
+        isPartialLoading,
         expandedId,
         handleBackButton,
         handleSystemPress,

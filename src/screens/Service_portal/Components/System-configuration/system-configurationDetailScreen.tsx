@@ -16,6 +16,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
     const { system } = route.params;
     const {
         isLoading,
+        isPartialLoading,
         hasData,
         expandedId,
         toggleExpand,
@@ -61,7 +62,7 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
             );
         }
 
-        if (!isLoading && (!hasData || configurations.length === 0)) {
+        if (!hasData || configurations.length === 0) {
             return (
                 <View style={styles.emptyContainer}>
                     <Ionicons name="information-circle-outline" size={48} color="#64748B" />
@@ -71,50 +72,59 @@ const SystemConfigurationDetailScreen: React.FC<SystemConfigurationDetailScreenP
         }
 
         return (
-            <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-                {configurations.map((config) => (
-                    <View key={config.id}>
-                        <TouchableOpacity
-                            style={[
-                                styles.configItem,
-                                expandedId === config.id && styles.configItemExpanded
-                            ]}
-                            onPress={() => toggleExpand(config.id)}
-                            activeOpacity={0.7}
-                        >
-                            <Text style={styles.timestamp}>{config.timestamp}</Text>
-                            <Ionicons
-                                name={expandedId === config.id ? "chevron-up" : "chevron-down"}
-                                size={20}
-                                color="#64748B"
-                            />
-                        </TouchableOpacity>
+            <View style={styles.listContainer}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {configurations.map((config) => (
+                        <View key={config.id}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.configItem,
+                                    expandedId === config.id && styles.configItemExpanded
+                                ]}
+                                onPress={() => toggleExpand(config.id)}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.timestamp}>{config.timestamp}</Text>
+                                <Ionicons
+                                    name={expandedId === config.id ? "chevron-up" : "chevron-down"}
+                                    size={20}
+                                    color="#64748B"
+                                />
+                            </TouchableOpacity>
 
-                        {expandedId === config.id && (
-                            <View style={styles.detailsContainer}>
-                                <Text style={styles.detailsTitle}>
-                                    {config.timestamp === 'Latest Configuration'
-                                        ? t('statistics.systemConfiguration.detailScreen.currentConfig')
-                                        : t('statistics.systemConfiguration.detailScreen.configDetails')}
-                                </Text>
-                                {config.details.map((detail, index) => (
-                                    <View key={`${config.id}-${index}`} style={styles.detailRow}>
-                                        <Text style={styles.detailLabel}>{detail.label}:</Text>
-                                        <Text
-                                            style={styles.detailValue}
-                                            numberOfLines={1}
-                                            ellipsizeMode="tail"
-                                        >
-                                            {detail.value}
-                                        </Text>
-                                    </View>
-                                ))}
-                            </View>
-                        )}
+                            {expandedId === config.id && (
+                                <View style={styles.detailsContainer}>
+                                    <Text style={styles.detailsTitle}>
+                                        {config.timestamp === 'Latest Configuration'
+                                            ? t('statistics.systemConfiguration.detailScreen.currentConfig')
+                                            : t('statistics.systemConfiguration.detailScreen.configDetails')}
+                                    </Text>
+                                    {config.details.map((detail, index) => (
+                                        <View key={`${config.id}-${index}`} style={styles.detailRow}>
+                                            <Text style={styles.detailLabel}>{detail.label}:</Text>
+                                            <Text
+                                                style={styles.detailValue}
+                                                numberOfLines={1}
+                                                ellipsizeMode="tail"
+                                            >
+                                                {detail.value}
+                                            </Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
+                        </View>
+                    ))}
+                    <View style={styles.bottomSpacer} />
+                </ScrollView>
+
+                {isPartialLoading && (
+                    <View style={styles.loadingMoreIndicator}>
+                        <ActivityIndicator size="small" color="#3B82F6" />
+                        <Text style={styles.loadingMoreText}>{t('statistics.systemConfiguration.detailScreen.loadingData')}</Text>
                     </View>
-                ))}
-                <View style={styles.bottomSpacer} />
-            </ScrollView>
+                )}
+            </View>
         );
     };
 

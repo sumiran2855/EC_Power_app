@@ -166,6 +166,22 @@ const styles = StyleSheet.create({
         color: '#1E293B',
         marginTop: 16,
     },
+    loadingMoreIndicator: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        backgroundColor: '#F0F9FF',
+        borderTopWidth: 1,
+        borderTopColor: '#E2E8F0',
+        gap: 8,
+    },
+    loadingMoreText: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#3B82F6',
+    },
 });
 
 export default styles;
