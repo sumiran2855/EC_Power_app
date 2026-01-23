@@ -9,6 +9,7 @@ import { AuthController } from '../controllers/AuthController';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/LoginValidation';
 import { useLoginAlert } from './useLoginAlert';
+import StorageService from '../utils/secureStorage';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -64,6 +65,7 @@ export const useLoginLogic = () => {
     try {
       const result = await AuthController.login(data);
       if (result.success) {
+        await StorageService.viewMode.setMode('easy');
         showLoginSuccess();
         setTimeout(() => {
           if (result.response?.journeyStatus === "completed") {
