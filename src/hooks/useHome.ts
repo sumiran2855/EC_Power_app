@@ -131,12 +131,7 @@ const useHome = () => {
     // Filter sections based on view mode
     const filterSectionsByViewMode = useCallback((sections: Section[]): Section[] => {
         if (viewMode === 'advanced') {
-            return sections
-                .map(section => ({
-                    ...section,
-                    items: section.items.filter(item => item.inEasyView === false),
-                }))
-                .filter(section => section.items.length > 0);
+            return sections;
         } else {
             return sections
                 .map(section => ({

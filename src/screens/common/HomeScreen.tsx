@@ -278,7 +278,6 @@ const HomeScreen: React.FC = () => {
                 )}
 
                 {/* Help Card */}
-                {viewMode === 'easy' && (
                     <View style={styles.helpCard}>
                         <View style={styles.helpContent}>
                             <View style={styles.helpTextContainer}>
@@ -299,7 +298,6 @@ const HomeScreen: React.FC = () => {
                             </View>
                         </View>
                     </View>
-                )}
             </ScrollView>
         </SafeAreaView>
     );
