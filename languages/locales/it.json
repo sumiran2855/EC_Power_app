@@ -11,6 +11,7 @@
         "signingIn": "Accesso in corso...",
         "noAccount": "Non hai un account?",
         "createAccount": "Crea account",
+        "rememberMe": "Ricordami",
         "alerts": {
             "loginSuccess": {
                 "title": "Accesso Riuscito",

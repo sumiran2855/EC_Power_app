@@ -11,6 +11,7 @@
         "signingIn": "Signing In...",
         "noAccount": "Don't have an account?",
         "createAccount": "Create Account",
+        "rememberMe": "Remember Me",
         "alerts": {
             "loginSuccess": {
                 "title": "Login Successful",

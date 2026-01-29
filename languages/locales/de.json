@@ -11,6 +11,7 @@
         "signingIn": "Anmeldung läuft...",
         "noAccount": "Haben Sie kein Konto?",
         "createAccount": "Konto erstellen",
+        "rememberMe": "Angemeldet bleiben",
         "alerts": {
             "loginSuccess": {
                 "title": "Anmeldung Erfolgreich",

@@ -11,6 +11,7 @@
         "signingIn": "Logger ind...",
         "noAccount": "Har du ikke en konto?",
         "createAccount": "Opret konto",
+        "rememberMe": "Husk mig",
         "alerts": {
             "loginSuccess": {
                 "title": "Login Lykkedes",

@@ -11,6 +11,7 @@
         "signingIn": "Logowanie...",
         "noAccount": "Nie masz konta?",
         "createAccount": "Utwórz konto",
+        "rememberMe": "Zapamiętaj mnie",
         "alerts": {
             "loginSuccess": {
                 "title": "Logowanie Pomyślne",

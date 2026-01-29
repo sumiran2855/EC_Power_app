@@ -18,28 +18,13 @@ export const useLoginLogic = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [hasAutoFilledCredentials, setHasAutoFilledCredentials] = useState<boolean>(false);
   const navigation = useNavigation();
   const route = useRoute<LoginRouteProp>();
   const portalType = route.params?.portalType || 'PRODUCT';
   
   // Initialize login alert hook
   const { alert, hideAlert, showLoginSuccess, showLoginError } = useLoginAlert();
-
-  // Load saved language on mount
-  useEffect(() => {
-    const loadSavedLanguage = async () => {
-      try {
-        const savedLanguage = await AsyncStorage.getItem('@app_language');
-        if (savedLanguage) {
-          setSelectedLanguage(savedLanguage);
-          await i18n.changeLanguage(savedLanguage);
-        }
-      } catch (error) {
-        console.log('Error loading language:', error);
-      }
-    };
-    loadSavedLanguage();
-  }, []);
 
   // Form management
   const {
@@ -54,6 +39,30 @@ export const useLoginLogic = () => {
     mode: 'onChange',
   });
 
+  // Load saved language and credentials on mount
+  useEffect(() => {
+    const loadSavedData = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('@app_language');
+        if (savedLanguage) {
+          setSelectedLanguage(savedLanguage);
+          await i18n.changeLanguage(savedLanguage);
+        }
+
+        const savedCredentials = await StorageService.rememberCredentials.getCredentials();
+        if (savedCredentials) {
+          setValue('email', savedCredentials.email, { shouldValidate: true });
+          setValue('password', savedCredentials.password, { shouldValidate: true });
+          setValue('rememberMe', true, { shouldValidate: true });
+          setHasAutoFilledCredentials(true);
+        }
+      } catch (error) {
+        console.log('Error loading saved data:', error);
+      }
+    };
+    loadSavedData();
+  }, [setValue]);
+
   const rememberMe = watch('rememberMe');
 
   // Handler functions
@@ -65,6 +74,12 @@ export const useLoginLogic = () => {
     try {
       const result = await AuthController.login(data);
       if (result.success) {
+        if (data.rememberMe) {
+          await StorageService.rememberCredentials.setCredentials(data.email, data.password);
+        } else {
+          await StorageService.rememberCredentials.clearCredentials();
+        }
+        
         await StorageService.viewMode.setMode('easy');
         showLoginSuccess();
         setTimeout(() => {
@@ -128,6 +143,7 @@ export const useLoginLogic = () => {
     isSubmitting,
     portalType,
     rememberMe,
+    hasAutoFilledCredentials,
     // Alert state
     alert,
     

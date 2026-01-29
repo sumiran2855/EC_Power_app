@@ -26,6 +26,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
     selectedLanguage,
     isSubmitting,
     rememberMe,
+    hasAutoFilledCredentials,
     alert,
     
     // Form
@@ -40,6 +41,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
     handleForgotPassword,
     handleCreateAccount,
     togglePasswordVisibility,
+    toggleRememberMe,
     handleLanguageChange,
     getErrorMessage,
     hideAlert,
@@ -139,6 +141,18 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
              {/* Footer Options */}
             <View style={styles.footer}>
               <TouchableOpacity
+                style={styles.rememberMeContainer}
+                onPress={toggleRememberMe}
+                activeOpacity={0.7}
+                disabled={isSubmitting}
+              >
+                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                  {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.rememberMeText}>{t('login.rememberMe')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 onPress={handleForgotPassword}
                 activeOpacity={0.7}
                 disabled={isSubmitting}
@@ -156,15 +170,15 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
             <TouchableOpacity
               style={[
                 styles.loginButton,
-                (!isValid || !isDirty || isSubmitting) && styles.loginButtonDisabled
+                (!isValid || (!isDirty && !hasAutoFilledCredentials) || isSubmitting) && styles.loginButtonDisabled
               ]}
               onPress={handleSubmit(handleLogin)}
               activeOpacity={0.8}
-              disabled={!isValid || !isDirty || isSubmitting}
+              disabled={!isValid || (!isDirty && !hasAutoFilledCredentials) || isSubmitting}
             >
               <Text style={[
                 styles.loginButtonText,
-                (!isValid || !isDirty || isSubmitting) && styles.loginButtonTextDisabled
+                (!isValid || (!isDirty && !hasAutoFilledCredentials) || isSubmitting) && styles.loginButtonTextDisabled
               ]}>
                 {isSubmitting ? t('login.signingIn') : t('login.loginButton')}
               </Text>

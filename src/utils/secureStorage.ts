@@ -9,7 +9,8 @@ export type StorageKey =
     | 'appSettings'
     | 'lastLogin'
     | 'idToken'
-    | 'viewMode';
+    | 'viewMode'
+    | 'rememberCredentials';
 
 
 const ALL_STORAGE_KEYS: StorageKey[] = [
@@ -186,8 +187,42 @@ export const StorageService = {
         },
     },
 
+    rememberCredentials: {
+        setCredentials: async (email: string, password: string) => {
+            await storeSecureValue('rememberCredentials', { email, password });
+        },
+        getCredentials: async (): Promise<{ email: string; password: string } | null> => {
+            return await getSecureValue<{ email: string; password: string }>('rememberCredentials');
+        },
+        clearCredentials: async () => {
+            await removeSecureValue('rememberCredentials');
+        },
+    },
+
     logout: async () => {
         await clearSecureStore();
+    },
+
+    clearAuthData: async () => {
+        const authKeys: StorageKey[] = [
+            'authToken',
+            'refreshToken',
+            'userData',
+            'idToken',
+            'viewMode',
+        ];
+        
+        try {
+            const removePromises = authKeys.map(key =>
+                removeSecureValue(key).catch(err => {
+                    console.warn(`Failed to remove '${key}':`, err);
+                })
+            );
+            await Promise.all(removePromises);
+        } catch (error) {
+            console.log('Failed to clear auth data:', error);
+            throw new Error('Clear auth data operation failed');
+        }
     },
 };
 

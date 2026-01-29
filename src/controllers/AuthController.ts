@@ -26,9 +26,13 @@ export class AuthController {
 
         await StorageService.auth.setTokens(token.accessToken, token.idToken, token.refreshToken);
 
-        // Store user email and password for automatic refresh
-        const userWithCredentials = { ...user, email: data.email, password: data.password };
-        await StorageService.user.setData(userWithCredentials);
+        // Store user email and password for automatic refresh only if remember me is checked
+        if (data.rememberMe) {
+          const userWithCredentials = { ...user, email: data.email, password: data.password };
+          await StorageService.user.setData(userWithCredentials);
+        } else {
+          await StorageService.user.setData(user);
+        }
 
         // Set token expiry (1 hour from now)
         AuthHelper.setTokenExpiry(Date.now() + (60 * 60 * 1000));
@@ -212,7 +216,7 @@ export class AuthController {
 
   static async logout(): Promise<void> {
     try {
-      await StorageService.logout();
+      await StorageService.clearAuthData();
     } catch (error) {
       console.log('Error during logout:', error);
       throw error;

@@ -111,7 +111,7 @@ const useHome = () => {
                         icon: 'devices',
                         color: '#1E88E5',
                         subtitle: t('home.menuItems.xrgiSystems.subtitle'),
-                        inEasyView: true,
+                        inEasyView: false,
                     },
                     {
                         id: '1-2',

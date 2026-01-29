@@ -11,6 +11,7 @@
         "signingIn": "Connexion en cours...",
         "noAccount": "Vous n'avez pas de compte?",
         "createAccount": "Créer un compte",
+        "rememberMe": "Se souvenir de moi",
         "alerts": {
             "loginSuccess": {
                 "title": "Connexion Réussie",
