@@ -411,9 +411,10 @@
         },
         "help": {
             "title": "Need Assistance?",
-            "description": "Our support team is here to help you 24/7",
+            "description": "Our support team is here to help you.",
             "button": "Contact Support"
-        }
+        },
+        "refresh": "Refresh XRGI Data"
     },
     "xrgiSystem": {
         "title": "Your XRGI® Systems",
@@ -1158,6 +1159,21 @@
             "cancelButton": "Cancel",
             "checkboxLabel": "I have read and agree to the Terms and Conditions",
             "checkboxLabel2": "Skip for now"
+        },
+        "refreshModal": {
+            "title": "Refreshing XRGI Data",
+            "message": "We're updating your system data. This process may take up to 1 minute. Please wait...",
+            "waitMessage": "Data refresh in progress",
+            "okButton": "OK"
+        },
+        "xrgiSelectionModal": {
+            "title": "Select XRGI System",
+            "message": "Choose the XRGI system you want to refresh data for:",
+            "noSystemsAvailable": "No XRGI systems available",
+            "loading": "Loading systems...",
+            "cancelButton": "Cancel",
+            "refreshButton": "Refresh Data",
+            "systemLabel": "XRGI System"
         }
     },
     "facilityTerms": {

@@ -409,9 +409,10 @@
             "settings": "Paramètres",
             "logout": "Déconnexion"
         },
+        "refresh": "Actualiser les données XRGI",
         "help": {
             "title": "Besoin d'Aide?",
-            "description": "Notre équipe de support est là pour vous aider 24/7",
+            "description": "Notre équipe de support est là pour vous aider",
             "button": "Contacter le Support"
         }
     },
@@ -1157,6 +1158,21 @@
                 "cancelButton": "Annuler",
                 "checkboxLabel": "J'ai lu et j'accepte les Termes et Conditions",
                 "checkboxLabel2": "Ignorer pour le moment"
+            },
+            "refreshModal": {
+                "title": "Actualisation des données XRGI",
+                "message": "Nous mettons à jour les données de votre système. Ce processus peut prendre jusqu'à 1 minute. Veuillez patienter...",
+                "waitMessage": "Actualisation des données en cours",
+                "okButton": "OK"
+            },
+            "xrgiSelectionModal": {
+                "title": "Sélectionner le système XRGI",
+                "message": "Choisissez le système XRGI pour lequel vous voulez actualiser les données :",
+                "noSystemsAvailable": "Aucun système XRGI disponible",
+                "loading": "Chargement des systèmes...",
+                "cancelButton": "Annuler",
+                "refreshButton": "Actualiser les données",
+                "systemLabel": "Système XRGI"
             }
         }
     },

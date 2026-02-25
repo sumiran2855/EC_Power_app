@@ -97,4 +97,20 @@ export class SystemController {
             console.log("Error getting call details data", error);
         }
     }
+
+    static async getMqttData(xrgiId: string, requestedData: string) {
+        const { authToken, idToken } = await StorageService.auth.getTokens();
+        try {
+            const response = await AuthHelper.ApiRequest({
+                endpoint: `xrgi/mqtt-data/${xrgiId}/${requestedData}`,
+                method: 'GET',
+                token: authToken,
+                IdToken: idToken,
+                backendType: BackendType.SERVICE_DATABASE,
+            });
+            return response;
+        } catch (error) {
+            console.log('Error fetching MQTT data', error);
+        }
+    }
 }

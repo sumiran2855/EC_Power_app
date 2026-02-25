@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+    ActivityIndicator,
     Animated,
     Image,
     ScrollView,
@@ -14,6 +15,8 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import RefreshModal from '../../components/Modals/RefreshModal';
+import XrgiSelectionModal from '../../components/Modals/XrgiSelectionModal';
 import useHome, { MenuItem, Section } from '../../hooks/useHome';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { styles } from './HomeScreen.styles';
@@ -31,6 +34,13 @@ const HomeScreen: React.FC = () => {
         filteredSections,
         customerDetails,
         viewMode,
+        refreshLoading,
+        showRefreshModal,
+        isRefreshDisabled,
+        refreshCountdown,
+        showXrgiSelectionModal,
+        xrgiSystems,
+        facilitiesLoading,
 
         // Handlers
         setSearchQuery,
@@ -42,6 +52,10 @@ const HomeScreen: React.FC = () => {
         handleSearchToggle,
         handleSearchClose,
         setShowProfileMenu,
+        refreshData,
+        handleCloseRefreshModal,
+        handleCloseXrgiSelectionModal,
+        handleXrgiSystemSelect,
     } = useHome();
 
     const renderMenuItem = (item: MenuItem) => (
@@ -300,7 +314,63 @@ const HomeScreen: React.FC = () => {
                         </View>
                     </View>
                  )}
+            {/* Refresh Data Button */}
+            <View style={styles.refreshButtonContainer}>
+                <TouchableOpacity
+                    style={[
+                        isRefreshDisabled ? styles.refreshButtonDisabled : styles.refreshButton,
+                    ]}
+                    onPress={refreshData}
+                    activeOpacity={0.8}
+                    disabled={isRefreshDisabled}
+                >
+                    {refreshLoading ? (
+                        <>
+                            <ActivityIndicator size="small" color="#FFFFFF" />
+                            <Text style={styles.refreshButtonText}>{t('statistics.refreshingData')}</Text>
+                        </>
+                    ) : (
+                        <>
+                            <Icon name="refresh" size={18} color="#FFFFFF" />
+                            <Text 
+                                style={isRefreshDisabled ? styles.refreshButtonTextDisabled : styles.refreshButtonText}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                            >
+                                {t('home.refresh')}{isRefreshDisabled && refreshCountdown > 0 && ` (${refreshCountdown}s)`}
+                            </Text>
+                        </>
+                    )}
+                </TouchableOpacity>
+            </View>
             </ScrollView>
+
+            {/* Refresh Modal */}
+            <RefreshModal
+                isVisible={showRefreshModal}
+                onClose={handleCloseRefreshModal}
+                isLoading={refreshLoading}
+                title={t('modals.refreshModal.title')}
+                message={t('modals.refreshModal.message')}
+                waitMessage={t('modals.refreshModal.waitMessage')}
+                okButtonText={t('modals.refreshModal.okButton')}
+            />
+
+            {/* XRGI Selection Modal */}
+            <XrgiSelectionModal
+                isVisible={showXrgiSelectionModal}
+                onClose={handleCloseXrgiSelectionModal}
+                onSelectSystem={handleXrgiSystemSelect}
+                systems={xrgiSystems}
+                loading={facilitiesLoading}
+                title={t('modals.xrgiSelectionModal.title')}
+                message={t('modals.xrgiSelectionModal.message')}
+                noSystemsText={t('modals.xrgiSelectionModal.noSystemsAvailable')}
+                loadingText={t('modals.xrgiSelectionModal.loading')}
+                cancelText={t('modals.xrgiSelectionModal.cancelButton')}
+                refreshText={t('modals.xrgiSelectionModal.refreshButton')}
+                systemLabel={t('modals.xrgiSelectionModal.systemLabel')}
+            />
         </SafeAreaView>
     );
 };

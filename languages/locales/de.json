@@ -409,6 +409,7 @@
             "settings": "Einstellungen",
             "logout": "Abmelden"
         },
+        "refresh": "XRGI Daten aktualisieren",
         "help": {
             "title": "Hilfe Benötigt?",
             "description": "Unser Support-Team ist rund um die Uhr für Sie da",
@@ -1158,6 +1159,21 @@
             "cancelButton": "Abbrechen",
             "checkboxLabel": "Ich habe die Allgemeinen Geschäftsbedingungen gelesen und stimme zu",
             "checkboxLabel2": "Jetzt überspringen"
+        },
+        "refreshModal": {
+            "title": "XRGI-Daten werden aktualisiert",
+            "message": "Wir aktualisieren Ihre Systemdaten. Dieser Vorgang kann bis zu 1 Minute dauern. Bitte warten Sie...",
+            "waitMessage": "Datenaktualisierung läuft",
+            "okButton": "OK"
+        },
+        "xrgiSelectionModal": {
+            "title": "XRGI-System auswählen",
+            "message": "Wählen Sie das XRGI-System aus, für das Sie Daten aktualisieren möchten:",
+            "noSystemsAvailable": "Keine XRGI-Systeme verfügbar",
+            "loading": "Systeme werden geladen...",
+            "cancelButton": "Abbrechen",
+            "refreshButton": "Daten aktualisieren",
+            "systemLabel": "XRGI-System"
         }
     },
     "facilityTerms": {

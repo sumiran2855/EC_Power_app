@@ -409,9 +409,10 @@
             "settings": "Indstillinger",
             "logout": "Log Ud"
         },
+        "refresh": "Opdater XRGI Data",
         "help": {
             "title": "Brug for Hjælp?",
-            "description": "Vores supportteam er her for at hjælpe dig 24/7",
+            "description": "Vores supportteam er her for at hjælpe dig",
             "button": "Kontakt Support"
         }
     },
@@ -1157,6 +1158,21 @@
                 "cancelButton": "Annuller",
                 "checkboxLabel": "Jeg har læst og accepterer Betingelser og Vilkår",
                 "checkboxLabel2": "Spring over for nu"
+            },
+            "refreshModal": {
+                "title": "Opdaterer XRGI data",
+                "message": "Vi opdaterer dine systemdata. Denne proces kan tage op til 1 minut. Vent venligst...",
+                "waitMessage": "Data opdatering i gang",
+                "okButton": "OK"
+            },
+            "xrgiSelectionModal": {
+                "title": "Vælg XRGI system",
+                "message": "Vælg det XRGI system, du vil opdatere data for:",
+                "noSystemsAvailable": "Ingen XRGI systemer tilgængelige",
+                "loading": "Indlæser systemer...",
+                "cancelButton": "Annuller",
+                "refreshButton": "Opdater data",
+                "systemLabel": "XRGI System"
             }
         }
     },

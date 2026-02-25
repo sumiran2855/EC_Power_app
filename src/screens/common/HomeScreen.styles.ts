@@ -499,4 +499,35 @@ export const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#1E88E5',
     },
+    refreshButtonContainer: {
+        paddingVertical: 12,
+    },
+    refreshButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        backgroundColor: '#1E88E5',
+        paddingVertical: 14,
+        borderRadius: 12,
+    },
+    refreshButtonDisabled: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        backgroundColor: '#B0BEC5',
+        paddingVertical: 14,
+        borderRadius: 12,
+    },
+    refreshButtonText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#FFFFFF',
+    },
+    refreshButtonTextDisabled: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#FFFFFF',
+    },
 });

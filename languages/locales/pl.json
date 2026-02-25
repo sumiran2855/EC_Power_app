@@ -409,9 +409,10 @@
             "settings": "Ustawienia",
             "logout": "Wyloguj"
         },
+        "refresh": "Odśwież dane XRGI",
         "help": {
             "title": "Potrzebujesz Pomocy?",
-            "description": "Nasz zespół wsparcia jest tutaj, aby pomóc Ci 24/7",
+            "description": "Nasz zespół wsparcia jest tutaj, aby pomóc Ci",
             "button": "Kontakt z Wsparciem"
         }
     },
@@ -1157,6 +1158,21 @@
                 "cancelButton": "Anuluj",
                 "checkboxLabel": "Przeczytałem i akceptuję Regulamin i Warunki",
                 "checkboxLabel2": "Pomiń na razie"
+            },
+            "refreshModal": {
+                "title": "Odświeżanie danych XRGI",
+                "message": "Aktualizujemy dane systemowe. Ten proces może potrwać do 1 minuty. Proszę czekać...",
+                "waitMessage": "Odświeżanie danych w toku",
+                "okButton": "OK"
+            },
+            "xrgiSelectionModal": {
+                "title": "Wybierz system XRGI",
+                "message": "Wybierz system XRGI, dla którego chcesz odświeżyć dane:",
+                "noSystemsAvailable": "Brak dostępnych systemów XRGI",
+                "loading": "Ładowanie systemów...",
+                "cancelButton": "Anuluj",
+                "refreshButton": "Odśwież dane",
+                "systemLabel": "System XRGI"
             }
         }
     },

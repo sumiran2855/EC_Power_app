@@ -8,6 +8,8 @@ import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthController } from '../controllers/AuthController';
+import { RegisterController } from '../controllers/RegisterController';
+import { SystemController } from '../controllers/SystemController';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import useViewMode from './useViewMode';
 
@@ -26,6 +28,14 @@ export interface Section {
     items: MenuItem[];
 }
 
+export interface XrgiSystem {
+    id: string;
+    name: string;
+    xrgiID: string;
+    modelNumber?: string;
+    status: string;
+}
+
 const useHome = () => {
     const { t } = useTranslation();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
@@ -35,6 +45,13 @@ const useHome = () => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const dropdownAnimation = useRef(new Animated.Value(0)).current;
     const [customerDetails, setCustomerDetails] = useState<any>(null);
+    const [refreshLoading, setRefreshLoading] = useState(false);
+    const [showRefreshModal, setShowRefreshModal] = useState(false);
+    const [isRefreshDisabled, setIsRefreshDisabled] = useState(false);
+    const [refreshCountdown, setRefreshCountdown] = useState(0);
+    const [showXrgiSelectionModal, setShowXrgiSelectionModal] = useState(false);
+    const [xrgiSystems, setXrgiSystems] = useState<XrgiSystem[]>([]);
+    const [facilitiesLoading, setFacilitiesLoading] = useState(false);
 
     // Build all sections with all items - filtering happens later based on viewMode
     const buildAllSections = useCallback((): Section[] => {
@@ -260,8 +277,85 @@ const useHome = () => {
         }
     }, []);
 
+    const fetchMqttData = useCallback(async () => {
+        if (isRefreshDisabled) return;
+
+        setShowXrgiSelectionModal(true);
+        await fetchFacilities();
+    }, [isRefreshDisabled]);
+
+    const fetchFacilities = useCallback(async () => {
+        const userData = await StorageService.user.getData<UserData>();
+        if (!userData?.id) {
+            console.log('No user ID found, cannot fetch facilities');
+            return;
+        }
+        
+        try {
+            setFacilitiesLoading(true);
+            const response = await RegisterController.GetFacilityList(userData.id);
+            
+            if (response?.success && response.data) {
+                const transformedSystems: XrgiSystem[] = response.data.map((facility: any) => ({
+                    id: facility.id,
+                    name: facility.name,
+                    xrgiID: facility.xrgiID,
+                    modelNumber: facility.modelNumber,
+                    status: facility.status || 'inactive',
+                }));
+                setXrgiSystems(transformedSystems);
+            } else {
+                setXrgiSystems([]);
+            }
+        } catch (error) {
+            console.log('💥 Error fetching facilities:', error);
+            setXrgiSystems([]);
+        } finally {
+            setFacilitiesLoading(false);
+        }
+    }, []);
+
+    const handleXrgiSystemSelect = useCallback(async (xrgiId: string) => {
+        setShowXrgiSelectionModal(false);
+        
+        try {
+            setRefreshLoading(true);
+            setShowRefreshModal(true);
+            setIsRefreshDisabled(true);
+
+            setRefreshCountdown(60);
+            const countdownInterval = setInterval(() => {
+                setRefreshCountdown((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(countdownInterval);
+                        setIsRefreshDisabled(false);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            const response = await SystemController.getMqttData(xrgiId, 'all');            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+        } catch (error) {
+            console.log('Error in handleXrgiSystemSelect:', error);
+        } finally {
+            setRefreshLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getCustomerDetails();
+    }, []);
+
+    const handleCloseRefreshModal = useCallback(() => {
+        setShowRefreshModal(false);
+    }, []);
+
+    const handleCloseXrgiSelectionModal = useCallback(() => {
+        setShowXrgiSelectionModal(false);
+        setXrgiSystems([]);
     }, []);
 
     return {
@@ -274,6 +368,13 @@ const useHome = () => {
         customerDetails,
         viewMode,
         isLoading,
+        refreshLoading,
+        showRefreshModal,
+        isRefreshDisabled,
+        refreshCountdown,
+        showXrgiSelectionModal,
+        xrgiSystems,
+        facilitiesLoading,
 
         // Handlers
         setSearchQuery,
@@ -284,7 +385,11 @@ const useHome = () => {
         handleMenuPress,
         handleSearchToggle,
         handleSearchClose,
-        setShowProfileMenu
+        setShowProfileMenu,
+        refreshData: fetchMqttData,
+        handleCloseRefreshModal,
+        handleCloseXrgiSelectionModal,
+        handleXrgiSystemSelect,
     };
 };
 
