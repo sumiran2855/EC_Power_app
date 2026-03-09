@@ -41,7 +41,6 @@ const XrgiSelectionModal: React.FC<XrgiSelectionModalProps> = ({
     refreshText,
     systemLabel,
 }) => {
-    console.log('systems :', systems);
     const [selectedSystemId, setSelectedSystemId] = useState<string>('');
 
     const handleSystemSelect = (system: XrgiSystem) => {

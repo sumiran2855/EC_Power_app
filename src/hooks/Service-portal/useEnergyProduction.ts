@@ -88,7 +88,7 @@ const useEnergyProduction = (xrgiId: string): UseEnergyProductionReturn => {
             const startDateStr = formatDate(startDate);
             const endDateStr = formatDate(endDate);
 
-            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/${xrgiId}/${startDateStr}/${endDateStr}`);
+            const response = await fetch(`https://service.ecpower.dk/rest/service/v1/plant/statistics/api/statistic/${xrgiId}/${startDateStr}/${endDateStr}`);
             if (response) {
                 const data = await response.json();
                 setStatusData(data);
@@ -114,53 +114,49 @@ const useEnergyProduction = (xrgiId: string): UseEnergyProductionReturn => {
     ];
 
     const systemInfo: SystemInfo[] = statusData ? [
-        { label: t('energyProduction.systemInfo.latestUpdate'), value: statusData.LatesCallDate ? statusData.LatesCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: t('energyProduction.systemInfo.operatingHours'), value: statusData.OperationalMinutes && statusData.PossibleMinutes ? `${Math.round(statusData.OperationalMinutes / 60)} out of ${Math.round(statusData.PossibleMinutes / 60)} ${t('energyProduction.systemInfo.hours')}` : t('energyProduction.systemInfo.outOfPossibleHours') },
-        { label: t('energyProduction.systemInfo.lastService'), value: statusData.LatesServiceDate ? statusData.LatesServiceDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: t('energyProduction.systemInfo.operationalHoursToNextService'), value: statusData.TimeNextService ? `${Math.round(statusData.TimeNextService / 60)} ${t('energyProduction.systemInfo.hours')}` : '-' },
-        { label: t('energyProduction.systemInfo.elecProduction'), value: statusData.PowerProduction ? `${Math.round(statusData.PowerProduction / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.heatProduction'), value: statusData.HeatProduction ? `${Math.round(statusData.HeatProduction / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.fuelConsumption'), value: statusData.FuelConsumption ? `${Math.round(statusData.FuelConsumption / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.firstCall'), value: statusData.FirstCallDate ? statusData.FirstCallDate.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
-        { label: t('energyProduction.systemInfo.siteElecConsumption'), value: statusData.PowerConsumption ? `${Math.round(statusData.PowerConsumption / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: statusData.PowerCoveredByXRGI ? `${Math.round(statusData.PowerCoveredByXRGI / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: statusData.PowerCoveredByPurchase ? `${Math.round(statusData.PowerCoveredByPurchase / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
-        { label: t('energyProduction.systemInfo.soldElectricity'), value: statusData.PowerSoldEl ? `${Math.round(statusData.PowerSoldEl / 1000)} ${t('energyProduction.systemInfo.kwh')}` : `0 ${t('energyProduction.systemInfo.kwh')}` },
+        { label: t('energyProduction.systemInfo.elecProduction'), value: statusData.elproduktion != null ? `${Math.round(statusData.elproduktion / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.heatProduction'), value: statusData.lavtforbrug != null ? `${Math.round(statusData.lavtforbrug / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.fuelConsumption'), value: statusData.braendelsforbrug != null ? `${Math.round(statusData.braendelsforbrug / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.firstCall'), value: statusData.foerstemelding ? statusData.foerstemelding.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
+        { label: t('energyProduction.systemInfo.latestUpdate'), value: statusData.sidstemelding ? statusData.sidstemelding.replace(/:\d{2}\s+[AP]M$/, '') : '-' },
+        { label: t('energyProduction.systemInfo.operatingHours'), value: statusData.driftstid != null ? `${Math.round(statusData.driftstid / 60)} ${t('energyProduction.systemInfo.hours')}` : '-' },
+        { label: t('energyProduction.systemInfo.siteElecConsumption'), value: statusData.elforbrug != null ? `${Math.round(statusData.elforbrug / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.soldElectricity'), value: statusData.elsalg != null ? `${Math.round(statusData.elsalg / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: statusData.underskud != null ? `${Math.round(statusData.underskud / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
+        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: statusData.elproduktion != null ? `${Math.round(statusData.elproduktion / 1000)} ${t('energyProduction.systemInfo.kwh')}` : '-' },
     ] : [
-        { label: t('energyProduction.systemInfo.latestUpdate'), value: t('energyProduction.systemInfo.loading') },
-        { label: t('energyProduction.systemInfo.operatingHours'), value: t('energyProduction.systemInfo.outOfPossibleHours') },
-        { label: t('energyProduction.systemInfo.lastService'), value: '-' },
-        { label: t('energyProduction.systemInfo.operationalHoursToNextService'), value: '-' },
-        { label: t('energyProduction.systemInfo.elecProduction'), value: t('energyProduction.systemInfo.kwh') },
-        { label: t('energyProduction.systemInfo.heatProduction'), value: t('energyProduction.systemInfo.kwh') },
-        { label: t('energyProduction.systemInfo.fuelConsumption'), value: t('energyProduction.systemInfo.kwh') },
+        { label: t('energyProduction.systemInfo.elecProduction'), value: '-' },
+        { label: t('energyProduction.systemInfo.heatProduction'), value: '-' },
+        { label: t('energyProduction.systemInfo.fuelConsumption'), value: '-' },
         { label: t('energyProduction.systemInfo.firstCall'), value: '-' },
+        { label: t('energyProduction.systemInfo.latestUpdate'), value: '-' },
+        { label: t('energyProduction.systemInfo.operatingHours'), value: '-' },
         { label: t('energyProduction.systemInfo.siteElecConsumption'), value: '-' },
-        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: '-' },
-        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: '-' },
         { label: t('energyProduction.systemInfo.soldElectricity'), value: '-' },
+        { label: t('energyProduction.systemInfo.coveredByPowerPurchase'), value: '-' },
+        { label: t('energyProduction.systemInfo.coveredByXRGI'), value: '-' },
     ];
 
     const chartData: ChartData = statusData ? {
         labels: ['Current Period'],
         datasets: [
             {
-                data: [Math.round(statusData.PowerProduction / 1000) || 0],
+                data: [Math.round((statusData.elproduktion || 0) / 1000)],
                 color: (opacity = 1) => `rgba(251, 191, 36, ${opacity})`,
                 strokeWidth: 2.5,
             },
             {
-                data: [Math.round(statusData.PowerConsumption / 1000) || 0],
+                data: [Math.round((statusData.elforbrug || 0) / 1000)],
                 color: (opacity = 1) => `rgba(16, 185, 129, ${opacity})`,
                 strokeWidth: 2.5,
             },
             {
-                data: [Math.round(statusData.HeatProduction / 1000) || 0],
+                data: [Math.round((statusData.lavtforbrug || 0) / 1000)],
                 color: (opacity = 1) => `rgba(245, 158, 11, ${opacity})`,
                 strokeWidth: 2.5,
             },
             {
-                data: [Math.round(statusData.PowerSoldEl / 1000) || 0],
+                data: [Math.round((statusData.elsalg || 0) / 1000)],
                 color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
                 strokeWidth: 2.5,
             },
