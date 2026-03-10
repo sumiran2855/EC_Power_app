@@ -707,17 +707,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ route }) => {
 
               <TouchableOpacity
                 style={styles.featureCard}
-                onPress={() => updateFormData('EnergyCheck_plus', !formData.EnergyCheck_plus)}
+                onPress={() => updateFormData('hasEnergyCheckPlus', !formData.hasEnergyCheckPlus)}
               >
-                <View style={[styles.checkbox, formData.EnergyCheck_plus && styles.checkboxChecked]}>
-                  {formData.EnergyCheck_plus && <Icon name="check" size={16} color="#fff" />}
+                <View style={[styles.checkbox, formData.hasEnergyCheckPlus && styles.checkboxChecked]}>
+                  {formData.hasEnergyCheckPlus && <Icon name="check" size={16} color="#fff" />}
                 </View>
                 <View style={styles.checkboxContent}>
                   <Text style={styles.checkboxLabel}>{t('systemRegistrationStep.energyCheckPlus.enable')}</Text>
                 </View>
               </TouchableOpacity>
 
-              {formData.EnergyCheck_plus && (
+              {formData.hasEnergyCheckPlus && (
                 <>
                   <Text style={styles.checkboxDescription}>
                     {t('systemRegistrationStep.energyCheckPlus.description1')}
@@ -861,7 +861,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ route }) => {
               )}
             </View>
 
-            {formData.EnergyCheck_plus && (
+            {formData.hasEnergyCheckPlus && (
               <View style={styles.card}>
                 <View style={styles.cardHeader}>
                   <Icon name="calendar-today" size={24} color="#003D82" />
