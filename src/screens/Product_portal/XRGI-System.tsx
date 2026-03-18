@@ -1,20 +1,21 @@
+import { RegisterController } from "@/controllers/RegisterController";
 import { MaterialIcons as Icon, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../../components/Card/Card';
-import useDashboard from '../../hooks/Product-portal/useDashboard';
-import styles from './XRGI-System.styles';
-import { Facility } from "../authScreens/types";
-import { RegisterController } from "@/controllers/RegisterController";
 import DeleteConfirmationModal from '../../components/Modals/DeleteConfirmationModal';
-import { useTranslation } from 'react-i18next';
+import useDashboard from '../../hooks/Product-portal/useDashboard';
+import { Facility } from "../authScreens/types";
+import styles from './XRGI-System.styles';
 
 type RootStackParamList = {
   XRGI_System: undefined;
   XRGI_Details: { item: any };
+  Home: undefined;
 };
 
 type XRGISystemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'XRGI_System'>;
@@ -48,7 +49,7 @@ const XRGI_System: React.FC<XRGI_SystemProps> = () => {
   } = useDashboard();
 
   const handleBackPress = () => {
-    navigation.goBack();
+    navigation.navigate('Home');
   };
 
   const handleCardPress = (item: Facility) => {

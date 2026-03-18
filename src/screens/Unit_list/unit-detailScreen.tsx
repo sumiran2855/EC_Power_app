@@ -28,7 +28,6 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
         isLoading,
         isRecentCallLoading,
         isSystemConfigurationLoading,
-        isStatusData2025Loading,
         alert,
 
         // Data
@@ -312,7 +311,7 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
     };
 
     // Loading state
-    if (isLoading || isRecentCallLoading || isSystemConfigurationLoading || isStatusData2025Loading) {
+    if (isLoading || isRecentCallLoading || isSystemConfigurationLoading) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3b82f6" />

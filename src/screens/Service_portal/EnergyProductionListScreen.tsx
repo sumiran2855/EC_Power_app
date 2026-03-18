@@ -20,7 +20,6 @@ const EnergyProductionListScreen: React.FC<EnergyProductionListScreenProps> = ({
         totalSystemsCount,
         isLoading
     } = useStatistics();
-    console.log("Systems:", systems);
 
     const handleBackButton = () => {
         navigation.goBack();

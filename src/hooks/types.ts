@@ -42,3 +42,71 @@ export const countries: Country[] = [
     { code: '+81', flag: '🇯🇵', name: 'JP' },
     { code: '+49', flag: '🇩🇪', name: 'DE' },
 ];
+
+export interface MenuItem {
+    id: string;
+    title: string;
+    icon: string;
+    hasData?: boolean;
+}
+
+export interface GeneralData {
+    systemName: {
+        name: string;
+        address: string;
+        city: string;
+        postalCode: string;
+        country: string;
+        email: string;
+        cellPhone: string;
+    };
+    dealer: {
+        name: string;
+        address: string;
+        city: string;
+        postalCode: string;
+        country: string;
+        email: string;
+        cellPhone: string;
+    };
+    technician: {
+        name: string;
+        address: string;
+        city: string;
+        postalCode: string;
+        country: string;
+        email: string;
+        cellPhone: string;
+    };
+}
+
+export interface LastCallData {
+    calls: string;
+    timeOfCall: string;
+    operationStatus: {
+        status: string;
+        noise: string;
+        oilPressure: string;
+        gasAlarm: string;
+    };
+    controlPanelTemperature: string;
+    controlPanelAntennaSignal: string;
+}
+
+export interface StatusData {
+    latestUpdate: string;
+    operatingHours: string;
+    lastService: string;
+    operationalHoursToNextService: string;
+    elecProduction: string;
+    heatProduction: string;
+    fuelConsumption: string;
+    firstCall: string;
+    siteElecConsumption: string;
+    coveredByXRGISystem: string;
+    coveredByPowerPurchase: string;
+    soldElectricity: string;
+}
+
+export type SystemStatus = 'idle' | 'running' | 'stopped';
+export type AlertType = 'success' | 'error' | 'warning' | 'info';

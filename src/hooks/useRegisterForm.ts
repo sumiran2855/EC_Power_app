@@ -215,7 +215,7 @@ const useRegisterForm = (route?: RegisterScreenRouteProp) => {
     const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
 
     const handleBackPress = () => {
-        navigation.goBack();
+        navigation.navigate('Home');
     };
 
     // Form update handler with special handling for nested fields

@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "scheme": "ecpower",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/logo.png",
       "resizeMode": "contain",
@@ -17,7 +17,7 @@
       "bundleIdentifier": "com.ecpower.client",
       "icon": "./assets/images/logo1.png",
       "deploymentTarget": "16.6",
-      "newArchEnabled": true
+      "newArchEnabled": false
     },
     "android": {
       "icon": "./assets/images/logo1.png",
