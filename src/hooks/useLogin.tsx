@@ -6,10 +6,11 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../languages/i18n.config';
 import { AuthController } from '../controllers/AuthController';
+import { RegisterController } from '../controllers/RegisterController';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import StorageService from '../utils/secureStorage';
 import { LoginFormData, loginDefaultValues, loginSchema } from '../validations/LoginValidation';
 import { useLoginAlert } from './useLoginAlert';
-import StorageService from '../utils/secureStorage';
 
 type LoginRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
@@ -82,8 +83,22 @@ export const useLoginLogic = () => {
         
         await StorageService.viewMode.setMode('easy');
         showLoginSuccess();
+
+        let hasExistingFacilities = false;
+        const userId = result.response?.id;
+        if (userId) {
+          try {
+            const facilitiesResponse = await RegisterController.GetFacilityList(userId);
+            if (facilitiesResponse?.success && facilitiesResponse.data && facilitiesResponse.data.length > 0) {
+              hasExistingFacilities = true;
+            }
+          } catch (error) {
+            console.log('Error checking facilities:', error);
+          }
+        }
+
         setTimeout(() => {
-          if (result.response?.journeyStatus === "completed") {
+          if (result.response?.journeyStatus === "completed" || hasExistingFacilities) {
             (navigation as any).navigate('Home');
           } else {
             (navigation as any).navigate('Stepper');
