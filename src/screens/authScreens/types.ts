@@ -112,11 +112,36 @@ export interface SmartPriceStepProps extends StepperFormSharedProps {
 }
 
 export const countryCodes = [
+    { code: '+43', country: 'AT', flag: '🇦🇹' },
+    { code: '+32', country: 'BE', flag: '🇧🇪' },
+    { code: '+359', country: 'BG', flag: '🇧🇬' },
+    { code: '+385', country: 'HR', flag: '🇭🇷' },
+    { code: '+357', country: 'CY', flag: '🇨🇾' },
+    { code: '+420', country: 'CZ', flag: '🇨🇿' },
     { code: '+45', country: 'DK', flag: '🇩🇰' },
-    { code: '+1', country: 'US/CA', flag: '🇺🇸' },
-    { code: '+44', country: 'UK', flag: '🇬🇧' },
+    { code: '+372', country: 'EE', flag: '🇪🇪' },
+    { code: '+358', country: 'FI', flag: '🇫🇮' },
+    { code: '+33', country: 'FR', flag: '🇫🇷' },
     { code: '+49', country: 'DE', flag: '🇩🇪' },
+    { code: '+30', country: 'GR', flag: '🇬🇷' },
+    { code: '+36', country: 'HU', flag: '🇭🇺' },
+    { code: '+353', country: 'IE', flag: '🇮🇪' },
     { code: '+39', country: 'IT', flag: '🇮🇹' },
+    { code: '+371', country: 'LV', flag: '🇱🇻' },
+    { code: '+370', country: 'LT', flag: '🇱🇹' },
+    { code: '+352', country: 'LU', flag: '🇱🇺' },
+    { code: '+356', country: 'MT', flag: '🇲🇹' },
+    { code: '+31', country: 'NL', flag: '🇳🇱' },
+    { code: '+48', country: 'PL', flag: '🇵🇱' },
+    { code: '+351', country: 'PT', flag: '🇵🇹' },
+    { code: '+40', country: 'RO', flag: '🇷🇴' },
+    { code: '+421', country: 'SK', flag: '🇸🇰' },
+    { code: '+386', country: 'SI', flag: '🇸🇮' },
+    { code: '+34', country: 'ES', flag: '🇪🇸' },
+    { code: '+46', country: 'SE', flag: '🇸🇪' },
+    { code: '+44', country: 'UK', flag: '🇬🇧' },
+    { code: '+47', country: 'NO', flag: '🇳🇴' },
+    { code: '+41', country: 'CH', flag: '🇨🇭' },
 ];
 
 export const models = [

@@ -1,20 +1,29 @@
-import { useSharedValue, withSpring } from 'react-native-reanimated';
+import { useRef } from 'react';
+import { Animated } from 'react-native';
 
 export const useCardAnimations = () => {
-    const scaleAnim = useSharedValue(1);
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+
+    const animatedStyle = {
+        transform: [{ scale: scaleAnim }],
+    };
 
     const handlePressIn = () => {
-        scaleAnim.value = withSpring(0.96, {
+        Animated.spring(scaleAnim, {
+            toValue: 0.96,
             damping: 15,
-            stiffness: 100
-        });
+            stiffness: 100,
+            useNativeDriver: true,
+        }).start();
     };
 
     const handlePressOut = () => {
-        scaleAnim.value = withSpring(1, {
+        Animated.spring(scaleAnim, {
+            toValue: 1,
             damping: 15,
-            stiffness: 100
-        });
+            stiffness: 100,
+            useNativeDriver: true,
+        }).start();
     };
 
     const getTrendColor = (trend: 'up' | 'down' | 'neutral') => {
@@ -41,6 +50,7 @@ export const useCardAnimations = () => {
 
     return {
         scaleAnim,
+        animatedStyle,
         handlePressIn,
         handlePressOut,
         getTrendColor,

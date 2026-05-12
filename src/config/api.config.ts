@@ -23,7 +23,8 @@ const getBaseUrl = (localPort: number, endpoint: string = 'api') => {
 // Backend configurations
 const BACKEND_CONFIGS = {
   [BackendType.PRODUCT_PORTAL]: {
-    BASE_URL: getBaseUrl(4001, 'api1'),
+    BASE_URL: 'https://service-api.productportal.ecpower.net/api',
+    // BASE_URL: getBaseUrl(4001, 'api1'),
     TIMEOUT: 30000,
     HEADERS: {
       'Accept': 'application/json',
@@ -31,7 +32,8 @@ const BACKEND_CONFIGS = {
     },
   },
   [BackendType.SERVICE_DATABASE]: {
-    BASE_URL: getBaseUrl(4000, 'api'),
+    BASE_URL: 'https://api.sdb.ecpower.net/api',
+    // BASE_URL: getBaseUrl(4000, 'api'),
     TIMEOUT: 30000,
     HEADERS: {
       'Accept': 'application/json',

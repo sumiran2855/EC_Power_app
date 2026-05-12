@@ -15,16 +15,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ecpower.client",
-      "icon": "./assets/images/logo1.png",
+      "icon": "./assets/images/ecpower_1024.png",
       "deploymentTarget": "16.6",
       "newArchEnabled": false
     },
     "android": {
-      "icon": "./assets/images/logo1.png",
+      "icon": "./assets/images/ecpower_1024.png",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/logo1.png",
-        "backgroundImage": "./assets/images/logo1.png"
+        "foregroundImage": "./assets/images/ecpower_1024.png",
+        "backgroundImage": "./assets/images/ecpower_1024.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -37,7 +37,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/logo1.png"
+      "favicon": "./assets/images/ecpower_1024.png"
     },
     "plugins": [
       [

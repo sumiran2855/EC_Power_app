@@ -381,7 +381,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 10,
-    maxHeight: hp(30),
+    maxHeight: hp(20),
     width: '100%',
   },
 

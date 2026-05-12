@@ -18,26 +18,25 @@ export class AuthController {
           email: data.email,
           password: data.password,
         },
-        backendType: BackendType.SERVICE_DATABASE,
+        backendType: BackendType.PRODUCT_PORTAL,
       })
 
       if (response.success && response.data) {
-        const { token, user } = response.data;
-
-        await StorageService.auth.setTokens(token.accessToken, token.idToken, token.refreshToken);
+        const { tokens, userData } = response.data.data ?? response.data;
+        await StorageService.auth.setTokens(tokens.accessToken, tokens.idToken, tokens.refreshToken);
 
         // Store user email and password for automatic refresh only if remember me is checked
         if (data.rememberMe) {
-          const userWithCredentials = { ...user, email: data.email, password: data.password };
+          const userWithCredentials = { ...userData, email: data.email, password: data.password };
           await StorageService.user.setData(userWithCredentials);
         } else {
-          await StorageService.user.setData(user);
+          await StorageService.user.setData(userData);
         }
 
         // Set token expiry (1 hour from now)
         AuthHelper.setTokenExpiry(Date.now() + (60 * 60 * 1000));
 
-        return { success: true , response: response.data.user };
+        return { success: true, response: userData };
       } else {
         return {
           success: false,

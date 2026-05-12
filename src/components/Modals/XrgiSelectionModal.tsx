@@ -67,12 +67,22 @@ const XrgiSelectionModal: React.FC<XrgiSelectionModalProps> = ({
         >
             <View style={styles.systemInfo}>
                 <View style={styles.systemHeader}>
-                    <Text style={[
-                        styles.systemName,
-                        selectedSystemId === item.id && styles.systemNameSelected,
-                    ]}>
-                        XRGI® ID: {item.xrgiID}
-                    </Text>
+                    <View style={styles.systemTextGroup}>
+                        <Text style={[
+                            styles.systemName,
+                            selectedSystemId === item.id && styles.systemNameSelected,
+                        ]}>
+                            XRGI® ID: {item.xrgiID}
+                        </Text>
+                        {item.name ? (
+                            <Text style={[
+                                styles.systemUnitName,
+                                selectedSystemId === item.id && styles.systemUnitNameSelected,
+                            ]}>
+                                {item.name}
+                            </Text>
+                        ) : null}
+                    </View>
                     <View style={[
                         styles.statusBadge,
                         { backgroundColor: item.status === 'Active' ? '#10B981' : '#9CA3AF' }
@@ -275,15 +285,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    systemName: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#1A1A1A',
+    systemTextGroup: {
         flex: 1,
         marginRight: 12,
     },
+    systemName: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: '#1A1A1A',
+    },
     systemNameSelected: {
         color: '#1E88E5',
+    },
+    systemUnitName: {
+        fontSize: 13,
+        fontWeight: '400',
+        color: '#546E7A',
+        marginTop: 2,
+    },
+    systemUnitNameSelected: {
+        color: '#1565C0',
     },
     statusBadge: {
         paddingHorizontal: 8,

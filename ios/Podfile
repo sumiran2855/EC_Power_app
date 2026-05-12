@@ -11,8 +11,9 @@ end
 
 ENV['RCT_NEW_ARCH_ENABLED'] ||= '0' if podfile_properties['newArchEnabled'] == 'false'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] ||= podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
-ENV['RCT_USE_RN_DEP'] ||= '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
-ENV['RCT_USE_PREBUILT_RNCORE'] ||= '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
+# Force build from source to avoid Maven tarball download crashes
+ENV['RCT_USE_RN_DEP'] = '0'
+ENV['RCT_USE_PREBUILT_RNCORE'] = '0'
 
 project 'ecpower.xcodeproj'
 
@@ -55,7 +56,19 @@ target 'ecpower' do
      :mac_catalyst_enabled => false,
      :ccache_enabled => ccache_enabled?(podfile_properties),
    )
-  
+
+   # Fix Hermes script phase: set it to run based on dependency analysis
+   # This prevents it running every build and avoids build system crashes
+   installer.pods_project.targets.each do |target|
+     if target.name == 'hermes-engine'
+       target.build_phases.each do |phase|
+         if phase.respond_to?(:name) && phase.name&.include?('[CP-User] [Hermes] Replace Hermes')
+           phase.always_out_of_date = '0'
+         end
+       end
+     end
+   end
+
    installer.pods_project.targets.each do |target|
      target.build_configurations.each do |config|
        # Set deployment target for all pods
@@ -66,6 +79,10 @@ target 'ecpower' do
       
        # Disable bitcode
        config.build_settings['ENABLE_BITCODE'] = 'NO'
+
+       # Disable index store to prevent build system crashes
+       config.build_settings['COMPILER_INDEX_STORE_ENABLE'] = 'NO'
+       config.build_settings['INDEX_ENABLE_DATA_STORE'] = 'NO'
        
        # === GLOBAL SWIFT FIXES FOR ALL TARGETS ===
        
@@ -78,9 +95,6 @@ target 'ecpower' do
        
        # Use singlefile compilation to avoid incremental build issues
        config.build_settings['SWIFT_COMPILATION_MODE'] = 'singlefile'
-       
-       # Disable index store
-       config.build_settings['COMPILER_INDEX_STORE_ENABLE'] = 'NO'
        
        # Suppress all warnings to prevent warning-as-error issues
        config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES'
@@ -130,6 +144,43 @@ target 'ecpower' do
          # Ensure proper module setup
          config.build_settings['DEFINES_MODULE'] = 'YES'
          config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+       end
+       
+       # === FIX FOR clang Illegal instruction crashes on x86_64 simulator ===
+       # Affects ReactCodegen (ShadowNodes.cpp), RNReanimated, RNScreens, etc.
+       clang_crash_targets = ['ReactCodegen', 'RNReanimated', 'RNScreens', 'RNWorklets', 'react-native-pdf', 'RNGestureHandler', 'RNSVG', 'RNDateTimePicker', 'RNCAsyncStorage', 'RNCPicker', 'react-native-safe-area-context', 'react-native-webview', 'react-native-blob-util', 'RNFS']
+       if clang_crash_targets.include?(target.name)
+         config.build_settings['GCC_OPTIMIZATION_LEVEL'] = '0'
+         config.build_settings['LLVM_LTO'] = 'NO'
+         config.build_settings['OTHER_CFLAGS'] ||= ['$(inherited)']
+         config.build_settings['OTHER_CFLAGS'] << '-O0'
+         config.build_settings['OTHER_CFLAGS'] << '-fno-inline-functions'
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(inherited)']
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-O0'
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-fno-inline-functions'
+       end
+
+       # === FIX FOR RNReanimated folly/coro/Coroutine.h missing header ===
+       if target.name == 'RNReanimated'
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_MOBILE=1'
+         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_USE_LIBCPP=1'
+       end
+
+       # === FIX FOR RNScreens clang segfault (RNSViewControllerInvalidator.mm) ===
+       if target.name == 'RNScreens'
+         config.build_settings['GCC_OPTIMIZATION_LEVEL'] = '0'
+         config.build_settings['LLVM_LTO'] = 'NO'
+         config.build_settings['OTHER_CFLAGS'] ||= ['$(inherited)']
+         config.build_settings['OTHER_CFLAGS'] << '-O0'
+         config.build_settings['OTHER_CFLAGS'] << '-fno-objc-arc-exceptions'
+         config.build_settings['OTHER_CFLAGS'] << '-fno-inline-functions'
+         config.build_settings['OTHER_CFLAGS'] << '-fno-optimize-sibling-calls'
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(inherited)']
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-O0'
+         config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-fno-inline-functions'
        end
      end
    end

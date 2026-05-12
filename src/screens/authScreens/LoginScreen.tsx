@@ -3,6 +3,9 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StatusBar,
     Text,
     TextInput,
@@ -50,8 +53,18 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#1e3a8a" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+          >
           <View style={styles.backgroundTop} />
           <View style={styles.backgroundBottom} />
 
@@ -213,7 +226,8 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               styles={languageStyles}
             />
           </View>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
       
       {/* Login Alert */}

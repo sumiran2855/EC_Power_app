@@ -2,12 +2,15 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
-    Image,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForgotPasswordLogic } from '../../hooks/useForgetPassword';
@@ -287,14 +290,25 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#1e3a8a" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.backgroundTop} />
-          <View style={styles.backgroundBottom} />
-          <View style={styles.form}>
-            {currentStep === 'email' ? renderEmailStep() : renderVerificationStep()}
-          </View>
-        </View>
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+          >
+            <View style={styles.backgroundTop} />
+            <View style={styles.backgroundBottom} />
+            <View style={styles.form}>
+              {currentStep === 'email' ? renderEmailStep() : renderVerificationStep()}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </>
   );

@@ -1,12 +1,11 @@
-import React from 'react';
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Animated from 'react-native-reanimated';
-import styles from './System-StatusScreen.styles';
-import useSystemStatus from '../../hooks/Service-portal/useSystemStatus';
-import useCardAnimations from '../../hooks/Service-portal/useCardAnimations';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import useCardAnimations from '../../hooks/Service-portal/useCardAnimations';
+import useSystemStatus from '../../hooks/Service-portal/useSystemStatus';
+import styles from './System-StatusScreen.styles';
 
 interface StatusCardProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -31,6 +30,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
 }) => {
   const {
     scaleAnim,
+    animatedStyle,
     handlePressIn,
     handlePressOut,
     getTrendColor,
@@ -38,7 +38,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
   } = useCardAnimations();
 
   return (
-    <Animated.View style={[styles.card, { transform: [{ scale: scaleAnim }] }]}>
+    <Animated.View style={[styles.card, animatedStyle]}>
       <TouchableOpacity
         onPress={onPress}
         onPressIn={handlePressIn}

@@ -4,10 +4,66 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import CircularProgress from 'react-native-circular-progress-indicator';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Circle, Svg } from 'react-native-svg';
 import useUnitDetail from '../../hooks/Unit-list/useUnitDetail';
 import styles from './unit-detailScreen.styles';
+
+interface CircularGaugeProps {
+    value: number;
+    maxValue: number;
+    radius: number;
+    activeStrokeColor: string;
+    inActiveStrokeColor?: string;
+    strokeWidth?: number;
+    progressValueColor?: string;
+    progressValueFontSize?: number;
+}
+
+const CircularGauge: React.FC<CircularGaugeProps> = ({
+    value,
+    maxValue,
+    radius,
+    activeStrokeColor,
+    inActiveStrokeColor = '#E2E8F0',
+    strokeWidth = 12,
+    progressValueColor = '#0F172A',
+    progressValueFontSize = 24,
+}) => {
+    const size = (radius + strokeWidth) * 2;
+    const circumference = 2 * Math.PI * radius;
+    const progress = Math.min(Math.max(value / maxValue, 0), 1);
+    const strokeDashoffset = circumference * (1 - progress);
+    const center = size / 2;
+    return (
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Svg width={size} height={size}>
+                <Circle
+                    cx={center} cy={center} r={radius}
+                    stroke={inActiveStrokeColor}
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                />
+                <Circle
+                    cx={center} cy={center} r={radius}
+                    stroke={activeStrokeColor}
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                    rotation="-90"
+                    origin={`${center}, ${center}`}
+                />
+            </Svg>
+            <View style={{ position: 'absolute', alignItems: 'center' }}>
+                <Text style={{ fontSize: progressValueFontSize, color: progressValueColor, fontWeight: '700' }}>
+                    {value}
+                </Text>
+            </View>
+        </View>
+    );
+};
 
 interface UnitDetailScreenProps {
     navigation: any;
@@ -121,25 +177,15 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                     <View style={styles.gaugeCard}>
                         <Text style={styles.gaugeTitle}>{t('unitDetail.lastCall.controlPanelTemp')}</Text>
                         <View style={styles.gaugeWrapper}>
-                            <CircularProgress
+                            <CircularGauge
                                 value={50}
                                 radius={70}
-                                duration={2000}
+                                maxValue={100}
                                 progressValueColor={'#0F172A'}
                                 progressValueFontSize={24}
-                                maxValue={100}
-                                title={''}
-                                titleColor={'#64748B'}
-                                titleStyle={{ fontWeight: '600', fontSize: 11 }}
                                 activeStrokeColor={'#EF4444'}
-                                activeStrokeSecondaryColor={'#F59E0B'}
                                 inActiveStrokeColor={'#E2E8F0'}
-                                inActiveStrokeOpacity={0.5}
-                                inActiveStrokeWidth={12}
-                                activeStrokeWidth={12}
-                                clockwise={true}
-                                rotation={180}
-                                strokeLinecap={'round'}
+                                strokeWidth={12}
                             />
                             <Text style={styles.gaugeLabelBelow}>{t('unitDetail.lastCall.tempRange')}</Text>
                         </View>
@@ -148,25 +194,15 @@ const UnitDetailScreen: React.FC<UnitDetailScreenProps> = ({ navigation, route }
                     <View style={styles.gaugeCard}>
                         <Text style={styles.gaugeTitle}>{t('unitDetail.lastCall.controlPanelSignal')}</Text>
                         <View style={styles.gaugeWrapper}>
-                            <CircularProgress
+                            <CircularGauge
                                 value={90}
                                 radius={70}
-                                duration={2000}
+                                maxValue={100}
                                 progressValueColor={'#0F172A'}
                                 progressValueFontSize={24}
-                                maxValue={100}
-                                title={''}
-                                titleColor={'#64748B'}
-                                titleStyle={{ fontWeight: '600', fontSize: 11 }}
                                 activeStrokeColor={'#10B981'}
-                                activeStrokeSecondaryColor={'#3B82F6'}
                                 inActiveStrokeColor={'#E2E8F0'}
-                                inActiveStrokeOpacity={0.5}
-                                inActiveStrokeWidth={12}
-                                activeStrokeWidth={12}
-                                clockwise={true}
-                                rotation={180}
-                                strokeLinecap={'round'}
+                                strokeWidth={12}
                             />
                             <Text style={styles.gaugeLabelBelow}>{t('unitDetail.lastCall.signalRange')}</Text>
                         </View>
